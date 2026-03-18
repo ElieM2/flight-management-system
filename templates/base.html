@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Air Monitoring System{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <script src="{% static 'js/main.js' %}" defer></script>
+</head>
+<body>
+    <div class="wrapper">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <h2>AirMonitor</h2>
+            </div>
+
+            <nav class="sidebar-menu">
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/dashboard/">Dashboard</a></li>
+                    <li><a href="/flights/">Flights</a></li>
+                    <li><a href="/airlines/">Airlines</a></li>
+                    <li><a href="/airports/">Airports</a></li>
+                    <li><a href="/aircraft/">Aircraft</a></li>
+                    <li><a href="/monitoring/">Monitoring</a></li>
+                    <li><a href="/map/">Map</a></li>
+                    <li><a href="/sync/">API Sync</a></li>
+                    <li><a href="/chatbot/">Chatbot</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <div class="main-area">
+            <header class="topbar">
+                <h1>{% block page_title %}Dashboard{% endblock %}</h1>
+            </header>
+
+            <main class="content">
+                {% block content %}
+                {% endblock %}
+            </main>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

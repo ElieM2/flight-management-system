@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block title %}Map{% endblock %}
+{% block page_title %}Flights Map{% endblock %}
+
+{% block content %}
+<div class="map-card">
+    <div class="map-toolbar">
+        <div class="legend">
+            <span><span class="legend-dot" style="background:#1d4ed8;"></span> Scheduled</span>
+            <span><span class="legend-dot" style="background:#0f766e;"></span> Boarding</span>
+            <span><span class="legend-dot" style="background:#c2410c;"></span> Departed</span>
+            <span><span class="legend-dot" style="background:#6d28d9;"></span> In Air</span>
+            <span><span class="legend-dot" style="background:#15803d;"></span> Landed</span>
+            <span><span class="legend-dot" style="background:#b45309;"></span> Delayed</span>
+            <span><span class="legend-dot" style="background:#b91c1c;"></span> Cancelled</span>
+        </div>
+    </div>
+
+    <div id="flight-map" style="height: 600px;"></div>
+</div>
+
+{{ flights_json|json_script:"flights-data" }}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const flights = JSON.parse(document.getElementById('flights-data').textContent);
+
+        const map = L.map('flight-map').setView([45.0, 10.0], 4);
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        function getStatusColor(status) {
+            if (status === 'scheduled') return '#1d4ed8';
+            if (status === 'boarding') return '#0f766e';
+            if (status === 'departed') return '#c2410c';
+            if (status === 'in_air') return '#6d28d9';
+            if (status === 'landed') return '#15803d';
+            if (status === 'delayed') return '#b45309';
+            if (status === 'cancelled') return '#b91c1c';
+            return '#334155';
+        }
+
+        function getAngle(lat1, lng1, lat2, lng2) {
+            return Math.atan2(lng2 - lng1, lat2 - lat1) * 180 / Math.PI;
+        }
+
+        const bounds = [];
+
+        flights.forEach(function (flight) {
+            const color = getStatusColor(flight.status);
+
+            // Origin marker
+            L.marker([flight.origin_lat, flight.origin_lng])
+                .addTo(map)
+                .bindPopup(
+                    '<strong>Origin:</strong> ' + flight.origin_name + ' (' + flight.origin_iata + ')<br>' +
+                    '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
+                    '<strong>Airline:</strong> ' + flight.airline
+                );
+
+            // Destination marker
+            L.marker([flight.destination_lat, flight.destination_lng])
+                .addTo(map)
+                .bindPopup(
+                    '<strong>Destination:</strong> ' + flight.destination_name + ' (' + flight.destination_iata + ')<br>' +
+                    '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
+                    '<strong>Airline:</strong> ' + flight.airline
+                );
+
+            // Route line
+            L.polyline(
+                [
+                    [flight.origin_lat, flight.origin_lng],
+                    [flight.destination_lat, flight.destination_lng]
+                ],
+                {
+                    color: color,
+                    weight: 4,
+                    opacity: 0.85
+                }
+            ).addTo(map).bindPopup(
+                '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
+                '<strong>Status:</strong> ' + flight.status_display + '<br>' +
+                '<strong>Route:</strong> ' + flight.origin_iata + ' → ' + flight.destination_iata
+            );
+
+            // Plane icon angle
+            const angle = getAngle(
+                flight.origin_lat,
+                flight.origin_lng,
+                flight.destination_lat,
+                flight.destination_lng
+            );
+
+            // Animated plane
+            let planeIcon = L.divIcon({
+                html: '<div style="transform: rotate(' + angle + 'deg); font-size: 20px;">✈️</div>',
+                className: 'plane-icon',
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            const plane = L.marker(
+                [flight.origin_lat, flight.origin_lng],
+                { icon: planeIcon }
+            ).addTo(map).bindPopup(
+                '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
+                '<strong>Airline:</strong> ' + flight.airline + '<br>' +
+                '<strong>Status:</strong> ' + flight.status_display
+            );
+
+            let progress = 0;
+
+            setInterval(function () {
+                progress += 0.01;
+
+                if (progress > 1) {
+                    progress = 0;
+                }
+
+                const lat = flight.origin_lat + (flight.destination_lat - flight.origin_lat) * progress;
+                const lng = flight.origin_lng + (flight.destination_lng - flight.origin_lng) * progress;
+
+                plane.setLatLng([lat, lng]);
+            }, 100);
+
+            bounds.push([flight.origin_lat, flight.origin_lng]);
+            bounds.push([flight.destination_lat, flight.destination_lng]);
+        });
+
+        if (bounds.length > 0) {
+            map.fitBounds(bounds, {
+                padding: [50, 50],
+                maxZoom: 6
+            });
+        }
+    });
+</script>
+{% endblock %}

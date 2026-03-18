@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Aircraft{% endblock %}
+{% block page_title %}Aircraft List{% endblock %}
+
+{% block content %}
+<div class="table-box">
+    <table class="flights-table">
+        <thead>
+            <tr>
+                <th>Registration</th>
+                <th>Model</th>
+                <th>Type</th>
+                <th>Airline</th>
+                <th>Capacity</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for aircraft in aircraft_list %}
+            <tr>
+                <td>{{ aircraft.registration_number }}</td>
+                <td>{{ aircraft.model }}</td>
+                <td>{{ aircraft.aircraft_type }}</td>
+                <td>{{ aircraft.airline.name }}</td>
+                <td>{{ aircraft.capacity }}</td>
+                <td>
+                    <span class="status-badge status-{{ aircraft.status }}">
+                        {{ aircraft.get_status_display }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No aircraft available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

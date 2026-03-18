@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block title %}API Sync{% endblock %}
+{% block page_title %}API Synchronization{% endblock %}
+
+{% block content %}
+<div class="table-box" style="margin-bottom: 20px;">
+    <h3 class="section-title">Run Flight Synchronization</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px;">
+            <div>
+                <label>Flight IATA</label>
+                <input type="text" name="flight_iata" class="form-input" placeholder="AF101">
+            </div>
+
+            <div>
+                <label>Departure IATA</label>
+                <input type="text" name="dep_iata" class="form-input" placeholder="CDG">
+            </div>
+
+            <div>
+                <label>Arrival IATA</label>
+                <input type="text" name="arr_iata" class="form-input" placeholder="IST">
+            </div>
+
+            <div>
+                <label>Limit</label>
+                <input type="number" name="limit" class="form-input" value="10">
+            </div>
+        </div>
+
+        <button type="submit" class="btn-back">Run Sync</button>
+    </form>
+</div>
+
+<div class="table-box">
+    <h3 class="section-title">Last Sync Logs</h3>
+
+    <table class="flights-table">
+        <thead>
+            <tr>
+                <th>Provider</th>
+                <th>Type</th>
+                <th>Status</th>
+                <th>Received</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Started</th>
+                <th>Finished</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.provider_name }}</td>
+                <td>{{ log.sync_type }}</td>
+                <td>{{ log.status }}</td>
+                <td>{{ log.records_received }}</td>
+                <td>{{ log.records_created }}</td>
+                <td>{{ log.records_updated }}</td>
+                <td>{{ log.started_at|date:"Y-m-d H:i" }}</td>
+                <td>{{ log.finished_at|date:"Y-m-d H:i" }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No sync logs available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

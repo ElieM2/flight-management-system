@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Airlines{% endblock %}
+{% block page_title %}Airlines List{% endblock %}
+
+{% block content %}
+<div class="table-box">
+    <table class="flights-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IATA Code</th>
+                <th>ICAO Code</th>
+                <th>Country</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for airline in airlines %}
+            <tr>
+                <td>{{ airline.name }}</td>
+                <td>{{ airline.iata_code }}</td>
+                <td>{{ airline.icao_code }}</td>
+                <td>{{ airline.country }}</td>
+                <td>
+                    {% if airline.is_active %}
+                        <span class="status-badge status-landed">Active</span>
+                    {% else %}
+                        <span class="status-badge status-cancelled">Inactive</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">No airlines available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

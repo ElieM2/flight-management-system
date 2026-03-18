@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Flights{% endblock %}
+{% block page_title %}Flights List{% endblock %}
+
+{% block content %}
+<div class="table-box">
+    <table class="flights-table">
+        <thead>
+            <tr>
+                <th>Flight Number</th>
+                <th>Airline</th>
+                <th>Aircraft</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in flights %}
+            <tr>
+                <td>{{ flight.flight_number }}</td>
+                <td>{{ flight.airline.name }}</td>
+                <td>
+                    {% if flight.aircraft %}
+                        {{ flight.aircraft.registration_number }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ flight.origin_airport.iata_code }}</td>
+                <td>{{ flight.destination_airport.iata_code }}</td>
+                <td>{{ flight.scheduled_departure|date:"Y-m-d H:i" }}</td>
+                <td>{{ flight.scheduled_arrival|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <span class="status-badge status-{{ flight.status }}">
+                        {{ flight.get_status_display }}
+                    </span>
+                </td>
+                <td>
+                    <a href="{% url 'flight_detail' flight.pk %}" class="btn-link">
+                        View
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="9">No flights available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

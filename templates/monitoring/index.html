@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Monitoring{% endblock %}
+{% block page_title %}Flight Monitoring{% endblock %}
+
+{% block content %}
+<div class="dashboard-cards">
+    <div class="card">
+        <h3>Total Flights</h3>
+        <p>{{ total_flights }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Scheduled</h3>
+        <p>{{ scheduled_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Boarding</h3>
+        <p>{{ boarding_count }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Active Monitoring</h3>
+        <p>{{ active_count }}</p>
+    </div>
+</div>
+
+<div class="table-box">
+    <table class="flights-table">
+        <thead>
+            <tr>
+                <th>Flight</th>
+                <th>Airline</th>
+                <th>Aircraft</th>
+                <th>Origin</th>
+                <th>Destination</th>
+                <th>Departure</th>
+                <th>Arrival</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for flight in flights %}
+            <tr>
+                <td>{{ flight.flight_number }}</td>
+                <td>{{ flight.airline.name }}</td>
+                <td>
+                    {% if flight.aircraft %}
+                        {{ flight.aircraft.registration_number }}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td>{{ flight.origin_airport.iata_code }}</td>
+                <td>{{ flight.destination_airport.iata_code }}</td>
+                <td>{{ flight.scheduled_departure|date:"Y-m-d H:i" }}</td>
+                <td>{{ flight.scheduled_arrival|date:"Y-m-d H:i" }}</td>
+                <td>
+                    <span class="status-badge status-{{ flight.status }}">
+                        {{ flight.get_status_display }}
+                    </span>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8">No flights available for monitoring.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

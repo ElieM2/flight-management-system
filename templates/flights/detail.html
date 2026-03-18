@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block title %}Flight Detail{% endblock %}
+{% block page_title %}Flight Detail{% endblock %}
+
+{% block content %}
+<div class="detail-card">
+    <div class="detail-header">
+        <h2>{{ flight.flight_number }}</h2>
+        <span class="status-badge status-{{ flight.status }}">
+            {{ flight.get_status_display }}
+        </span>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <h4>Airline</h4>
+            <p>{{ flight.airline.name }}</p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Aircraft</h4>
+            <p>
+                {% if flight.aircraft %}
+                    {{ flight.aircraft.model }} ({{ flight.aircraft.registration_number }})
+                {% else %}
+                    Not assigned
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Origin Airport</h4>
+            <p>{{ flight.origin_airport.name }} ({{ flight.origin_airport.iata_code }})</p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Destination Airport</h4>
+            <p>{{ flight.destination_airport.name }} ({{ flight.destination_airport.iata_code }})</p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Scheduled Departure</h4>
+            <p>{{ flight.scheduled_departure|date:"Y-m-d H:i" }}</p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Scheduled Arrival</h4>
+            <p>{{ flight.scheduled_arrival|date:"Y-m-d H:i" }}</p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Actual Departure</h4>
+            <p>
+                {% if flight.actual_departure %}
+                    {{ flight.actual_departure|date:"Y-m-d H:i" }}
+                {% else %}
+                    Not available
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Actual Arrival</h4>
+            <p>
+                {% if flight.actual_arrival %}
+                    {{ flight.actual_arrival|date:"Y-m-d H:i" }}
+                {% else %}
+                    Not available
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="detail-item">
+            <h4>Source Type</h4>
+            <p>{{ flight.get_source_type_display }}</p>
+        </div>
+
+        <div class="detail-item">
+            <h4>External ID</h4>
+            <p>{{ flight.external_id|default:"-" }}</p>
+        </div>
+    </div>
+
+    <div class="detail-actions">
+        <a href="{% url 'flight_list' %}" class="btn-back">Back to Flights</a>
+    </div>
+</div>
+{% endblock %}

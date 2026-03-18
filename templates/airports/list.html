@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %}Airports{% endblock %}
+{% block page_title %}Airports List{% endblock %}
+
+{% block content %}
+<div class="table-box">
+    <table class="flights-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>IATA Code</th>
+                <th>ICAO Code</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for airport in airports %}
+            <tr>
+                <td>{{ airport.name }}</td>
+                <td>{{ airport.iata_code }}</td>
+                <td>{{ airport.icao_code }}</td>
+                <td>{{ airport.city }}</td>
+                <td>{{ airport.country }}</td>
+                <td>
+                    {% if airport.is_active %}
+                        <span class="status-badge status-landed">Active</span>
+                    {% else %}
+                        <span class="status-badge status-cancelled">Inactive</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No airports available.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
