@@ -1,89 +1,662 @@
-{% extends 'base.html' %}
+﻿{% extends 'base_public.html' %}
+{% load static i18n %}
 
-{% block title %}Flight Detail{% endblock %}
-{% block page_title %}Flight Detail{% endblock %}
+{% block title %}{{ flight.flight_number }} | FlightLogos{% endblock %}
+{% block body_class %}public-flights-body{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_flights.css' %}?v=flights-list-006">
+<link rel="stylesheet" href="{% static 'css/public_flight_detail.css' %}?v=flight-detail-001">
+{% endblock %}
 
 {% block content %}
-<div class="detail-card">
-    <div class="detail-header">
-        <h2>{{ flight.flight_number }}</h2>
-        <span class="status-badge status-{{ flight.status }}">
-            {{ flight.get_status_display }}
-        </span>
-    </div>
 
-    <div class="detail-grid">
-        <div class="detail-item">
-            <h4>Airline</h4>
-            <p>{{ flight.airline.name }}</p>
-        </div>
+{% trans "Unknown airline" as unknown_airline %}
+{% trans "Not available" as not_available %}
+{% trans "Not assigned" as not_assigned %}
+{% trans "Unknown" as unknown_label %}
+{% trans "Yes" as yes_label %}
+{% trans "No" as no_label %}
 
-        <div class="detail-item">
-            <h4>Aircraft</h4>
-            <p>
-                {% if flight.aircraft %}
-                    {{ flight.aircraft.model }} ({{ flight.aircraft.registration_number }})
+<main class="flight-detail-page">
+    <div class="flight-detail-shell">
+
+        <header class="flight-detail-header">
+            <div class="flight-detail-header-copy">
+                <nav class="flight-detail-breadcrumb" aria-label="{% trans 'Breadcrumb' %}">
+                    <a href="{% url 'flights:flight_list' %}">
+                        <i class="bi bi-calendar3"></i>
+                        {% trans "Flights" %}
+                    </a>
+
+                    <i class="bi bi-chevron-right"></i>
+
+                    <span>{{ flight.flight_number }}</span>
+                </nav>
+
+                <h1>{{ flight.flight_number }}</h1>
+
+                <p>
+                    {% trans "Operational flight profile, aircraft assignment, route status and recorded monitoring events." %}
+                </p>
+            </div>
+
+            <div class="flight-detail-actions">
+                <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}" class="flight-detail-btn is-primary">
+                    <i class="bi bi-map"></i>
+                    {% trans "Open Map" %}
+                </a>
+
+                <a href="{% url 'flights:flight_list' %}" class="flight-detail-btn">
+                    <i class="bi bi-arrow-left"></i>
+                    {% trans "Back to Flights" %}
+                </a>
+            </div>
+        </header>
+
+        <section class="flight-detail-identity-card">
+            <div class="flight-detail-mainline">
+
+                <div class="flight-detail-airline-block">
+                    <span class="flight-detail-airline-logo">
+                        {% if flight.airline and flight.airline.logo %}
+                            <img src="{{ flight.airline.logo.url }}" alt="{{ flight.airline.name }}">
+                        {% elif flight.airline and flight.airline.logo_initials %}
+                            {{ flight.airline.logo_initials }}
+                        {% else %}
+                            AL
+                        {% endif %}
+                    </span>
+
+                    <div>
+                        <h2>{{ flight.flight_number }}</h2>
+
+                        <p>
+                            {% if flight.airline %}
+                                {{ flight.airline.name|default:unknown_airline }}
+                            {% else %}
+                                {{ unknown_airline }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="flight-detail-route-block">
+                    <div class="flight-detail-airport">
+                        <span>
+                            {% if flight.origin_airport %}
+                                {{ flight.origin_airport.city|default:flight.origin_airport.name }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </span>
+
+                        <strong>
+                            {% if flight.origin_airport %}
+                                {{ flight.origin_airport.iata_code|default:"--" }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </strong>
+
+                        <small>
+                            {% if flight.origin_airport %}
+                                {{ flight.origin_airport.name|default:not_available }}
+                            {% else %}
+                                {{ not_available }}
+                            {% endif %}
+                        </small>
+                    </div>
+
+                    <div class="flight-detail-route-plane">
+                        <span></span>
+                        <i class="bi bi-airplane-fill"></i>
+                        <span></span>
+                    </div>
+
+                    <div class="flight-detail-airport">
+                        <span>
+                            {% if flight.destination_airport %}
+                                {{ flight.destination_airport.city|default:flight.destination_airport.name }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </span>
+
+                        <strong>
+                            {% if flight.destination_airport %}
+                                {{ flight.destination_airport.iata_code|default:"--" }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </strong>
+
+                        <small>
+                            {% if flight.destination_airport %}
+                                {{ flight.destination_airport.name|default:not_available }}
+                            {% else %}
+                                {{ not_available }}
+                            {% endif %}
+                        </small>
+                    </div>
+                </div>
+
+                <div class="flight-detail-aircraft-block">
+                    <div>
+                        <span>{% trans "Aircraft" %}</span>
+
+                        <strong>
+                            {% if flight.aircraft %}
+                                {{ flight.aircraft.model|default:not_assigned }}
+                            {% else %}
+                                {{ not_assigned }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Registration" %}</span>
+
+                        <strong>
+                            {% if flight.aircraft and flight.aircraft.registration_number %}
+                                {{ flight.aircraft.registration_number }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Status" %}</span>
+
+                        <strong>
+                            <span class="flight-status status-{{ flight.status }}">
+                                {{ flight.get_status_display }}
+                            </span>
+                        </strong>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="flight-detail-meta-row">
+                <div>
+                    <i class="bi bi-calendar3"></i>
+
+                    <span>{% trans "Departure" %}</span>
+
+                    <strong>
+                        {% if flight.scheduled_departure %}
+                            {{ flight.scheduled_departure|date:"M d, Y H:i" }}
+                        {% else %}
+                            â€”
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div>
+                    <i class="bi bi-clock"></i>
+
+                    <span>{% trans "Arrival" %}</span>
+
+                    <strong>
+                        {% if flight.scheduled_arrival %}
+                            {{ flight.scheduled_arrival|date:"M d, Y H:i" }}
+                        {% else %}
+                            â€”
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div>
+                    <i class="bi bi-database"></i>
+
+                    <span>{% trans "Source" %}</span>
+
+                    <strong>
+                        {{ flight.get_source_type_display|default:unknown_label }}
+                    </strong>
+                </div>
+
+                <div>
+                    <i class="bi bi-broadcast"></i>
+
+                    <span>{% trans "Tracking" %}</span>
+
+                    <strong>
+                        {% if flight.live_latitude and flight.live_longitude %}
+                            {% trans "Live position" %}
+                        {% else %}
+                            {% trans "Route only" %}
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div>
+                    <i class="bi bi-arrow-repeat"></i>
+
+                    <span>{% trans "Last sync" %}</span>
+
+                    <strong>
+                        {% if flight.last_synced_at %}
+                            {{ flight.last_synced_at|date:"M d, H:i" }}
+                        {% else %}
+                            â€”
+                        {% endif %}
+                    </strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="flight-detail-kpi-grid">
+            <article class="flight-detail-kpi">
+                <span class="flight-detail-kpi-icon is-blue">
+                    <i class="bi bi-signpost-2"></i>
+                </span>
+
+                <div>
+                    <span>{% trans "Route" %}</span>
+
+                    <strong>
+                        {% if flight.origin_airport %}
+                            {{ flight.origin_airport.iata_code|default:"--" }}
+                        {% else %}
+                            --
+                        {% endif %}
+                        â†’
+                        {% if flight.destination_airport %}
+                            {{ flight.destination_airport.iata_code|default:"--" }}
+                        {% else %}
+                            --
+                        {% endif %}
+                    </strong>
+
+                    <p>{% trans "Assigned route" %}</p>
+                </div>
+            </article>
+
+            <article class="flight-detail-kpi">
+                <span class="flight-detail-kpi-icon is-orange">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+
+                <div>
+                    <span>{% trans "Departure Delay" %}</span>
+
+                    <strong>
+                        {% if departure_delay_minutes is not None %}
+                            {{ departure_delay_minutes }} min
+                        {% else %}
+                            â€”
+                        {% endif %}
+                    </strong>
+
+                    <p>{% trans "Compared to schedule" %}</p>
+                </div>
+            </article>
+
+            <article class="flight-detail-kpi">
+                <span class="flight-detail-kpi-icon is-green">
+                    <i class="bi bi-arrow-repeat"></i>
+                </span>
+
+                <div>
+                    <span>{% trans "Status Changes" %}</span>
+
+                    <strong>{{ status_change_events }}</strong>
+
+                    <p>{% trans "Stored events" %}</p>
+                </div>
+            </article>
+
+            <article class="flight-detail-kpi">
+                <span class="flight-detail-kpi-icon is-purple">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </span>
+
+                <div>
+                    <span>{% trans "Disruptions" %}</span>
+
+                    <strong>{{ disruption_events }}</strong>
+
+                    <p>{% trans "Delay or cancellation" %}</p>
+                </div>
+            </article>
+        </section>
+
+        <section class="flight-detail-layout">
+
+            <article class="flight-detail-card is-profile">
+                <div class="flight-detail-card-head">
+                    <div>
+                        <span>{% trans "Flight Profile" %}</span>
+                        <h2>{% trans "Operational information" %}</h2>
+                    </div>
+
+                    <i class="bi bi-three-dots-vertical"></i>
+                </div>
+
+                <div class="flight-detail-profile-list">
+                    <div>
+                        <span>{% trans "Flight Number" %}</span>
+                        <strong>{{ flight.flight_number }}</strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Airline" %}</span>
+
+                        <strong>
+                            {% if flight.airline %}
+                                {{ flight.airline.name|default:not_available }}
+                            {% else %}
+                                {{ not_available }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Aircraft Type" %}</span>
+
+                        <strong>
+                            {% if flight.aircraft %}
+                                {{ flight.aircraft.model|default:not_assigned }}
+                            {% else %}
+                                {{ not_assigned }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Registration" %}</span>
+
+                        <strong>
+                            {% if flight.aircraft and flight.aircraft.registration_number %}
+                                {{ flight.aircraft.registration_number }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Source" %}</span>
+                        <strong>{{ flight.get_source_type_display|default:unknown_label }}</strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "External ID" %}</span>
+                        <strong>{{ flight.external_id|default:"â€”" }}</strong>
+                    </div>
+                </div>
+            </article>
+
+            <article class="flight-detail-card">
+                <div class="flight-detail-card-head">
+                    <div>
+                        <span>{% trans "Route & Schedule" %}</span>
+                        <h2>{% trans "Airports and timing" %}</h2>
+                    </div>
+
+                    <i class="bi bi-three-dots-vertical"></i>
+                </div>
+
+                <div class="flight-detail-profile-list">
+                    <div>
+                        <span>{% trans "Origin" %}</span>
+
+                        <strong>
+                            {% if flight.origin_airport %}
+                                {{ flight.origin_airport.iata_code|default:"--" }}
+                                Â· {{ flight.origin_airport.city|default:flight.origin_airport.name }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Destination" %}</span>
+
+                        <strong>
+                            {% if flight.destination_airport %}
+                                {{ flight.destination_airport.iata_code|default:"--" }}
+                                Â· {{ flight.destination_airport.city|default:flight.destination_airport.name }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Sched. Departure" %}</span>
+
+                        <strong>
+                            {% if flight.scheduled_departure %}
+                                {{ flight.scheduled_departure|date:"M d, Y H:i" }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Sched. Arrival" %}</span>
+
+                        <strong>
+                            {% if flight.scheduled_arrival %}
+                                {{ flight.scheduled_arrival|date:"M d, Y H:i" }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Actual Departure" %}</span>
+
+                        <strong>
+                            {% if flight.actual_departure %}
+                                {{ flight.actual_departure|date:"M d, Y H:i" }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div>
+                        <span>{% trans "Actual Arrival" %}</span>
+
+                        <strong>
+                            {% if flight.actual_arrival %}
+                                {{ flight.actual_arrival|date:"M d, Y H:i" }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+                </div>
+            </article>
+
+            <article class="flight-detail-card is-timeline">
+                <div class="flight-detail-card-head">
+                    <div>
+                        <span>{% trans "Operational Timeline" %}</span>
+                        <h2>{% trans "Recorded events" %}</h2>
+                    </div>
+
+                    <i class="bi bi-three-dots-vertical"></i>
+                </div>
+
+                {% if history_entries %}
+                    <div class="flight-detail-timeline">
+                        {% for item in history_entries|slice:":7" %}
+                            <div class="flight-detail-timeline-item">
+                                <span class="timeline-time">
+                                    {{ item.changed_at|date:"H:i" }}
+                                </span>
+
+                                <span class="timeline-line">
+                                    <i></i>
+                                </span>
+
+                                <div>
+                                    <strong>{{ item.get_change_type_display }}</strong>
+
+                                    <small>
+                                        {% if item.change_summary %}
+                                            {{ item.change_summary }}
+                                        {% else %}
+                                            {% trans "Operational update recorded." %}
+                                        {% endif %}
+                                    </small>
+                                </div>
+
+                                {% if item.status_changed %}
+                                    <span class="timeline-status status-{{ item.new_status }}">
+                                        {{ item.get_new_status_display }}
+                                    </span>
+                                {% else %}
+                                    <span class="timeline-status is-muted">
+                                        {% trans "Recorded" %}
+                                    </span>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% else %}
-                    Not assigned
+                    <div class="flight-detail-empty compact">
+                        <h3>{% trans "No history recorded yet" %}</h3>
+
+                        <p>
+                            {% trans "No status, schedule or live-data history has been recorded for this flight." %}
+                        </p>
+                    </div>
                 {% endif %}
-            </p>
-        </div>
+            </article>
 
-        <div class="detail-item">
-            <h4>Origin Airport</h4>
-            <p>{{ flight.origin_airport.name }} ({{ flight.origin_airport.iata_code }})</p>
-        </div>
+        </section>
 
-        <div class="detail-item">
-            <h4>Destination Airport</h4>
-            <p>{{ flight.destination_airport.name }} ({{ flight.destination_airport.iata_code }})</p>
-        </div>
+        {% if flight.live_latitude or flight.live_longitude or flight.live_altitude or flight.live_speed %}
+            <section class="flight-detail-bottom-grid">
+                <article class="flight-detail-card">
+                    <div class="flight-detail-card-head">
+                        <div>
+                            <span>{% trans "Live Data" %}</span>
+                            <h2>{% trans "Tracking snapshot" %}</h2>
+                        </div>
+                    </div>
 
-        <div class="detail-item">
-            <h4>Scheduled Departure</h4>
-            <p>{{ flight.scheduled_departure|date:"Y-m-d H:i" }}</p>
-        </div>
+                    <div class="flight-detail-metric-grid">
+                        <div>
+                            <span>{% trans "Latitude" %}</span>
+                            <strong>{{ flight.live_latitude|default:"â€”" }}</strong>
+                        </div>
 
-        <div class="detail-item">
-            <h4>Scheduled Arrival</h4>
-            <p>{{ flight.scheduled_arrival|date:"Y-m-d H:i" }}</p>
-        </div>
+                        <div>
+                            <span>{% trans "Longitude" %}</span>
+                            <strong>{{ flight.live_longitude|default:"â€”" }}</strong>
+                        </div>
 
-        <div class="detail-item">
-            <h4>Actual Departure</h4>
-            <p>
-                {% if flight.actual_departure %}
-                    {{ flight.actual_departure|date:"Y-m-d H:i" }}
-                {% else %}
-                    Not available
-                {% endif %}
-            </p>
-        </div>
+                        <div>
+                            <span>{% trans "Altitude" %}</span>
+                            <strong>{{ flight.live_altitude|default:"â€”" }}</strong>
+                        </div>
 
-        <div class="detail-item">
-            <h4>Actual Arrival</h4>
-            <p>
-                {% if flight.actual_arrival %}
-                    {{ flight.actual_arrival|date:"Y-m-d H:i" }}
-                {% else %}
-                    Not available
-                {% endif %}
-            </p>
-        </div>
+                        <div>
+                            <span>{% trans "Speed" %}</span>
+                            <strong>{{ flight.live_speed|default:"â€”" }}</strong>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        {% endif %}
 
-        <div class="detail-item">
-            <h4>Source Type</h4>
-            <p>{{ flight.get_source_type_display }}</p>
-        </div>
+        <section class="flight-detail-card">
+            <div class="flight-detail-card-head is-split">
+                <div>
+                    <span>{% trans "History" %}</span>
+                    <h2>{% trans "Full flight history" %}</h2>
+                </div>
 
-        <div class="detail-item">
-            <h4>External ID</h4>
-            <p>{{ flight.external_id|default:"-" }}</p>
-        </div>
+                <span class="flight-history-count">
+                    {{ history_entries|length }} {% trans "events" %}
+                </span>
+            </div>
+
+            {% if history_entries %}
+                <div class="flight-history-table-wrap">
+                    <table class="flight-history-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Time" %}</th>
+                                <th>{% trans "Event" %}</th>
+                                <th>{% trans "Previous" %}</th>
+                                <th>{% trans "New" %}</th>
+                                <th>{% trans "Source" %}</th>
+                                <th>{% trans "Disruption" %}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for item in history_entries %}
+                                <tr>
+                                    <td>{{ item.changed_at|date:"Y-m-d H:i" }}</td>
+
+                                    <td>
+                                        <strong>{{ item.get_change_type_display }}</strong>
+
+                                        <span>
+                                            {% if item.change_summary %}
+                                                {{ item.change_summary }}
+                                            {% else %}
+                                                â€”
+                                            {% endif %}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {% if item.previous_status %}
+                                            {{ item.get_previous_status_display }}
+                                        {% else %}
+                                            â€”
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if item.new_status %}
+                                            {{ item.get_new_status_display }}
+                                        {% else %}
+                                            â€”
+                                        {% endif %}
+                                    </td>
+
+                                    <td>{{ item.get_source_type_snapshot_display }}</td>
+
+                                    <td>
+                                        {% if item.is_disruption_event %}
+                                            {{ yes_label }}
+                                        {% else %}
+                                            {{ no_label }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="flight-detail-empty">
+                    <h3>{% trans "No history recorded yet" %}</h3>
+
+                    <p>
+                        {% trans "No status, schedule or live-data history has been recorded for this flight." %}
+                    </p>
+                </div>
+            {% endif %}
+        </section>
+
     </div>
+</main>
 
-    <div class="detail-actions">
-        <a href="{% url 'flight_list' %}" class="btn-back">Back to Flights</a>
-    </div>
-</div>
 {% endblock %}
+

@@ -1,0 +1,384 @@
+﻿{% extends "base_public.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "FlightLogos | Flight Tracking & Operations" %}{% endblock %}
+{% block body_class %}flightlogos-home-page{% endblock %}
+
+{% block extra_head %}
+<style>
+/* =========================================================
+   FLIGHTLOGOS PUBLIC HOME
+   Clean aviation landing page — realistic and breathable
+========================================================= */
+
+.flightlogos-home-page {
+    --home-navy: #061a3a;
+    --home-navy-2: #082450;
+    --home-blue: #1473e6;
+    --home-blue-2: #2563eb;
+    --home-white: #ffffff;
+    --home-text: #081225;
+    --home-muted: #5f6f86;
+    --home-border: rgba(203, 213, 225, 0.78);
+    --home-bg: #eef4fb;
+    --home-card: #ffffff;
+    --home-soft-card: rgba(255, 255, 255, 0.92);
+    --home-shadow: 0 22px 60px rgba(15, 23, 42, 0.13);
+
+    background: var(--home-bg);
+    color: var(--home-text);
+}
+
+html[data-theme="dark"] .flightlogos-home-page,
+.flightlogos-home-page.is-public-dark {
+    --home-bg: #061a3a;
+    --home-card: #082450;
+    --home-soft-card: rgba(8, 36, 80, 0.92);
+    --home-text: #ffffff;
+    --home-muted: #cbd5e1;
+    --home-border: rgba(148, 163, 184, 0.24);
+    --home-shadow: 0 24px 70px rgba(2, 6, 23, 0.38);
+
+    background: #061a3a;
+}
+
+html[data-theme="dark"] .flightlogos-home-page .public-app-header,
+.flightlogos-home-page.is-public-dark .public-app-header {
+    background: linear-gradient(180deg, rgba(3, 14, 34, 0.98), rgba(5, 24, 56, 0.98));
+}
+
+.flightlogos-home-page.is-public-light .public-app-header {
+    background: linear-gradient(180deg, #061a3a, #082450);
+}
+
+.flightlogos-home-page .public-site-footer {
+    margin-top: 0;
+}
+
+.flight-home {
+    min-height: 0;
+    background: var(--home-bg);
+    color: var(--home-text);
+}
+
+.flight-home *,
+.flight-home *::before,
+.flight-home *::after {
+    box-sizing: border-box;
+}
+
+.flight-home h1,
+.flight-home h2,
+.flight-home h3,
+.flight-home p {
+    margin-top: 0;
+}
+
+.flight-home a {
+    text-decoration: none;
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.flight-home-hero {
+    position: relative;
+    min-height: 690px;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg, rgba(6, 26, 58, 0.26), rgba(6, 26, 58, 0.54)),
+        url("https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=2400&q=80");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.flight-home-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(2, 12, 27, 0.10) 0%, rgba(2, 12, 27, 0.62) 100%);
+    pointer-events: none;
+}
+
+html[data-theme="dark"] .flight-home-hero::before,
+.flightlogos-home-page.is-public-dark .flight-home-hero::before {
+    background:
+        linear-gradient(180deg, rgba(2, 12, 27, 0.36) 0%, rgba(2, 12, 27, 0.76) 100%);
+}
+
+.flight-home-hero__inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    padding: 72px 0 82px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+.flight-home-hero__content {
+    width: min(880px, 100%);
+    color: #ffffff;
+}
+
+.flight-home-brand-line {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: 0 14px;
+    border-radius: 999px;
+    background: rgba(6, 26, 58, 0.42);
+    border: 1px solid rgba(226, 232, 240, 0.28);
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px);
+}
+
+.flight-home-hero h1 {
+    margin: 28px auto 22px;
+    max-width: 820px;
+    color: #ffffff;
+    font-size: clamp(44px, 5vw, 72px);
+    line-height: 1.06;
+    letter-spacing: -0.055em;
+    font-weight: 640;
+    text-shadow: 0 18px 42px rgba(0, 0, 0, 0.34);
+}
+
+.flight-home-hero p {
+    max-width: 680px;
+    margin: 0 auto 32px;
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 17px;
+    line-height: 1.7;
+    text-shadow: 0 8px 24px rgba(0, 0, 0, 0.24);
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+.flight-home-search {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 22px 56px rgba(2, 12, 27, 0.24);
+    border: 1px solid rgba(255, 255, 255, 0.78);
+}
+
+.flight-home-search form {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+}
+
+.flight-home-search-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 999px;
+    color: #64748b;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
+}
+
+.flight-home-search input {
+    width: 100%;
+    height: 50px;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 420;
+}
+
+.flight-home-search input::placeholder {
+    color: #64748b;
+}
+
+.flight-home-search button {
+    height: 50px;
+    padding: 0 24px;
+    border: 0;
+    border-radius: 999px;
+    background: #1473e6;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 760;
+    cursor: pointer;
+    transition:
+        background 0.18s ease,
+        transform 0.18s ease;
+}
+
+.flight-home-search button:hover {
+    background: #0f5fc4;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   QUICK LINKS
+========================================================= */
+
+.flight-home-quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.flight-home-quick-links a {
+    min-height: 42px;
+    padding: 0 18px;
+    border-radius: 14px;
+    background: rgba(6, 26, 58, 0.46);
+    border: 1px solid rgba(226, 232, 240, 0.26);
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    font-size: 13px;
+    font-weight: 720;
+    backdrop-filter: blur(12px);
+    transition:
+        transform 0.18s ease,
+        background 0.18s ease,
+        border-color 0.18s ease;
+}
+
+.flight-home-quick-links a:hover {
+    transform: translateY(-1px);
+    color: #ffffff;
+    background: rgba(20, 115, 230, 0.92);
+    border-color: rgba(191, 219, 254, 0.44);
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 760px) {
+    .flight-home-hero {
+        min-height: 640px;
+    }
+
+    .flight-home-hero__inner {
+        padding: 70px 0 78px;
+    }
+
+    .flight-home-hero h1 {
+        font-size: 42px;
+        letter-spacing: -0.045em;
+    }
+
+    .flight-home-hero p {
+        font-size: 15px;
+    }
+
+    .flight-home-search {
+        border-radius: 24px;
+    }
+
+    .flight-home-search form {
+        grid-template-columns: 1fr;
+    }
+
+    .flight-home-search-icon {
+        display: none;
+    }
+
+    .flight-home-search input,
+    .flight-home-search button {
+        width: 100%;
+    }
+
+    .flight-home-search input {
+        padding: 0 12px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<main class="flight-home">
+
+    <section class="flight-home-hero">
+        <div class="public-container flight-home-hero__inner">
+            <div class="flight-home-hero__content">
+
+                <span class="flight-home-brand-line">
+                    {% trans "Flight operations monitoring" %}
+                </span>
+
+                <h1>
+                    {% trans "Track live flight status, routes and airport activity." %}
+                </h1>
+
+                <p>
+                    {% trans "Search by flight number, airline, airport or route. View operational status, route details and continue to the monitoring workspace for deeper supervision." %}
+                </p>
+
+                <div class="flight-home-search">
+                    <form method="GET" action="{% url 'flights:flight_list' %}">
+                        <span class="flight-home-search-icon">
+                            <i class="bi bi-search"></i>
+                        </span>
+
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ request.GET.q }}"
+                            placeholder="{% trans 'Flight number, airline, airport or route' %}"
+                        >
+
+                        <button type="submit">
+                            {% trans "Search" %}
+                        </button>
+                    </form>
+                </div>
+
+                <div class="flight-home-quick-links">
+                    <a href="{% url 'flights:flight_list' %}">
+                        {% trans "Flight status" %}
+                    </a>
+
+                    <a href="{% url 'airports:airport_list' %}">
+                        {% trans "Airports" %}
+                    </a>
+
+                    <a href="{% url 'airlines:airline_list' %}">
+                        {% trans "Airlines" %}
+                    </a>
+
+                    <a href="{% url 'monitoring:flight_map' %}">
+                        {% trans "Flight map" %}
+                    </a>
+
+                    <a href="{% url 'dashboard:dashboard' %}">
+                        {% trans "Operations" %}
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+{% endblock %}

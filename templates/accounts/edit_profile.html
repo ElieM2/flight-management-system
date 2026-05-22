@@ -1,0 +1,625 @@
+﻿{% extends 'base_dashboard.html' %}
+
+{% block title %}Edit Account | LogosFlight{% endblock %}
+{% block dashboard_title %}Edit Account{% endblock %}
+{% block dashboard_subtitle %}Update profile information and operational contact details.{% endblock %}
+
+{% block extra_head %}
+<style>
+    .account-edit-page {
+        width: min(1160px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 28px 0 54px;
+        color: #0f172a;
+    }
+
+    .account-edit-page,
+    .account-edit-page * {
+        box-sizing: border-box;
+    }
+
+    .account-edit-page a {
+        text-decoration: none;
+    }
+
+    .account-edit-shell {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+    }
+
+    .account-edit-card,
+    .account-edit-panel,
+    .account-edit-header {
+        background: #ffffff;
+        border: 1px solid #d7e0ec;
+        border-radius: 14px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.055);
+    }
+
+    .account-edit-card {
+        overflow: hidden;
+    }
+
+    .account-edit-cover {
+        height: 82px;
+        background: linear-gradient(135deg, #0f172a 0%, #1d3d8f 58%, #2563eb 100%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .account-edit-card-body {
+        padding: 0 18px 18px;
+    }
+
+    .account-edit-user-head {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 13px;
+        align-items: end;
+        margin-top: -35px;
+    }
+
+    .account-edit-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 15px;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        background: #eff6ff;
+        border: 4px solid #ffffff;
+        box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
+        color: #1d4ed8;
+    }
+
+    .account-edit-avatar img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    .account-edit-avatar span {
+        font-size: 29px;
+        font-weight: 700;
+    }
+
+    .account-edit-user-title {
+        min-width: 0;
+        padding-bottom: 4px;
+    }
+
+    .account-edit-user-title h2 {
+        margin: 0;
+        color: #0f172a;
+        font-size: 23px;
+        line-height: 1.05;
+        font-weight: 650;
+        letter-spacing: -0.03em;
+    }
+
+    .account-edit-user-title p {
+        margin: 6px 0 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.45;
+        word-break: break-word;
+    }
+
+    .account-edit-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        min-height: 38px;
+        padding: 0 11px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #0f172a;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .account-edit-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+    }
+
+    .account-edit-side-list {
+        display: grid;
+        gap: 9px;
+        margin-top: 14px;
+    }
+
+    .account-edit-side-row {
+        display: grid;
+        grid-template-columns: 90px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+        min-height: 43px;
+        padding: 10px 11px;
+        border-radius: 10px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+    }
+
+    .account-edit-side-row span {
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+    }
+
+    .account-edit-side-row strong {
+        color: #0f172a;
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 650;
+        text-align: right;
+        word-break: break-word;
+    }
+
+    .account-edit-main {
+        display: grid;
+        gap: 16px;
+    }
+
+    .account-edit-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 18px;
+        align-items: center;
+        padding: 18px 20px;
+    }
+
+    .account-edit-label {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 22px;
+        padding: 0 9px;
+        border-radius: 999px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .account-edit-header h1 {
+        margin: 10px 0 5px;
+        color: #0f172a;
+        font-size: 28px;
+        line-height: 1.08;
+        font-weight: 680;
+        letter-spacing: -0.035em;
+    }
+
+    .account-edit-header p {
+        margin: 0;
+        max-width: 660px;
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .account-edit-panel {
+        padding: 18px;
+    }
+
+    .account-edit-panel-head {
+        padding-bottom: 13px;
+        margin-bottom: 15px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .account-edit-panel-head h3 {
+        margin: 9px 0 5px;
+        color: #0f172a;
+        font-size: 19px;
+        line-height: 1.18;
+        font-weight: 680;
+        letter-spacing: -0.025em;
+    }
+
+    .account-edit-panel-head p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .account-edit-form {
+        margin: 0;
+    }
+
+    .account-edit-form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+    }
+
+    .account-edit-field {
+        min-width: 0;
+    }
+
+    .account-edit-field-full {
+        grid-column: 1 / -1;
+    }
+
+    .account-edit-field label {
+        display: block;
+        margin-bottom: 7px;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+    }
+
+    .account-edit-field input,
+    .account-edit-field select,
+    .account-edit-field textarea {
+        width: 100%;
+        min-height: 44px;
+        border-radius: 10px;
+        border: 1px solid #dbe3ef;
+        background: #f8fafc;
+        color: #0f172a;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 600;
+        outline: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    }
+
+    .account-edit-field textarea {
+        min-height: 110px;
+        padding-top: 12px;
+        resize: vertical;
+    }
+
+    .account-edit-field input:focus,
+    .account-edit-field select:focus,
+    .account-edit-field textarea:focus {
+        border-color: rgba(37, 99, 235, 0.55);
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.10);
+    }
+
+    .account-edit-field input::placeholder,
+    .account-edit-field textarea::placeholder {
+        color: #94a3b8;
+        font-weight: 500;
+    }
+
+    .account-edit-file {
+        padding: 14px;
+        border-radius: 12px;
+        background: #f8fafc;
+        border: 1px dashed #cbd5e1;
+    }
+
+    .account-edit-file-box {
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .account-edit-file-box input[type="file"] {
+        min-height: auto;
+        padding: 10px;
+        border-radius: 10px;
+        background: #ffffff;
+        cursor: pointer;
+    }
+
+    .account-edit-file-box input[type="checkbox"] {
+        width: auto;
+        min-height: auto;
+        margin-right: 6px;
+        box-shadow: none;
+    }
+
+    .account-edit-error {
+        margin-top: 6px;
+        color: #991b1b;
+        font-size: 12px;
+        line-height: 1.45;
+        font-weight: 650;
+    }
+
+    .account-edit-alert {
+        margin-top: 14px;
+        padding: 12px 13px;
+        border-radius: 10px;
+        border: 1px solid #fecdd3;
+        background: #fff1f2;
+        color: #991b1b;
+        font-size: 12px;
+        line-height: 1.55;
+        font-weight: 650;
+    }
+
+    .account-edit-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+        padding-top: 16px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .account-edit-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 650;
+        transition: 0.18s ease;
+        white-space: nowrap;
+        cursor: pointer;
+        font-family: inherit;
+    }
+
+    .account-edit-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .account-edit-btn-primary {
+        background: #2563eb;
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+    }
+
+    .account-edit-btn-primary:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+    .account-edit-btn-light {
+        background: #ffffff;
+        color: #0f172a;
+        border-color: #cbd5e1;
+    }
+
+    .account-edit-btn-light:hover {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    @media (max-width: 1080px) {
+        .account-edit-shell,
+        .account-edit-header {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .account-edit-page {
+            width: min(100% - 28px, 100%);
+            padding: 20px 0 42px;
+        }
+
+        .account-edit-user-head,
+        .account-edit-form-grid,
+        .account-edit-side-row {
+            grid-template-columns: 1fr;
+        }
+
+        .account-edit-side-row strong {
+            text-align: left;
+        }
+
+        .account-edit-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .account-edit-btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="account-edit-page">
+
+    <section class="account-edit-shell">
+
+        <aside class="account-edit-card">
+            <div class="account-edit-cover"></div>
+
+            <div class="account-edit-card-body">
+                <div class="account-edit-user-head">
+                    <div class="account-edit-avatar">
+                        {% if request.user.profile.avatar %}
+                            <img src="{{ request.user.profile.avatar.url }}" alt="{{ request.user.username }}">
+                        {% else %}
+                            <span>{{ request.user.username|default:"U"|slice:":1"|upper }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="account-edit-user-title">
+                        <h2>{{ request.user.username }}</h2>
+                        <p>{{ request.user.email|default:"Email not provided" }}</p>
+                    </div>
+                </div>
+
+                <div class="account-edit-status">
+                    <span class="account-edit-status-dot"></span>
+                    Active account
+                </div>
+
+                <div class="account-edit-side-list">
+                    <div class="account-edit-side-row">
+                        <span>Role</span>
+                        <strong>
+                            {% if request.user.is_staff %}
+                                Operator
+                            {% else %}
+                                User
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="account-edit-side-row">
+                        <span>Access</span>
+                        <strong>
+                            {% if request.user.is_staff %}
+                                Staff access
+                            {% else %}
+                                Standard access
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="account-edit-side-row">
+                        <span>Area</span>
+                        <strong>
+                            {% if request.user.is_staff %}
+                                Operations
+                            {% else %}
+                                Standard
+                            {% endif %}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="account-edit-main">
+
+            <section class="account-edit-header">
+                <div>
+                    <span class="account-edit-label">Account</span>
+                    <h1>Edit profile</h1>
+                    <p>
+                        Update the account information used inside the LogosFlight operations workspace.
+                        Keep contact details clear for supervision, reporting and data control.
+                    </p>
+                </div>
+
+                <a href="{% url 'accounts:profile' %}" class="account-edit-btn account-edit-btn-light">
+                    Back to profile
+                </a>
+            </section>
+
+            <article class="account-edit-panel">
+                <div class="account-edit-panel-head">
+                    <span class="account-edit-label">Profile form</span>
+                    <h3>Account details</h3>
+                    <p>Use accurate values for user identity and operational contact information.</p>
+                </div>
+
+                <form method="post" enctype="multipart/form-data" novalidate class="account-edit-form">
+                    {% csrf_token %}
+
+                    <div class="account-edit-form-grid">
+                        <div class="account-edit-field">
+                            <label for="{{ user_form.username.id_for_label }}">Username</label>
+                            {{ user_form.username }}
+                            {% for error in user_form.username.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="account-edit-field">
+                            <label for="{{ user_form.email.id_for_label }}">Email</label>
+                            {{ user_form.email }}
+                            {% for error in user_form.email.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="account-edit-field">
+                            <label for="{{ user_form.first_name.id_for_label }}">First name</label>
+                            {{ user_form.first_name }}
+                            {% for error in user_form.first_name.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="account-edit-field">
+                            <label for="{{ user_form.last_name.id_for_label }}">Last name</label>
+                            {{ user_form.last_name }}
+                            {% for error in user_form.last_name.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="account-edit-field">
+                            <label for="{{ profile_form.phone.id_for_label }}">Phone</label>
+                            {{ profile_form.phone }}
+                            {% for error in profile_form.phone.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="account-edit-field">
+                            <label for="{{ profile_form.company.id_for_label }}">Company</label>
+                            {{ profile_form.company }}
+                            {% for error in profile_form.company.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="account-edit-field account-edit-field-full account-edit-file">
+                            <label for="{{ profile_form.avatar.id_for_label }}">Avatar</label>
+
+                            <div class="account-edit-file-box">
+                                {{ profile_form.avatar }}
+                            </div>
+
+                            {% for error in profile_form.avatar.errors %}
+                                <div class="account-edit-error">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if user_form.non_field_errors or profile_form.non_field_errors %}
+                        <div class="account-edit-alert">
+                            {% for error in user_form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+
+                            {% for error in profile_form.non_field_errors %}
+                                <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="account-edit-actions">
+                        <button type="submit" class="account-edit-btn account-edit-btn-primary">
+                            Save changes
+                        </button>
+
+                        <a href="{% url 'accounts:profile' %}" class="account-edit-btn account-edit-btn-light">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </article>
+
+        </main>
+
+    </section>
+
+</section>
+{% endblock %}
+

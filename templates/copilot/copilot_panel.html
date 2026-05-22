@@ -1,0 +1,252 @@
+﻿{% extends "base_dashboard.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Operational Copilot" %} | FlightLogos{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Operational Copilot" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Ask operational questions and receive data-based answers from the flight monitoring system." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/copilot.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="copilot-chat-page">
+
+    <div id="copilotPanel" class="copilot-bot-page copilot-bot-page--inline is-chat-open">
+
+        <section class="copilot-page-layout">
+
+            <aside class="copilot-chat-sidebar">
+                <div class="copilot-sidebar-head">
+                    <span class="copilot-home-kicker">{% trans "Operational Copilot" %}</span>
+
+                    <h3>{% trans "Ask the system" %}</h3>
+
+                    <p>
+                        {% trans "Use the Copilot to read flight operations, synchronization health, route pressure and disruption signals." %}
+                    </p>
+                </div>
+
+                <div class="copilot-sidebar-section">
+                    <span class="copilot-sidebar-label">{% trans "Quick questions" %}</span>
+
+                    <button type="button" class="copilot-quick-request" data-request="{% trans 'Give me the current operational summary' %}">
+                        {% trans "Current operational summary" %}
+                    </button>
+
+                    <button type="button" class="copilot-quick-request" data-request="{% trans 'Which flights need attention?' %}">
+                        {% trans "Flights needing attention" %}
+                    </button>
+
+                    <button type="button" class="copilot-quick-request" data-request="{% trans 'What is the API sync status?' %}">
+                        {% trans "API sync status" %}
+                    </button>
+
+                    <button type="button" class="copilot-quick-request" data-request="{% trans 'What is the top route by flight volume?' %}">
+                        {% trans "Top route by volume" %}
+                    </button>
+
+                    <button type="button" class="copilot-quick-request" data-request="{% trans 'Show me delayed flights' %}">
+                        {% trans "Delayed flights" %}
+                    </button>
+
+                    <button type="button" class="copilot-quick-request" data-request="{% trans 'Show me cancelled flights' %}">
+                        {% trans "Cancelled flights" %}
+                    </button>
+                </div>
+
+                <div class="copilot-sidebar-section">
+                    <span class="copilot-sidebar-label">{% trans "Recent requests" %}</span>
+                    <div id="copilotHistoryList" class="copilot-history__list"></div>
+                </div>
+
+                <div class="copilot-sidebar-note">
+                    {% trans "The Copilot answers from controlled Django business logic. It should not invent operational data." %}
+                </div>
+            </aside>
+
+            <main class="copilot-chat-main">
+                <div class="copilot-chat-window copilot-chat-window--inline">
+
+                    <header class="copilot-chat-header">
+                        <div class="copilot-chat-header__identity">
+                            <div class="copilot-chat-header__avatar">OC</div>
+
+                            <div>
+                                <span>{% trans "Business support" %}</span>
+                                <strong>{% trans "Operational Copilot" %}</strong>
+                                <small>{% trans "Flight data, monitoring, analytics and sync support" %}</small>
+                            </div>
+                        </div>
+
+                        <div class="copilot-chat-header__actions">
+                            <button type="button" id="copilotClearButton" class="copilot-chat-header__button">
+                                {% trans "Clear" %}
+                            </button>
+                        </div>
+                    </header>
+
+                    <div id="copilotThread" class="copilot-chat-body">
+                        <div id="copilotThreadInner" class="copilot-thread__inner">
+
+                            <section id="copilotWelcomeMessage" class="copilot-welcome">
+                                <div class="copilot-welcome__avatar">OC</div>
+
+                                <div class="copilot-welcome__bubble">
+                                    <span class="copilot-welcome__badge">
+                                        <span class="copilot-welcome__badge-dot"></span>
+                                        {% trans "Ready" %}
+                                    </span>
+
+                                    <h3 class="copilot-welcome__title">
+                                        {% trans "How can I help your flight operations?" %}
+                                    </h3>
+
+                                    <p class="copilot-welcome__text">
+                                        {% trans "Ask about delayed flights, cancelled records, priority attention, route volume, API synchronization, source breakdown or operational summary." %}
+                                    </p>
+
+                                    <div class="copilot-compact-requests">
+                                        <button type="button" class="copilot-quick-request" data-request="{% trans 'Give me the current operational summary' %}">
+                                            {% trans "Summary" %}
+                                        </button>
+
+                                        <button type="button" class="copilot-quick-request" data-request="{% trans 'Which flights need attention?' %}">
+                                            {% trans "Priority" %}
+                                        </button>
+
+                                        <button type="button" class="copilot-quick-request" data-request="{% trans 'What is the API sync status?' %}">
+                                            {% trans "Sync" %}
+                                        </button>
+
+                                        <button type="button" class="copilot-quick-request" data-request="{% trans 'What is the top route by flight volume?' %}">
+                                            {% trans "Routes" %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+
+                        </div>
+                    </div>
+
+                    <footer class="copilot-composer-wrap">
+                        <div class="copilot-composer">
+                            <div class="copilot-composer__box">
+                                <textarea
+                                    id="copilotMessage"
+                                    class="copilot-composer__textarea"
+                                    rows="1"
+                                    placeholder="{% trans 'Ask about flights, delays, cancellations, routes or sync health...' %}"
+                                ></textarea>
+
+                                <button type="button" id="copilotSubmitButton" class="copilot-composer__submit" aria-label="{% trans 'Send message' %}">
+                                    <span class="copilot-composer__submit-icon">âžœ</span>
+                                </button>
+                            </div>
+
+                            <div class="copilot-composer__footer">
+                                <span>{% trans "Press Ctrl + Enter to send." %}</span>
+                                <span>{% trans "Answers are based on internal operational data." %}</span>
+                            </div>
+                        </div>
+                    </footer>
+
+                </div>
+            </main>
+
+        </section>
+
+        <template id="copilotUserMessageTemplate">
+            <div class="copilot-message-row copilot-message-row--user">
+                <div class="copilot-user-bubble"></div>
+            </div>
+        </template>
+
+        <template id="copilotResponseLoadingTemplate">
+            <div class="copilot-message-row">
+                <div class="copilot-response-avatar">OC</div>
+
+                <div class="copilot-loading-card">
+                    <span class="copilot-loading-card__text">{% trans "Reading data" %}</span>
+                    <span class="copilot-loading-card__dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </span>
+                </div>
+            </div>
+        </template>
+
+        <template id="copilotResponseErrorTemplate">
+            <div class="copilot-message-row">
+                <div class="copilot-response-avatar copilot-response-avatar--error">OC</div>
+
+                <article class="copilot-response copilot-response--error">
+                    <div class="copilot-response__top">
+                        <div>
+                            <div class="copilot-response__type">{% trans "Copilot" %}</div>
+                            <div class="copilot-response__title">{% trans "Request failed" %}</div>
+                        </div>
+                    </div>
+
+                    <div class="copilot-error-text"></div>
+                </article>
+            </div>
+        </template>
+
+        <template id="copilotResponseTemplate">
+            <div class="copilot-message-row">
+                <div class="copilot-response-avatar">OC</div>
+
+                <article class="copilot-response">
+                    <div class="copilot-response__top">
+                        <div>
+                            <div class="copilot-response__type"></div>
+                            <div class="copilot-response__title"></div>
+                        </div>
+
+                        <span class="copilot-response__confidence"></span>
+                    </div>
+
+                    <div class="copilot-response__message"></div>
+
+                    <section class="copilot-response__section copilot-response__section--bullets" hidden>
+                        <div class="copilot-response__section-title">Points cl?s</div>
+                        <ul class="copilot-response__bullets"></ul>
+                    </section>
+
+                    <section class="copilot-response__section copilot-response__section--metrics" hidden>
+                        <div class="copilot-response__section-title">Indicateurs op?rationnels</div>
+                        <div class="copilot-metrics-grid"></div>
+                    </section>
+
+                    <section class="copilot-response__section copilot-response__section--records" hidden>
+                        <div class="copilot-response__section-title">Vols concern?s</div>
+                        <div class="copilot-records-list"></div>
+                    </section>
+
+                    <section class="copilot-response__section copilot-response__section--recommendation" hidden>
+                        <div class="copilot-response__section-title">Espace recommand?</div>
+                        <div class="copilot-recommendation"></div>
+                    </section>
+
+                    <footer class="copilot-response__footer"></footer>
+                </article>
+            </div>
+        </template>
+
+    </div>
+
+</section>
+
+<script src="{% static 'js/copilot.js' %}"></script>
+
+{% endblock %}
+

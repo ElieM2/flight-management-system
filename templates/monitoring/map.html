@@ -1,144 +1,670 @@
-{% extends 'base.html' %}
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
 
-{% block title %}Map{% endblock %}
-{% block page_title %}Flights Map{% endblock %}
+{% block title %}{% trans "Flight Map" %} | FlightLogos{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Flight Map" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Operational flight map" %}
+{% endblock %}
+
+{% block extra_head %}
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+>
+<link rel="stylesheet" href="{% static 'css/map.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="map-card">
-    <div class="map-toolbar">
-        <div class="legend">
-            <span><span class="legend-dot" style="background:#1d4ed8;"></span> Scheduled</span>
-            <span><span class="legend-dot" style="background:#0f766e;"></span> Boarding</span>
-            <span><span class="legend-dot" style="background:#c2410c;"></span> Departed</span>
-            <span><span class="legend-dot" style="background:#6d28d9;"></span> In Air</span>
-            <span><span class="legend-dot" style="background:#15803d;"></span> Landed</span>
-            <span><span class="legend-dot" style="background:#b45309;"></span> Delayed</span>
-            <span><span class="legend-dot" style="background:#b91c1c;"></span> Cancelled</span>
-        </div>
-    </div>
+<div class="lf-map-page">
+    <div class="lf-map-shell">
 
-    <div id="flight-map" style="height: 600px;"></div>
+        <header class="lf-map-header">
+            <div class="lf-map-title-group">
+                <span class="lf-map-eyebrow">{% trans "Live operations" %}</span>
+                <h1>{% trans "Flight Map" %}</h1>
+                <p>
+                    {% trans "Monitor aircraft positions, active routes, airports, weather exposure and operational alerts from one map workspace." %}
+                </p>
+            </div>
+
+            <div class="lf-map-header-actions">
+                <div class="lf-map-clock">
+                    <i class="bi bi-clock"></i>
+                    <div>
+                        <strong id="mapLiveClock">--:--:-- UTC</strong>
+                        <span>{% trans "Live map operation" %}</span>
+                    </div>
+                </div>
+
+                <button
+                    type="button"
+                    class="lf-map-button"
+                    id="resetMapViewBtn"
+                    data-map-action="refresh"
+                    data-default-label="{% trans 'Refresh map' %}"
+                    data-loading-label="{% trans 'Refreshing...' %}"
+                    aria-label="{% trans 'Refresh operational flight map' %}"
+                >
+                    <span id="mapRefreshLabel">{% trans "Refresh map" %}</span>
+                    <i class="bi bi-arrow-clockwise" id="mapRefreshIcon"></i>
+                </button>
+
+                <button
+                    type="button"
+                    class="lf-map-icon-button"
+                    id="toggleFullscreenBtn"
+                    aria-label="{% trans 'Open fullscreen map' %}"
+                >
+                    <i class="bi bi-fullscreen"></i>
+                </button>
+            </div>
+        </header>
+
+        <section class="lf-map-workspace">
+
+            <aside class="lf-map-sidebar">
+
+                <section class="lf-map-panel">
+                    <div class="lf-map-panel-header">
+                        <h2>{% trans "Map layers" %}</h2>
+                    </div>
+
+                    <div class="lf-map-panel-body">
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-green">
+                                <i class="bi bi-airplane-fill"></i>
+                            </span>
+                            <span>{% trans "Aircraft" %}</span>
+                            <input type="checkbox" id="toggleAircraft" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-blue">
+                                <i class="bi bi-signpost-split-fill"></i>
+                            </span>
+                            <span>{% trans "Routes" %}</span>
+                            <input type="checkbox" id="toggleRoutes" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-blue">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </span>
+                            <span>{% trans "Airports" %}</span>
+                            <input type="checkbox" id="toggleAirports" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-muted">
+                                <i class="bi bi-cloud-rain-fill"></i>
+                            </span>
+                            <span>{% trans "Weather radar" %}</span>
+                            <input type="checkbox" id="toggleWeather" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-red">
+                                <i class="bi bi-slash-circle"></i>
+                            </span>
+                            <span>{% trans "Restricted zones" %}</span>
+                            <input type="checkbox" id="toggleRestrictedZones" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-amber">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                            </span>
+                            <span>{% trans "Alerts" %}</span>
+                            <input type="checkbox" id="toggleAlertZones" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                        <label class="lf-map-layer-row">
+                            <span class="lf-map-layer-icon lf-blue">
+                                <i class="bi bi-tags-fill"></i>
+                            </span>
+                            <span>{% trans "Labels" %}</span>
+                            <input type="checkbox" id="toggleLabels" checked>
+                            <span class="lf-map-check"><i class="bi bi-check"></i></span>
+                        </label>
+
+                    </div>
+                </section>
+
+                <section class="lf-map-panel">
+                    <div class="lf-map-panel-header">
+                        <h2>{% trans "Filters" %}</h2>
+                    </div>
+
+                    <div class="lf-map-panel-body">
+
+                        <div class="lf-map-field">
+                            <label for="mapStatusSelect">{% trans "Flight status" %}</label>
+                            <select id="mapStatusSelect">
+                                <option value="all">{% trans "All traffic" %}</option>
+                                <option value="scheduled">{% trans "Scheduled" %}</option>
+                                <option value="boarding">{% trans "Boarding" %}</option>
+                                <option value="departed">{% trans "Departed" %}</option>
+                                <option value="in_air">{% trans "In air" %}</option>
+                                <option value="landed">{% trans "Landed" %}</option>
+                                <option value="delayed">{% trans "Delayed" %}</option>
+                                <option value="cancelled">{% trans "Cancelled" %}</option>
+                            </select>
+                        </div>
+
+                        <div class="lf-map-field">
+                            <label for="baseLayerSelect">{% trans "Base map" %}</label>
+                            <select id="baseLayerSelect">
+                                <option value="dark" selected>{% trans "Dark map" %}</option>
+                                <option value="light">{% trans "Light map" %}</option>
+                                <option value="satellite">{% trans "Satellite map" %}</option>
+                            </select>
+                        </div>
+
+                        <div class="lf-map-field">
+                            <label for="weatherLayerSelect">{% trans "Weather layer" %}</label>
+                            <select id="weatherLayerSelect">
+                                <option value="hazards" selected>{% trans "Operational hazards" %}</option>
+                                <option value="radar">{% trans "Rain radar" %}</option>
+                                <option value="storm">{% trans "Storm risk" %}</option>
+                                <option value="off">{% trans "Off" %}</option>
+                            </select>
+                        </div>
+
+                        <div class="lf-map-field">
+                            <label for="mapSearchInputMirror">{% trans "Search" %}</label>
+                            <div class="lf-map-input-wrap">
+                                <input
+                                    type="search"
+                                    id="mapSearchInputMirror"
+                                    placeholder="{% trans 'Flight, airport or route' %}"
+                                    autocomplete="off"
+                                >
+                                <i class="bi bi-search"></i>
+                            </div>
+                        </div>
+
+                        <div class="lf-map-filter-actions">
+                            <button type="button" class="lf-map-small-button lf-primary" id="criticalOnlyBtn">
+                                {% trans "Critical only" %}
+                            </button>
+
+                            <button type="button" class="lf-map-small-button" id="focusSelectedBtn">
+                                {% trans "Focus" %}
+                            </button>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="lf-map-panel lf-map-legend-panel">
+                    <div class="lf-map-panel-header">
+                        <h2>{% trans "Legend" %}</h2>
+                    </div>
+
+                    <div class="lf-map-panel-body">
+
+                        <div class="lf-map-legend-row">
+                            <span class="lf-map-legend-icon lf-green">
+                                <i class="bi bi-airplane-fill"></i>
+                            </span>
+                            <span>{% trans "Active" %}</span>
+                        </div>
+
+                        <div class="lf-map-legend-row">
+                            <span class="lf-map-legend-icon lf-amber">
+                                <i class="bi bi-airplane-fill"></i>
+                            </span>
+                            <span>{% trans "Delayed" %}</span>
+                        </div>
+
+                        <div class="lf-map-legend-row">
+                            <span class="lf-map-legend-icon lf-red">
+                                <i class="bi bi-airplane-fill"></i>
+                            </span>
+                            <span>{% trans "Cancelled" %}</span>
+                        </div>
+
+                        <div class="lf-map-legend-row">
+                            <span class="lf-map-legend-icon lf-purple">
+                                <i class="bi bi-exclamation-triangle-fill"></i>
+                            </span>
+                            <span>{% trans "Critical" %}</span>
+                        </div>
+
+                        <div class="lf-map-divider"></div>
+
+                        <div class="lf-map-legend-row">
+                            <span class="lf-map-legend-icon lf-red">
+                                <i class="bi bi-slash-circle"></i>
+                            </span>
+                            <span>{% trans "Restricted zone" %}</span>
+                        </div>
+
+                        <div class="lf-map-legend-row">
+                            <span class="lf-map-legend-icon lf-purple">
+                                <i class="bi bi-cloud-lightning-rain-fill"></i>
+                            </span>
+                            <span>{% trans "Storm area" %}</span>
+                        </div>
+
+                    </div>
+                </section>
+
+            </aside>
+
+            <main class="lf-map-main">
+
+                <section class="lf-map-stage-card">
+                    <div class="lf-map-stage" id="mapStageShell">
+
+                        <div id="flight-map" aria-label="{% trans 'Operational flight map' %}"></div>
+
+                        <div class="lf-map-stage-search">
+                            <input
+                                type="search"
+                                id="mapSearchInput"
+                                placeholder="{% trans 'Search airport or flight' %}"
+                                autocomplete="off"
+                            >
+                            <i class="bi bi-search"></i>
+                        </div>
+
+                        <div class="lf-map-stage-kpis" aria-label="{% trans 'Map live indicators' %}">
+                            <div class="lf-map-stage-kpi">
+                                <i class="bi bi-airplane-fill lf-green"></i>
+                                <div>
+                                    <strong id="visibleFlightsCount">0</strong>
+                                    <span>{% trans "In air" %}</span>
+                                </div>
+                            </div>
+
+                            <div class="lf-map-stage-kpi">
+                                <i class="bi bi-airplane-fill lf-amber"></i>
+                                <div>
+                                    <strong id="filterCountDelayed">0</strong>
+                                    <span>{% trans "Delayed" %}</span>
+                                </div>
+                            </div>
+
+                            <div class="lf-map-stage-kpi">
+                                <i class="bi bi-exclamation-triangle-fill lf-purple"></i>
+                                <div>
+                                    <strong id="visibleCriticalCount">0</strong>
+                                    <span>{% trans "Critical" %}</span>
+                                </div>
+                            </div>
+
+                            <div class="lf-map-stage-kpi">
+                                <i class="bi bi-activity lf-muted"></i>
+                                <div>
+                                    <strong id="visibleDisruptionScore">0</strong>
+                                    <span>{% trans "Impact" %}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lf-map-tools" aria-label="{% trans 'Map tools' %}">
+                            <button type="button" class="lf-map-tool-button" id="toggleToolsPanelBtn" aria-label="{% trans 'Map tools' %}">
+                                <i class="bi bi-layers"></i>
+                            </button>
+
+                            <button type="button" class="lf-map-tool-button" id="locateMeBtn" aria-label="{% trans 'Locate me' %}">
+                                <i class="bi bi-crosshair"></i>
+                            </button>
+
+                            <button type="button" class="lf-map-tool-button" id="focusSelectedBtnDrawer" aria-label="{% trans 'Focus selected flight' %}">
+                                <i class="bi bi-send"></i>
+                            </button>
+
+                            <button type="button" class="lf-map-tool-button" id="toggleFullscreenBtnPanel" aria-label="{% trans 'Fullscreen' %}">
+                                <i class="bi bi-arrows-fullscreen"></i>
+                            </button>
+
+                            <div class="lf-map-tools-panel" id="mapToolsPanel" aria-hidden="true">
+                                <div class="lf-map-tools-panel-header">
+                                    <h3>{% trans "Map tools" %}</h3>
+                                    <button type="button" class="lf-map-small-button" id="closeToolsPanelBtn">
+                                        {% trans "Close" %}
+                                    </button>
+                                </div>
+
+                                <div class="lf-map-tools-section">
+                                    <span>{% trans "Quick actions" %}</span>
+
+                                    <div class="lf-map-tools-actions">
+                                        <button type="button" class="lf-map-small-button" id="clearSelectedFlightBtn">
+                                            {% trans "Clear" %}
+                                        </button>
+
+                                        <button type="button" class="lf-map-small-button" id="focusSelectedBtnPanel">
+                                            {% trans "Focus" %}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lf-map-refresh-state" id="mapRefreshState" hidden>
+                            <span class="lf-map-refresh-dot"></span>
+                            <span id="mapRefreshStateText">{% trans "Refreshing operational picture..." %}</span>
+                        </div>
+
+                        <div class="lf-map-status-bar">
+                            <span><i class="lf-map-status-dot lf-dot-green"></i>{% trans "Confirmed" %}</span>
+                            <span><i class="lf-map-status-dot lf-dot-blue"></i>{% trans "Associated" %}</span>
+                            <span><i class="lf-map-status-dot lf-dot-amber"></i>{% trans "Low" %}</span>
+                            <span><i class="lf-map-status-dot lf-dot-muted"></i>{% trans "Estimated" %}</span>
+
+                            <span class="lf-map-location" id="mapLocationIndicator">
+                                <span class="lf-map-location-pill">GPS</span>
+                                <span id="mapLocationText">{% trans "Inactive" %}</span>
+                            </span>
+                        </div>
+
+                        <div class="lf-map-empty-overlay" id="mapEmptyOverlay" hidden>
+                            <div class="lf-map-empty-box">
+                                <h3>{% trans "No visible flights" %}</h3>
+                                <p>
+                                    {% trans "Change filters or refresh the map to display available operational records." %}
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="lf-map-bottom-grid">
+
+                    <article class="lf-map-card">
+                        <div class="lf-map-card-header">
+                            <h3>{% trans "Selected flight" %}</h3>
+                            <p>{% trans "Operational review of the selected aircraft." %}</p>
+                        </div>
+
+                        <div class="lf-map-card-body">
+
+                            <div class="selected-flight-empty-compact" id="selectedFlightEmpty">
+                                <span class="selected-flight-empty-compact-badge">{% trans "Standby" %}</span>
+                                <h4>{% trans "Ready for inspection" %}</h4>
+                                <p>
+                                    {% trans "Select a flight on the map to review tracking, route progress and operational status." %}
+                                </p>
+                            </div>
+
+                            <div class="selected-flight-content" id="selectedFlightContent" hidden>
+
+                                <div class="selected-flight-hero-compact">
+                                    <div class="selected-flight-hero-compact-top">
+                                        <div>
+                                            <h4 id="selectedFlightNumber">-</h4>
+                                            <p id="selectedFlightRouteText">-</p>
+                                        </div>
+
+                                        <span class="urgency-badge urgency-normal" id="selectedFlightPriorityBadge">
+                                            {% trans "Normal" %}
+                                        </span>
+                                    </div>
+
+                                    <div class="selected-flight-route-line">
+                                        <div>
+                                            <strong id="selectedFlightOriginCode">-</strong>
+                                            <span>{% trans "Origin" %}</span>
+                                        </div>
+
+                                        <div class="selected-flight-route-track">
+                                            <span></span>
+                                            <i class="bi bi-airplane-fill"></i>
+                                            <span></span>
+                                        </div>
+
+                                        <div>
+                                            <strong id="selectedFlightDestinationCode">-</strong>
+                                            <span>{% trans "Destination" %}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="selected-flight-hero-status-row">
+                                        <span class="status-badge status-scheduled" id="selectedFlightStatusBadge">
+                                            {% trans "Scheduled" %}
+                                        </span>
+
+                                        <span class="risk-badge risk-low" id="selectedFlightRiskLevel">
+                                            {% trans "Low risk" %}
+                                        </span>
+
+                                        <span class="urgency-badge urgency-normal" id="selectedFlightRouteAlertBadge">
+                                            {% trans "Normal" %}
+                                        </span>
+                                    </div>
+
+                                    <div class="selected-flight-hero-compact-grid">
+                                        <div class="selected-flight-mini-stat">
+                                            <span>{% trans "Airline" %}</span>
+                                            <strong id="selectedFlightAirline">-</strong>
+                                        </div>
+
+                                        <div class="selected-flight-mini-stat">
+                                            <span>{% trans "Aircraft" %}</span>
+                                            <strong id="selectedFlightAircraft">-</strong>
+                                        </div>
+
+                                        <div class="selected-flight-mini-stat">
+                                            <span>{% trans "Tracking" %}</span>
+                                            <strong id="selectedFlightTrackingLabel">-</strong>
+                                        </div>
+
+                                        <div class="selected-flight-mini-stat">
+                                            <span>{% trans "ETA" %}</span>
+                                            <strong id="selectedFlightEta">-</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="selected-flight-compact-list">
+                                    <div class="selected-flight-compact-item">
+                                        <span>{% trans "Source" %}</span>
+                                        <p id="selectedFlightSource">-</p>
+                                    </div>
+
+                                    <div class="selected-flight-compact-item">
+                                        <span>{% trans "Progress" %}</span>
+                                        <p id="selectedFlightProgress">-</p>
+                                    </div>
+
+                                    <div class="selected-flight-compact-item">
+                                        <span>{% trans "Remaining distance" %}</span>
+                                        <p id="selectedFlightRemainingDistance">-</p>
+                                    </div>
+
+                                    <div class="selected-flight-compact-item">
+                                        <span>{% trans "Freshness" %}</span>
+                                        <p id="selectedFlightFreshness">-</p>
+                                    </div>
+
+                                    <div class="selected-flight-compact-item">
+                                        <span>{% trans "Risk score" %}</span>
+                                        <p id="selectedFlightRiskScore">-</p>
+                                    </div>
+
+                                    <div class="selected-flight-compact-item">
+                                        <span>{% trans "Tracking mode" %}</span>
+                                        <p id="selectedFlightTracking">-</p>
+                                    </div>
+                                </div>
+
+                                <div class="selected-flight-actions">
+                                    <a href="#" class="btn-link" id="selectedFlightDetailLink">{% trans "Open" %}</a>
+                                    <a href="#" class="btn-link btn-link-light" id="selectedFlightMonitoringLink">{% trans "Control" %}</a>
+                                    <a href="#" class="btn-link btn-link-secondary" id="selectedFlightMonitoringDetailLink">{% trans "Details" %}</a>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </article>
+
+                    <article class="lf-map-card lf-weather-card">
+                        <div class="lf-map-card-header lf-weather-card-header">
+                            <h3>{% trans "Weather and hazards" %}</h3>
+                            <p>{% trans "Radar layer, weather checks and operational route exposure." %}</p>
+                        </div>
+
+                        <div class="weather-body weather-body-pro">
+
+                            <div class="weather-list weather-list-pro" id="weatherHazardList">
+                                <div class="weather-row weather-row-pro">
+                                    <span class="weather-icon weather-icon-rain">
+                                        <i class="bi bi-cloud-rain-fill"></i>
+                                    </span>
+                                    <div>
+                                        <strong>{% trans "Loading weather radar" %}</strong>
+                                        <span>{% trans "Preparing live precipitation layer" %}</span>
+                                    </div>
+                                </div>
+
+                                <div class="weather-row weather-row-pro">
+                                    <span class="weather-icon weather-icon-heavy">
+                                        <i class="bi bi-exclamation-triangle-fill"></i>
+                                    </span>
+                                    <div>
+                                        <strong>{% trans "Checking pressure" %}</strong>
+                                        <span>{% trans "Visible flights and disruptions" %}</span>
+                                    </div>
+                                </div>
+
+                                <div class="weather-row weather-row-pro">
+                                    <span class="weather-icon weather-icon-storm">
+                                        <i class="bi bi-lightning-charge-fill"></i>
+                                    </span>
+                                    <div>
+                                        <strong>{% trans "Scanning storm risk" %}</strong>
+                                        <span>{% trans "Convective weather signal" %}</span>
+                                    </div>
+                                </div>
+
+                                <div class="weather-row weather-row-pro">
+                                    <span class="weather-icon weather-icon-turbulence">
+                                        <i class="bi bi-wind"></i>
+                                    </span>
+                                    <div>
+                                        <strong>{% trans "Checking wind exposure" %}</strong>
+                                        <span>{% trans "Gust and turbulence indicators" %}</span>
+                                    </div>
+                                </div>
+
+                                <div class="weather-row weather-row-pro">
+                                    <span class="weather-icon weather-icon-snow">
+                                        <i class="bi bi-snow"></i>
+                                    </span>
+                                    <div>
+                                        <strong>{% trans "Checking visibility" %}</strong>
+                                        <span>{% trans "Snow and low visibility sectors" %}</span>
+                                    </div>
+                                </div>
+
+                                <div class="weather-row weather-row-pro">
+                                    <span class="weather-icon weather-icon-restricted">
+                                        <i class="bi bi-slash-circle"></i>
+                                    </span>
+                                    <div>
+                                        <strong>{% trans "Restricted zones" %}</strong>
+                                        <span>{% trans "Operational limitation layer" %}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="weather-preview weather-preview-pro weather-mode-hazards weather-risk-normal" id="weatherPreview">
+                                <div class="weather-radar-image-only">
+                                    <span class="weather-radar-visual-cell weather-radar-visual-green"></span>
+                                    <span class="weather-radar-visual-cell weather-radar-visual-yellow"></span>
+                                    <span class="weather-radar-visual-cell weather-radar-visual-red"></span>
+                                    <span class="weather-radar-visual-cell weather-radar-visual-purple"></span>
+
+                                    <span class="weather-radar-visual-zone weather-radar-visual-zone-one"></span>
+                                    <span class="weather-radar-visual-zone weather-radar-visual-zone-two"></span>
+
+                                    <span class="weather-radar-visual-line weather-radar-visual-line-one"></span>
+                                    <span class="weather-radar-visual-line weather-radar-visual-line-two"></span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </article>
+
+                    <article class="lf-map-card">
+                        <div class="lf-map-card-header">
+                            <h3>{% trans "Map statistics" %}</h3>
+                            <p>{% trans "Current visible operational picture." %}</p>
+                        </div>
+
+                        <div class="lf-map-card-body">
+                            <div class="lf-map-stat-list">
+
+                                <div class="lf-map-stat-row">
+                                    <span>{% trans "Visible aircraft" %}</span>
+                                    <strong id="filterCountAll">0</strong>
+                                </div>
+
+                                <div class="lf-map-stat-row">
+                                    <span>{% trans "In air" %}</span>
+                                    <strong id="filterCountInAir">0</strong>
+                                </div>
+
+                                <div class="lf-map-stat-row">
+                                    <span>{% trans "Delayed" %}</span>
+                                    <strong id="mapStatsDelayedMirror">0</strong>
+                                </div>
+
+                                <div class="lf-map-stat-row">
+                                    <span>{% trans "Cancelled" %}</span>
+                                    <strong id="filterCountCancelled">0</strong>
+                                </div>
+
+                                <div class="lf-map-stat-row">
+                                    <span>{% trans "Last update" %}</span>
+                                    <strong id="mapStatsClock">--:--:-- UTC</strong>
+                                </div>
+
+                            </div>
+                        </div>
+                    </article>
+
+                </section>
+
+                <div class="lf-map-crisis-banner" id="mapCrisisBanner">
+                    <strong id="mapCrisisModeLabel">{% trans "Stable" %}</strong>
+                    <span id="mapCrisisModeReason">{% trans "No major disruption." %}</span>
+                </div>
+
+            </main>
+
+        </section>
+
+    </div>
 </div>
 
-{{ flights_json|json_script:"flights-data" }}
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const flights = JSON.parse(document.getElementById('flights-data').textContent);
-
-        const map = L.map('flight-map').setView([45.0, 10.0], 4);
-
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            subdomains: 'abcd',
-            maxZoom: 19
-        }).addTo(map);
-
-        function getStatusColor(status) {
-            if (status === 'scheduled') return '#1d4ed8';
-            if (status === 'boarding') return '#0f766e';
-            if (status === 'departed') return '#c2410c';
-            if (status === 'in_air') return '#6d28d9';
-            if (status === 'landed') return '#15803d';
-            if (status === 'delayed') return '#b45309';
-            if (status === 'cancelled') return '#b91c1c';
-            return '#334155';
-        }
-
-        function getAngle(lat1, lng1, lat2, lng2) {
-            return Math.atan2(lng2 - lng1, lat2 - lat1) * 180 / Math.PI;
-        }
-
-        const bounds = [];
-
-        flights.forEach(function (flight) {
-            const color = getStatusColor(flight.status);
-
-            // Origin marker
-            L.marker([flight.origin_lat, flight.origin_lng])
-                .addTo(map)
-                .bindPopup(
-                    '<strong>Origin:</strong> ' + flight.origin_name + ' (' + flight.origin_iata + ')<br>' +
-                    '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
-                    '<strong>Airline:</strong> ' + flight.airline
-                );
-
-            // Destination marker
-            L.marker([flight.destination_lat, flight.destination_lng])
-                .addTo(map)
-                .bindPopup(
-                    '<strong>Destination:</strong> ' + flight.destination_name + ' (' + flight.destination_iata + ')<br>' +
-                    '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
-                    '<strong>Airline:</strong> ' + flight.airline
-                );
-
-            // Route line
-            L.polyline(
-                [
-                    [flight.origin_lat, flight.origin_lng],
-                    [flight.destination_lat, flight.destination_lng]
-                ],
-                {
-                    color: color,
-                    weight: 4,
-                    opacity: 0.85
-                }
-            ).addTo(map).bindPopup(
-                '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
-                '<strong>Status:</strong> ' + flight.status_display + '<br>' +
-                '<strong>Route:</strong> ' + flight.origin_iata + ' → ' + flight.destination_iata
-            );
-
-            // Plane icon angle
-            const angle = getAngle(
-                flight.origin_lat,
-                flight.origin_lng,
-                flight.destination_lat,
-                flight.destination_lng
-            );
-
-            // Animated plane
-            let planeIcon = L.divIcon({
-                html: '<div style="transform: rotate(' + angle + 'deg); font-size: 20px;">✈️</div>',
-                className: 'plane-icon',
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            });
-
-            const plane = L.marker(
-                [flight.origin_lat, flight.origin_lng],
-                { icon: planeIcon }
-            ).addTo(map).bindPopup(
-                '<strong>Flight:</strong> ' + flight.flight_number + '<br>' +
-                '<strong>Airline:</strong> ' + flight.airline + '<br>' +
-                '<strong>Status:</strong> ' + flight.status_display
-            );
-
-            let progress = 0;
-
-            setInterval(function () {
-                progress += 0.01;
-
-                if (progress > 1) {
-                    progress = 0;
-                }
-
-                const lat = flight.origin_lat + (flight.destination_lat - flight.origin_lat) * progress;
-                const lng = flight.origin_lng + (flight.destination_lng - flight.origin_lng) * progress;
-
-                plane.setLatLng([lat, lng]);
-            }, 100);
-
-            bounds.push([flight.origin_lat, flight.origin_lng]);
-            bounds.push([flight.destination_lat, flight.destination_lng]);
-        });
-
-        if (bounds.length > 0) {
-            map.fitBounds(bounds, {
-                padding: [50, 50],
-                maxZoom: 6
-            });
-        }
-    });
-</script>
+{{ flights_json|default:"[]"|json_script:"flights-data" }}
+{{ selected_flight_id|default:""|json_script:"selected-flight-id" }}
 {% endblock %}
+
+{% block extra_js %}
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+    crossorigin="">
+</script>
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock %}
+

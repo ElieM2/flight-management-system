@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Django / local data
+db.sqlite3
+*.sqlite3
+media/
+staticfiles/
+
+# Environment / secrets
+.env
+.env.*
+*.env
+*.env.*
+.env.backup
+
+# IDE / editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Tests / coverage
+.coverage
+coverage.json
+htmlcov/
+.pytest_cache/
+
+# Temporary / backup files
+*.backup
+*.backup-*
+*.bak
+*.tmp
+_tmp_*
+*.soft_typography_backup
+*.bak-brand
+*.bak-clean
+*.wording_backup
+*.final_fr_wording_backup
+
+# Logs
+*.log
+logs/

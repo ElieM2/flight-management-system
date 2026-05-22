@@ -1,0 +1,1145 @@
+﻿{% load static i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE|default:'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FlightLogos Control Desk{% endblock %}</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=4007-theme-unified">
+
+    <style>
+        :root {
+            --ops-bg: #07111d;
+            --ops-bg-soft: #0b1624;
+            --ops-header: #07111d;
+            --ops-panel: #101d2c;
+            --ops-panel-soft: #142235;
+            --ops-border: rgba(148, 163, 184, 0.16);
+            --ops-border-strong: rgba(59, 130, 246, 0.56);
+            --ops-text: #f8fafc;
+            --ops-soft: #cbd5e1;
+            --ops-muted: #94a3b8;
+            --ops-blue: #3b82f6;
+            --ops-blue-soft: rgba(59, 130, 246, 0.14);
+            --ops-red: #ef4444;
+            --ops-red-soft: rgba(239, 68, 68, 0.16);
+        }
+
+        html[data-theme="light"],
+        body[data-theme="light"],
+        body.theme-light,
+        html.theme-light body {
+            --ops-bg: #f3f6fb;
+            --ops-bg-soft: #e8eef8;
+            --ops-header: #ffffff;
+            --ops-panel: #ffffff;
+            --ops-panel-soft: #f8fafc;
+            --ops-border: rgba(148, 163, 184, 0.34);
+            --ops-border-strong: rgba(37, 99, 235, 0.48);
+            --ops-text: #0f172a;
+            --ops-soft: #334155;
+            --ops-muted: #64748b;
+            --ops-blue: #2563eb;
+            --ops-blue-soft: rgba(37, 99, 235, 0.10);
+            --ops-red: #dc2626;
+            --ops-red-soft: rgba(220, 38, 38, 0.10);
+        }
+
+        html[data-theme="dark"],
+        body[data-theme="dark"],
+        body.theme-dark,
+        html.theme-dark body {
+            --ops-bg: #07111d;
+            --ops-bg-soft: #0b1624;
+            --ops-header: #07111d;
+            --ops-panel: #101d2c;
+            --ops-panel-soft: #142235;
+            --ops-border: rgba(148, 163, 184, 0.16);
+            --ops-border-strong: rgba(59, 130, 246, 0.56);
+            --ops-text: #f8fafc;
+            --ops-soft: #cbd5e1;
+            --ops-muted: #94a3b8;
+            --ops-blue: #3b82f6;
+            --ops-blue-soft: rgba(59, 130, 246, 0.14);
+            --ops-red: #ef4444;
+            --ops-red-soft: rgba(239, 68, 68, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            min-height: 100%;
+            margin: 0;
+            background: var(--ops-bg);
+            color: var(--ops-text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            transition: background 0.25s ease, color 0.25s ease;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        button,
+        input,
+        select,
+        textarea {
+            font-family: inherit;
+        }
+
+        button {
+            color: inherit;
+        }
+
+        .ops-private-shell {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 30%),
+                linear-gradient(135deg, var(--ops-bg) 0%, var(--ops-bg-soft) 52%, var(--ops-bg) 100%);
+            transition: background 0.25s ease;
+        }
+
+        .ops-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: grid;
+            grid-template-columns: 250px minmax(0, 1fr) auto;
+            align-items: center;
+            height: 74px;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--ops-border);
+            background: color-mix(in srgb, var(--ops-header) 96%, transparent);
+            backdrop-filter: blur(18px);
+            transition: background 0.25s ease, border-color 0.25s ease;
+        }
+
+        .ops-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+            text-decoration: none;
+        }
+
+        .ops-brand__mark {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            flex: 0 0 42px;
+            border-radius: 10px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #2563eb, #60a5fa);
+            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.28);
+        }
+
+        .ops-brand__mark i {
+            font-size: 22px;
+        }
+
+        .ops-brand__copy {
+            display: grid;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .ops-brand__copy strong {
+            color: var(--ops-text);
+            font-size: 17px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .ops-brand__copy small {
+            color: var(--ops-muted);
+            font-size: 12px;
+            line-height: 1.2;
+        }
+
+        .ops-main-nav {
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            height: 100%;
+            gap: 2px;
+            min-width: 0;
+        }
+
+        .ops-main-nav a {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            padding: 0 18px;
+            color: var(--ops-soft);
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: 0.18s ease;
+        }
+
+        .ops-main-nav a:hover {
+            color: var(--ops-text);
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .ops-main-nav a.is-active {
+            color: var(--ops-text);
+            background: rgba(59, 130, 246, 0.14);
+        }
+
+        .ops-main-nav a.is-active::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 3px;
+            background: #3b82f6;
+        }
+
+        .ops-header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .ops-icon-button,
+        .ops-theme-toggle {
+            position: relative;
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--ops-border);
+            border-radius: 10px;
+            background: color-mix(in srgb, var(--ops-panel) 82%, transparent);
+            color: var(--ops-soft);
+            cursor: pointer;
+            transition: 0.18s ease;
+        }
+
+        .ops-icon-button:hover,
+        .ops-theme-toggle:hover {
+            border-color: var(--ops-border-strong);
+            color: var(--ops-text);
+            background: rgba(37, 99, 235, 0.16);
+            transform: translateY(-1px);
+        }
+
+        .ops-icon-button i,
+        .ops-theme-toggle i {
+            font-size: 18px;
+        }
+
+        .ops-notification-dot {
+            position: absolute;
+            top: 7px;
+            right: 8px;
+            display: grid;
+            place-items: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 999px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            border: 2px solid var(--ops-header);
+        }
+
+        .ops-language {
+            position: relative;
+            z-index: 1100;
+        }
+
+        .ops-language-trigger {
+            min-height: 42px;
+            padding: 0 12px;
+            border: 1px solid var(--ops-border);
+            border-radius: 13px;
+            background: color-mix(in srgb, var(--ops-panel) 84%, transparent);
+            color: var(--ops-text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            cursor: pointer;
+            transition:
+                background 0.18s ease,
+                border-color 0.18s ease,
+                transform 0.18s ease,
+                box-shadow 0.18s ease;
+        }
+
+        .ops-language-trigger:hover,
+        .ops-language.is-open .ops-language-trigger {
+            transform: translateY(-1px);
+            border-color: var(--ops-border-strong);
+            background: rgba(59, 130, 246, 0.15);
+            box-shadow: 0 12px 28px rgba(37, 99, 235, 0.12);
+        }
+
+        .ops-language-trigger__icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 999px;
+            background: rgba(59, 130, 246, 0.14);
+            color: #93c5fd;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ops-language-trigger__icon i {
+            font-size: 13px;
+            line-height: 1;
+        }
+
+        .ops-language-trigger__code {
+            min-width: 24px;
+            color: var(--ops-text);
+            font-size: 13px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: 0.04em;
+            text-align: center;
+        }
+
+        .ops-language-trigger__arrow {
+            color: var(--ops-muted);
+            font-size: 12px;
+            line-height: 1;
+            transition: transform 0.18s ease;
+        }
+
+        .ops-language.is-open .ops-language-trigger__arrow {
+            transform: rotate(180deg);
+        }
+
+        .ops-language-menu {
+            position: absolute;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 288px;
+            padding: 10px;
+            border: 1px solid var(--ops-border);
+            border-radius: 18px;
+            background: var(--ops-panel);
+            box-shadow: 0 26px 80px rgba(0, 0, 0, 0.34);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px) scale(0.98);
+            transform-origin: top right;
+            transition:
+                opacity 0.18s ease,
+                visibility 0.18s ease,
+                transform 0.18s ease;
+        }
+
+        .ops-language.is-open .ops-language-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0) scale(1);
+        }
+
+        .ops-language-menu::before {
+            content: "";
+            position: absolute;
+            top: -7px;
+            right: 24px;
+            width: 14px;
+            height: 14px;
+            background: var(--ops-panel);
+            border-left: 1px solid var(--ops-border);
+            border-top: 1px solid var(--ops-border);
+            transform: rotate(45deg);
+        }
+
+        .ops-language-menu__head {
+            padding: 10px 12px 12px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+            margin-bottom: 8px;
+        }
+
+        .ops-language-menu__head span {
+            display: block;
+            color: var(--ops-text);
+            font-size: 13px;
+            line-height: 1.2;
+            font-weight: 850;
+        }
+
+        .ops-language-menu__head small {
+            display: block;
+            margin-top: 4px;
+            color: var(--ops-muted);
+            font-size: 11.5px;
+            line-height: 1.3;
+        }
+
+        .ops-language-menu form {
+            display: grid;
+            gap: 6px;
+            margin: 0;
+        }
+
+        .ops-language-option {
+            width: 100%;
+            min-height: 58px;
+            padding: 9px 10px;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            background: transparent;
+            color: var(--ops-soft);
+            display: grid;
+            grid-template-columns: 42px minmax(0, 1fr) 22px;
+            align-items: center;
+            gap: 10px;
+            text-align: left;
+            cursor: pointer;
+            transition:
+                background 0.18s ease,
+                border-color 0.18s ease,
+                color 0.18s ease,
+                transform 0.18s ease;
+        }
+
+        .ops-language-option:hover {
+            transform: translateY(-1px);
+            background: rgba(59, 130, 246, 0.10);
+            border-color: rgba(59, 130, 246, 0.22);
+            color: var(--ops-text);
+        }
+
+        .ops-language-option.is-active {
+            background: rgba(59, 130, 246, 0.16);
+            border-color: rgba(59, 130, 246, 0.34);
+            color: var(--ops-text);
+        }
+
+        .ops-language-option__code {
+            width: 38px;
+            height: 34px;
+            border-radius: 12px;
+            background: rgba(148, 163, 184, 0.12);
+            color: #93c5fd;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            line-height: 1;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+        }
+
+        .ops-language-option.is-active .ops-language-option__code {
+            background: #2563eb;
+            color: #ffffff;
+        }
+
+        .ops-language-option__text {
+            min-width: 0;
+            display: grid;
+            gap: 3px;
+        }
+
+        .ops-language-option__text strong {
+            color: inherit;
+            font-size: 13px;
+            line-height: 1.15;
+            font-weight: 850;
+        }
+
+        .ops-language-option__text small {
+            color: var(--ops-muted);
+            font-size: 11.5px;
+            line-height: 1.2;
+        }
+
+        .ops-language-option__check {
+            opacity: 0;
+            color: #22c55e;
+            font-size: 17px;
+        }
+
+        .ops-language-option.is-active .ops-language-option__check {
+            opacity: 1;
+        }
+
+        html[data-theme="light"] .ops-language-trigger,
+        body[data-theme="light"] .ops-language-trigger,
+        body.theme-light .ops-language-trigger {
+            background: #ffffff;
+            border-color: #d7e4f2;
+            color: #0f172a;
+        }
+
+        html[data-theme="light"] .ops-language-trigger:hover,
+        html[data-theme="light"] .ops-language.is-open .ops-language-trigger,
+        body[data-theme="light"] .ops-language-trigger:hover,
+        body[data-theme="light"] .ops-language.is-open .ops-language-trigger,
+        body.theme-light .ops-language-trigger:hover,
+        body.theme-light .ops-language.is-open .ops-language-trigger {
+            background: #eef5ff;
+            border-color: rgba(37, 99, 235, 0.34);
+        }
+
+        html[data-theme="light"] .ops-language-trigger__icon,
+        body[data-theme="light"] .ops-language-trigger__icon,
+        body.theme-light .ops-language-trigger__icon {
+            background: #eaf1ff;
+            color: #2563eb;
+        }
+
+        html[data-theme="light"] .ops-language-menu,
+        body[data-theme="light"] .ops-language-menu,
+        body.theme-light .ops-language-menu {
+            background: #ffffff;
+            border-color: #d7e4f2;
+            box-shadow: 0 26px 70px rgba(15, 23, 42, 0.16);
+        }
+
+        html[data-theme="light"] .ops-language-menu::before,
+        body[data-theme="light"] .ops-language-menu::before,
+        body.theme-light .ops-language-menu::before {
+            background: #ffffff;
+            border-color: #d7e4f2;
+        }
+
+        html[data-theme="light"] .ops-language-option,
+        body[data-theme="light"] .ops-language-option,
+        body.theme-light .ops-language-option {
+            color: #334155;
+        }
+
+        html[data-theme="light"] .ops-language-option:hover,
+        html[data-theme="light"] .ops-language-option.is-active,
+        body[data-theme="light"] .ops-language-option:hover,
+        body[data-theme="light"] .ops-language-option.is-active,
+        body.theme-light .ops-language-option:hover,
+        body.theme-light .ops-language-option.is-active {
+            background: #eef5ff;
+            border-color: rgba(37, 99, 235, 0.22);
+            color: #0f172a;
+        }
+
+        html[data-theme="light"] .ops-language-option__code,
+        body[data-theme="light"] .ops-language-option__code,
+        body.theme-light .ops-language-option__code {
+            background: #eef2f7;
+            color: #2563eb;
+        }
+
+        html[data-theme="light"] .ops-language-option__text small,
+        body[data-theme="light"] .ops-language-option__text small,
+        body.theme-light .ops-language-option__text small {
+            color: #64748b;
+        }
+
+        .ops-user {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .ops-user-trigger {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-height: 44px;
+            border: 0;
+            background: transparent;
+            color: var(--ops-text);
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 10px;
+            transition: 0.18s ease;
+        }
+
+        .ops-user-trigger:hover {
+            background: rgba(148, 163, 184, 0.10);
+        }
+
+        .ops-user-avatar {
+            display: grid;
+            place-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #1d4ed8, #60a5fa);
+            color: #ffffff;
+            font-weight: 900;
+            border: 2px solid rgba(255, 255, 255, 0.16);
+        }
+
+        .ops-user-text {
+            display: grid;
+            gap: 2px;
+            text-align: left;
+        }
+
+        .ops-user-text strong {
+            color: var(--ops-text);
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.1;
+        }
+
+        .ops-user-text small {
+            color: var(--ops-muted);
+            font-size: 11px;
+            line-height: 1.1;
+        }
+
+        .ops-user-trigger > i {
+            color: var(--ops-muted);
+            font-size: 13px;
+        }
+
+        .ops-user-menu {
+            position: absolute;
+            top: calc(100% + 14px);
+            right: 0;
+            width: 240px;
+            padding: 10px;
+            border: 1px solid var(--ops-border);
+            border-radius: 14px;
+            background: var(--ops-panel);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-6px);
+            transition: 0.18s ease;
+            z-index: 1150;
+        }
+
+        .ops-user.is-open .ops-user-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .ops-user-menu-head {
+            padding: 10px 12px 12px;
+            border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+            margin-bottom: 6px;
+        }
+
+        .ops-user-menu-head span {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--ops-muted);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .ops-user-menu-head strong {
+            display: block;
+            color: var(--ops-text);
+            font-size: 14px;
+            font-weight: 900;
+        }
+
+        .ops-user-menu-head small {
+            display: block;
+            margin-top: 3px;
+            color: var(--ops-muted);
+            font-size: 12px;
+        }
+
+        .ops-user-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 12px;
+            border-radius: 10px;
+            color: var(--ops-soft);
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.18s ease;
+        }
+
+        .ops-user-menu a:hover {
+            background: rgba(59, 130, 246, 0.12);
+            color: var(--ops-text);
+        }
+
+        .ops-user-menu a.is-danger {
+            color: #f87171;
+        }
+
+        .ops-main {
+            min-height: calc(100vh - 74px);
+            background: var(--ops-bg);
+            transition: background 0.25s ease;
+        }
+
+        .ops-content-area {
+            min-height: calc(100vh - 74px);
+        }
+
+        .private-alert {
+            margin: 16px 24px 0;
+            padding: 14px 16px;
+            border: 1px solid rgba(59, 130, 246, 0.28);
+            border-radius: 12px;
+            color: var(--ops-text);
+            background: rgba(59, 130, 246, 0.12);
+        }
+
+        @media (max-width: 1220px) {
+            .ops-topbar {
+                grid-template-columns: 220px minmax(0, 1fr) auto;
+                padding: 0 18px;
+            }
+
+            .ops-main-nav a {
+                padding: 0 13px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 1020px) {
+            .ops-topbar {
+                height: auto;
+                min-height: 74px;
+                grid-template-columns: 1fr auto;
+                gap: 12px;
+                padding: 14px 18px;
+            }
+
+            .ops-main-nav {
+                grid-column: 1 / -1;
+                order: 3;
+                justify-content: flex-start;
+                height: auto;
+                overflow-x: auto;
+                padding-top: 6px;
+            }
+
+            .ops-main-nav a {
+                min-height: 42px;
+                white-space: nowrap;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .ops-user-text {
+                display: none;
+            }
+
+            .ops-brand__copy small {
+                display: none;
+            }
+
+            .ops-language-trigger__icon {
+                display: none;
+            }
+
+            .ops-language-trigger {
+                min-width: 58px;
+                padding: 0 10px;
+            }
+
+            .ops-language-menu {
+                right: -76px;
+                width: 270px;
+            }
+
+            .ops-language-menu::before {
+                right: 94px;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .ops-header-actions {
+                gap: 8px;
+            }
+
+            .ops-brand__copy strong {
+                font-size: 15px;
+            }
+
+            .ops-icon-button,
+            .ops-theme-toggle,
+            .ops-user-avatar {
+                width: 38px;
+                height: 38px;
+            }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+<div class="ops-private-shell">
+
+    <header class="ops-topbar">
+        <a href="/dashboard/" class="ops-brand" aria-label="FlightLogos Control Desk">
+            <span class="ops-brand__mark">
+                <i class="bi bi-airplane-fill"></i>
+            </span>
+
+            <span class="ops-brand__copy">
+                <strong>FlightLogos</strong>
+                <small>
+                    {% if CURRENT_LANGUAGE == "fr" %}
+                        Poste de contrÃ´le
+                    {% elif CURRENT_LANGUAGE == "ru" %}
+                        ÐŸÐ°Ð½ÐµÐ»ÑŒ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ñ
+                    {% else %}
+                        Control Desk
+                    {% endif %}
+                </small>
+            </span>
+        </a>
+
+        <nav class="ops-main-nav" aria-label="Operations navigation">
+            <a href="/dashboard/" class="{% if request.path == '/dashboard/' %}is-active{% endif %}">
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Centre opÃ©rations
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    Ð¦ÐµÐ½Ñ‚Ñ€ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹
+                {% else %}
+                    Operations Center
+                {% endif %}
+            </a>
+
+            <a href="/monitoring/" class="{% if request.path == '/monitoring/' %}is-active{% endif %}">
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Poste de contrÃ´le
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    ÐŸÐ°Ð½ÐµÐ»ÑŒ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ñ
+                {% else %}
+                    Control Desk
+                {% endif %}
+            </a>
+
+            <a href="/monitoring/map/" class="{% if '/monitoring/map' in request.path %}is-active{% endif %}">
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Carte des vols
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    ÐšÐ°Ñ€Ñ‚Ð° Ñ€ÐµÐ¹ÑÐ¾Ð²
+                {% else %}
+                    Flight Map
+                {% endif %}
+            </a>
+
+            <a href="/analytics/" class="{% if '/analytics' in request.path %}is-active{% endif %}">
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Intelligence opÃ©rationnelle
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ Ð°Ð½Ð°Ð»Ð¸Ñ‚Ð¸ÐºÐ°
+                {% else %}
+                    Operational Intelligence
+                {% endif %}
+            </a>
+
+            <a href="/sync/" class="{% if '/sync' in request.path %}is-active{% endif %}">
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Synchronisation
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    Ð¡Ð¸Ð½Ñ…Ñ€Ð¾Ð½Ð¸Ð·Ð°Ñ†Ð¸Ñ
+                {% else %}
+                    Data Sync
+                {% endif %}
+            </a>
+        </nav>
+
+        <div class="ops-header-actions">
+            <button
+                type="button"
+                class="ops-icon-button"
+                aria-label="{% if CURRENT_LANGUAGE == 'fr' %}Notifications{% elif CURRENT_LANGUAGE == 'ru' %}Ð£Ð²ÐµÐ´Ð¾Ð¼Ð»ÐµÐ½Ð¸Ñ{% else %}Notifications{% endif %}"
+            >
+                <i class="bi bi-bell"></i>
+                <span class="ops-notification-dot">7</span>
+            </button>
+
+            <button
+                type="button"
+                class="ops-theme-toggle"
+                id="opsThemeToggle"
+                data-theme-toggle
+                aria-label="{% if CURRENT_LANGUAGE == 'fr' %}Changer le thÃ¨me{% elif CURRENT_LANGUAGE == 'ru' %}Ð¡Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ Ñ‚ÐµÐ¼Ñƒ{% else %}Switch theme{% endif %}"
+            >
+                <i class="bi bi-moon-stars" id="opsThemeIcon"></i>
+            </button>
+
+            <div class="ops-language" id="opsLanguageMenu">
+                <button
+                    type="button"
+                    class="ops-language-trigger"
+                    id="opsLanguageTrigger"
+                    aria-label="{% if CURRENT_LANGUAGE == 'fr' %}Changer la langue{% elif CURRENT_LANGUAGE == 'ru' %}Ð¡Ð¼ÐµÐ½Ð¸Ñ‚ÑŒ ÑÐ·Ñ‹Ðº{% else %}Change language{% endif %}"
+                    aria-expanded="false"
+                >
+                    <span class="ops-language-trigger__icon">
+                        <i class="bi bi-globe2"></i>
+                    </span>
+
+                    <span class="ops-language-trigger__code">
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            FR
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            RU
+                        {% else %}
+                            EN
+                        {% endif %}
+                    </span>
+
+                    <i class="bi bi-chevron-down ops-language-trigger__arrow"></i>
+                </button>
+
+                <div class="ops-language-menu" id="opsLanguageDropdown">
+                    <div class="ops-language-menu__head">
+                        <span>
+                            {% if CURRENT_LANGUAGE == "fr" %}
+                                Langue
+                            {% elif CURRENT_LANGUAGE == "ru" %}
+                                Ð¯Ð·Ñ‹Ðº
+                            {% else %}
+                                Language
+                            {% endif %}
+                        </span>
+
+                        <small>
+                            {% if CURRENT_LANGUAGE == "fr" %}
+                                Choisissez la langue de lâ€™interface
+                            {% elif CURRENT_LANGUAGE == "ru" %}
+                                Ð’Ñ‹Ð±ÐµÑ€Ð¸Ñ‚Ðµ ÑÐ·Ñ‹Ðº Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹ÑÐ°
+                            {% else %}
+                                Choose interface language
+                            {% endif %}
+                        </small>
+                    </div>
+
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                        <button
+                            type="submit"
+                            name="language"
+                            value="en"
+                            class="ops-language-option {% if CURRENT_LANGUAGE == 'en' %}is-active{% endif %}"
+                        >
+                            <span class="ops-language-option__code">EN</span>
+
+                            <span class="ops-language-option__text">
+                                <strong>English</strong>
+                                <small>Default workspace language</small>
+                            </span>
+
+                            <i class="bi bi-check2 ops-language-option__check"></i>
+                        </button>
+
+                        <button
+                            type="submit"
+                            name="language"
+                            value="fr"
+                            class="ops-language-option {% if CURRENT_LANGUAGE == 'fr' %}is-active{% endif %}"
+                        >
+                            <span class="ops-language-option__code">FR</span>
+
+                            <span class="ops-language-option__text">
+                                <strong>FranÃ§ais</strong>
+                                <small>Interface en franÃ§ais</small>
+                            </span>
+
+                            <i class="bi bi-check2 ops-language-option__check"></i>
+                        </button>
+
+                        <button
+                            type="submit"
+                            name="language"
+                            value="ru"
+                            class="ops-language-option {% if CURRENT_LANGUAGE == 'ru' %}is-active{% endif %}"
+                        >
+                            <span class="ops-language-option__code">RU</span>
+
+                            <span class="ops-language-option__text">
+                                <strong>Ð ÑƒÑÑÐºÐ¸Ð¹</strong>
+                                <small>Ð˜Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ Ð½Ð° Ñ€ÑƒÑÑÐºÐ¾Ð¼</small>
+                            </span>
+
+                            <i class="bi bi-check2 ops-language-option__check"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="ops-user" id="opsUserMenu">
+                <button
+                    type="button"
+                    class="ops-user-trigger"
+                    id="opsUserTrigger"
+                    aria-label="{% if CURRENT_LANGUAGE == 'fr' %}Ouvrir le menu utilisateur{% elif CURRENT_LANGUAGE == 'ru' %}ÐžÑ‚ÐºÑ€Ñ‹Ñ‚ÑŒ Ð¼ÐµÐ½ÑŽ Ð¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»Ñ{% else %}Open user menu{% endif %}"
+                >
+                    <span class="ops-user-avatar">
+                        {% if request.user.is_authenticated %}
+                            {{ request.user.username|first|upper }}
+                        {% else %}
+                            U
+                        {% endif %}
+                    </span>
+
+                    <span class="ops-user-text">
+                        <strong>
+                            {% if request.user.is_authenticated %}
+                                {{ request.user.username|default:"Operator" }}
+                            {% else %}
+                                {% if CURRENT_LANGUAGE == "fr" %}
+                                    OpÃ©rateur
+                                {% elif CURRENT_LANGUAGE == "ru" %}
+                                    ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€
+                                {% else %}
+                                    Operator
+                                {% endif %}
+                            {% endif %}
+                        </strong>
+
+                        <small>
+                            {% if CURRENT_LANGUAGE == "fr" %}
+                                OpÃ©rateur
+                            {% elif CURRENT_LANGUAGE == "ru" %}
+                                ÐžÐ¿ÐµÑ€Ð°Ñ‚Ð¾Ñ€
+                            {% else %}
+                                Operator
+                            {% endif %}
+                        </small>
+                    </span>
+
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+
+                <div class="ops-user-menu">
+                    <div class="ops-user-menu-head">
+                        <span>
+                            {% if CURRENT_LANGUAGE == "fr" %}
+                                ConnectÃ©
+                            {% elif CURRENT_LANGUAGE == "ru" %}
+                                Ð’Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½ Ð²Ñ…Ð¾Ð´
+                            {% else %}
+                                Signed in
+                            {% endif %}
+                        </span>
+
+                        {% if request.user.is_authenticated %}
+                            <strong>{{ request.user.username }}</strong>
+                            <small>{{ request.user.email|default:"Operations user" }}</small>
+                        {% else %}
+                            <strong>
+                                {% if CURRENT_LANGUAGE == "fr" %}
+                                    Utilisateur opÃ©rations
+                                {% elif CURRENT_LANGUAGE == "ru" %}
+                                    ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹
+                                {% else %}
+                                    Operations user
+                                {% endif %}
+                            </strong>
+
+                            <small>
+                                {% if CURRENT_LANGUAGE == "fr" %}
+                                    Espace opÃ©rationnel privÃ©
+                                {% elif CURRENT_LANGUAGE == "ru" %}
+                                    ÐŸÑ€Ð¸Ð²Ð°Ñ‚Ð½Ð°Ñ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ Ð·Ð¾Ð½Ð°
+                                {% else %}
+                                    Private workspace
+                                {% endif %}
+                            </small>
+                        {% endif %}
+                    </div>
+
+                    <a href="/accounts/profile/">
+                        <i class="bi bi-person"></i>
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            Profil
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            ÐŸÑ€Ð¾Ñ„Ð¸Ð»ÑŒ
+                        {% else %}
+                            Profile
+                        {% endif %}
+                    </a>
+
+                    <a href="/">
+                        <i class="bi bi-globe2"></i>
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            Site public
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            ÐŸÑƒÐ±Ð»Ð¸Ñ‡Ð½Ñ‹Ð¹ ÑÐ°Ð¹Ñ‚
+                        {% else %}
+                            Public site
+                        {% endif %}
+                    </a>
+
+                    <a href="/copilot/">
+                        <i class="bi bi-chat-dots"></i>
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            Copilote
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            ÐšÐ¾Ð¿Ð¸Ð»Ð¾Ñ‚
+                        {% else %}
+                            Copilot
+                        {% endif %}
+                    </a>
+
+                    <a href="/accounts/logout/" class="is-danger">
+                        <i class="bi bi-box-arrow-right"></i>
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            DÃ©connexion
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            Ð’Ñ‹Ð¹Ñ‚Ð¸
+                        {% else %}
+                            Logout
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="ops-main">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="private-alert private-alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <section class="ops-content-area">
+            {% block content %}{% endblock %}
+        </section>
+    </main>
+
+</div>
+
+<script src="{% static 'js/main.js' %}?v=theme-unified-20260520" defer></script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>
+

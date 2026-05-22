@@ -1,0 +1,12 @@
+[run]
+omit =
+    */migrations/*
+    */management/*
+    */tests.py
+    */__init__.py
+    */apps.py
+    */admin.py
+
+[report]
+show_missing = True
+skip_empty = True

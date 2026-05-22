@@ -1,0 +1,878 @@
+/* =========================================================
+   FLIGHTLOGOS PUBLIC BOARDS FIX
+   Flights / Airlines / Airports / Aircraft
+   Professional spacing + stable dark/light theme
+========================================================= */
+
+/* =========================================================
+   THEME TOKENS
+========================================================= */
+
+:root {
+    --board-page-bg: #eef3f9;
+    --board-surface: #ffffff;
+    --board-surface-soft: #f8fafc;
+    --board-surface-muted: #f1f5f9;
+    --board-text: #0f172a;
+    --board-heading: #111827;
+    --board-muted: #64748b;
+    --board-border: #dbe3ef;
+    --board-border-soft: #e8edf5;
+
+    --board-blue: #2563eb;
+    --board-blue-soft: #eef2ff;
+    --board-green: #16a34a;
+    --board-green-soft: #eafaf0;
+    --board-purple: #7c3aed;
+    --board-purple-soft: #f1e8ff;
+    --board-cyan: #0284c7;
+    --board-cyan-soft: #e8f6fd;
+    --board-orange: #c2410c;
+    --board-orange-soft: #fff1df;
+
+    --board-shadow: 0 14px 34px rgba(15, 23, 42, 0.045);
+    --board-shadow-strong: 0 18px 46px rgba(15, 23, 42, 0.055);
+}
+
+html[data-theme="dark"] {
+    --board-page-bg: #06111f;
+    --board-surface: #0b1728;
+    --board-surface-soft: #101f33;
+    --board-surface-muted: #132640;
+    --board-text: #f8fafc;
+    --board-heading: #f8fafc;
+    --board-muted: #94a3b8;
+    --board-border: rgba(148, 163, 184, 0.18);
+    --board-border-soft: rgba(148, 163, 184, 0.12);
+
+    --board-blue: #60a5fa;
+    --board-blue-soft: rgba(59, 130, 246, 0.14);
+    --board-green: #4ade80;
+    --board-green-soft: rgba(34, 197, 94, 0.13);
+    --board-purple: #a78bfa;
+    --board-purple-soft: rgba(124, 58, 237, 0.16);
+    --board-cyan: #38bdf8;
+    --board-cyan-soft: rgba(14, 165, 233, 0.14);
+    --board-orange: #fb923c;
+    --board-orange-soft: rgba(251, 146, 60, 0.14);
+
+    --board-shadow: 0 16px 38px rgba(2, 6, 23, 0.24);
+    --board-shadow-strong: 0 22px 54px rgba(2, 6, 23, 0.32);
+}
+
+/* =========================================================
+   PAGE BASE
+========================================================= */
+
+body.public-app-body {
+    background: var(--board-page-bg) !important;
+}
+
+.flights-page,
+.airports-page,
+.aircraft-page,
+.airlines-page,
+.airlines-shell {
+    color: var(--board-text) !important;
+}
+
+.flights-page,
+.airports-page,
+.aircraft-page,
+.airlines-shell {
+    width: min(1480px, calc(100% - 72px)) !important;
+    margin: -10px auto 0 !important;
+    padding: 22px 0 68px !important;
+}
+
+.airlines-page {
+    background: transparent !important;
+}
+
+@media (max-width: 820px) {
+    .flights-page,
+    .airports-page,
+    .aircraft-page,
+    .airlines-shell {
+        width: min(100% - 28px, 1480px) !important;
+        margin: 0 auto !important;
+        padding-top: 18px !important;
+    }
+}
+
+/* =========================================================
+   PAGE HEADERS
+========================================================= */
+
+.flights-header,
+.airports-header,
+.aircraft-header,
+.airlines-header {
+    margin-bottom: 18px !important;
+}
+
+.flights-header h1,
+.airports-header h1,
+.aircraft-header h1,
+.airlines-header h1 {
+    color: var(--board-heading) !important;
+    font-size: clamp(38px, 3.2vw, 56px) !important;
+    line-height: 0.98 !important;
+    letter-spacing: -0.055em !important;
+    font-weight: 780 !important;
+}
+
+.flights-header p,
+.airports-subtitle,
+.aircraft-subtitle,
+.airlines-header p {
+    color: var(--board-muted) !important;
+    max-width: 860px !important;
+    margin-top: 8px !important;
+    font-size: 15.5px !important;
+    line-height: 1.45 !important;
+    font-weight: 520 !important;
+}
+
+.flights-kicker,
+.airports-kicker,
+.aircraft-kicker {
+    color: var(--board-blue) !important;
+}
+
+/* Airlines alignment */
+.airlines-header-copy::before {
+    height: 12px !important;
+}
+
+/* =========================================================
+   KPI GRID
+========================================================= */
+
+.flights-kpi-grid,
+.airports-kpi-grid,
+.aircraft-kpi-grid,
+.airlines-kpi-grid {
+    gap: 14px !important;
+    margin-bottom: 16px !important;
+}
+
+.flights-kpi-card,
+.airports-kpi-card,
+.aircraft-kpi-card,
+.airlines-kpi-card {
+    min-height: 104px !important;
+    grid-template-columns: 62px minmax(0, 1fr) !important;
+    gap: 16px !important;
+    padding: 16px 20px !important;
+    border-radius: 20px !important;
+    background: var(--board-surface) !important;
+    border: 1px solid var(--board-border) !important;
+    box-shadow: var(--board-shadow) !important;
+}
+
+html[data-theme="dark"] .flights-kpi-card,
+html[data-theme="dark"] .airports-kpi-card,
+html[data-theme="dark"] .aircraft-kpi-card,
+html[data-theme="dark"] .airlines-kpi-card {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+        var(--board-surface) !important;
+}
+
+.flights-kpi-icon,
+.airports-kpi-icon,
+.aircraft-kpi-icon,
+.airlines-kpi-icon {
+    width: 62px !important;
+    height: 62px !important;
+    border-radius: 18px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Fix broken encoded symbols inside KPI icons */
+.flights-kpi-icon span,
+.airports-kpi-icon span,
+.aircraft-kpi-icon span,
+.airlines-kpi-icon,
+.airlines-kpi-icon span {
+    font-size: 0 !important;
+}
+
+.flights-kpi-icon span::before,
+.airports-kpi-icon span::before,
+.aircraft-kpi-icon span::before,
+.airlines-kpi-icon span::before {
+    font-size: 18px !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: 0.02em !important;
+}
+
+/* Flights KPI labels */
+.flights-kpi-total .flights-kpi-icon span::before {
+    content: "FL";
+}
+
+.flights-kpi-active .flights-kpi-icon span::before {
+    content: "ON";
+}
+
+.flights-kpi-delayed .flights-kpi-icon span::before {
+    content: "DL";
+}
+
+.flights-kpi-performance .flights-kpi-icon span::before {
+    content: "%";
+}
+
+/* Airports KPI labels */
+.airports-kpi-total .airports-kpi-icon span::before {
+    content: "AP";
+}
+
+.airports-kpi-active .airports-kpi-icon span::before {
+    content: "ON";
+}
+
+.airports-kpi-country .airports-kpi-icon span::before {
+    content: "CO";
+}
+
+.airports-kpi-flights .airports-kpi-icon span::before {
+    content: "FL";
+}
+
+/* Aircraft KPI labels */
+.aircraft-kpi-total .aircraft-kpi-icon span::before {
+    content: "AC";
+}
+
+.aircraft-kpi-active .aircraft-kpi-icon span::before {
+    content: "ON";
+}
+
+.aircraft-kpi-operators .aircraft-kpi-icon span::before {
+    content: "OP";
+}
+
+.aircraft-kpi-capacity .aircraft-kpi-icon span::before {
+    content: "SE";
+}
+
+/* Airlines KPI labels */
+.airlines-kpi-total .airlines-kpi-total .airlines-kpi-icon span::before {
+    content: "AL";
+}
+
+.airlines-kpi-active .airlines-kpi-active .airlines-kpi-icon span::before {
+    content: "ON";
+}
+
+.airlines-kpi-country .airlines-kpi-country .airlines-kpi-icon span::before {
+    content: "CO";
+}
+
+.airlines-kpi-flights .airlines-kpi-flights .airlines-kpi-icon span::before {
+    content: "FL";
+}
+
+/* KPI colors */
+.flights-kpi-total .flights-kpi-icon,
+.airports-kpi-total .airports-kpi-icon,
+.aircraft-kpi-total .aircraft-kpi-icon,
+.airlines-kpi-total .airlines-kpi-icon {
+    background: var(--board-blue-soft) !important;
+    color: var(--board-blue) !important;
+}
+
+.flights-kpi-active .flights-kpi-icon,
+.airports-kpi-active .airports-kpi-icon,
+.aircraft-kpi-active .aircraft-kpi-icon,
+.airlines-kpi-active .airlines-kpi-icon {
+    background: var(--board-green-soft) !important;
+    color: var(--board-green) !important;
+}
+
+.flights-kpi-delayed .flights-kpi-icon,
+.airports-kpi-country .airports-kpi-icon,
+.aircraft-kpi-operators .aircraft-kpi-icon,
+.airlines-kpi-country .airlines-kpi-icon {
+    background: var(--board-purple-soft) !important;
+    color: var(--board-purple) !important;
+}
+
+.flights-kpi-performance .flights-kpi-icon,
+.airports-kpi-flights .airports-kpi-icon,
+.aircraft-kpi-capacity .aircraft-kpi-icon,
+.airlines-kpi-flights .airlines-kpi-icon {
+    background: var(--board-cyan-soft) !important;
+    color: var(--board-cyan) !important;
+}
+
+.flights-kpi-label,
+.airports-kpi-label,
+.aircraft-kpi-label,
+.airlines-kpi-label {
+    color: var(--board-heading) !important;
+    font-size: 13px !important;
+    font-weight: 760 !important;
+}
+
+.flights-kpi-value,
+.airports-kpi-value,
+.aircraft-kpi-value,
+.airlines-kpi-value {
+    font-size: 34px !important;
+    line-height: 0.95 !important;
+    font-weight: 780 !important;
+}
+
+.flights-kpi-note,
+.airports-kpi-note,
+.aircraft-kpi-note,
+.airlines-kpi-note {
+    color: var(--board-muted) !important;
+    font-size: 13px !important;
+}
+
+/* =========================================================
+   TABLE CARDS / BOARD CARDS
+========================================================= */
+
+.flights-board-card,
+.airports-table-card,
+.aircraft-table-card,
+.airlines-table-card {
+    overflow: visible !important;
+    border-radius: 20px !important;
+    background: var(--board-surface) !important;
+    border: 1px solid var(--board-border) !important;
+    box-shadow: var(--board-shadow-strong) !important;
+}
+
+html[data-theme="dark"] .flights-board-card,
+html[data-theme="dark"] .airports-table-card,
+html[data-theme="dark"] .aircraft-table-card,
+html[data-theme="dark"] .airlines-table-card {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent),
+        var(--board-surface) !important;
+}
+
+/* =========================================================
+   TOOLBARS
+========================================================= */
+
+.flights-toolbar,
+.airports-toolbar,
+.aircraft-toolbar,
+.airlines-toolbar {
+    padding: 14px !important;
+    background: var(--board-surface) !important;
+    border-bottom: 1px solid var(--board-border-soft) !important;
+    border-radius: 20px 20px 0 0 !important;
+}
+
+.flights-search input,
+.airports-search-box input,
+.aircraft-search-box input,
+.airlines-search-box input,
+.flights-select,
+.airports-filter-select,
+.aircraft-filter-select {
+    height: 46px !important;
+    border-radius: 14px !important;
+    background: var(--board-surface) !important;
+    border: 1px solid var(--board-border) !important;
+    color: var(--board-text) !important;
+    font-size: 14px !important;
+    font-weight: 560 !important;
+}
+
+html[data-theme="dark"] .flights-search input,
+html[data-theme="dark"] .airports-search-box input,
+html[data-theme="dark"] .aircraft-search-box input,
+html[data-theme="dark"] .airlines-search-box input,
+html[data-theme="dark"] .flights-select,
+html[data-theme="dark"] .airports-filter-select,
+html[data-theme="dark"] .aircraft-filter-select {
+    background: #0f1d2d !important;
+}
+
+.flights-search input::placeholder,
+.airports-search-box input::placeholder,
+.aircraft-search-box input::placeholder,
+.airlines-search-box input::placeholder {
+    color: var(--board-muted) !important;
+}
+
+.flights-search-icon,
+.airports-search-icon,
+.aircraft-search-icon,
+.airlines-search-icon {
+    color: var(--board-muted) !important;
+}
+
+.flights-submit-btn,
+.airports-apply-button,
+.aircraft-apply-button,
+.airlines-search-submit {
+    height: 46px !important;
+    border-radius: 14px !important;
+    background: #2563eb !important;
+    color: #ffffff !important;
+    font-size: 13px !important;
+    font-weight: 780 !important;
+}
+
+.flights-submit-btn:hover,
+.airports-apply-button:hover,
+.aircraft-apply-button:hover,
+.airlines-search-submit:hover {
+    background: #1d4ed8 !important;
+}
+
+.flights-reset-btn,
+.airports-reset-button,
+.aircraft-reset-button,
+.airlines-reset-button {
+    height: 46px !important;
+    border-radius: 14px !important;
+    background: var(--board-surface) !important;
+    border: 1px solid var(--board-border) !important;
+    color: var(--board-muted) !important;
+    font-size: 13px !important;
+    font-weight: 720 !important;
+}
+
+.flights-reset-btn:hover,
+.airports-reset-button:hover,
+.aircraft-reset-button:hover,
+.airlines-reset-button:hover {
+    background: var(--board-surface-soft) !important;
+    color: var(--board-text) !important;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+.flights-table,
+.airports-table,
+.aircraft-table,
+.airlines-table {
+    background: transparent !important;
+}
+
+.flights-table th,
+.airports-table th,
+.aircraft-table th,
+.airlines-table th {
+    padding: 13px 18px !important;
+    background: var(--board-surface-soft) !important;
+    border-bottom: 1px solid var(--board-border) !important;
+    color: var(--board-heading) !important;
+    font-size: 11.5px !important;
+    font-weight: 800 !important;
+    letter-spacing: 0.075em !important;
+    text-transform: uppercase !important;
+}
+
+.flights-table td,
+.airports-table td,
+.aircraft-table td,
+.airlines-table td {
+    height: 58px !important;
+    padding: 7px 18px !important;
+    background: var(--board-surface) !important;
+    border-bottom: 1px solid var(--board-border-soft) !important;
+    color: var(--board-text) !important;
+    font-size: 14px !important;
+}
+
+.flights-table tbody tr:hover td,
+.airports-table tbody tr:hover td,
+.aircraft-table tbody tr:hover td,
+.airlines-table tbody tr:hover td {
+    background: var(--board-surface-soft) !important;
+}
+
+/* Main links */
+.flight-code,
+.flight-route,
+.flight-airline-name,
+.flight-aircraft,
+.airport-name-link,
+.airline-title,
+.aircraft-name,
+.aircraft-name-link {
+    color: var(--board-heading) !important;
+    font-weight: 740 !important;
+}
+
+.flight-code:hover,
+.airport-name-link:hover,
+.airline-title:hover,
+.aircraft-name-link:hover {
+    color: var(--board-blue) !important;
+}
+
+/* Secondary texts */
+.flight-route small,
+.airport-meta,
+.airline-subtitle,
+.aircraft-meta,
+.airport-code-stack small,
+.airport-location-stack small,
+.airport-coordinates small,
+.aircraft-model-stack small,
+.aircraft-operator-stack small {
+    color: var(--board-muted) !important;
+}
+
+/* Important stacked values */
+.airport-code-stack span,
+.airport-location-stack span,
+.airport-coordinates span,
+.aircraft-code-stack span,
+.aircraft-model-stack span,
+.aircraft-operator-stack span,
+.airline-code-pair,
+.airline-country,
+.airport-flight-count,
+.aircraft-capacity,
+.flight-time {
+    color: var(--board-text) !important;
+}
+
+/* =========================================================
+   AVATARS
+========================================================= */
+
+.flight-plane-icon,
+.flight-airline-logo,
+.airport-avatar,
+.aircraft-avatar,
+.airline-logo-mark,
+.airline-logo-fallback {
+    background: #0b4aa2 !important;
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   BADGES / STATUS
+========================================================= */
+
+.status-scheduled,
+.flight-source.is-unknown,
+.airport-status-inactive,
+.aircraft-status-inactive,
+.airline-status-pill.is-inactive {
+    background: var(--board-surface-muted) !important;
+    color: var(--board-muted) !important;
+}
+
+.status-boarding,
+.status-in_air,
+.status-landed,
+.flight-source.is-local,
+.airport-status-active,
+.aircraft-status-active,
+.airline-status-pill {
+    background: var(--board-green-soft) !important;
+    color: var(--board-green) !important;
+}
+
+.status-departed,
+.flight-source.is-api {
+    background: var(--board-blue-soft) !important;
+    color: var(--board-blue) !important;
+}
+
+.status-delayed,
+.airport-coordinate-missing,
+.aircraft-status-maintenance {
+    background: var(--board-orange-soft) !important;
+    color: var(--board-orange) !important;
+}
+
+.status-cancelled {
+    background: rgba(239, 68, 68, 0.13) !important;
+    color: #f87171 !important;
+}
+
+.airport-location-missing,
+.aircraft-muted-badge,
+.airline-muted-badge,
+.airline-flight-number {
+    background: var(--board-surface-soft) !important;
+    border: 1px solid var(--board-border) !important;
+    color: var(--board-muted) !important;
+}
+
+/* =========================================================
+   ACTION MENUS
+========================================================= */
+
+.flight-actions-menu summary,
+.airport-actions-menu summary,
+.aircraft-actions-menu summary,
+.airline-actions-menu summary {
+    border-radius: 11px !important;
+}
+
+.flight-actions-menu summary:hover,
+.airport-actions-menu summary:hover,
+.aircraft-actions-menu summary:hover,
+.airline-actions-menu summary:hover {
+    background: var(--board-surface-soft) !important;
+}
+
+.flight-actions-menu summary span,
+.airport-actions-menu summary span,
+.aircraft-actions-menu summary span,
+.airline-actions-menu summary span {
+    background: var(--board-text) !important;
+}
+
+.flight-actions-dropdown,
+.airport-actions-dropdown,
+.aircraft-actions-dropdown,
+.airline-actions-dropdown {
+    background: var(--board-surface) !important;
+    border: 1px solid var(--board-border) !important;
+    box-shadow: 0 20px 50px rgba(2, 6, 23, 0.24) !important;
+}
+
+.flight-actions-dropdown a,
+.airport-actions-dropdown a,
+.aircraft-actions-dropdown a,
+.airline-actions-dropdown a,
+.aircraft-action-disabled,
+.airport-action-disabled {
+    color: var(--board-text) !important;
+}
+
+.flight-actions-dropdown a:hover,
+.airport-actions-dropdown a:hover,
+.aircraft-actions-dropdown a:hover,
+.airline-actions-dropdown a:hover {
+    background: var(--board-blue-soft) !important;
+    color: var(--board-blue) !important;
+}
+
+/* =========================================================
+   TABLE FOOTERS / PAGINATION
+========================================================= */
+
+.flights-footer,
+.airports-table-footer,
+.aircraft-table-footer,
+.airlines-table-footer {
+    background: var(--board-surface) !important;
+    border-top: 1px solid var(--board-border) !important;
+    border-radius: 0 0 20px 20px !important;
+}
+
+.flights-footer p,
+.airports-table-footer p,
+.aircraft-table-footer p,
+.airlines-table-footer p {
+    color: var(--board-muted) !important;
+}
+
+.flights-pagination a,
+.airports-pagination a,
+.aircraft-pagination a,
+.airlines-pagination a {
+    background: var(--board-surface) !important;
+    border: 1px solid var(--board-border) !important;
+    color: var(--board-text) !important;
+}
+
+.flights-pagination a:hover,
+.airports-pagination a:hover,
+.aircraft-pagination a:hover,
+.airlines-pagination a:hover {
+    background: var(--board-surface-soft) !important;
+}
+
+.flights-pagination .is-current,
+.airports-pagination .current,
+.aircraft-pagination .current,
+.airlines-pagination .is-current {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   EMPTY STATES
+========================================================= */
+
+.flights-empty,
+.airports-empty-state,
+.aircraft-empty-state,
+.airlines-empty {
+    background: var(--board-surface) !important;
+    color: var(--board-text) !important;
+}
+
+.flights-empty h3,
+.airports-empty-state h3,
+.aircraft-empty-state h3,
+.airlines-empty h3 {
+    color: var(--board-heading) !important;
+}
+
+.flights-empty p,
+.airports-empty-state p,
+.aircraft-empty-state p,
+.airlines-empty p {
+    color: var(--board-muted) !important;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1180px) {
+    .flights-kpi-grid,
+    .airports-kpi-grid,
+    .aircraft-kpi-grid,
+    .airlines-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 820px) {
+    .flights-kpi-grid,
+    .airports-kpi-grid,
+    .aircraft-kpi-grid,
+    .airlines-kpi-grid {
+        grid-template-columns: 1fr !important;
+    }
+
+    .flights-toolbar,
+    .airports-toolbar,
+    .aircraft-toolbar,
+    .airlines-toolbar {
+        padding: 12px !important;
+    }
+
+    .flights-header h1,
+    .airports-header h1,
+    .aircraft-header h1,
+    .airlines-header h1 {
+        font-size: 38px !important;
+    }
+}
+
+/* =========================================================
+   FINAL KPI ICON TEXT FIX
+   Prevent duplicated labels like ALAL / ONON / COCO / FLFL
+========================================================= */
+
+.flights-kpi-icon,
+.airports-kpi-icon,
+.aircraft-kpi-icon,
+.airlines-kpi-icon {
+    font-size: 0 !important;
+}
+
+.flights-kpi-icon span,
+.airports-kpi-icon span,
+.aircraft-kpi-icon span,
+.airlines-kpi-icon span {
+    font-size: 0 !important;
+}
+
+.flights-kpi-icon::before,
+.airports-kpi-icon::before,
+.aircraft-kpi-icon::before,
+.airlines-kpi-icon::before {
+    content: none !important;
+    display: none !important;
+}
+
+/* Flights */
+.flights-kpi-total .flights-kpi-icon span::before {
+    content: "FL" !important;
+}
+
+.flights-kpi-active .flights-kpi-icon span::before {
+    content: "ON" !important;
+}
+
+.flights-kpi-delayed .flights-kpi-icon span::before {
+    content: "DL" !important;
+}
+
+.flights-kpi-performance .flights-kpi-icon span::before {
+    content: "%" !important;
+}
+
+/* Airports */
+.airports-kpi-total .airports-kpi-icon span::before {
+    content: "AP" !important;
+}
+
+.airports-kpi-active .airports-kpi-icon span::before {
+    content: "ON" !important;
+}
+
+.airports-kpi-country .airports-kpi-icon span::before {
+    content: "CO" !important;
+}
+
+.airports-kpi-flights .airports-kpi-icon span::before {
+    content: "FL" !important;
+}
+
+/* Aircraft */
+.aircraft-kpi-total .aircraft-kpi-icon span::before {
+    content: "AC" !important;
+}
+
+.aircraft-kpi-active .aircraft-kpi-icon span::before {
+    content: "ON" !important;
+}
+
+.aircraft-kpi-operators .aircraft-kpi-icon span::before {
+    content: "OP" !important;
+}
+
+.aircraft-kpi-capacity .aircraft-kpi-icon span::before {
+    content: "SE" !important;
+}
+
+/* Airlines */
+.airlines-kpi-total .airlines-kpi-icon span::before {
+    content: "AL" !important;
+}
+
+.airlines-kpi-active .airlines-kpi-icon span::before {
+    content: "ON" !important;
+}
+
+.airlines-kpi-country .airlines-kpi-icon span::before {
+    content: "CO" !important;
+}
+
+.airlines-kpi-flights .airlines-kpi-icon span::before {
+    content: "FL" !important;
+}
+
+/* Shared generated icon text */
+.flights-kpi-icon span::before,
+.airports-kpi-icon span::before,
+.aircraft-kpi-icon span::before,
+.airlines-kpi-icon span::before {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 18px !important;
+    line-height: 1 !important;
+    font-weight: 850 !important;
+    letter-spacing: 0.02em !important;
+}

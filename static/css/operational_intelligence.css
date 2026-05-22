@@ -1,0 +1,1846 @@
+/* Operational intelligence */
+
+:root {
+    --oi-bg: #061321;
+    --oi-bg-deep: #04101d;
+    --oi-bg-soft: #0a1d30;
+
+    --oi-card: rgba(13, 34, 54, 0.96);
+    --oi-card-strong: rgba(16, 42, 66, 0.98);
+    --oi-panel: rgba(5, 17, 30, 0.92);
+
+    --oi-border: rgba(123, 169, 216, 0.18);
+    --oi-border-strong: rgba(96, 165, 250, 0.36);
+
+    --oi-text: #f3f7fc;
+    --oi-text-strong: #ffffff;
+    --oi-text-soft: #b8c8dc;
+    --oi-muted: #8fa4bc;
+
+    --oi-blue: #3b82f6;
+    --oi-sky: #0ea5e9;
+    --oi-green: #22c55e;
+    --oi-yellow: #f59e0b;
+    --oi-red: #ef4444;
+    --oi-purple: #a855f7;
+
+    --oi-field-bg: rgba(3, 12, 22, 0.82);
+    --oi-field-text: #f4f8ff;
+    --oi-table-head-bg: rgba(21, 43, 64, 0.98);
+    --oi-chart-bg: rgba(5, 16, 28, 0.55);
+    --oi-inner-bg: rgba(5, 16, 28, 0.42);
+    --oi-hover-bg: rgba(59, 130, 246, 0.08);
+
+    --oi-radius: 14px;
+    --oi-radius-sm: 10px;
+    --oi-shadow: 0 18px 42px rgba(0, 0, 0, 0.24);
+}
+
+/* ============================================================
+   Light theme support
+   Compatible with common dashboard theme classes
+   ============================================================ */
+
+html[data-theme="light"],
+body[data-theme="light"],
+html.light,
+body.light,
+html.light-mode,
+body.light-mode,
+html.light-theme,
+body.light-theme,
+html.theme-light,
+body.theme-light {
+    --oi-bg: #eef4fb;
+    --oi-bg-deep: #e6eef8;
+    --oi-bg-soft: #f7faff;
+
+    --oi-card: rgba(255, 255, 255, 0.94);
+    --oi-card-strong: rgba(255, 255, 255, 0.98);
+    --oi-panel: rgba(255, 255, 255, 0.95);
+
+    --oi-border: rgba(15, 23, 42, 0.11);
+    --oi-border-strong: rgba(37, 99, 235, 0.30);
+
+    --oi-text: #071426;
+    --oi-text-strong: #0f172a;
+    --oi-text-soft: #475569;
+    --oi-muted: #64748b;
+
+    --oi-field-bg: #ffffff;
+    --oi-field-text: #0f172a;
+    --oi-table-head-bg: #eef4fb;
+    --oi-chart-bg: #f8fbff;
+    --oi-inner-bg: rgba(248, 250, 252, 0.92);
+    --oi-hover-bg: rgba(37, 99, 235, 0.06);
+
+    --oi-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+}
+
+/* ============================================================
+   Global page
+   ============================================================ */
+
+.oi-page {
+    min-height: calc(100vh - 92px);
+    display: grid;
+    grid-template-columns: 250px minmax(0, 1fr);
+    grid-template-areas:
+        "nav header"
+        "nav kpis"
+        "nav decisions"
+        "nav main"
+        "nav mid"
+        "nav lower"
+        "nav feed"
+        "nav footer";
+    gap: 16px 18px;
+    align-items: start;
+    align-content: start;
+    padding: 20px 18px 18px;
+    background:
+        radial-gradient(circle at 30% -10%, rgba(59, 130, 246, 0.16), transparent 34%),
+        radial-gradient(circle at 96% 14%, rgba(14, 165, 233, 0.12), transparent 28%),
+        linear-gradient(90deg, var(--oi-bg-deep), var(--oi-bg-soft));
+    color: var(--oi-text);
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+.oi-page > .oi-product-nav {
+    grid-area: nav;
+}
+
+.oi-page > .oi-control-strip {
+    grid-area: header;
+}
+
+.oi-page > .oi-kpi-row {
+    grid-area: kpis;
+}
+
+.oi-page > .oi-decision-row {
+    grid-area: decisions;
+}
+
+.oi-page > .oi-main-cockpit {
+    grid-area: main;
+}
+
+.oi-page > .oi-mid-cockpit {
+    grid-area: mid;
+}
+
+.oi-page > .oi-lower-cockpit {
+    grid-area: lower;
+}
+
+.oi-page > .oi-feed-card {
+    grid-area: feed;
+}
+
+.oi-page > .oi-board-footer {
+    grid-area: footer;
+}
+
+/* ============================================================
+   Sidebar
+   ============================================================ */
+
+.oi-product-nav {
+    position: sticky;
+    top: 92px;
+    align-self: start;
+    min-height: calc(100vh - 126px);
+    border-radius: var(--oi-radius);
+    border: 1px solid var(--oi-border);
+    background: var(--oi-card);
+    box-shadow: var(--oi-shadow);
+    overflow: hidden;
+}
+
+.oi-product-nav__brand {
+    padding: 18px 17px 16px;
+    border-bottom: 1px solid var(--oi-border);
+}
+
+.oi-product-nav__brand span {
+    display: block;
+    color: var(--oi-text-strong);
+    font-size: 16px;
+    font-weight: 680;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+}
+
+.oi-product-nav__brand small {
+    display: block;
+    margin-top: 8px;
+    color: var(--oi-muted);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+.oi-product-nav__links {
+    display: grid;
+    gap: 7px;
+    padding: 15px 13px;
+}
+
+.oi-product-nav__links a {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 39px;
+    padding: 0 13px 0 33px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    color: var(--oi-text-soft);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 520;
+    transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease;
+}
+
+.oi-product-nav__links a::before {
+    content: "";
+    position: absolute;
+    left: 15px;
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: #7f95ae;
+    opacity: 0.85;
+}
+
+.oi-product-nav__links a:hover {
+    background: rgba(96, 165, 250, 0.08);
+    border-color: rgba(96, 165, 250, 0.22);
+    color: var(--oi-text-strong);
+}
+
+.oi-product-nav__links a.is-active {
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.28), rgba(14, 165, 233, 0.10));
+    border-color: rgba(96, 165, 250, 0.42);
+    color: var(--oi-text-strong);
+    font-weight: 600;
+}
+
+.oi-product-nav__links a.is-active::before {
+    background: var(--oi-blue);
+    box-shadow: 0 0 0 5px rgba(59, 130, 246, 0.16);
+}
+
+.oi-filter-block {
+    margin: 0 13px 13px;
+    padding: 13px;
+    border-radius: 12px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-inner-bg);
+}
+
+.oi-filter-title {
+    margin: 0 0 12px;
+    color: var(--oi-text-strong);
+    font-size: 12px;
+    font-weight: 620;
+    text-transform: uppercase;
+    letter-spacing: 0.055em;
+}
+
+.oi-sidebar-field {
+    display: grid;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.oi-sidebar-field label {
+    color: var(--oi-muted);
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
+}
+
+.oi-sidebar-field input,
+.oi-sidebar-field select {
+    width: 100%;
+    height: 34px;
+    border-radius: 8px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-field-bg);
+    color: var(--oi-field-text);
+    padding: 0 10px;
+    outline: none;
+    font-size: 12px;
+    font-weight: 430;
+}
+
+.oi-sidebar-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.oi-sidebar-actions button,
+.oi-sidebar-actions a {
+    min-height: 35px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border: 1px solid rgba(96, 165, 250, 0.34);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.oi-sidebar-actions button {
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+}
+
+.oi-sidebar-actions a {
+    background: rgba(15, 23, 42, 0.08);
+    color: var(--oi-text-strong);
+}
+
+.oi-product-nav__status {
+    margin: 0 13px 13px;
+    padding: 11px;
+    border-radius: 12px;
+    border: 1px solid rgba(239, 68, 68, 0.24);
+    background: rgba(127, 29, 29, 0.18);
+}
+
+.oi-product-nav__status span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 32px;
+    border-radius: 999px;
+    border: 1px solid rgba(248, 113, 113, 0.34);
+    color: var(--oi-text-strong);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+
+.oi-control-strip {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    margin: 0;
+}
+
+.oi-page-eyebrow {
+    display: inline-flex;
+    margin-bottom: 8px;
+    color: #60a5fa;
+    font-size: 11px;
+    font-weight: 620;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.oi-control-strip h2 {
+    margin: 0;
+    color: var(--oi-text-strong);
+    font-size: 26px;
+    font-weight: 660;
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+    text-shadow: none;
+}
+
+.oi-control-strip p {
+    max-width: 950px;
+    margin: 10px 0 0;
+    color: var(--oi-text-soft);
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 1.55;
+}
+
+.oi-control-actions {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+
+.oi-update-pill,
+.oi-btn,
+.oi-mini-action,
+.oi-card-actions a,
+.oi-filter-actions button,
+.oi-filter-actions a {
+    min-height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(96, 165, 250, 0.28);
+    background: rgba(15, 23, 42, 0.10);
+    color: var(--oi-text-strong);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        transform 0.16s ease,
+        background 0.16s ease,
+        border-color 0.16s ease,
+        box-shadow 0.16s ease,
+        color 0.16s ease;
+}
+
+.oi-update-pill {
+    color: var(--oi-text-soft);
+    cursor: default;
+}
+
+.oi-btn-light,
+.oi-card-actions a,
+.oi-mini-action,
+.oi-filter-actions a {
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--oi-text-strong);
+}
+
+.oi-btn-primary,
+.oi-filter-actions button {
+    color: #ffffff;
+    border-color: rgba(56, 189, 248, 0.45);
+    background: linear-gradient(135deg, #2563eb, #0ea5e9);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+}
+
+.oi-btn:hover,
+.oi-mini-action:hover,
+.oi-card-actions a:hover,
+.oi-filter-actions button:hover,
+.oi-filter-actions a:hover {
+    transform: translateY(-1px);
+    border-color: rgba(37, 99, 235, 0.45);
+    box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+}
+
+.oi-btn-primary:hover,
+.oi-filter-actions button:hover {
+    background: linear-gradient(135deg, #1d4ed8, #0284c7);
+}
+
+.oi-card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 18px 14px;
+}
+
+.oi-card-actions a {
+    min-height: 29px;
+    padding: 0 12px;
+    border-radius: 999px;
+    font-size: 11px;
+}
+
+.oi-mini-action {
+    min-height: 34px;
+    border-radius: 9px;
+}
+
+.oi-filter-actions {
+    display: flex;
+    align-items: end;
+    gap: 9px;
+}
+
+.oi-filter-actions button {
+    border: none;
+}
+
+/* ============================================================
+   KPI cards
+   ============================================================ */
+
+.oi-kpi-row {
+    display: grid;
+    gap: 14px;
+    margin: 0;
+}
+
+.oi-kpi-row-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.oi-kpi-card {
+    min-height: 140px;
+    display: grid;
+    grid-template-rows: auto auto auto 32px;
+    gap: 8px;
+    padding: 15px 15px 13px;
+    border-radius: var(--oi-radius);
+    border: 1px solid var(--oi-border);
+    background: var(--oi-card);
+    overflow: hidden;
+    box-shadow: var(--oi-shadow);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.oi-kpi-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(147, 197, 253, 0.55);
+    box-shadow: 0 16px 34px rgba(37, 99, 235, 0.16);
+}
+
+.oi-kpi-blue {
+    border-color: rgba(59, 130, 246, 0.36);
+}
+
+.oi-kpi-green {
+    border-color: rgba(34, 197, 94, 0.36);
+}
+
+.oi-kpi-yellow {
+    border-color: rgba(245, 158, 11, 0.40);
+}
+
+.oi-kpi-red {
+    border-color: rgba(239, 68, 68, 0.40);
+}
+
+.oi-kpi-purple {
+    border-color: rgba(168, 85, 247, 0.40);
+}
+
+.oi-kpi-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.oi-kpi-head span {
+    display: block;
+    color: var(--oi-muted);
+    font-size: 9px;
+    font-weight: 620;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.oi-kpi-head small {
+    color: var(--oi-text-soft);
+    font-size: 10px;
+    font-weight: 450;
+    white-space: nowrap;
+}
+
+.oi-kpi-card strong {
+    display: block;
+    color: var(--oi-text-strong);
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.035em;
+    line-height: 1;
+    text-shadow: none;
+}
+
+.oi-kpi-card p,
+.oi-kpi-delta {
+    display: block;
+    max-width: 190px;
+    margin: 0;
+    color: var(--oi-text-soft);
+    font-size: 10px;
+    font-weight: 430;
+    line-height: 1.35;
+    white-space: normal;
+}
+
+.oi-kpi-delta-neutral {
+    color: #3b82f6;
+}
+
+.oi-kpi-delta-positive {
+    color: #16a34a;
+}
+
+.oi-kpi-delta-warning {
+    color: #d97706;
+}
+
+.oi-kpi-delta-danger {
+    color: #dc2626;
+}
+
+.oi-kpi-delta-critical {
+    color: #9333ea;
+}
+
+.oi-kpi-trend {
+    position: relative;
+    width: 100%;
+    height: 32px;
+    margin-top: 2px;
+    pointer-events: none;
+    opacity: 0.9;
+}
+
+.oi-kpi-trend canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ============================================================
+   Static sparklines
+   ============================================================ */
+
+.oi-sparkline {
+    width: 100%;
+    height: 32px;
+    margin-top: 2px;
+    border-radius: 8px;
+    opacity: 0.9;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.oi-sparkline-blue {
+    background:
+        linear-gradient(90deg, rgba(96, 165, 250, 0.16), rgba(96, 165, 250, 0.035)),
+        repeating-linear-gradient(90deg, transparent 0 14px, rgba(96, 165, 250, 0.76) 14px 19px, transparent 19px 34px);
+}
+
+.oi-sparkline-green {
+    background:
+        linear-gradient(135deg, transparent 0 18%, rgba(34, 197, 94, 0.86) 19% 21%, transparent 22% 40%, rgba(34, 197, 94, 0.78) 41% 43%, transparent 44% 63%, rgba(34, 197, 94, 0.86) 64% 66%, transparent 67%);
+}
+
+.oi-sparkline-yellow {
+    background:
+        linear-gradient(135deg, transparent 0 15%, rgba(245, 158, 11, 0.88) 16% 18%, transparent 19% 38%, rgba(245, 158, 11, 0.78) 39% 41%, transparent 42% 60%, rgba(245, 158, 11, 0.88) 61% 63%, transparent 64%);
+}
+
+.oi-sparkline-red {
+    background:
+        linear-gradient(135deg, transparent 0 12%, rgba(239, 68, 68, 0.88) 13% 15%, transparent 16% 36%, rgba(239, 68, 68, 0.78) 37% 39%, transparent 40% 62%, rgba(239, 68, 68, 0.88) 63% 65%, transparent 66%);
+}
+
+.oi-sparkline-purple {
+    background:
+        linear-gradient(135deg, transparent 0 14%, rgba(168, 85, 247, 0.88) 15% 17%, transparent 18% 35%, rgba(168, 85, 247, 0.78) 36% 38%, transparent 39% 60%, rgba(168, 85, 247, 0.88) 61% 63%, transparent 64%);
+}
+
+/* ============================================================
+   Decision cards
+   ============================================================ */
+
+.oi-decision-row {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr 1fr;
+    gap: 14px;
+}
+
+.oi-decision-card {
+    display: grid;
+    gap: 9px;
+    align-content: start;
+    min-height: 108px;
+    padding: 16px 18px;
+    border-radius: var(--oi-radius);
+    border: 1px solid var(--oi-border);
+    background: var(--oi-card);
+    box-shadow: var(--oi-shadow);
+}
+
+.oi-decision-primary {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+}
+
+.oi-decision-card h3,
+.oi-decision-card strong {
+    margin: 0;
+    color: var(--oi-text-strong);
+    font-size: 16px;
+    font-weight: 620;
+    letter-spacing: -0.025em;
+    text-shadow: none;
+}
+
+.oi-decision-card p {
+    margin: 0;
+    color: var(--oi-text-soft);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.oi-decision-label {
+    color: #60a5fa;
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+/* ============================================================
+   Grids
+   ============================================================ */
+
+.oi-main-cockpit,
+.oi-dashboard-grid {
+    display: grid;
+    grid-template-columns: 1.22fr 1fr 1.08fr;
+    gap: 16px;
+}
+
+.oi-dashboard-grid-bottom,
+.oi-mid-cockpit {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr 1fr;
+    gap: 16px;
+}
+
+.oi-lower-cockpit {
+    display: grid;
+    grid-template-columns: 1.12fr 1fr;
+    gap: 16px;
+}
+
+.oi-card-large {
+    grid-column: span 1;
+}
+
+.oi-full-width-card {
+    grid-column: 1 / -1;
+}
+
+/* ============================================================
+   Cards
+   ============================================================ */
+
+.oi-card {
+    position: relative;
+    border-radius: var(--oi-radius);
+    border: 1px solid var(--oi-border);
+    background: var(--oi-card);
+    box-shadow: var(--oi-shadow);
+    overflow: hidden;
+}
+
+.oi-section-head {
+    padding: 18px 18px 14px;
+    border-bottom: 1px solid var(--oi-border);
+}
+
+.oi-section-head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.oi-kicker {
+    display: inline-flex;
+    align-items: center;
+    min-height: 21px;
+    padding: 0 9px;
+    margin-bottom: 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(96, 165, 250, 0.40);
+    background: rgba(59, 130, 246, 0.14);
+    color: #60a5fa;
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+}
+
+.oi-section-head h3 {
+    margin: 0;
+    color: var(--oi-text-strong);
+    font-size: 17px;
+    font-weight: 620;
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    text-shadow: none;
+}
+
+.oi-section-head p {
+    margin: 9px 0 0;
+    color: var(--oi-text-soft);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.52;
+}
+
+/* ============================================================
+   Charts
+   ============================================================ */
+
+.oi-chart-box {
+    position: relative;
+    height: 218px;
+    margin: 16px 18px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--oi-border);
+    background:
+        linear-gradient(rgba(96, 165, 250, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 165, 250, 0.06) 1px, transparent 1px),
+        var(--oi-chart-bg);
+    background-size: 54px 54px;
+    overflow: hidden;
+}
+
+.oi-chart-box-large,
+.oi-chart-box-tall {
+    height: 238px;
+}
+
+.oi-chart-box-compact {
+    height: 188px;
+}
+
+.oi-chart-box canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ============================================================
+   Tables
+   ============================================================ */
+
+.oi-table-shell {
+    margin: 16px 18px 14px;
+    max-height: 270px;
+    overflow: auto;
+    border-radius: 10px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-inner-bg);
+    scrollbar-width: thin;
+    scrollbar-color: rgba(96, 165, 250, 0.46) rgba(5, 16, 28, 0.20);
+}
+
+.oi-feed-card .oi-table-shell {
+    max-height: 230px;
+}
+
+.oi-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--oi-text);
+    font-size: 12px;
+}
+
+.oi-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    padding: 11px 13px;
+    background: var(--oi-table-head-bg);
+    color: #2563eb;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--oi-border);
+}
+
+.oi-table tbody td {
+    padding: 12px 13px;
+    border-bottom: 1px solid var(--oi-border);
+    color: var(--oi-text);
+    font-weight: 430;
+}
+
+.oi-table tbody td:first-child {
+    color: var(--oi-text-strong);
+    font-weight: 580;
+}
+
+.oi-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.oi-table tbody tr:hover,
+.oi-click-row:hover {
+    background: var(--oi-hover-bg);
+}
+
+.oi-click-row {
+    cursor: pointer;
+}
+
+.oi-table-shell::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.oi-table-shell::-webkit-scrollbar-track {
+    background: rgba(5, 16, 28, 0.18);
+    border-radius: 999px;
+}
+
+.oi-table-shell::-webkit-scrollbar-thumb {
+    background: rgba(96, 165, 250, 0.46);
+    border-radius: 999px;
+}
+
+.oi-table-shell::-webkit-scrollbar-thumb:hover {
+    background: rgba(96, 165, 250, 0.68);
+}
+
+/* ============================================================
+   Events and compact rows
+   ============================================================ */
+
+.oi-compact-events {
+    padding: 16px 18px 12px;
+}
+
+.oi-event-row {
+    display: grid;
+    grid-template-columns: 62px 90px 1fr 76px;
+    gap: 10px;
+    align-items: center;
+    min-height: 40px;
+    border-bottom: 1px solid var(--oi-border);
+    color: var(--oi-text);
+    font-size: 12px;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.oi-event-row:hover {
+    background: var(--oi-hover-bg);
+}
+
+.oi-event-row:last-child {
+    border-bottom: none;
+}
+
+.oi-event-row strong {
+    color: var(--oi-text-strong);
+    font-weight: 600;
+}
+
+.oi-event-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    padding: 0 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(96, 165, 250, 0.36);
+    background: rgba(59, 130, 246, 0.14);
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.oi-briefing-grid {
+    display: grid;
+    grid-template-columns: 0.95fr 1fr;
+    gap: 14px;
+    padding: 16px 18px 18px;
+}
+
+.oi-focus-card,
+.oi-route-card {
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-inner-bg);
+}
+
+.oi-focus-card span,
+.oi-route-card span,
+.oi-compact-signal-list span {
+    display: block;
+    color: #60a5fa;
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
+}
+
+.oi-focus-card strong,
+.oi-route-card strong,
+.oi-compact-signal-list strong {
+    display: block;
+    margin-top: 7px;
+    color: var(--oi-text-strong);
+    font-size: 20px;
+    font-weight: 620;
+    letter-spacing: -0.025em;
+    text-shadow: none;
+}
+
+.oi-focus-card p,
+.oi-route-card p,
+.oi-compact-signal-list small {
+    display: block;
+    margin-top: 7px;
+    color: var(--oi-text-soft);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.48;
+}
+
+.oi-compact-signal-list {
+    display: grid;
+    gap: 10px;
+    padding: 16px 18px 18px;
+}
+
+.oi-compact-signal-list > div {
+    padding: 13px;
+    border-radius: 12px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-inner-bg);
+}
+
+.oi-watch-list {
+    display: grid;
+    gap: 10px;
+    padding: 16px 18px 18px;
+}
+
+.oi-watch-row {
+    display: grid;
+    grid-template-columns: 8px 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 11px 12px;
+    border-radius: 12px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-inner-bg);
+}
+
+.oi-watch-row span {
+    width: 7px;
+    height: 7px;
+    margin-top: 5px;
+    border-radius: 999px;
+    background: #60a5fa;
+}
+
+.oi-watch-row p {
+    margin: 0;
+    color: var(--oi-text-soft);
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 1.45;
+}
+
+.oi-route-card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    padding: 16px 18px 18px;
+}
+
+.oi-mini-status {
+    min-height: 28px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 11px;
+    border-radius: 999px;
+    border: 1px solid rgba(96, 165, 250, 0.35);
+    background: rgba(59, 130, 246, 0.14);
+    color: #2563eb;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* ============================================================
+   Filters
+   ============================================================ */
+
+.oi-filter-panel {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    gap: 12px;
+    align-items: end;
+    padding: 16px 18px 18px;
+}
+
+.oi-filter-panel label {
+    display: grid;
+    gap: 7px;
+    color: var(--oi-muted);
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.085em;
+    text-transform: uppercase;
+}
+
+.oi-filter-panel select {
+    min-height: 38px;
+    border-radius: 9px;
+    border: 1px solid var(--oi-border);
+    background: var(--oi-field-bg);
+    color: var(--oi-field-text);
+    padding: 0 11px;
+    outline: none;
+    font-size: 12px;
+    font-weight: 430;
+}
+
+.oi-filter-note {
+    margin: 0 18px 18px;
+    padding: 11px 13px;
+    border-radius: 10px;
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    background: rgba(245, 158, 11, 0.10);
+    color: #d97706;
+    font-size: 12px;
+    font-weight: 520;
+}
+
+/* ============================================================
+   Badges
+   ============================================================ */
+
+.oi-state-badge,
+.oi-source-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    padding: 0 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.oi-state-scheduled,
+.oi-state-on_time {
+    border: 1px solid rgba(96, 165, 250, 0.40);
+    background: rgba(59, 130, 246, 0.16);
+    color: #1d4ed8;
+}
+
+.oi-state-in_air,
+.oi-state-landed {
+    border: 1px solid rgba(34, 197, 94, 0.40);
+    background: rgba(34, 197, 94, 0.15);
+    color: #047857;
+}
+
+.oi-state-delayed,
+.oi-state-boarding,
+.oi-state-departed {
+    border: 1px solid rgba(245, 158, 11, 0.42);
+    background: rgba(245, 158, 11, 0.14);
+    color: #b45309;
+}
+
+.oi-state-cancelled {
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.15);
+    color: #b91c1c;
+}
+
+.oi-source-api {
+    border: 1px solid rgba(96, 165, 250, 0.42);
+    background: rgba(59, 130, 246, 0.16);
+    color: #1d4ed8;
+}
+
+.oi-source-local {
+    border: 1px solid rgba(245, 158, 11, 0.42);
+    background: rgba(245, 158, 11, 0.14);
+    color: #b45309;
+}
+
+.oi-source-unknown {
+    border: 1px solid rgba(148, 163, 184, 0.32);
+    background: rgba(148, 163, 184, 0.12);
+    color: #475569;
+}
+
+/* ============================================================
+   Reports page refinement
+   ============================================================ */
+
+.oi-report-main {
+    grid-template-columns: minmax(0, 1.45fr) minmax(340px, 0.75fr);
+    align-items: stretch;
+}
+
+.oi-report-records {
+    min-height: 520px;
+}
+
+.oi-report-records .oi-section-head {
+    padding: 22px 22px 18px;
+}
+
+.oi-report-records .oi-section-head h3 {
+    font-size: 18px;
+    font-weight: 620;
+}
+
+.oi-report-records .oi-section-head p {
+    max-width: 720px;
+    line-height: 1.6;
+}
+
+.oi-report-table-shell {
+    margin: 20px 22px 24px;
+    max-height: 420px;
+    min-height: 300px;
+    overflow: auto;
+    border-radius: 12px;
+}
+
+.oi-report-table thead th {
+    padding: 14px 16px;
+    font-size: 10px;
+    font-weight: 620;
+    letter-spacing: 0.08em;
+}
+
+.oi-report-table tbody td {
+    padding: 16px;
+    font-size: 12px;
+    font-weight: 430;
+}
+
+.oi-report-table tbody td:first-child {
+    font-weight: 600;
+}
+
+.oi-report-summary .oi-section-head {
+    padding: 22px 22px 18px;
+}
+
+.oi-report-summary .oi-compact-signal-list {
+    padding: 18px 22px 22px;
+    gap: 12px;
+}
+
+.oi-report-summary .oi-compact-signal-list > div {
+    padding: 15px;
+}
+
+.oi-report-help .oi-section-head {
+    padding: 18px 22px;
+}
+
+.oi-report-help h3 {
+    font-weight: 620;
+}
+
+/* ============================================================
+   Footer
+   ============================================================ */
+
+.oi-board-footer {
+    margin: -3px 0 0;
+    color: var(--oi-muted);
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+@media (max-width: 1450px) {
+    .oi-page {
+        grid-template-columns: 236px minmax(0, 1fr);
+        gap: 14px;
+        padding: 16px 14px;
+    }
+
+    .oi-kpi-row-5 {
+        grid-template-columns: repeat(5, minmax(145px, 1fr));
+    }
+
+    .oi-kpi-card {
+        min-height: 134px;
+        padding: 14px;
+    }
+
+    .oi-kpi-card strong {
+        font-size: 26px;
+    }
+
+    .oi-kpi-trend,
+    .oi-sparkline {
+        height: 30px;
+    }
+
+    .oi-chart-box-large,
+    .oi-chart-box-tall {
+        height: 232px;
+    }
+
+    .oi-chart-box-compact {
+        height: 182px;
+    }
+
+    .oi-main-cockpit,
+    .oi-dashboard-grid {
+        grid-template-columns: 1.15fr 1fr 1fr;
+    }
+}
+
+@media (max-width: 1180px) {
+    .oi-page {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "nav"
+            "header"
+            "kpis"
+            "decisions"
+            "main"
+            "mid"
+            "lower"
+            "feed"
+            "footer";
+    }
+
+    .oi-product-nav {
+        position: relative;
+        top: auto;
+        min-height: auto;
+    }
+
+    .oi-main-cockpit,
+    .oi-mid-cockpit,
+    .oi-lower-cockpit,
+    .oi-dashboard-grid,
+    .oi-dashboard-grid-bottom,
+    .oi-decision-row,
+    .oi-briefing-grid,
+    .oi-route-card-grid,
+    .oi-filter-panel,
+    .oi-report-main {
+        grid-template-columns: 1fr;
+    }
+
+    .oi-kpi-row-5 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .oi-control-strip {
+        flex-direction: column;
+    }
+
+    .oi-control-actions {
+        flex-wrap: wrap;
+    }
+
+    .oi-filter-actions {
+        justify-content: flex-start;
+    }
+
+    .oi-report-records {
+        min-height: auto;
+    }
+
+    .oi-report-table-shell {
+        max-height: 440px;
+    }
+}
+
+@media (max-width: 720px) {
+    .oi-page {
+        padding: 10px;
+    }
+
+    .oi-kpi-row-5 {
+        grid-template-columns: 1fr;
+    }
+
+    .oi-section-head-row,
+    .oi-decision-primary {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .oi-event-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 10px 0;
+    }
+
+    .oi-control-strip h2 {
+        font-size: 22px;
+    }
+}
+/* Final compact layout */
+
+.oi-page {
+    grid-template-columns: 190px minmax(0, 1fr);
+    gap: 8px 10px;
+    padding: 10px 12px 12px;
+    font-size: 13px;
+}
+
+.oi-product-nav {
+    top: 74px;
+    min-height: calc(100vh - 84px);
+    border-radius: 11px;
+}
+
+.oi-product-nav__brand {
+    padding: 12px 12px 10px;
+}
+
+.oi-product-nav__brand span {
+    font-size: 14px;
+    letter-spacing: -0.02em;
+}
+
+.oi-product-nav__brand small {
+    margin-top: 5px;
+    font-size: 10.5px;
+    line-height: 1.3;
+}
+
+.oi-product-nav__links {
+    padding: 9px;
+    gap: 3px;
+}
+
+.oi-product-nav__links a {
+    min-height: 31px;
+    padding: 0 9px 0 25px;
+    font-size: 12px;
+    border-radius: 8px;
+}
+
+.oi-product-nav__links a::before {
+    left: 10px;
+    width: 5px;
+    height: 5px;
+}
+
+.oi-filter-block {
+    margin: 0 9px 9px;
+    padding: 9px;
+    border-radius: 10px;
+}
+
+.oi-filter-title {
+    margin-bottom: 8px;
+    font-size: 10.5px;
+}
+
+.oi-sidebar-field {
+    gap: 4px;
+    margin-bottom: 7px;
+}
+
+.oi-sidebar-field label {
+    font-size: 9px;
+}
+
+.oi-sidebar-field input,
+.oi-sidebar-field select {
+    height: 30px;
+    padding: 0 8px;
+    font-size: 11px;
+}
+
+.oi-sidebar-actions {
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.oi-sidebar-actions button,
+.oi-sidebar-actions a {
+    min-height: 31px;
+    font-size: 11px;
+}
+
+.oi-product-nav__status {
+    display: none !important;
+}
+
+.oi-control-strip {
+    gap: 10px;
+}
+
+.oi-page-eyebrow {
+    margin-bottom: 4px;
+    font-size: 9.5px;
+}
+
+.oi-control-strip h2 {
+    font-size: 22px;
+}
+
+.oi-control-strip p {
+    max-width: 760px;
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+.oi-control-actions {
+    gap: 6px;
+}
+
+.oi-update-pill,
+.oi-btn,
+.oi-mini-action,
+.oi-card-actions a,
+.oi-filter-actions button,
+.oi-filter-actions a {
+    min-height: 32px;
+    padding: 0 11px;
+    font-size: 11px;
+    border-radius: 8px;
+}
+
+.oi-kpi-row {
+    gap: 8px;
+}
+
+.oi-kpi-row-5 {
+    grid-template-columns: repeat(5, minmax(105px, 1fr));
+}
+
+.oi-kpi-card {
+    min-height: 82px;
+    grid-template-rows: auto auto 18px;
+    padding: 9px 10px;
+    gap: 5px;
+    border-radius: 11px;
+}
+
+.oi-kpi-head {
+    gap: 7px;
+}
+
+.oi-kpi-head span {
+    font-size: 8px;
+}
+
+.oi-kpi-head small {
+    font-size: 9px;
+}
+
+.oi-kpi-card strong {
+    font-size: 21px;
+}
+
+.oi-kpi-card p,
+.oi-kpi-delta {
+    display: none !important;
+}
+
+.oi-kpi-trend,
+.oi-sparkline {
+    height: 18px;
+    margin-top: 0;
+}
+
+.oi-decision-row {
+    gap: 8px;
+}
+
+.oi-decision-card {
+    min-height: 74px;
+    padding: 11px 13px;
+    gap: 5px;
+}
+
+.oi-decision-card h3,
+.oi-decision-card strong {
+    font-size: 14.5px;
+}
+
+.oi-decision-card p {
+    font-size: 11.2px;
+    line-height: 1.35;
+}
+
+.oi-kicker,
+.oi-chip,
+.oi-section-chip {
+    min-height: 20px;
+    padding: 0 8px;
+    margin-bottom: 6px;
+    font-size: 9px;
+}
+
+.oi-main-cockpit,
+.oi-mid-cockpit,
+.oi-lower-cockpit,
+.oi-dashboard-grid,
+.oi-dashboard-grid-bottom,
+.oi-report-main {
+    gap: 8px;
+}
+
+.oi-card {
+    border-radius: 11px;
+}
+
+.oi-section-head {
+    padding: 11px 14px 9px !important;
+}
+
+.oi-section-head h3 {
+    font-size: 15.5px;
+}
+
+.oi-section-head p {
+    margin-top: 4px;
+    font-size: 11.5px;
+    line-height: 1.35;
+}
+
+.oi-chart-box {
+    margin: 10px 12px 10px;
+    height: 172px;
+}
+
+.oi-chart-box-large,
+.oi-chart-box-tall {
+    height: 176px;
+}
+
+.oi-chart-box-compact {
+    height: 132px;
+}
+
+.oi-table-shell {
+    margin: 10px 12px 10px;
+    max-height: 210px;
+}
+
+.oi-table {
+    font-size: 11.2px;
+}
+
+.oi-table thead th {
+    padding: 9px 11px;
+    font-size: 9px;
+}
+
+.oi-table tbody td {
+    padding: 9px 11px;
+}
+
+.oi-state-badge,
+.oi-source-badge {
+    min-height: 21px;
+    padding: 0 8px;
+    font-size: 10px;
+}
+
+.oi-compact-events {
+    padding: 10px 12px;
+}
+
+.oi-event-row {
+    min-height: 33px;
+    grid-template-columns: 52px 76px 1fr 70px;
+    font-size: 11px;
+}
+
+.oi-report-main {
+    grid-template-columns: minmax(0, 1.6fr) minmax(285px, 0.65fr);
+}
+
+.oi-report-records {
+    min-height: 360px;
+}
+
+.oi-report-table-shell {
+    margin: 10px 14px 12px;
+    max-height: 285px;
+    min-height: 205px;
+}
+
+.oi-report-table thead th {
+    padding: 9px 12px;
+}
+
+.oi-report-table tbody td {
+    padding: 10px 12px;
+}
+
+.oi-report-help,
+.oi-board-footer {
+    display: none !important;
+}
+
+.oi-compact-signal-list {
+    gap: 7px;
+    padding: 10px 12px 12px;
+}
+
+.oi-compact-signal-list > div {
+    padding: 10px 11px;
+    border-radius: 9px;
+}
+
+.oi-compact-signal-list span {
+    font-size: 9px;
+}
+
+.oi-compact-signal-list strong {
+    margin-top: 4px;
+    font-size: 16px;
+}
+
+.oi-compact-signal-list small {
+    margin-top: 4px;
+    font-size: 11px;
+    line-height: 1.35;
+}
+
+@media (max-width: 1450px) {
+    .oi-page {
+        grid-template-columns: 185px minmax(0, 1fr);
+        gap: 8px;
+        padding: 10px;
+    }
+
+    .oi-kpi-row-5 {
+        grid-template-columns: repeat(5, minmax(105px, 1fr));
+    }
+
+    .oi-chart-box-large,
+    .oi-chart-box-tall {
+        height: 168px;
+    }
+
+    .oi-chart-box-compact {
+        height: 126px;
+    }
+}
+
+@media (max-width: 1180px) {
+    .oi-page {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "nav"
+            "header"
+            "kpis"
+            "decisions"
+            "main"
+            "mid"
+            "lower"
+            "feed"
+            "footer";
+        padding: 10px;
+    }
+
+    .oi-product-nav {
+        position: relative;
+        top: auto;
+        min-height: auto;
+    }
+
+    .oi-product-nav__links {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+
+    .oi-product-nav__links a {
+        justify-content: center;
+        padding: 0 10px;
+    }
+
+    .oi-product-nav__links a::before {
+        display: none;
+    }
+
+    .oi-main-cockpit,
+    .oi-mid-cockpit,
+    .oi-lower-cockpit,
+    .oi-dashboard-grid,
+    .oi-dashboard-grid-bottom,
+    .oi-decision-row,
+    .oi-briefing-grid,
+    .oi-route-card-grid,
+    .oi-filter-panel,
+    .oi-report-main {
+        grid-template-columns: 1fr;
+    }
+
+    .oi-kpi-row-5 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .oi-control-strip {
+        flex-direction: column;
+    }
+
+    .oi-control-actions {
+        flex-wrap: wrap;
+    }
+
+    .oi-report-records {
+        min-height: auto;
+    }
+
+    .oi-report-table-shell {
+        max-height: 420px;
+    }
+}
+
+@media (max-width: 720px) {
+    .oi-page {
+        padding: 10px;
+    }
+
+    .oi-kpi-row-5 {
+        grid-template-columns: 1fr;
+    }
+
+    .oi-product-nav__links {
+        grid-template-columns: 1fr;
+    }
+
+    .oi-section-head-row,
+    .oi-decision-primary {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .oi-event-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 10px 0;
+    }
+
+    .oi-control-strip h2 {
+        font-size: 21px;
+    }
+}

@@ -1,0 +1,134 @@
+/* =========================================================
+   FLIGHTLOGOS PUBLIC HEADER THEME FIX
+   Stabilise header readability in dark/light modes
+========================================================= */
+
+/* LIGHT MODE */
+
+html[data-theme="light"] .public-app-header {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-bottom: 1px solid rgba(203, 213, 225, 0.82) !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06) !important;
+}
+
+html[data-theme="light"] .public-app-brand-name {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .public-app-brand-copy small {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .public-app-nav a {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .public-app-nav a:hover,
+html[data-theme="light"] .public-app-nav a.active {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .language-switcher__trigger,
+html[data-theme="light"] .public-theme-toggle,
+html[data-theme="light"] .public-header-btn-secondary {
+    background: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .language-switcher__trigger i,
+html[data-theme="light"] .public-theme-toggle i {
+    color: #0f172a !important;
+}
+
+/* DARK MODE */
+
+html[data-theme="dark"] .public-app-header {
+    background: rgba(3, 13, 28, 0.96) !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18) !important;
+    box-shadow: 0 16px 38px rgba(2, 6, 23, 0.28) !important;
+}
+
+html[data-theme="dark"] .public-app-brand,
+html[data-theme="dark"] .public-app-brand:hover {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .public-app-brand-name {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .public-app-brand-copy small {
+    color: rgba(226, 232, 240, 0.78) !important;
+}
+
+html[data-theme="dark"] .public-app-nav a {
+    color: rgba(203, 213, 225, 0.78) !important;
+}
+
+html[data-theme="dark"] .public-app-nav a:hover,
+html[data-theme="dark"] .public-app-nav a.active {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .public-app-nav a.active::after,
+html[data-theme="dark"] .public-app-nav a:hover::after {
+    background: #38a8ff !important;
+}
+
+html[data-theme="dark"] .language-switcher__trigger,
+html[data-theme="dark"] .public-theme-toggle,
+html[data-theme="dark"] .public-header-btn-secondary {
+    background: rgba(15, 23, 42, 0.72) !important;
+    border-color: rgba(148, 163, 184, 0.26) !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .language-switcher__trigger span,
+html[data-theme="dark"] .language-switcher__trigger i,
+html[data-theme="dark"] .public-theme-toggle i,
+html[data-theme="dark"] .public-header-btn-secondary {
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .public-header-btn-primary {
+    background: #2563eb !important;
+    border-color: rgba(96, 165, 250, 0.42) !important;
+    color: #ffffff !important;
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.28) !important;
+}
+
+html[data-theme="dark"] .public-header-btn-primary:hover {
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+}
+
+/* LANGUAGE MENU */
+
+html[data-theme="dark"] .language-switcher__menu {
+    background: #0b1728 !important;
+    border-color: rgba(148, 163, 184, 0.22) !important;
+}
+
+html[data-theme="dark"] .language-switcher__menu button {
+    color: #f8fafc !important;
+}
+
+html[data-theme="dark"] .language-switcher__menu button:hover,
+html[data-theme="dark"] .language-switcher__menu button.is-active {
+    background: rgba(59, 130, 246, 0.16) !important;
+    color: #60a5fa !important;
+}
+
+/* MOBILE NAV */
+
+html[data-theme="dark"] .nav-toggle {
+    background: rgba(15, 23, 42, 0.72) !important;
+    border-color: rgba(148, 163, 184, 0.24) !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .public-app-nav ul {
+    background: #0b1728 !important;
+    border-color: rgba(148, 163, 184, 0.18) !important;
+}

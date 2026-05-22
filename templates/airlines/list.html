@@ -1,41 +1,271 @@
-{% extends 'base.html' %}
+﻿{% extends "base_public.html" %}
+{% load static i18n %}
 
-{% block title %}Airlines{% endblock %}
-{% block page_title %}Airlines List{% endblock %}
+{% block title %}{% trans "Airlines" %} | FlightLogos{% endblock %}
+{% block body_class %}public-airlines-body{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_airlines.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="table-box">
-    <table class="flights-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>IATA Code</th>
-                <th>ICAO Code</th>
-                <th>Country</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for airline in airlines %}
-            <tr>
-                <td>{{ airline.name }}</td>
-                <td>{{ airline.iata_code }}</td>
-                <td>{{ airline.icao_code }}</td>
-                <td>{{ airline.country }}</td>
-                <td>
-                    {% if airline.is_active %}
-                        <span class="status-badge status-landed">Active</span>
+
+{% trans "Search airlines..." as airline_search_placeholder %}
+
+<main class="airlines-page">
+    <section class="airlines-shell">
+
+        <header class="airlines-header">
+            <div class="airlines-header-copy">
+                <h1>{% trans "Airlines" %}</h1>
+
+                <p>
+                    {% trans "Manage and monitor airline partners and their operational information." %}
+                </p>
+            </div>
+        </header>
+
+        <section class="airlines-kpi-grid" aria-label="Airline indicators">
+            <article class="airlines-kpi-card airlines-kpi-total">
+                <div class="airlines-kpi-icon">
+                    <span>AL</span>
+                </div>
+
+                <div class="airlines-kpi-content">
+                    <span class="airlines-kpi-label">{% trans "Total Airlines" %}</span>
+                    <strong class="airlines-kpi-value">{{ total_airlines }}</strong>
+                    <span class="airlines-kpi-note">{% trans "All registered airlines" %}</span>
+                </div>
+            </article>
+
+            <article class="airlines-kpi-card airlines-kpi-active">
+                <div class="airlines-kpi-icon">
+                    <span>âœ“</span>
+                </div>
+
+                <div class="airlines-kpi-content">
+                    <span class="airlines-kpi-label">{% trans "Active Airlines" %}</span>
+                    <strong class="airlines-kpi-value">{{ total_active_airlines }}</strong>
+                    <span class="airlines-kpi-note">{% trans "Currently operational" %}</span>
+                </div>
+            </article>
+
+            <article class="airlines-kpi-card airlines-kpi-country">
+                <div class="airlines-kpi-icon">
+                    <span>CO</span>
+                </div>
+
+                <div class="airlines-kpi-content">
+                    <span class="airlines-kpi-label">{% trans "Countries" %}</span>
+                    <strong class="airlines-kpi-value">{{ total_countries }}</strong>
+                    <span class="airlines-kpi-note">{% trans "Connected markets" %}</span>
+                </div>
+            </article>
+
+            <article class="airlines-kpi-card airlines-kpi-flights">
+                <div class="airlines-kpi-icon">
+                    <span>FL</span>
+                </div>
+
+                <div class="airlines-kpi-content">
+                    <span class="airlines-kpi-label">{% trans "Flight Records" %}</span>
+                    <strong class="airlines-kpi-value">{{ total_flights }}</strong>
+                    <span class="airlines-kpi-note">{% trans "Across all airlines" %}</span>
+                </div>
+            </article>
+        </section>
+
+        <section class="airlines-table-card">
+            <div class="airlines-toolbar">
+                <form method="GET" class="airlines-search-form">
+                    <div class="airlines-search-box">
+                        <span class="airlines-search-icon">âŒ•</span>
+
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ query }}"
+                            placeholder="{{ airline_search_placeholder }}"
+                            aria-label="{% trans 'Search airlines' %}"
+                        >
+                    </div>
+
+                    <button type="submit" class="airlines-search-submit">
+                        {% trans "Search" %}
+                    </button>
+
+                    {% if query %}
+                        <a href="{% url 'airlines:airline_list' %}" class="airlines-reset-button">
+                            {% trans "Reset" %}
+                        </a>
                     {% else %}
-                        <span class="status-badge status-cancelled">Inactive</span>
+                        <span class="airlines-reset-button airlines-reset-disabled">
+                            {% trans "Reset" %}
+                        </span>
                     {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="5">No airlines available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+                </form>
+            </div>
+
+            <div class="airlines-table-wrap">
+                <table class="airlines-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Airline" %}</th>
+                            <th>{% trans "IATA / ICAO" %}</th>
+                            <th>{% trans "Country" %}</th>
+                            <th>{% trans "Flights" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th class="airlines-actions-column">{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for airline in airlines %}
+                            <tr>
+                                <td>
+                                    <div class="airline-main-cell">
+                                        <span class="airline-logo-mark">
+                                            {% if airline.logo %}
+                                                <img src="{{ airline.logo.url }}" alt="{{ airline.name }}">
+                                            {% else %}
+                                                <span class="airline-logo-fallback">
+                                                    {{ airline.logo_initials|default:"AL" }}
+                                                </span>
+                                            {% endif %}
+                                        </span>
+
+                                        <div class="airline-main-info">
+                                            <a href="{% url 'airlines:airline_detail' airline.pk %}" class="airline-title">
+                                                {{ airline.name }}
+                                            </a>
+
+                                            <span class="airline-subtitle">
+                                                {% if airline.iata_code or airline.icao_code %}
+                                                    {{ airline.iata_code|default:"â€”" }} Â· {{ airline.icao_code|default:"â€”" }}
+                                                {% else %}
+                                                    {% trans "Airline profile" %}
+                                                {% endif %}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="airline-code-pair">
+                                        {{ airline.iata_code|default:"â€”" }}
+                                        /
+                                        {{ airline.icao_code|default:"â€”" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if airline.country and airline.country != "Unknown" %}
+                                        <span class="airline-country">
+                                            {% if airline.country_code %}
+                                                <img
+                                                    src="https://flagcdn.com/w40/{{ airline.country_code|lower }}.png"
+                                                    alt="{{ airline.country }}"
+                                                    class="airline-flag"
+                                                    loading="lazy"
+                                                >
+                                            {% else %}
+                                                <span class="airline-country-fallback"></span>
+                                            {% endif %}
+
+                                            {{ airline.country }}
+                                        </span>
+                                    {% else %}
+                                        <span class="airline-muted-badge">
+                                            {% trans "Country not specified" %}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td>
+                                    <span class="airline-flight-number">
+                                        {{ airline.flight_count|default:"0" }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if airline.is_active %}
+                                        <span class="airline-status-pill">
+                                            <span></span>
+                                            {% trans "Active" %}
+                                        </span>
+                                    {% else %}
+                                        <span class="airline-status-pill is-inactive">
+                                            <span></span>
+                                            {% trans "Inactive" %}
+                                        </span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="airlines-actions-cell">
+                                    <details class="airline-actions-menu">
+                                        <summary aria-label="{% trans 'Airline actions' %}">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </summary>
+
+                                        <div class="airline-actions-dropdown">
+                                            <a href="{% url 'airlines:airline_detail' airline.pk %}">
+                                                {% trans "Details" %}
+                                            </a>
+                                        </div>
+                                    </details>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6">
+                                    <div class="airlines-empty">
+                                        <h3>{% trans "No airline found" %}</h3>
+                                        <p>{% trans "Try another airline name, code or country." %}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="airlines-table-footer">
+                <p>
+                    {% if paginator.count %}
+                        Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ paginator.count }} airlines
+                    {% else %}
+                        Showing 0 airlines
+                    {% endif %}
+                </p>
+
+                {% if page_obj.has_other_pages %}
+                    <div class="airlines-pagination">
+                        {% if page_obj.has_previous %}
+                            <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">
+                                â†
+                            </a>
+                        {% else %}
+                            <span class="is-disabled">â†</span>
+                        {% endif %}
+
+                        <span class="is-current">{{ page_obj.number }}</span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">
+                                â†’
+                            </a>
+                        {% else %}
+                            <span class="is-disabled">â†’</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+    </section>
+</main>
+
 {% endblock %}
+

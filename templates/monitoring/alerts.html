@@ -1,0 +1,1327 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}Operational Alerts | FlightLogos{% endblock %}
+
+{% block content %}
+
+<style>
+    .alerts-page {
+        --bg: #07111d;
+        --bg-soft: #0b1624;
+        --surface: #101d2c;
+        --surface-soft: #132236;
+        --surface-muted: #0b1624;
+        --border: rgba(148, 163, 184, 0.18);
+        --border-strong: rgba(96, 165, 250, 0.46);
+        --text: #f8fafc;
+        --text-soft: #cbd5e1;
+        --text-muted: #94a3b8;
+        --blue: #3b82f6;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --purple: #a855f7;
+        --shadow: 0 18px 45px rgba(0, 0, 0, 0.22);
+
+        min-height: calc(100vh - 74px);
+        padding: 18px 24px 28px;
+        color: var(--text);
+        background:
+            radial-gradient(circle at top left, rgba(239, 68, 68, 0.10), transparent 30%),
+            linear-gradient(135deg, var(--bg), var(--bg-soft));
+    }
+
+    body.theme-light .alerts-page {
+        --bg: #eaf0f8;
+        --bg-soft: #dbe5f1;
+        --surface: #ffffff;
+        --surface-soft: #f8fbff;
+        --surface-muted: #eef4fc;
+        --border: rgba(100, 116, 139, 0.24);
+        --border-strong: rgba(37, 99, 235, 0.44);
+        --text: #0f172a;
+        --text-soft: #1e293b;
+        --text-muted: #475569;
+        --blue: #2563eb;
+        --green: #047857;
+        --amber: #b45309;
+        --red: #b91c1c;
+        --purple: #6d28d9;
+        --shadow: 0 16px 38px rgba(15, 23, 42, 0.10);
+    }
+
+    .alerts-shell {
+        max-width: 1700px;
+        margin: 0 auto;
+        display: grid;
+        gap: 14px;
+    }
+
+    .alerts-header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 18px;
+    }
+
+    .alerts-header h1 {
+        margin: 0;
+        color: var(--text);
+        font-size: 26px;
+        line-height: 1.1;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+    }
+
+    .alerts-header p {
+        margin: 7px 0 0;
+        color: var(--text-muted);
+        font-size: 14px;
+        line-height: 1.45;
+        font-weight: 500;
+    }
+
+    .alerts-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .alerts-clock {
+        display: grid;
+        gap: 2px;
+        min-width: 110px;
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+    }
+
+    .alerts-clock strong {
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .alerts-clock span {
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .alerts-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 0 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+        color: var(--text-soft);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.16s ease;
+        white-space: nowrap;
+    }
+
+    .alerts-btn:hover {
+        border-color: var(--border-strong);
+        color: var(--blue);
+        transform: translateY(-1px);
+    }
+
+    .alerts-btn-danger {
+        color: #fca5a5;
+        border-color: rgba(239, 68, 68, 0.38);
+        background: rgba(239, 68, 68, 0.14);
+    }
+
+    body.theme-light .alerts-btn-danger {
+        color: #b91c1c;
+        background: #fee2e2;
+        border-color: rgba(185, 28, 28, 0.24);
+    }
+
+    .alerts-btn-primary {
+        color: #ffffff;
+        border-color: #2563eb;
+        background: #2563eb;
+    }
+
+    .alerts-btn-primary:hover {
+        color: #ffffff;
+        background: #1d4ed8;
+    }
+
+    .alerts-kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .alerts-kpi {
+        display: grid;
+        grid-template-columns: 48px minmax(0, 1fr);
+        align-items: center;
+        gap: 13px;
+        min-height: 82px;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        color: var(--text);
+        text-decoration: none;
+        box-shadow: var(--shadow);
+        transition: 0.16s ease;
+    }
+
+    .alerts-kpi:hover {
+        border-color: var(--border-strong);
+        transform: translateY(-2px);
+    }
+
+    .kpi-icon {
+        display: grid;
+        place-items: center;
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        font-size: 19px;
+    }
+
+    .kpi-icon.red {
+        color: #f87171;
+        background: rgba(239, 68, 68, 0.16);
+    }
+
+    .kpi-icon.amber {
+        color: #fbbf24;
+        background: rgba(245, 158, 11, 0.18);
+    }
+
+    .kpi-icon.blue {
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.16);
+    }
+
+    .kpi-icon.green {
+        color: #86efac;
+        background: rgba(34, 197, 94, 0.15);
+    }
+
+    body.theme-light .kpi-icon.red {
+        color: #b91c1c;
+        background: #fee2e2;
+    }
+
+    body.theme-light .kpi-icon.amber {
+        color: #b45309;
+        background: #ffedd5;
+    }
+
+    body.theme-light .kpi-icon.blue {
+        color: #1d4ed8;
+        background: #dbeafe;
+    }
+
+    body.theme-light .kpi-icon.green {
+        color: #047857;
+        background: #d1fae5;
+    }
+
+    .kpi-copy span {
+        display: block;
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .kpi-copy strong {
+        display: inline-block;
+        margin-top: 4px;
+        color: var(--text);
+        font-size: 26px;
+        line-height: 1;
+        font-weight: 800;
+    }
+
+    .kpi-copy small {
+        display: inline-block;
+        margin-left: 8px;
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .alerts-main {
+        display: grid;
+        grid-template-columns: minmax(320px, 0.9fr) minmax(430px, 1fr) minmax(360px, 0.9fr);
+        gap: 14px;
+        align-items: stretch;
+    }
+
+    .alerts-panel {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+    }
+
+    .panel-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        min-height: 72px;
+        gap: 14px;
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-soft);
+    }
+
+    .panel-head h2 {
+        margin: 0;
+        color: var(--text);
+        font-size: 18px;
+        line-height: 1.2;
+        font-weight: 750;
+        letter-spacing: -0.025em;
+    }
+
+    .panel-head p {
+        margin: 6px 0 0;
+        color: var(--text-muted);
+        font-size: 12px;
+        line-height: 1.45;
+        font-weight: 500;
+    }
+
+    .alert-queue {
+        display: grid;
+        gap: 8px;
+        padding: 13px;
+        height: 338px;
+        overflow-y: auto;
+    }
+
+    .alert-queue::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .alert-queue::-webkit-scrollbar-thumb {
+        background: rgba(148, 163, 184, 0.30);
+        border-radius: 999px;
+    }
+
+    .alert-row {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface-muted);
+        cursor: pointer;
+        transition: 0.16s ease;
+    }
+
+    body.theme-light .alert-row {
+        background: #f8fbff;
+    }
+
+    .alert-row:hover,
+    .alert-row.is-selected {
+        border-color: var(--border-strong);
+        background: rgba(37, 99, 235, 0.12);
+        transform: translateY(-1px);
+    }
+
+    body.theme-light .alert-row:hover,
+    body.theme-light .alert-row.is-selected {
+        background: #eaf3ff;
+    }
+
+    .alert-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+    }
+
+    .alert-dot.red {
+        background: var(--red);
+    }
+
+    .alert-dot.amber {
+        background: var(--amber);
+    }
+
+    .alert-dot.blue {
+        background: var(--blue);
+    }
+
+    .alert-info strong {
+        display: block;
+        color: var(--text);
+        font-size: 15px;
+        line-height: 1.15;
+        font-weight: 700;
+    }
+
+    .alert-info span {
+        display: block;
+        margin-top: 5px;
+        color: var(--text-muted);
+        font-size: 12px;
+        line-height: 1.3;
+        font-weight: 500;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 25px;
+        padding: 4px 9px;
+        border-radius: 8px;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.035em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .badge-red {
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.42);
+        background: rgba(239, 68, 68, 0.16);
+    }
+
+    .badge-amber {
+        color: #fdba74;
+        border: 1px solid rgba(249, 115, 22, 0.38);
+        background: rgba(249, 115, 22, 0.16);
+    }
+
+    .badge-blue {
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.34);
+        background: rgba(59, 130, 246, 0.12);
+    }
+
+    .badge-green {
+        color: #86efac;
+        border: 1px solid rgba(34, 197, 94, 0.30);
+        background: rgba(34, 197, 94, 0.12);
+    }
+
+    .badge-gray {
+        color: #cbd5e1;
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        background: rgba(148, 163, 184, 0.10);
+    }
+
+    body.theme-light .badge-red {
+        color: #b91c1c;
+        border-color: rgba(185, 28, 28, 0.24);
+        background: #fee2e2;
+    }
+
+    body.theme-light .badge-amber {
+        color: #92400e;
+        border-color: rgba(180, 83, 9, 0.24);
+        background: #fef3c7;
+    }
+
+    body.theme-light .badge-blue {
+        color: #1d4ed8;
+        border-color: rgba(37, 99, 235, 0.24);
+        background: #dbeafe;
+    }
+
+    body.theme-light .badge-green {
+        color: #047857;
+        border-color: rgba(4, 120, 87, 0.24);
+        background: #d1fae5;
+    }
+
+    body.theme-light .badge-gray {
+        color: #334155;
+        border-color: rgba(100, 116, 139, 0.22);
+        background: #f1f5f9;
+    }
+
+    .selected-alert-body {
+        padding: 16px 18px 18px;
+    }
+
+    .selected-alert-top {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 13px;
+    }
+
+    .selected-alert-title strong {
+        display: block;
+        color: var(--text);
+        font-size: 25px;
+        line-height: 1.08;
+        font-weight: 800;
+        letter-spacing: -0.035em;
+    }
+
+    .selected-alert-title span {
+        display: block;
+        margin-top: 6px;
+        color: var(--text-muted);
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .alert-message {
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface-muted);
+        margin-bottom: 12px;
+    }
+
+    body.theme-light .alert-message {
+        background: #f8fbff;
+    }
+
+    .alert-message span {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--text-muted);
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .alert-message p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 13px;
+        line-height: 1.55;
+        font-weight: 500;
+    }
+
+    .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .detail-box {
+        min-height: 64px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface-muted);
+    }
+
+    body.theme-light .detail-box {
+        background: #f8fbff;
+    }
+
+    .detail-box span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--text-muted);
+        font-size: 10px;
+        font-weight: 650;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+    }
+
+    .detail-box strong {
+        display: block;
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.3;
+        font-weight: 650;
+    }
+
+    .lifecycle {
+        margin-top: 14px;
+        padding-top: 13px;
+        border-top: 1px solid var(--border);
+    }
+
+    .lifecycle h3 {
+        margin: 0 0 11px;
+        color: var(--text);
+        font-size: 15px;
+        font-weight: 750;
+    }
+
+    .lifecycle-steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+    }
+
+    .lifecycle-step {
+        display: grid;
+        place-items: center;
+        gap: 7px;
+        text-align: center;
+    }
+
+    .lifecycle-step i {
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        color: #ffffff;
+        font-style: normal;
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .lifecycle-step.red i {
+        background: var(--red);
+    }
+
+    .lifecycle-step.amber i {
+        background: var(--amber);
+    }
+
+    .lifecycle-step.blue i {
+        background: var(--blue);
+    }
+
+    .lifecycle-step.green i {
+        background: var(--green);
+    }
+
+    .lifecycle-step span {
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 500;
+    }
+
+    .actions-list {
+        display: grid;
+        gap: 8px;
+        padding: 13px;
+    }
+
+    .action-row {
+        display: grid;
+        grid-template-columns: 23px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        min-height: 61px;
+        padding: 11px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface-muted);
+        transition: 0.16s ease;
+    }
+
+    body.theme-light .action-row {
+        background: #f8fbff;
+    }
+
+    .action-row:hover {
+        border-color: var(--border-strong);
+        background: rgba(37, 99, 235, 0.12);
+    }
+
+    body.theme-light .action-row:hover {
+        background: #eaf3ff;
+    }
+
+    .action-dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+    }
+
+    .action-dot.red {
+        background: var(--red);
+    }
+
+    .action-dot.amber {
+        background: var(--amber);
+    }
+
+    .action-dot.blue {
+        background: var(--blue);
+    }
+
+    .action-dot.green {
+        background: var(--green);
+    }
+
+    .action-content strong {
+        display: block;
+        color: var(--text);
+        font-size: 14px;
+        line-height: 1.15;
+        font-weight: 700;
+    }
+
+    .action-content span {
+        display: block;
+        margin-top: 4px;
+        color: var(--text-muted);
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 500;
+    }
+
+    .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 0 11px;
+        border: 1px solid var(--border-strong);
+        border-radius: 7px;
+        background: rgba(59, 130, 246, 0.10);
+        color: #93c5fd;
+        font-size: 12px;
+        font-weight: 650;
+        text-decoration: none;
+        transition: 0.16s ease;
+    }
+
+    .action-btn:hover {
+        background: #2563eb;
+        color: #ffffff;
+        transform: translateY(-1px);
+    }
+
+    body.theme-light .action-btn {
+        color: #1d4ed8;
+        background: #eff6ff;
+    }
+
+    .alerts-bottom {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+        gap: 14px;
+    }
+
+    .source-list {
+        display: grid;
+        gap: 13px;
+        padding: 15px 18px 18px;
+    }
+
+    .source-row {
+        display: grid;
+        grid-template-columns: 150px minmax(0, 1fr) 46px;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .source-row span {
+        color: var(--text-muted);
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .source-bar {
+        height: 12px;
+        border-radius: 999px;
+        background: var(--surface-muted);
+        overflow: hidden;
+    }
+
+    .source-bar i {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+    }
+
+    .source-bar.red i {
+        width: 42%;
+        background: var(--red);
+    }
+
+    .source-bar.amber i {
+        width: 28%;
+        background: var(--amber);
+    }
+
+    .source-bar.blue i {
+        width: 18%;
+        background: var(--blue);
+    }
+
+    .source-bar.green i {
+        width: 12%;
+        background: var(--green);
+    }
+
+    .source-row strong {
+        color: var(--text-soft);
+        font-size: 12px;
+        font-weight: 650;
+        text-align: right;
+    }
+
+    .copilot-box {
+        display: grid;
+        gap: 12px;
+        padding: 15px 18px 18px;
+    }
+
+    .copilot-question,
+    .copilot-response {
+        padding: 14px;
+        border: 1px solid var(--border-strong);
+        border-radius: 10px;
+        background: var(--surface-muted);
+    }
+
+    body.theme-light .copilot-question,
+    body.theme-light .copilot-response {
+        background: #f8fbff;
+    }
+
+    .copilot-question span {
+        color: var(--text-soft);
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .copilot-response b {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--text-muted);
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+    }
+
+    .copilot-response p {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 13px;
+        line-height: 1.55;
+        font-weight: 500;
+    }
+
+    .footer-note {
+        margin: 3px 0 0;
+        color: var(--text-muted);
+        text-align: center;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .empty-state {
+        padding: 24px;
+        color: var(--text-muted);
+        text-align: center;
+        font-weight: 500;
+    }
+
+    @media (max-width: 1360px) {
+        .alerts-main,
+        .alerts-bottom {
+            grid-template-columns: 1fr;
+        }
+
+        .alert-queue {
+            height: auto;
+            max-height: 360px;
+        }
+    }
+
+    @media (max-width: 1020px) {
+        .alerts-kpis {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .alerts-header {
+            grid-template-columns: 1fr;
+        }
+
+        .alerts-actions {
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .alerts-page {
+            padding: 18px 14px 28px;
+        }
+
+        .alerts-kpis,
+        .detail-grid,
+        .lifecycle-steps {
+            grid-template-columns: 1fr;
+        }
+
+        .action-row {
+            grid-template-columns: 23px minmax(0, 1fr);
+        }
+
+        .action-btn {
+            grid-column: 2;
+            width: fit-content;
+        }
+
+        .source-row {
+            grid-template-columns: 1fr;
+        }
+
+        .source-row strong {
+            text-align: left;
+        }
+    }
+</style>
+
+<section class="alerts-page">
+    <div class="alerts-shell">
+
+        <header class="alerts-header">
+            <div>
+                <h1>Operational Alerts</h1>
+                <p>Centralized detection, classification and handling of operational monitoring signals.</p>
+            </div>
+
+            <div class="alerts-actions">
+                <span class="alerts-clock">
+                    <strong id="alertsClock">--:--</strong>
+                    <span>UTC Â· Live monitoring</span>
+                </span>
+
+                <a href="{% url 'monitoring:monitoring_home' %}" class="alerts-btn alerts-btn-danger">
+                    Acknowledge View
+                </a>
+
+                <a href="{% url 'monitoring:monitoring_critical' %}" class="alerts-btn">
+                    Recovery
+                </a>
+            </div>
+        </header>
+
+        <section class="alerts-kpis">
+            <a href="#alertQueue" class="alerts-kpi">
+                <span class="kpi-icon red">
+                    <i class="bi bi-bell-fill"></i>
+                </span>
+                <span class="kpi-copy">
+                    <span>Active alerts</span>
+                    <strong>{{ alerts|length|default:"0" }}</strong>
+                    <small>open cases</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_critical' %}" class="alerts-kpi">
+                <span class="kpi-icon red">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </span>
+                <span class="kpi-copy">
+                    <span>Disruption score</span>
+                    <strong>{{ disruption_score|default:"0" }}</strong>
+                    <small>requires review</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_home' %}?status=delayed" class="alerts-kpi">
+                <span class="kpi-icon amber">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+                <span class="kpi-copy">
+                    <span>Delayed flights</span>
+                    <strong>{{ delayed_count|default:"0" }}</strong>
+                    <small>operator attention</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_home' %}?status=cancelled" class="alerts-kpi">
+                <span class="kpi-icon green">
+                    <i class="bi bi-check-lg"></i>
+                </span>
+                <span class="kpi-copy">
+                    <span>Cancelled flights</span>
+                    <strong>{{ cancelled_count|default:"0" }}</strong>
+                    <small>recovery review</small>
+                </span>
+            </a>
+        </section>
+
+        <section class="alerts-main">
+
+            <section class="alerts-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>Alert Queue</h2>
+                        <p>Operational alerts currently surfaced by the monitoring workspace.</p>
+                    </div>
+
+                    <span class="badge badge-gray">Severity</span>
+                </header>
+
+                <div class="alert-queue" id="alertQueue">
+                    {% for alert in alerts %}
+                        <article
+                            class="alert-row {% if forloop.first %}is-selected{% endif %}"
+                            data-title="{{ alert.title }}"
+                            data-description="{{ alert.description }}"
+                            data-level="{{ alert.level|default:'normal' }}"
+                            data-number="ALR-{{ forloop.counter|stringformat:'04d' }}"
+                        >
+                            {% if alert.level == "high" %}
+                                <span class="alert-dot red"></span>
+                            {% elif alert.level == "medium" %}
+                                <span class="alert-dot amber"></span>
+                            {% else %}
+                                <span class="alert-dot blue"></span>
+                            {% endif %}
+
+                            <span class="alert-info">
+                                <strong>ALR-{{ forloop.counter|stringformat:"04d" }} Â· {{ alert.title }}</strong>
+                                <span>{{ alert.description }}</span>
+                            </span>
+
+                            {% if alert.level == "high" %}
+                                <span class="badge badge-red">Critical</span>
+                            {% elif alert.level == "medium" %}
+                                <span class="badge badge-amber">Medium</span>
+                            {% else %}
+                                <span class="badge badge-blue">Normal</span>
+                            {% endif %}
+                        </article>
+                    {% empty %}
+                        <div class="empty-state">
+                            No active alerts are currently visible.
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section class="alerts-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>Selected Alert Details</h2>
+                        <p>Current alert selected from the operational queue.</p>
+                    </div>
+
+                    <span id="selectedAlertBadge" class="badge badge-amber">Medium</span>
+                </header>
+
+                <div class="selected-alert-body">
+                    <div class="selected-alert-top">
+                        <div class="selected-alert-title">
+                            <strong id="selectedAlertNumber">â€”</strong>
+                            <span id="selectedAlertTitle">â€”</span>
+                        </div>
+
+                        <span id="selectedAlertLevel" class="badge badge-amber">â€”</span>
+                    </div>
+
+                    <div class="alert-message">
+                        <span>Alert message</span>
+                        <p id="selectedAlertDescription">Select an alert to display its operational details.</p>
+                    </div>
+
+                    <div class="detail-grid">
+                        <div class="detail-box">
+                            <span>Alert level</span>
+                            <strong id="selectedAlertLevelText">â€”</strong>
+                        </div>
+
+                        <div class="detail-box">
+                            <span>Detection layer</span>
+                            <strong>Monitoring workspace</strong>
+                        </div>
+
+                        <div class="detail-box">
+                            <span>Current posture</span>
+                            <strong>
+                                {% if alert_level_display %}
+                                    {{ alert_level_display }}
+                                {% elif alert_level %}
+                                    {{ alert_level }}
+                                {% else %}
+                                    Normal
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                        <div class="detail-box">
+                            <span>Alert reason</span>
+                            <strong>
+                                {% if alert_reason %}
+                                    {{ alert_reason }}
+                                {% else %}
+                                    No dominant alert reason available.
+                                {% endif %}
+                            </strong>
+                        </div>
+                    </div>
+
+                    <div class="lifecycle">
+                        <h3>Alert lifecycle</h3>
+
+                        <div class="lifecycle-steps">
+                            <div class="lifecycle-step red">
+                                <i>1</i>
+                                <span>Detect</span>
+                            </div>
+
+                            <div class="lifecycle-step amber">
+                                <i>2</i>
+                                <span>Classify</span>
+                            </div>
+
+                            <div class="lifecycle-step blue">
+                                <i>3</i>
+                                <span>Assign</span>
+                            </div>
+
+                            <div class="lifecycle-step green">
+                                <i>4</i>
+                                <span>Resolve</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="alerts-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>Classification & Actions</h2>
+                        <p>Operator actions connected to the selected alert.</p>
+                    </div>
+                </header>
+
+                <div class="actions-list">
+                    <article class="action-row">
+                        <span class="action-dot red"></span>
+                        <span class="action-content">
+                            <strong>Acknowledge alert</strong>
+                            <span>Confirm that the operator has reviewed the signal.</span>
+                        </span>
+                        <a href="{% url 'monitoring:monitoring_home' %}" class="action-btn">Ack</a>
+                    </article>
+
+                    <article class="action-row">
+                        <span class="action-dot blue"></span>
+                        <span class="action-content">
+                            <strong>Open Control Desk</strong>
+                            <span>Inspect the flight table and current operational status.</span>
+                        </span>
+                        <a href="{% url 'monitoring:monitoring_home' %}" class="action-btn">Open</a>
+                    </article>
+
+                    <article class="action-row">
+                        <span class="action-dot amber"></span>
+                        <span class="action-content">
+                            <strong>Create recovery case</strong>
+                            <span>Move to Recovery Handling for delayed or cancelled flights.</span>
+                        </span>
+                        <a href="{% url 'monitoring:monitoring_critical' %}" class="action-btn">Create</a>
+                    </article>
+
+                    <article class="action-row">
+                        <span class="action-dot green"></span>
+                        <span class="action-content">
+                            <strong>Open flight map</strong>
+                            <span>Check whether the signal has route or corridor exposure.</span>
+                        </span>
+                        <a href="{% url 'monitoring:flight_map' %}" class="action-btn">Map</a>
+                    </article>
+                </div>
+            </section>
+
+        </section>
+
+        <section class="alerts-bottom">
+
+            <section class="alerts-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>Alert Sources</h2>
+                        <p>Operational signal sources used by the monitoring workspace.</p>
+                    </div>
+                </header>
+
+                <div class="source-list">
+                    <div class="source-row">
+                        <span>Monitoring engine</span>
+                        <div class="source-bar red"><i></i></div>
+                        <strong>Primary</strong>
+                    </div>
+
+                    <div class="source-row">
+                        <span>Data Sync</span>
+                        <div class="source-bar amber"><i></i></div>
+                        <strong>External</strong>
+                    </div>
+
+                    <div class="source-row">
+                        <span>Flight Map</span>
+                        <div class="source-bar blue"><i></i></div>
+                        <strong>Spatial</strong>
+                    </div>
+
+                    <div class="source-row">
+                        <span>Operational Copilot</span>
+                        <div class="source-bar green"><i></i></div>
+                        <strong>Support</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="alerts-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>Operational Copilot Support</h2>
+                        <p>Decision support wording for the selected alert.</p>
+                    </div>
+                </header>
+
+                <div class="copilot-box">
+                    <div class="copilot-question">
+                        <span id="copilotQuestion">Why is this alert important?</span>
+                    </div>
+
+                    <div class="copilot-response">
+                        <b>Copilot explanation</b>
+                        <p id="copilotResponse">
+                            Select an alert to display an operational explanation.
+                        </p>
+                    </div>
+
+                    <a href="/copilot/" class="alerts-btn alerts-btn-primary">
+                        Open Operational Copilot
+                    </a>
+                </div>
+            </section>
+
+        </section>
+
+        <p class="footer-note">
+            Operational Alerts centralizes critical signals, classifies them and routes them to control or recovery workflows.
+        </p>
+
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const alertsClock = document.getElementById("alertsClock");
+
+        function updateAlertsClock() {
+            if (!alertsClock) {
+                return;
+            }
+
+            const now = new Date();
+            const hours = String(now.getUTCHours()).padStart(2, "0");
+            const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+
+            alertsClock.textContent = `${hours}:${minutes}`;
+        }
+
+        updateAlertsClock();
+        setInterval(updateAlertsClock, 1000);
+
+        const alertRows = Array.from(document.querySelectorAll(".alert-row"));
+
+        const selectedAlertNumber = document.getElementById("selectedAlertNumber");
+        const selectedAlertTitle = document.getElementById("selectedAlertTitle");
+        const selectedAlertBadge = document.getElementById("selectedAlertBadge");
+        const selectedAlertLevel = document.getElementById("selectedAlertLevel");
+        const selectedAlertDescription = document.getElementById("selectedAlertDescription");
+        const selectedAlertLevelText = document.getElementById("selectedAlertLevelText");
+        const copilotQuestion = document.getElementById("copilotQuestion");
+        const copilotResponse = document.getElementById("copilotResponse");
+
+        function normalizeLevel(level) {
+            if (level === "high") {
+                return {
+                    text: "Critical",
+                    badge: "badge-red",
+                    explanation: "This alert needs immediate review because it can affect recovery handling, operational visibility or disruption supervision."
+                };
+            }
+
+            if (level === "medium") {
+                return {
+                    text: "Medium",
+                    badge: "badge-amber",
+                    explanation: "This alert requires operator attention. Review the signal, confirm the operational context and keep the related flights visible."
+                };
+            }
+
+            return {
+                text: "Normal",
+                badge: "badge-blue",
+                explanation: "This alert is currently informational. Keep it visible, but prioritize stronger disruption signals first."
+            };
+        }
+
+        function updateSelectedAlert(row) {
+            if (!row) {
+                return;
+            }
+
+            const level = row.dataset.level || "normal";
+            const levelData = normalizeLevel(level);
+            const number = row.dataset.number || "ALR-0000";
+            const title = row.dataset.title || "Operational alert";
+            const description = row.dataset.description || "No alert description available.";
+
+            alertRows.forEach(item => item.classList.remove("is-selected"));
+            row.classList.add("is-selected");
+
+            selectedAlertNumber.textContent = number;
+            selectedAlertTitle.textContent = title;
+            selectedAlertDescription.textContent = description;
+            selectedAlertLevelText.textContent = levelData.text;
+
+            selectedAlertBadge.className = `badge ${levelData.badge}`;
+            selectedAlertLevel.className = `badge ${levelData.badge}`;
+
+            selectedAlertBadge.textContent = levelData.text;
+            selectedAlertLevel.textContent = levelData.text;
+
+            copilotQuestion.textContent = `Why is ${number} important?`;
+            copilotResponse.textContent = `${title}: ${levelData.explanation}`;
+        }
+
+        alertRows.forEach(row => {
+            row.addEventListener("click", function () {
+                updateSelectedAlert(row);
+            });
+        });
+
+        const firstAlert = document.querySelector(".alert-row.is-selected") || alertRows[0];
+
+        if (firstAlert) {
+            updateSelectedAlert(firstAlert);
+        }
+    });
+</script>
+
+{% endblock %}
+

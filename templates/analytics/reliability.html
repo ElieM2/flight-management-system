@@ -1,0 +1,237 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Data Confidence" %} | {% trans "Operational Intelligence" %}{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Operational Intelligence" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Data source confidence for operational supervision." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/operational_intelligence.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="oi-page">
+    {% include 'analytics/includes/intelligence_nav.html' %}
+
+    <section class="oi-control-strip">
+        <div>
+            <span class="oi-page-eyebrow">{% trans "Data confidence" %}</span>
+            <h2>{% trans "Data Confidence" %}</h2>
+            <p>
+                {% trans "Verify the origin of flight records before using them for reporting or operational supervision." %}
+            </p>
+        </div>
+
+        <div class="oi-control-actions">
+            <a href="{% url 'analytics:home' %}" class="oi-btn oi-btn-light">
+                {% trans "Back to overview" %}
+            </a>
+
+            <a href="{% url 'analytics:reports' %}" class="oi-btn oi-btn-primary">
+                {% trans "Open reports" %}
+            </a>
+        </div>
+    </section>
+
+    <section class="oi-decision-row">
+        <article class="oi-decision-card oi-decision-primary">
+            <div>
+                <span class="oi-kicker">{% trans "Main reading" %}</span>
+                <h3>{% trans "Source visibility matters" %}</h3>
+                <p>
+                    {% trans "The system separates synchronized records, local records and records with unknown origin." %}
+                </p>
+            </div>
+
+            <a href="{% url 'analytics:reports' %}?focus=sources" class="oi-mini-action">
+                {% trans "View records" %}
+            </a>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "API coverage" %}</span>
+            <strong>{{ data_coverage_rate }}%</strong>
+            <p>{% trans "Share of synchronized records." %}</p>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Unknown source" %}</span>
+            <strong>{{ unknown_source_count }}</strong>
+            <p>{% trans "Records that should be verified." %}</p>
+        </article>
+    </section>
+
+    <section class="oi-lower-cockpit">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Source balance" %}</span>
+                <h3>{% trans "API, local and unknown records" %}</h3>
+                <p>
+                    {% trans "Source composition of the current operational dataset." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-tall">
+                <canvas id="reliabilitySourceChart"></canvas>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Source summary" %}</span>
+                <h3>{% trans "Current data composition" %}</h3>
+                <p>
+                    {% trans "Short reading of record origin and data confidence." %}
+                </p>
+            </div>
+
+            <div class="oi-compact-signal-list">
+                <div>
+                    <span>{% trans "API synchronized" %}</span>
+                    <strong>{{ api_count }}</strong>
+                    <small>{% trans "Records imported from external aviation data sources." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Local records" %}</span>
+                    <strong>{{ local_count }}</strong>
+                    <small>{% trans "Manual or controlled records used for supervision." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Unknown source" %}</span>
+                    <strong>{{ unknown_source_count }}</strong>
+                    <small>{% trans "Records requiring source verification." %}</small>
+                </div>
+            </div>
+        </article>
+    </section>
+</section>
+
+{{ source_labels|json_script:"source-labels-data" }}
+{{ source_values|json_script:"source-values-data" }}
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('select[data-current-value]').forEach(function (select) {
+        const currentValue = select.dataset.currentValue || '';
+
+        if (currentValue) {
+            select.value = currentValue;
+        }
+    });
+
+    function readJson(id) {
+        const node = document.getElementById(id);
+
+        if (!node) {
+            return [];
+        }
+
+        try {
+            return JSON.parse(node.textContent);
+        } catch (error) {
+            return [];
+        }
+    }
+
+    function hasValues(values) {
+        return Array.isArray(values) && values.some(function (value) {
+            return Number(value) > 0;
+        });
+    }
+
+    const chartText = '#8fa4bc';
+    const gridColor = 'rgba(148, 163, 184, 0.16)';
+
+    const normalFont = {
+        family: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        size: 11,
+        weight: '400'
+    };
+
+    const sourceLabels = readJson('source-labels-data');
+    const sourceValues = readJson('source-values-data');
+    const canvas = document.getElementById('reliabilitySourceChart');
+
+    if (typeof Chart === 'undefined') {
+        return;
+    }
+
+    Chart.defaults.font.family = normalFont.family;
+    Chart.defaults.font.size = 11;
+    Chart.defaults.font.weight = '400';
+    Chart.defaults.color = chartText;
+    Chart.defaults.borderColor = gridColor;
+
+    if (canvas && hasValues(sourceValues)) {
+        new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                labels: sourceLabels,
+                datasets: [{
+                    data: sourceValues,
+                    backgroundColor: [
+                        '#3b82f6',
+                        '#64748b',
+                        '#94a3b8'
+                    ],
+                    borderColor: 'transparent',
+                    borderWidth: 0,
+                    spacing: 3,
+                    hoverOffset: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                cutout: '68%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: chartText,
+                            boxWidth: 9,
+                            boxHeight: 9,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 14,
+                            font: normalFont
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: '#0b1a2a',
+                        titleColor: '#eaf3ff',
+                        bodyColor: '#b8c8dc',
+                        borderColor: 'rgba(96, 165, 250, 0.35)',
+                        borderWidth: 1,
+                        titleFont: {
+                            family: normalFont.family,
+                            size: 12,
+                            weight: '500'
+                        },
+                        bodyFont: {
+                            family: normalFont.family,
+                            size: 12,
+                            weight: '400'
+                        }
+                    }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
+

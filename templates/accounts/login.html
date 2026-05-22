@@ -1,0 +1,61 @@
+﻿{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Connexion | FlightLogos{% endblock %}
+
+{% block content %}
+<section class="auth-page">
+    <div class="auth-page-background"></div>
+    <div class="auth-page-overlay"></div>
+
+    <div class="public-container auth-page-container">
+        <div class="auth-card auth-card-centered">
+            <div class="auth-card-header">
+                <span class="auth-eyebrow">Private access</span>
+                <h1>Login</h1>
+                <p>Access your private aviation monitoring workspace.</p>
+            </div>
+
+            <form method="post" class="auth-form" novalidate>
+                {% csrf_token %}
+
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                {% endif %}
+
+                <div class="auth-form-grid">
+                    <div class="auth-form-group">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                            <div class="auth-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="{{ form.password.id_for_label }}">Password</label>
+                        {{ form.password }}
+                        {% for error in form.password.errors %}
+                            <div class="auth-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div class="auth-form-error">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="auth-actions">
+                    <button type="submit" class="auth-submit-btn">Login</button>
+                    <a href="{% url 'accounts:register' %}" class="auth-secondary-btn">Create account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

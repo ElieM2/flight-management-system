@@ -1,0 +1,186 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Reports" %} | {% trans "Operational Intelligence" %}{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Operational Intelligence" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Filtered flight records for operational review." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/operational_intelligence.css' %}">
+{% endblock %}
+
+{% block content %}
+{% trans "Unknown airline" as unknown_airline %}
+{% trans "Unknown" as unknown_label %}
+
+<section class="oi-page">
+    {% include 'analytics/includes/intelligence_nav.html' %}
+
+    <section class="oi-control-strip">
+        <div>
+            <span class="oi-page-eyebrow">{% trans "Reports" %}</span>
+            <h2>{% trans "Flight Reports" %}</h2>
+            <p>
+                {% trans "Review operational records, verify their state and identify flights that require attention before opening the map." %}
+            </p>
+        </div>
+
+        <div class="oi-control-actions">
+            <a href="{% url 'analytics:home' %}" class="oi-btn oi-btn-light">
+                {% trans "Back to overview" %}
+            </a>
+
+            <a href="/monitoring/map/" class="oi-btn oi-btn-primary">
+                {% trans "Open map" %}
+            </a>
+        </div>
+    </section>
+
+    <section class="oi-decision-row">
+        <article class="oi-decision-card oi-decision-primary">
+            <div>
+                <span class="oi-kicker">{% trans "Current reading" %}</span>
+                <h3>{{ monitoring_mode }}</h3>
+                <p>{{ report_narrative }}</p>
+            </div>
+
+            <a href="{% url 'analytics:routes' %}" class="oi-mini-action">
+                {% trans "Check routes" %}
+            </a>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Delayed flights" %}</span>
+            <strong>{{ delayed_count }}</strong>
+            <p>
+                {% blocktrans with rate=delay_rate %}
+                    {{ rate }}% of the current operating picture.
+                {% endblocktrans %}
+            </p>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Cancelled flights" %}</span>
+            <strong>{{ cancelled_count }}</strong>
+            <p>
+                {% blocktrans with rate=cancellation_rate %}
+                    {{ rate }}% require recovery reading.
+                {% endblocktrans %}
+            </p>
+        </article>
+    </section>
+
+    <section class="oi-lower-cockpit oi-report-main">
+        <article class="oi-card oi-report-records">
+            <div class="oi-section-head oi-section-head-row">
+                <div>
+                    <span class="oi-kicker">{% trans "Records" %}</span>
+                    <h3>{% trans "Flight records" %}</h3>
+                    <p>
+                        {% trans "Filtered flight records with airline, route, operational state and data source." %}
+                    </p>
+                </div>
+
+                <a href="/monitoring/map/" class="oi-btn oi-btn-light">
+                    {% trans "Open flight map" %}
+                </a>
+            </div>
+
+            <div class="oi-table-shell oi-report-table-shell">
+                <table class="oi-table oi-table-wide oi-report-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Flight" %}</th>
+                            <th>{% trans "Airline" %}</th>
+                            <th>{% trans "Route" %}</th>
+                            <th>{% trans "State" %}</th>
+                            <th>{% trans "Source" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for flight in recent_flights %}
+                            <tr class="oi-click-row">
+                                <td>{{ flight.flight_number }}</td>
+
+                                <td>{{ flight.airline.name|default:unknown_airline }}</td>
+
+                                <td>
+                                    {{ flight.origin_airport.iata_code|default:"--" }}
+                                    â†’
+                                    {{ flight.destination_airport.iata_code|default:"--" }}
+                                </td>
+
+                                <td>
+                                    <span class="oi-state-badge oi-state-{{ flight.status }}">
+                                        {{ flight.get_status_display|default:flight.status }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="oi-source-badge oi-source-{{ flight.source_type|default:'unknown'|lower }}">
+                                        {% if flight.source_type == "api" %}
+                                            API
+                                        {% elif flight.source_type == "local" %}
+                                            {% trans "Local" %}
+                                        {% else %}
+                                            {{ unknown_label }}
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5">{% trans "No records match the selected filters." %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="oi-card oi-report-summary">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Summary" %}</span>
+                <h3>{% trans "Current operating picture" %}</h3>
+                <p>
+                    {% trans "Key reading extracted from the current flight records." %}
+                </p>
+            </div>
+
+            <div class="oi-compact-signal-list">
+                <div>
+                    <span>{% trans "Visible records" %}</span>
+                    <strong>{{ total_flights }}</strong>
+                    <small>{% trans "Flights currently available for review." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Most active airline" %}</span>
+                    <strong>{{ most_active_airline }}</strong>
+                    <small>{% trans "Carrier with the strongest visible activity." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Priority route" %}</span>
+                    <strong>{{ busiest_route }}</strong>
+                    <small>{% trans "Route to check first if pressure increases." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "API coverage" %}</span>
+                    <strong>{{ data_coverage_rate }}%</strong>
+                    <small>{% trans "Share of synchronized records." %}</small>
+                </div>
+            </div>
+        </article>
+    </section>
+</section>
+{% endblock %}
+

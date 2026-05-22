@@ -1,57 +1,316 @@
-{% extends 'base.html' %}
+﻿{% extends 'base_public.html' %}
+{% load static i18n %}
 
-{% block title %}Flights{% endblock %}
-{% block page_title %}Flights List{% endblock %}
+{% block title %}{% trans "Flights" %} | FlightLogos{% endblock %}
+{% block body_class %}public-flights-body{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_flights.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="table-box">
-    <table class="flights-table">
-        <thead>
-            <tr>
-                <th>Flight Number</th>
-                <th>Airline</th>
-                <th>Aircraft</th>
-                <th>Origin</th>
-                <th>Destination</th>
-                <th>Departure</th>
-                <th>Arrival</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for flight in flights %}
-            <tr>
-                <td>{{ flight.flight_number }}</td>
-                <td>{{ flight.airline.name }}</td>
-                <td>
-                    {% if flight.aircraft %}
-                        {{ flight.aircraft.registration_number }}
-                    {% else %}
-                        -
-                    {% endif %}
-                </td>
-                <td>{{ flight.origin_airport.iata_code }}</td>
-                <td>{{ flight.destination_airport.iata_code }}</td>
-                <td>{{ flight.scheduled_departure|date:"Y-m-d H:i" }}</td>
-                <td>{{ flight.scheduled_arrival|date:"Y-m-d H:i" }}</td>
-                <td>
-                    <span class="status-badge status-{{ flight.status }}">
-                        {{ flight.get_status_display }}
-                    </span>
-                </td>
-                <td>
-                    <a href="{% url 'flight_detail' flight.pk %}" class="btn-link">
-                        View
+
+{% trans "Search flights..." as flight_search_placeholder %}
+{% trans "Unknown airline" as unknown_airline %}
+{% trans "Not assigned" as not_assigned %}
+
+<main class="flights-page">
+    <section class="flights-shell">
+
+        <header class="flights-header">
+            <div class="flights-header-copy">
+                <p class="flights-kicker">{% trans "Flights" %}</p>
+
+                <h1>{% trans "Flights" %}</h1>
+
+                <p>
+                    {% trans "Manage and monitor scheduled, active and disrupted flights across the network." %}
+                </p>
+            </div>
+
+            <a href="{% url 'monitoring:flight_map' %}" class="flights-map-link">
+                {% trans "Open Map" %}
+            </a>
+        </header>
+
+        <section class="flights-kpi-grid" aria-label="Flight indicators">
+            <article class="flights-kpi-card flights-kpi-total">
+                <div class="flights-kpi-icon">
+                    <span>âœˆ</span>
+                </div>
+
+                <div class="flights-kpi-content">
+                    <span class="flights-kpi-label">{% trans "Total Flights" %}</span>
+                    <strong class="flights-kpi-value">{{ total_flights }}</strong>
+                    <span class="flights-kpi-note">{% trans "All tracked flights" %}</span>
+                </div>
+            </article>
+
+            <article class="flights-kpi-card flights-kpi-active">
+                <div class="flights-kpi-icon">
+                    <span>â—‰</span>
+                </div>
+
+                <div class="flights-kpi-content">
+                    <span class="flights-kpi-label">{% trans "Active Flights" %}</span>
+                    <strong class="flights-kpi-value">{{ active_flights_count }}</strong>
+                    <span class="flights-kpi-note">{% trans "Currently in operation" %}</span>
+                </div>
+            </article>
+
+            <article class="flights-kpi-card flights-kpi-delayed">
+                <div class="flights-kpi-icon">
+                    <span>!</span>
+                </div>
+
+                <div class="flights-kpi-content">
+                    <span class="flights-kpi-label">{% trans "Delayed Flights" %}</span>
+                    <strong class="flights-kpi-value">{{ delayed_count }}</strong>
+                    <span class="flights-kpi-note">{% trans "Requiring attention" %}</span>
+                </div>
+            </article>
+
+            <article class="flights-kpi-card flights-kpi-performance">
+                <div class="flights-kpi-icon">
+                    <span>%</span>
+                </div>
+
+                <div class="flights-kpi-content">
+                    <span class="flights-kpi-label">{% trans "On-Time Performance" %}</span>
+                    <strong class="flights-kpi-value">{{ on_time_rate }}%</strong>
+                    <span class="flights-kpi-note">{% trans "Based on visible records" %}</span>
+                </div>
+            </article>
+        </section>
+
+        <section class="flights-board-card">
+            <form method="GET" class="flights-toolbar">
+                <div class="flights-search">
+                    <span class="flights-search-icon">âŒ•</span>
+                    <input
+                        type="text"
+                        name="q"
+                        value="{{ query }}"
+                        placeholder="{{ flight_search_placeholder }}"
+                    >
+                </div>
+
+                <div class="flights-toolbar-actions">
+                    <select name="status" class="flights-select">
+                        <option value="" {% if not selected_status %}selected{% endif %}>
+                            {% trans "All statuses" %}
+                        </option>
+                        <option value="scheduled" {% if selected_status == 'scheduled' %}selected{% endif %}>
+                            {% trans "Scheduled" %}
+                        </option>
+                        <option value="boarding" {% if selected_status == 'boarding' %}selected{% endif %}>
+                            {% trans "Boarding" %}
+                        </option>
+                        <option value="departed" {% if selected_status == 'departed' %}selected{% endif %}>
+                            {% trans "Departed" %}
+                        </option>
+                        <option value="in_air" {% if selected_status == 'in_air' %}selected{% endif %}>
+                            {% trans "In Air" %}
+                        </option>
+                        <option value="landed" {% if selected_status == 'landed' %}selected{% endif %}>
+                            {% trans "Landed" %}
+                        </option>
+                        <option value="delayed" {% if selected_status == 'delayed' %}selected{% endif %}>
+                            {% trans "Delayed" %}
+                        </option>
+                        <option value="cancelled" {% if selected_status == 'cancelled' %}selected{% endif %}>
+                            {% trans "Cancelled" %}
+                        </option>
+                    </select>
+
+                    <select name="source_type" class="flights-select flights-source-select">
+                        <option value="" {% if not selected_source_type %}selected{% endif %}>
+                            {% trans "All sources" %}
+                        </option>
+                        <option value="api" {% if selected_source_type == 'api' %}selected{% endif %}>
+                            {% trans "API" %}
+                        </option>
+                        <option value="local" {% if selected_source_type == 'local' %}selected{% endif %}>
+                            {% trans "Local" %}
+                        </option>
+                    </select>
+
+                    <button type="submit" class="flights-submit-btn">
+                        {% trans "Apply" %}
+                    </button>
+
+                    <a href="{% url 'flights:flight_list' %}" class="flights-reset-btn">
+                        {% trans "Reset" %}
                     </a>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="9">No flights available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+                </div>
+            </form>
+
+            <div class="flights-table-wrap">
+                <table class="flights-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Flight" %}</th>
+                            <th>{% trans "Route" %}</th>
+                            <th>{% trans "Airline" %}</th>
+                            <th>{% trans "Aircraft" %}</th>
+                            <th>{% trans "Schedule" %}</th>
+                            <th>{% trans "Status" %}</th>
+                            <th>{% trans "Source" %}</th>
+                            <th class="flights-actions-column">{% trans "Actions" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for flight in flights %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'flights:flight_detail' flight.pk %}" class="flight-code">
+                                        <span class="flight-plane-icon">âœˆ</span>
+                                        <span>{{ flight.flight_number }}</span>
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <span class="flight-route">
+                                        {% if flight.origin_airport %}
+                                            {{ flight.origin_airport.city|default:flight.origin_airport.iata_code }}
+                                            ({{ flight.origin_airport.iata_code|default:"--" }})
+                                        {% else %}
+                                            â€”
+                                        {% endif %}
+
+                                        <small>â†’</small>
+
+                                        {% if flight.destination_airport %}
+                                            {{ flight.destination_airport.city|default:flight.destination_airport.iata_code }}
+                                            ({{ flight.destination_airport.iata_code|default:"--" }})
+                                        {% else %}
+                                            â€”
+                                        {% endif %}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="flight-airline">
+                                        <span class="flight-airline-logo">
+                                            {% if flight.airline.logo %}
+                                                <img src="{{ flight.airline.logo.url }}" alt="{{ flight.airline.name }}">
+                                            {% else %}
+                                                {{ flight.airline.logo_initials|default:"AL" }}
+                                            {% endif %}
+                                        </span>
+
+                                        <span class="flight-airline-name">
+                                            {{ flight.airline.name|default:unknown_airline }}
+                                        </span>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="flight-aircraft">
+                                        {% if flight.aircraft %}
+                                            {{ flight.aircraft.model|default:not_assigned }}
+                                        {% else %}
+                                            â€”
+                                        {% endif %}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="flight-time">
+                                        {% if flight.scheduled_departure %}
+                                            {{ flight.scheduled_departure|date:"H:i" }}
+                                        {% else %}
+                                            â€”
+                                        {% endif %}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="flight-status status-{{ flight.status }}">
+                                        {{ flight.get_status_display }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    {% if flight.source_type == 'api' %}
+                                        <span class="flight-source is-api">{% trans "API" %}</span>
+                                    {% elif flight.source_type == 'local' %}
+                                        <span class="flight-source is-local">{% trans "Local" %}</span>
+                                    {% else %}
+                                        <span class="flight-source is-unknown">{% trans "Unknown" %}</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="flights-actions-cell">
+                                    <details class="flight-actions-menu">
+                                        <summary aria-label="{% trans 'Flight actions' %}">
+                                            <span></span>
+                                            <span></span>
+                                            <span></span>
+                                        </summary>
+
+                                        <div class="flight-actions-dropdown">
+                                            <a href="{% url 'flights:flight_detail' flight.pk %}">
+                                                {% trans "Details" %}
+                                            </a>
+
+                                            <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">
+                                                {% trans "Map" %}
+                                            </a>
+                                        </div>
+                                    </details>
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="8">
+                                    <div class="flights-empty">
+                                        <h3>{% trans "No flights found" %}</h3>
+                                        <p>{% trans "Try another flight number, airport, airline, route, status or source." %}</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <footer class="flights-footer">
+                <p>
+                    {% if page_obj.paginator.count > 0 %}
+                        {% blocktrans trimmed with start=page_obj.start_index end=page_obj.end_index total=page_obj.paginator.count %}
+                            Showing {{ start }} to {{ end }} of {{ total }} flights
+                        {% endblocktrans %}
+                    {% else %}
+                        {% trans "Showing 0 flights" %}
+                    {% endif %}
+                </p>
+
+                <div class="flights-pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?q={{ query }}&status={{ selected_status }}&source_type={{ selected_source_type }}&page={{ page_obj.previous_page_number }}">
+                            â†
+                        </a>
+                    {% else %}
+                        <span class="is-disabled">â†</span>
+                    {% endif %}
+
+                    <span class="is-current">{{ page_obj.number }}</span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?q={{ query }}&status={{ selected_status }}&source_type={{ selected_source_type }}&page={{ page_obj.next_page_number }}">
+                            â†’
+                        </a>
+                    {% else %}
+                        <span class="is-disabled">â†’</span>
+                    {% endif %}
+                </div>
+            </footer>
+        </section>
+
+    </section>
+</main>
+
 {% endblock %}
+

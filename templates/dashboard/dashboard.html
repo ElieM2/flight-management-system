@@ -1,0 +1,744 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Operations Center" %} | FlightLogos{% endblock %}
+
+{% block dashboard_title %}{% trans "Operations Center" %}{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Global operational overview of flights, disruptions, data readiness and monitoring priorities." %}
+{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<section class="ops-center">
+    <div class="ops-shell">
+
+        <header class="ops-header">
+            <div>
+                <h1>{% trans "Operations Center" %}</h1>
+                <p>
+                    {% trans "Command view for flight supervision, disruption pressure, route visibility and data readiness." %}
+                </p>
+            </div>
+
+            <div class="ops-header-actions">
+                <span class="ops-clock">
+                    <strong id="opsClock">--:--:--</strong>
+                    <span>UTC Â· {% trans "Live overview" %}</span>
+                </span>
+
+                <a href="{% url 'monitoring:monitoring_home' %}" class="ops-btn ops-btn-primary">
+                    {% trans "Open Control Desk" %}
+                </a>
+
+                {% if critical_count %}
+                    <a href="{% url 'monitoring:monitoring_critical' %}" class="ops-btn ops-btn-danger">
+                        {% trans "Recovery Handling" %}
+                    </a>
+                {% else %}
+                    <a href="{% url 'monitoring:flight_map' %}" class="ops-btn">
+                        {% trans "Flight Map" %}
+                    </a>
+                {% endif %}
+            </div>
+        </header>
+
+        <section class="ops-kpis">
+            <a href="/flights/" class="ops-kpi">
+                <span class="kpi-icon blue">
+                    <i class="bi bi-airplane-fill"></i>
+                </span>
+
+                <span class="kpi-copy">
+                    <span>{% trans "Total flights" %}</span>
+                    <strong>{{ total_flights|default:0 }}</strong>
+                    <small>{% trans "Records in platform" %}</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_live' %}" class="ops-kpi">
+                <span class="kpi-icon green">
+                    <i class="bi bi-radar"></i>
+                </span>
+
+                <span class="kpi-copy">
+                    <span>{% trans "Active flights" %}</span>
+                    <strong>{{ active_flights|default:0 }}</strong>
+                    <small>{{ active_rate|default:"0" }}% {% trans "active share" %}</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_home' %}?status=delayed" class="ops-kpi">
+                <span class="kpi-icon amber">
+                    <i class="bi bi-clock-history"></i>
+                </span>
+
+                <span class="kpi-copy">
+                    <span>{% trans "Delayed" %}</span>
+                    <strong>{{ delayed_count|default:0 }}</strong>
+                    <small>{{ delay_rate|default:"0" }}% {% trans "delay rate" %}</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_home' %}?status=cancelled" class="ops-kpi">
+                <span class="kpi-icon red">
+                    <i class="bi bi-x-circle-fill"></i>
+                </span>
+
+                <span class="kpi-copy">
+                    <span>{% trans "Cancelled" %}</span>
+                    <strong>{{ cancelled_count|default:0 }}</strong>
+                    <small>{{ cancellation_rate|default:"0" }}% {% trans "cancellation rate" %}</small>
+                </span>
+            </a>
+
+            <a href="{% url 'monitoring:monitoring_critical' %}" class="ops-kpi">
+                <span class="kpi-icon purple">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </span>
+
+                <span class="kpi-copy">
+                    <span>{% trans "Critical flights" %}</span>
+                    <strong>{{ critical_count|default:0 }}</strong>
+                    <small>{% trans "Cancelled and high-risk records" %}</small>
+                </span>
+            </a>
+        </section>
+
+        <section class="ops-primary-grid">
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Operational Summary" %}</h2>
+                        <p>{% trans "Current system snapshot generated from the flight dataset." %}</p>
+                    </div>
+                </header>
+
+                <div class="summary-list">
+                    <div class="summary-row">
+                        <span class="summary-icon green">
+                            <i class="bi bi-airplane-engines-fill"></i>
+                        </span>
+                        <span>{% trans "In air" %}</span>
+                        <strong>{{ in_air_count|default:0 }}</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-icon blue">
+                            <i class="bi bi-check2-circle"></i>
+                        </span>
+                        <span>{% trans "Stable records" %}</span>
+                        <strong>{{ stable_count|default:0 }}</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-icon amber">
+                            <i class="bi bi-hourglass-split"></i>
+                        </span>
+                        <span>{% trans "Delay pressure" %}</span>
+                        <strong>{{ delay_rate|default:"0" }}%</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-icon red">
+                            <i class="bi bi-exclamation-octagon"></i>
+                        </span>
+                        <span>{% trans "Critical share" %}</span>
+                        <strong>{{ critical_rate|default:"0" }}%</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-icon blue">
+                            <i class="bi bi-cloud-arrow-down"></i>
+                        </span>
+                        <span>{% trans "API synchronized" %}</span>
+                        <strong>{{ api_flights|default:0 }}</strong>
+                    </div>
+
+                    <div class="summary-row">
+                        <span class="summary-icon green">
+                            <i class="bi bi-database-check"></i>
+                        </span>
+                        <span>{% trans "Local records" %}</span>
+                        <strong>{{ local_flights|default:0 }}</strong>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Operations Situation Board" %}</h2>
+                        <p>{% trans "Decision view of pressure, route exposure and next operational action." %}</p>
+                    </div>
+
+                    <a href="{% url 'monitoring:flight_map' %}" class="ops-btn">
+                        {% trans "Open flight map" %}
+                    </a>
+                </header>
+
+                <div class="situation-board">
+                    <div class="situation-content">
+
+                        <div class="situation-main">
+                            <article class="situation-command">
+                                <div>
+                                    <div class="situation-topline">
+                                        <span class="situation-label">
+                                            <i class="bi bi-activity"></i>
+                                            {% trans "Operational posture" %}
+                                        </span>
+
+                                        {% if critical_count %}
+                                            <b class="situation-priority-badge is-critical">{% trans "High" %}</b>
+                                        {% elif delayed_count %}
+                                            <b class="situation-priority-badge is-watch">{% trans "Watch" %}</b>
+                                        {% else %}
+                                            <b class="situation-priority-badge">{% trans "Stable" %}</b>
+                                        {% endif %}
+                                    </div>
+
+                                    {% if critical_count %}
+                                        <h3 class="situation-heading">{% trans "Recovery attention required" %}</h3>
+                                        <p class="situation-description">
+                                            {% trans "Irregular operations are visible. Recovery cases should be reviewed before routine monitoring." %}
+                                        </p>
+                                    {% elif delayed_count %}
+                                        <h3 class="situation-heading">{% trans "Attention monitoring active" %}</h3>
+                                        <p class="situation-description">
+                                            {% trans "Delayed flights are adding operational pressure. Keep attention cases visible until the picture stabilizes." %}
+                                        </p>
+                                    {% else %}
+                                        <h3 class="situation-heading">{% trans "Operations remain stable" %}</h3>
+                                        <p class="situation-description">
+                                            {% trans "No critical recovery case is currently visible. Continue routine operational supervision." %}
+                                        </p>
+                                    {% endif %}
+                                </div>
+
+                                <div class="situation-corridor">
+                                    <div>
+                                        <span>{% trans "Priority corridor" %}</span>
+                                        <strong>{{ most_used_route_label|default:_("No route data") }}</strong>
+                                    </div>
+
+                                    <a href="{% url 'monitoring:flight_map' %}">
+                                        {% trans "Check map" %}
+                                    </a>
+                                </div>
+                            </article>
+
+                            <div class="situation-kpi-grid">
+                                <article class="situation-kpi">
+                                    <span>{% trans "Live traffic" %}</span>
+                                    <strong>{{ active_flights|default:0 }}</strong>
+                                    <small>{% trans "Flights currently requiring visibility" %}</small>
+                                </article>
+
+                                <article class="situation-kpi">
+                                    <span>{% trans "Irregular ops" %}</span>
+                                    <strong>{{ irregular_ops_count|default:0 }}</strong>
+                                    <small>{% trans "Critical and attention records" %}</small>
+                                </article>
+
+                                <article class="situation-kpi">
+                                    <span>{% trans "Sync coverage" %}</span>
+                                    <strong>{{ api_rate|default:"0" }}%</strong>
+                                    <small>{% trans "Flights synchronized from API sources" %}</small>
+                                </article>
+
+                                <article class="situation-kpi">
+                                    <span>{% trans "Local records" %}</span>
+                                    <strong>{{ local_flights|default:0 }}</strong>
+                                    <small>{% trans "Manually maintained flight records" %}</small>
+                                </article>
+                            </div>
+                        </div>
+
+                        <article class="situation-recommendation">
+                            <span>
+                                <span>{% trans "Recommended next step" %}</span>
+
+                                {% if critical_count %}
+                                    <strong>{% trans "Review recovery cases first. Open the map only if route exposure or airport concentration must be confirmed." %}</strong>
+                                {% elif delayed_count %}
+                                    <strong>{% trans "Keep attention cases visible. Review delayed flights before switching to routine overview." %}</strong>
+                                {% else %}
+                                    <strong>{% trans "Maintain normal monitoring. Use the map for route visibility and the Control Desk for record review." %}</strong>
+                                {% endif %}
+                            </span>
+
+                            {% if critical_count %}
+                                <a href="{% url 'monitoring:monitoring_critical' %}">
+                                    {% trans "Open recovery" %}
+                                </a>
+                            {% elif delayed_count %}
+                                <a href="{% url 'monitoring:monitoring_home' %}?status=delayed">
+                                    {% trans "Open attention" %}
+                                </a>
+                            {% else %}
+                                <a href="{% url 'monitoring:monitoring_home' %}">
+                                    {% trans "Open desk" %}
+                                </a>
+                            {% endif %}
+                        </article>
+
+                    </div>
+                </div>
+            </section>
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Warnings" %}</h2>
+                        <p>{% trans "Operational signals from current traffic and source coverage." %}</p>
+                    </div>
+
+                    <a href="{% url 'monitoring:monitoring_alerts' %}" class="ops-btn">
+                        {% trans "View all" %}
+                    </a>
+                </header>
+
+                <div class="alert-list">
+                    {% for insight in command_insights %}
+                        <article class="alert-item">
+                            {% if forloop.counter == 1 and critical_count %}
+                                <span class="alert-icon red">
+                                    <i class="bi bi-exclamation-triangle-fill"></i>
+                                </span>
+                            {% elif forloop.counter == 1 and delayed_count %}
+                                <span class="alert-icon amber">
+                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                </span>
+                            {% else %}
+                                <span class="alert-icon blue">
+                                    <i class="bi bi-info-circle-fill"></i>
+                                </span>
+                            {% endif %}
+
+                            <span class="alert-copy">
+                                <strong>{% trans "Signal" %} {{ forloop.counter|stringformat:"02d" }}</strong>
+                                <span>{{ insight }}</span>
+                            </span>
+
+                            <span class="alert-meta">
+                                <small>{% trans "Live" %}</small>
+                                <a href="{% url 'monitoring:monitoring_alerts' %}">
+                                    {% trans "Review" %}
+                                </a>
+                            </span>
+                        </article>
+                    {% empty %}
+                        <div class="empty-state">
+                            {% trans "No warning signal is currently available." %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+        </section>
+
+        <section class="ops-secondary-grid">
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Disruption Mix" %}</h2>
+                        <p>{% trans "Real distribution generated from current flight statuses." %}</p>
+                    </div>
+                </header>
+
+                <div class="chart-body">
+                    <div class="real-chart-wrap">
+                        <div class="chart-canvas-box">
+                            <canvas
+                                id="disruptionChart"
+                                data-delayed="{{ delayed_count|default:0 }}"
+                                data-cancelled="{{ cancelled_count|default:0 }}"
+                                data-stable="{{ stable_count|default:0 }}"
+                                data-active="{{ active_flights|default:0 }}"
+                            ></canvas>
+
+                            <div class="chart-center-label">
+                                <span>
+                                    <strong>{{ critical_count|default:0 }}</strong>
+                                    <span>{% trans "critical" %}</span>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="legend-list">
+                            <div class="legend-row">
+                                <i style="background:#f59e0b;"></i>
+                                <span>{% trans "Delayed flights" %}</span>
+                                <strong>{{ delayed_count|default:0 }}</strong>
+                            </div>
+
+                            <div class="legend-row">
+                                <i style="background:#dc2626;"></i>
+                                <span>{% trans "Cancelled flights" %}</span>
+                                <strong>{{ cancelled_count|default:0 }}</strong>
+                            </div>
+
+                            <div class="legend-row">
+                                <i style="background:#059669;"></i>
+                                <span>{% trans "Stable records" %}</span>
+                                <strong>{{ stable_count|default:0 }}</strong>
+                            </div>
+
+                            <div class="legend-row">
+                                <i style="background:#2563eb;"></i>
+                                <span>{% trans "Active flights" %}</span>
+                                <strong>{{ active_flights|default:0 }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Data Coverage" %}</h2>
+                        <p>{% trans "Dataset distribution between synchronized and local records." %}</p>
+                    </div>
+                </header>
+
+                <div class="chart-body">
+                    <div class="bar-chart">
+                        <div class="bar-row">
+                            <span>{% trans "API flights" %}</span>
+                            <div class="bar-track">
+                                <div class="bar-fill js-bar-fill" data-width="{{ api_rate|default:0 }}"></div>
+                            </div>
+                            <strong>{{ api_rate|default:"0" }}%</strong>
+                        </div>
+
+                        <div class="bar-row">
+                            <span>{% trans "Local flights" %}</span>
+                            <div class="bar-track">
+                                <div class="bar-fill js-bar-fill" data-width="{{ local_rate|default:0 }}"></div>
+                            </div>
+                            <strong>{{ local_rate|default:"0" }}%</strong>
+                        </div>
+
+                        <div class="bar-row">
+                            <span>{% trans "Active share" %}</span>
+                            <div class="bar-track">
+                                <div class="bar-fill js-bar-fill" data-width="{{ active_rate|default:0 }}"></div>
+                            </div>
+                            <strong>{{ active_rate|default:"0" }}%</strong>
+                        </div>
+
+                        <div class="bar-row">
+                            <span>{% trans "Critical share" %}</span>
+                            <div class="bar-track">
+                                <div class="bar-fill js-bar-fill" data-width="{{ critical_rate|default:0 }}"></div>
+                            </div>
+                            <strong>{{ critical_rate|default:"0" }}%</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Reference Coverage" %}</h2>
+                        <p>{% trans "Core aviation objects connected to the platform." %}</p>
+                    </div>
+                </header>
+
+                <div class="chart-body">
+                    <div class="coverage-list">
+                        <div class="coverage-row">
+                            <strong>{% trans "Airlines" %}</strong>
+                            <span class="coverage-track">
+                                <i style="width: 72%;"></i>
+                            </span>
+                            <small>{{ total_airlines|default:0 }}</small>
+                        </div>
+
+                        <div class="coverage-row">
+                            <strong>{% trans "Airports" %}</strong>
+                            <span class="coverage-track">
+                                <i style="width: 88%;"></i>
+                            </span>
+                            <small>{{ total_airports|default:0 }}</small>
+                        </div>
+
+                        <div class="coverage-row">
+                            <strong>{% trans "Aircraft" %}</strong>
+                            <span class="coverage-track">
+                                <i style="width: 58%;"></i>
+                            </span>
+                            <small>{{ total_aircraft|default:0 }}</small>
+                        </div>
+
+                        <div class="coverage-row">
+                            <strong>{% trans "Route" %}</strong>
+                            <span class="coverage-track">
+                                <i style="width: 66%;"></i>
+                            </span>
+                            <small>{{ most_used_route_label|default:"â€”" }}</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+        <section class="ops-final-grid">
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Recent Operational Events" %}</h2>
+                        <p>{% trans "Most recent flight records available in the platform." %}</p>
+                    </div>
+
+                    <a href="{% url 'monitoring:monitoring_home' %}" class="ops-btn">
+                        {% trans "Open flight board" %}
+                    </a>
+                </header>
+
+                <div class="events-table-wrap">
+                    <table class="events-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Time" %}</th>
+                                <th>{% trans "Flight" %}</th>
+                                <th>{% trans "Route" %}</th>
+                                <th>{% trans "Airline" %}</th>
+                                <th>{% trans "Status" %}</th>
+                                <th>{% trans "Access" %}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for flight in recent_flights %}
+                                <tr>
+                                    <td>{{ flight.scheduled_departure|date:"H:i"|default:"--:--" }}</td>
+
+                                    <td>
+                                        <a href="{% url 'flights:flight_detail' flight.pk %}" class="flight-link">
+                                            {{ flight.flight_number }}
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <span class="route-pill">
+                                            {{ flight.origin_airport.iata_code|default:"--" }}
+                                            â†’
+                                            {{ flight.destination_airport.iata_code|default:"--" }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ flight.airline.name|default:_("Unknown airline") }}</td>
+
+                                    <td>
+                                        {% if flight.status == "cancelled" %}
+                                            <span class="badge badge-red">{% trans "Cancelled" %}</span>
+                                        {% elif flight.status == "delayed" %}
+                                            <span class="badge badge-amber">{% trans "Delayed" %}</span>
+                                        {% elif flight.status == "in_air" %}
+                                            <span class="badge badge-green">{% trans "In air" %}</span>
+                                        {% elif flight.status == "landed" %}
+                                            <span class="badge badge-blue">{% trans "Landed" %}</span>
+                                        {% else %}
+                                            <span class="badge badge-blue">{{ flight.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <span class="row-actions">
+                                            <a href="{% url 'monitoring:monitoring_home' %}?flight={{ flight.pk }}#selected-flight">
+                                                {% trans "Control" %}
+                                            </a>
+
+                                            <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">
+                                                {% trans "Map" %}
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="empty-state">
+                                            {% trans "No recent flight record is currently available." %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="ops-panel">
+                <header class="panel-head">
+                    <div>
+                        <h2>{% trans "Operational Readiness" %}</h2>
+                        <p>{% trans "System readiness based on available records and module coverage." %}</p>
+                    </div>
+                </header>
+
+                <div class="readiness-body">
+                    <div class="readiness-ring">
+                        <canvas id="readinessChart" data-ready="92"></canvas>
+
+                        <div class="readiness-center">
+                            <span>
+                                <strong>92%</strong>
+                                <span>{% trans "ready" %}</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="readiness-list">
+                        <div class="readiness-row">
+                            <i></i>
+                            <span>{% trans "Monitoring workspace" %}</span>
+                            <strong>{% trans "Ready" %}</strong>
+                        </div>
+
+                        <div class="readiness-row">
+                            <i></i>
+                            <span>{% trans "Flight registry" %}</span>
+                            <strong>{% trans "Ready" %}</strong>
+                        </div>
+
+                        <div class="readiness-row">
+                            <i></i>
+                            <span>{% trans "Data synchronization" %}</span>
+                            <strong>{{ source_mode|default:_("Ready") }}</strong>
+                        </div>
+
+                        <div class="readiness-row">
+                            <i></i>
+                            <span>{% trans "Operational map" %}</span>
+                            <strong>{% trans "Ready" %}</strong>
+                        </div>
+
+                        <div class="readiness-row">
+                            <i></i>
+                            <span>{% trans "Operational Copilot" %}</span>
+                            <strong>{% trans "Support" %}</strong>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </section>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const opsClock = document.getElementById("opsClock");
+
+        function updateOpsClock() {
+            if (!opsClock) {
+                return;
+            }
+
+            const now = new Date();
+            const hours = String(now.getUTCHours()).padStart(2, "0");
+            const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+            const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+
+            opsClock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        updateOpsClock();
+        window.setInterval(updateOpsClock, 1000);
+
+        document.querySelectorAll(".js-bar-fill").forEach(function (bar) {
+            const rawValue = Number(bar.dataset.width || 0);
+            const safeValue = Math.max(0, Math.min(100, rawValue));
+
+            bar.style.width = `${safeValue}%`;
+        });
+
+        const disruptionCanvas = document.getElementById("disruptionChart");
+
+        if (disruptionCanvas && window.Chart) {
+            const delayed = Number(disruptionCanvas.dataset.delayed || 0);
+            const cancelled = Number(disruptionCanvas.dataset.cancelled || 0);
+            const stable = Number(disruptionCanvas.dataset.stable || 0);
+            const active = Number(disruptionCanvas.dataset.active || 0);
+
+            new Chart(disruptionCanvas, {
+                type: "doughnut",
+                data: {
+                    labels: ["Delayed", "Cancelled", "Stable", "Active"],
+                    datasets: [
+                        {
+                            data: [delayed, cancelled, stable, active],
+                            backgroundColor: ["#f59e0b", "#dc2626", "#059669", "#2563eb"],
+                            borderWidth: 0,
+                            cutout: "62%"
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    }
+                }
+            });
+        }
+
+        const readinessCanvas = document.getElementById("readinessChart");
+
+        if (readinessCanvas && window.Chart) {
+            const ready = Number(readinessCanvas.dataset.ready || 0);
+            const missing = Math.max(0, 100 - ready);
+
+            new Chart(readinessCanvas, {
+                type: "doughnut",
+                data: {
+                    labels: ["Ready", "Remaining"],
+                    datasets: [
+                        {
+                            data: [ready, missing],
+                            backgroundColor: ["#059669", "rgba(148, 163, 184, 0.22)"],
+                            borderWidth: 0,
+                            cutout: "68%"
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
+

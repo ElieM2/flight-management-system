@@ -1,0 +1,307 @@
+﻿{% extends "base_public.html" %}
+{% load static %}
+
+{% block title %}{{ aircraft.registration_number }} | FlightLogos{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_aircraft_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="aircraft-detail-page">
+    <header class="aircraft-detail-header">
+        <div class="aircraft-detail-breadcrumb">
+            <a href="{% url 'aircraft:aircraft_list' %}">Aircraft</a>
+            <span>/</span>
+            <span>{{ aircraft.registration_number }}</span>
+        </div>
+
+        <div class="aircraft-detail-header-main">
+            <div>
+                <h1>{{ aircraft.registration_number }}</h1>
+                <p>
+                    Aircraft operational profile, fleet assignment, capacity and linked flight activity.
+                </p>
+            </div>
+
+            <div class="aircraft-detail-header-actions">
+                <a href="{% url 'aircraft:aircraft_list' %}" class="aircraft-detail-secondary-action">
+                    Back to Aircraft
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="aircraft-profile-card">
+        <div class="aircraft-profile-main">
+            <span class="aircraft-profile-avatar">
+                {{ aircraft.registration_number|slice:":3"|default:"AC" }}
+            </span>
+
+            <div>
+                <h2>{{ aircraft.model }}</h2>
+
+                <div class="aircraft-profile-codes">
+                    <span>{{ aircraft.registration_number }}</span>
+                    <span>{{ aircraft.aircraft_type }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="aircraft-profile-grid">
+            <div>
+                <span>Status</span>
+                {% if aircraft.status == "active" %}
+                    <strong class="aircraft-status aircraft-status-active">
+                        <span></span>
+                        {{ aircraft.get_status_display }}
+                    </strong>
+                {% elif aircraft.status == "maintenance" %}
+                    <strong class="aircraft-status aircraft-status-maintenance">
+                        <span></span>
+                        {{ aircraft.get_status_display }}
+                    </strong>
+                {% else %}
+                    <strong class="aircraft-status aircraft-status-inactive">
+                        <span></span>
+                        {{ aircraft.get_status_display }}
+                    </strong>
+                {% endif %}
+            </div>
+
+            <div>
+                <span>Operator</span>
+                <strong>
+                    {% if aircraft.airline %}
+                        {{ aircraft.airline.name }}
+                    {% else %}
+                        Operator not assigned
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div>
+                <span>Capacity</span>
+                <strong>{{ aircraft.capacity }} seats</strong>
+            </div>
+
+            <div>
+                <span>Last update</span>
+                <strong>{{ aircraft.updated_at|date:"M d, Y" }}</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="aircraft-detail-kpi-grid">
+        <article class="aircraft-detail-kpi-card">
+            <span>Total Flights</span>
+            <strong>{{ total_flights }}</strong>
+            <p>Linked to this aircraft</p>
+        </article>
+
+        <article class="aircraft-detail-kpi-card">
+            <span>Active Flights</span>
+            <strong>{{ active_flights }}</strong>
+            <p>Current operational activity</p>
+        </article>
+
+        <article class="aircraft-detail-kpi-card">
+            <span>Disruptions</span>
+            <strong>{{ disrupted_flights }}</strong>
+            <p>Delayed or cancelled flights</p>
+        </article>
+
+        <article class="aircraft-detail-kpi-card">
+            <span>Data Score</span>
+            <strong>{{ data_quality_score }}%</strong>
+            <p>{{ data_quality_label }} aircraft data</p>
+        </article>
+    </section>
+
+    <section class="aircraft-detail-grid">
+        <article class="aircraft-panel aircraft-info-panel">
+            <div class="aircraft-panel-head">
+                <div>
+                    <span>Identity</span>
+                    <h2>Aircraft information</h2>
+                </div>
+            </div>
+
+            <div class="aircraft-info-list">
+                <div>
+                    <span>Registration</span>
+                    <strong>{{ aircraft.registration_number }}</strong>
+                </div>
+
+                <div>
+                    <span>Model</span>
+                    <strong>{{ aircraft.model }}</strong>
+                </div>
+
+                <div>
+                    <span>Aircraft type</span>
+                    <strong>{{ aircraft.aircraft_type }}</strong>
+                </div>
+
+                <div>
+                    <span>Operator</span>
+                    <strong>
+                        {% if aircraft.airline %}
+                            {{ aircraft.airline.name }}
+                        {% else %}
+                            Operator not assigned
+                        {% endif %}
+                    </strong>
+                </div>
+
+                <div>
+                    <span>Capacity</span>
+                    <strong>{{ aircraft.capacity }}</strong>
+                </div>
+
+                <div>
+                    <span>Status</span>
+                    <strong>{{ aircraft.get_status_display }}</strong>
+                </div>
+
+                <div>
+                    <span>Created</span>
+                    <strong>{{ aircraft.created_at|date:"M d, Y" }}</strong>
+                </div>
+
+                <div>
+                    <span>Updated</span>
+                    <strong>{{ aircraft.updated_at|date:"M d, Y" }}</strong>
+                </div>
+            </div>
+        </article>
+
+        <article class="aircraft-panel aircraft-quality-panel">
+            <div class="aircraft-panel-head">
+                <div>
+                    <span>Data readiness</span>
+                    <h2>Reference quality</h2>
+                </div>
+            </div>
+
+            <div class="aircraft-quality-score">
+                {% if data_quality_level == "complete" %}
+                    <span class="aircraft-quality-badge aircraft-quality-complete">
+                        {{ data_quality_label }}
+                    </span>
+                {% elif data_quality_level == "partial" %}
+                    <span class="aircraft-quality-badge aircraft-quality-partial">
+                        {{ data_quality_label }}
+                    </span>
+                {% else %}
+                    <span class="aircraft-quality-badge aircraft-quality-minimal">
+                        {{ data_quality_label }}
+                    </span>
+                {% endif %}
+
+                <strong>{{ data_quality_score }}%</strong>
+            </div>
+
+            <div class="aircraft-quality-progress">
+                <span style="width: {{ data_quality_score }}%;"></span>
+            </div>
+
+            <div class="aircraft-missing-fields">
+                <span>Missing fields</span>
+
+                <div>
+                    {% if missing_data_fields %}
+                        {% for field in missing_data_fields %}
+                            <small>{{ field }}</small>
+                        {% endfor %}
+                    {% else %}
+                        <small>No missing core fields</small>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="aircraft-panel aircraft-flights-panel">
+        <div class="aircraft-panel-head aircraft-panel-head-split">
+            <div>
+                <span>Operations</span>
+                <h2>Recent linked flights</h2>
+            </div>
+
+            <div class="aircraft-flight-summary">
+                <span>{{ active_flights }} active</span>
+                <span>{{ completed_flights }} completed</span>
+                <span>{{ disrupted_flights }} disrupted</span>
+            </div>
+        </div>
+
+        <div class="aircraft-table-wrap">
+            <table class="aircraft-flights-table">
+                <thead>
+                    <tr>
+                        <th>Flight</th>
+                        <th>Airline</th>
+                        <th>Route</th>
+                        <th>Schedule</th>
+                        <th>Source</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for flight in recent_flights %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'flights:flight_detail' flight.pk %}">
+                                    {{ flight.flight_number }}
+                                </a>
+                            </td>
+
+                            <td>
+                                {% if flight.airline %}
+                                    {{ flight.airline.name }}
+                                {% else %}
+                                    â€”
+                                {% endif %}
+                            </td>
+
+                            <td>{{ flight.route }}</td>
+
+                            <td>
+                                {% if flight.scheduled_departure %}
+                                    {{ flight.scheduled_departure|date:"M d, H:i" }}
+                                {% else %}
+                                    â€”
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="aircraft-source aircraft-source-{{ flight.source_type }}">
+                                    {{ flight.get_source_type_display }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="flight-status flight-status-{{ flight.status }}">
+                                    {{ flight.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">
+                                <div class="aircraft-empty-state">
+                                    <h3>No linked flights</h3>
+                                    <p>No recent flight is currently assigned to this aircraft.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+{% endblock %}
+

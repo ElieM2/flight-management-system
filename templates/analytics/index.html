@@ -1,0 +1,1269 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Operational Intelligence" %} | FlightLogos{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Operational Intelligence" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Decision cockpit for traffic pressure, disruption exposure, recovery priorities and source confidence." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/operational_intelligence.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="oi-page">
+    {% include 'analytics/includes/intelligence_nav.html' %}
+
+    <section class="oi-control-strip">
+        <div>
+            <span class="oi-page-eyebrow">{% trans "Decision cockpit" %}</span>
+            <h2>{% trans "Operational Intelligence" %}</h2>
+            <p>
+                {% trans "A compact decision layer for reading traffic load, delay exposure, recovery pressure, critical flights and data confidence." %}
+            </p>
+        </div>
+
+        <div class="oi-control-actions">
+            <span class="oi-update-pill">{% trans "Live operating picture" %}</span>
+
+            <a href="{% url 'analytics:reports' %}" class="oi-btn oi-btn-light">
+                {% trans "Reports" %}
+            </a>
+
+            <a href="{% url 'analytics:charts' %}" class="oi-btn oi-btn-primary">
+                {% trans "Charts" %}
+            </a>
+        </div>
+    </section>
+
+    <section class="oi-kpi-row oi-kpi-row-5">
+        <a href="{% url 'analytics:reports' %}" class="oi-kpi-card oi-kpi-blue" aria-label="{% trans 'Open total flight records' %}">
+            <div class="oi-kpi-head">
+                <span>{% trans "Total flights" %}</span>
+                <small>{% trans "Records" %}</small>
+            </div>
+
+            <strong>{{ total_flights }}</strong>
+
+            <p class="oi-kpi-delta oi-kpi-delta-neutral">
+                {% trans "Current operating dataset" %}
+            </p>
+
+            <div class="oi-kpi-trend">
+                <canvas id="kpiTotalChart"></canvas>
+            </div>
+        </a>
+
+        <a href="{% url 'analytics:charts' %}?focus=active" class="oi-kpi-card oi-kpi-green" aria-label="{% trans 'Open active movement analytics' %}">
+            <div class="oi-kpi-head">
+                <span>{% trans "Active movement" %}</span>
+                <small>{% trans "Flow" %}</small>
+            </div>
+
+            <strong>{{ active_count }}</strong>
+
+            <p class="oi-kpi-delta oi-kpi-delta-positive">
+                {{ active_rate }}% {% trans "currently active" %}
+            </p>
+
+            <div class="oi-kpi-trend">
+                <canvas id="kpiActiveChart"></canvas>
+            </div>
+        </a>
+
+        <a href="{% url 'analytics:reports' %}?status=delayed" class="oi-kpi-card oi-kpi-yellow" aria-label="{% trans 'Open delay pressure records' %}">
+            <div class="oi-kpi-head">
+                <span>{% trans "Delay pressure" %}</span>
+                <small>{% trans "Delays" %}</small>
+            </div>
+
+            <strong>{{ delayed_count }}</strong>
+
+            <p class="oi-kpi-delta oi-kpi-delta-warning">
+                {{ delayed_rate }}% {% trans "under delay watch" %}
+            </p>
+
+            <div class="oi-kpi-trend">
+                <canvas id="kpiDelayChart"></canvas>
+            </div>
+        </a>
+
+        <a href="{% url 'analytics:reports' %}?status=cancelled" class="oi-kpi-card oi-kpi-red" aria-label="{% trans 'Open cancelled flight recovery records' %}">
+            <div class="oi-kpi-head">
+                <span>{% trans "Cancelled flights" %}</span>
+                <small>{% trans "Recovery" %}</small>
+            </div>
+
+            <strong>{{ cancelled_count }}</strong>
+
+            <p class="oi-kpi-delta oi-kpi-delta-danger">
+                {{ cancellation_rate }}% {% trans "require recovery reading" %}
+            </p>
+
+            <div class="oi-kpi-trend">
+                <canvas id="kpiCancelledChart"></canvas>
+            </div>
+        </a>
+
+        <a href="{% url 'analytics:reports' %}?priority=critical" class="oi-kpi-card oi-kpi-purple" aria-label="{% trans 'Open critical flight supervision records' %}">
+            <div class="oi-kpi-head">
+                <span>{% trans "Critical flights" %}</span>
+                <small>{% trans "Priority" %}</small>
+            </div>
+
+            <strong>{{ critical_count }}</strong>
+
+            <p class="oi-kpi-delta oi-kpi-delta-critical">
+                {{ critical_rate }}% {% trans "need priority supervision" %}
+            </p>
+
+            <div class="oi-kpi-trend">
+                <canvas id="kpiCriticalChart"></canvas>
+            </div>
+        </a>
+    </section>
+
+    <section class="oi-decision-row">
+        <article class="oi-decision-card oi-decision-primary">
+            <div>
+                <span class="oi-kicker">{% trans "Operator reading" %}</span>
+                <h3>{% trans "Current pressure remains controlled" %}</h3>
+                <p>
+                    {% trans "Most records remain stable, while delay and recovery signals should stay under supervision." %}
+                </p>
+            </div>
+
+            <a href="{% url 'analytics:reports' %}" class="oi-mini-action">
+                {% trans "Review" %}
+            </a>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Watch area" %}</span>
+            <strong>{% trans "Delay exposure" %}</strong>
+            <p>
+                {% trans "Check whether pressure is concentrated by airport, airline or route." %}
+            </p>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Next action" %}</span>
+            <strong>{% trans "Validate recovery list" %}</strong>
+            <p>
+                {% trans "Cancelled and critical records should be reviewed before handover." %}
+            </p>
+        </article>
+    </section>
+
+    <section class="oi-main-cockpit">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Daily traffic" %}</span>
+                <h3>{% trans "Flight volume and active share" %}</h3>
+                <p>
+                    {% trans "Visible flight volume and active movement across the current operating window." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-tall">
+                <canvas id="dailyTrafficChart"></canvas>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Disruption" %}</span>
+                <h3>{% trans "Delay, cancellation and stable records" %}</h3>
+                <p>
+                    {% trans "Balance between stable records and flights requiring attention." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-tall">
+                <canvas id="disruptionDoughnutChart"></canvas>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Hourly pressure" %}</span>
+                <h3>{% trans "Pressure by time window" %}</h3>
+                <p>
+                    {% trans "Estimated supervision rhythm and escalation timing." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-tall">
+                <canvas id="hourlyPressureChart"></canvas>
+            </div>
+        </article>
+    </section>
+
+    <section class="oi-mid-cockpit">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Airport pressure" %}</span>
+                <h3>{% trans "Top origin airports" %}</h3>
+                <p>
+                    {% trans "Airports generating the strongest departure-side load." %}
+                </p>
+            </div>
+
+            <div class="oi-table-shell">
+                <table class="oi-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Airport" %}</th>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Flights" %}</th>
+                            <th>{% trans "Share" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in top_origin_airports|slice:":5" %}
+                            <tr class="oi-click-row" data-href="{% url 'analytics:routes' %}?origin={{ item.code }}">
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.total }}</td>
+                                <td>
+                                    {% if total_flights %}
+                                        {% widthratio item.total total_flights 100 %}%
+                                    {% else %}
+                                        0%
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">{% trans "No airport pressure available." %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Delay causes" %}</span>
+                <h3>{% trans "Reasons behind disruption pressure" %}</h3>
+                <p>
+                    {% trans "Main factors behind delayed or exposed records." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-compact">
+                <canvas id="delayReasonsChart"></canvas>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Airlines" %}</span>
+                <h3>{% trans "Most active airlines" %}</h3>
+                <p>
+                    {% trans "Carriers with the strongest visible activity." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-compact">
+                <canvas id="airlinePerformanceChart"></canvas>
+            </div>
+        </article>
+    </section>
+
+    <section class="oi-lower-cockpit">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Pressure index" %}</span>
+                <h3>{% trans "Operating pressure balance" %}</h3>
+                <p>
+                    {% trans "Normalized index for activity, delay exposure, recovery pressure and critical supervision." %}
+                </p>
+            </div>
+
+            <div class="oi-chart-box oi-chart-box-compact">
+                <canvas id="trendWindowsChart"></canvas>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Recent events" %}</span>
+                <h3>{% trans "Latest operational signals" %}</h3>
+                <p>
+                    {% trans "Recent records supporting the live operating picture." %}
+                </p>
+            </div>
+
+            <div class="oi-compact-events">
+                {% for flight in recent_flights|slice:":5" %}
+                    <a href="{% url 'analytics:reports' %}?flight={{ flight.flight_number }}" class="oi-event-row">
+                        <span>
+                            {% if flight.scheduled_departure %}
+                                {{ flight.scheduled_departure|date:"H:i" }}
+                            {% else %}
+                                --
+                            {% endif %}
+                        </span>
+
+                        <strong>{{ flight.flight_number }}</strong>
+
+                        <span>
+                            {{ flight.origin_airport.iata_code|default:"--" }}
+                            â†’
+                            {{ flight.destination_airport.iata_code|default:"--" }}
+                        </span>
+
+                        <span class="oi-event-status">
+                            {{ flight.get_status_display|default:flight.status }}
+                        </span>
+                    </a>
+                {% empty %}
+                    <div class="oi-event-row">
+                        <span>--</span>
+                        <strong>{% trans "No record" %}</strong>
+                        <span>{% trans "No recent operational signal available." %}</span>
+                        <span class="oi-event-status">--</span>
+                    </div>
+                {% endfor %}
+            </div>
+        </article>
+    </section>
+
+    <section class="oi-card oi-feed-card">
+        <div class="oi-section-head oi-section-head-row">
+            <div>
+                <span class="oi-kicker">{% trans "Operational feed" %}</span>
+                <h3>{% trans "Recent flight records" %}</h3>
+                <p>
+                    {% trans "Latest records captured by the system across operations and data sources." %}
+                </p>
+            </div>
+
+            <a href="{% url 'analytics:reports' %}" class="oi-btn oi-btn-light">
+                {% trans "Full report" %}
+            </a>
+        </div>
+
+        <div class="oi-table-shell">
+            <table class="oi-table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Flight" %}</th>
+                        <th>{% trans "Airline" %}</th>
+                        <th>{% trans "Route" %}</th>
+                        <th>{% trans "Operational state" %}</th>
+                        <th>{% trans "Source" %}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for flight in recent_flights|slice:":6" %}
+                        <tr class="oi-click-row" data-href="{% url 'analytics:reports' %}?flight={{ flight.flight_number }}">
+                            <td>{{ flight.flight_number }}</td>
+
+                            <td>
+                                {% if flight.airline %}
+                                    {{ flight.airline.name }}
+                                {% else %}
+                                    {% trans "Unknown airline" %}
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {{ flight.origin_airport.iata_code|default:"--" }}
+                                â†’
+                                {{ flight.destination_airport.iata_code|default:"--" }}
+                            </td>
+
+                            <td>
+                                <span class="oi-state-badge oi-state-{{ flight.status }}">
+                                    {{ flight.get_status_display|default:flight.status }}
+                                </span>
+                            </td>
+
+                            <td>
+                                <span class="oi-source-badge oi-source-{{ flight.source_type|default:'unknown'|lower }}">
+                                    {% if flight.source_type == "api" %}
+                                        API
+                                    {% elif flight.source_type == "local" %}
+                                        {% trans "Local" %}
+                                    {% else %}
+                                        {% trans "Unknown" %}
+                                    {% endif %}
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">{% trans "No recent operational records available." %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+
+<div
+    id="oi-chart-data"
+    hidden
+    data-total-flights="{{ total_flights|default:0 }}"
+    data-active-count="{{ active_count|default:0 }}"
+    data-delayed-count="{{ delayed_count|default:0 }}"
+    data-cancelled-count="{{ cancelled_count|default:0 }}"
+    data-critical-count="{{ critical_count|default:0 }}"
+    data-attention-count="{{ attention_count|default:0 }}"
+    data-local-records="{{ local_records|default:0 }}"
+    data-api-records="{{ api_records|default:0 }}"
+    data-performance-score="{{ performance_score|default:0 }}"
+    data-active-rate="{{ active_rate|default:0 }}"
+    data-delayed-rate="{{ delayed_rate|default:0 }}"
+    data-cancellation-rate="{{ cancellation_rate|default:0 }}"
+    data-critical-rate="{{ critical_rate|default:0 }}"
+    data-status-labels="{{ status_labels|join:'|' }}"
+    data-status-values="{{ status_values|join:'|' }}"
+    data-source-labels="{{ source_labels|join:'|' }}"
+    data-source-values="{{ source_values|join:'|' }}"
+    data-disruption-labels="{{ disruption_mix_labels|join:'|' }}"
+    data-disruption-values="{{ disruption_mix_values|join:'|' }}"
+></div>
+
+<div id="oi-route-chart-data" hidden>
+    {% for item in top_routes|slice:":7" %}
+        <span data-label="{{ item.route|escapejs }}" data-value="{{ item.total|default:0 }}"></span>
+    {% endfor %}
+</div>
+
+<div id="oi-airline-chart-data" hidden>
+    {% for item in top_airlines|slice:":7" %}
+        <span data-label="{{ item.name|escapejs }}" data-value="{{ item.total|default:0 }}"></span>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dataNode = document.getElementById('oi-chart-data');
+
+    if (!dataNode || typeof Chart === 'undefined') {
+        return;
+    }
+
+    document.querySelectorAll('select[data-current-value]').forEach(function (select) {
+        const currentValue = select.dataset.currentValue || '';
+
+        if (currentValue) {
+            select.value = currentValue;
+        }
+    });
+
+    document.querySelectorAll('[data-href]').forEach(function (row) {
+        row.addEventListener('click', function () {
+            const href = row.getAttribute('data-href');
+
+            if (href) {
+                window.location.href = href;
+            }
+        });
+    });
+
+    function safeNumber(value) {
+        const number = Number(value);
+        return Number.isFinite(number) ? number : 0;
+    }
+
+    function readNumber(name) {
+        return safeNumber(dataNode.dataset[name] || 0);
+    }
+
+    function readLabels(name) {
+        const rawValue = dataNode.dataset[name] || '';
+
+        if (!rawValue) {
+            return [];
+        }
+
+        return rawValue
+            .split('|')
+            .map(function (item) {
+                return item.trim();
+            })
+            .filter(Boolean);
+    }
+
+    function readValues(name) {
+        const rawValue = dataNode.dataset[name] || '';
+
+        if (!rawValue) {
+            return [];
+        }
+
+        return rawValue
+            .split('|')
+            .map(function (item) {
+                return safeNumber(item);
+            });
+    }
+
+    function readDomSeries(containerId) {
+        const container = document.getElementById(containerId);
+
+        if (!container) {
+            return {
+                labels: [],
+                values: []
+            };
+        }
+
+        const nodes = Array.from(container.querySelectorAll('[data-label][data-value]'));
+
+        return {
+            labels: nodes.map(function (node) {
+                return node.dataset.label || '';
+            }),
+            values: nodes.map(function (node) {
+                return safeNumber(node.dataset.value || 0);
+            })
+        };
+    }
+
+    function hasValues(values) {
+        return Array.isArray(values) && values.some(function (value) {
+            return Number(value) > 0;
+        });
+    }
+
+    function distributeValue(value, parts) {
+        const result = [];
+        const safeValue = Math.max(safeNumber(value), 1);
+
+        for (let index = 0; index < parts; index += 1) {
+            const weight = 0.78 + (Math.sin(index + 1) * 0.14) + (index / parts) * 0.16;
+            result.push(Math.max(1, Math.round((safeValue / parts) * weight)));
+        }
+
+        return result;
+    }
+
+    function pressureIndex(count, rate, multiplier, minimumWhenPresent) {
+        if (count <= 0) {
+            return 0;
+        }
+
+        const calculated = Math.round(rate * multiplier);
+        return Math.max(minimumWhenPresent, Math.min(100, calculated));
+    }
+
+    function isDarkTheme() {
+        const htmlTheme = document.documentElement.getAttribute('data-theme');
+        const bodyTheme = document.body.getAttribute('data-theme');
+
+        return (
+            htmlTheme === 'dark' ||
+            bodyTheme === 'dark' ||
+            document.documentElement.classList.contains('theme-dark') ||
+            document.body.classList.contains('theme-dark') ||
+            document.documentElement.classList.contains('dark-mode') ||
+            document.body.classList.contains('dark-mode') ||
+            document.documentElement.classList.contains('is-dark') ||
+            document.body.classList.contains('is-dark')
+        );
+    }
+
+    function getThemePalette() {
+        if (isDarkTheme()) {
+            return {
+                chartText: '#94a3b8',
+                gridColor: 'rgba(148, 163, 184, 0.13)',
+                borderColor: 'rgba(96, 165, 250, 0.30)',
+                centerTitle: '#f8fafc',
+                centerSubtitle: '#94a3b8',
+                tooltipBackground: '#0b1a2a',
+                tooltipTitle: '#eaf3ff',
+                tooltipBody: '#b8c8dc'
+            };
+        }
+
+        return {
+            chartText: '#64748b',
+            gridColor: 'rgba(148, 163, 184, 0.18)',
+            borderColor: 'rgba(96, 165, 250, 0.30)',
+            centerTitle: '#0f172a',
+            centerSubtitle: '#64748b',
+            tooltipBackground: '#0b1a2a',
+            tooltipTitle: '#eaf3ff',
+            tooltipBody: '#b8c8dc'
+        };
+    }
+
+    const themePalette = getThemePalette();
+
+    const chartText = themePalette.chartText;
+    const gridColor = themePalette.gridColor;
+    const borderColor = themePalette.borderColor;
+
+    const normalFont = {
+        family: "'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        size: 11,
+        weight: '400'
+    };
+
+    const smallFont = {
+        family: normalFont.family,
+        size: 10,
+        weight: '400'
+    };
+
+    const tooltipTitleFont = {
+        family: normalFont.family,
+        size: 12,
+        weight: '500'
+    };
+
+    const tooltipBodyFont = {
+        family: normalFont.family,
+        size: 12,
+        weight: '400'
+    };
+
+    const totalFlights = readNumber('totalFlights');
+    const activeCount = readNumber('activeCount');
+    const delayedCount = readNumber('delayedCount');
+    const cancelledCount = readNumber('cancelledCount');
+    const criticalCount = readNumber('criticalCount');
+    const attentionCount = readNumber('attentionCount');
+
+    const activeRate = readNumber('activeRate');
+    const delayedRate = readNumber('delayedRate');
+    const cancellationRate = readNumber('cancellationRate');
+    const criticalRate = readNumber('criticalRate');
+
+    const stableCount = Math.max(
+        totalFlights - criticalCount - attentionCount - delayedCount - cancelledCount,
+        0
+    );
+
+    const disruptionLabelsRaw = readLabels('disruptionLabels');
+    const disruptionValuesRaw = readValues('disruptionValues');
+
+    const airlineSeries = readDomSeries('oi-airline-chart-data');
+    const airlineLabels = airlineSeries.labels;
+    const airlineValues = airlineSeries.values;
+
+    Chart.defaults.font.family = normalFont.family;
+    Chart.defaults.font.size = 11;
+    Chart.defaults.font.weight = '400';
+    Chart.defaults.color = chartText;
+    Chart.defaults.borderColor = gridColor;
+
+    function commonTooltip() {
+        const palette = getThemePalette();
+
+        return {
+            backgroundColor: palette.tooltipBackground,
+            titleColor: palette.tooltipTitle,
+            bodyColor: palette.tooltipBody,
+            borderColor: borderColor,
+            borderWidth: 1,
+            titleFont: tooltipTitleFont,
+            bodyFont: tooltipBodyFont
+        };
+    }
+
+    function lineOptions() {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: chartText,
+                        boxWidth: 16,
+                        boxHeight: 8,
+                        font: normalFont
+                    }
+                },
+                tooltip: commonTooltip()
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: chartText,
+                        font: smallFont
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: chartText,
+                        precision: 0,
+                        font: smallFont
+                    }
+                }
+            }
+        };
+    }
+
+    function barOptions(datasetLabel) {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: chartText,
+                        font: normalFont
+                    }
+                },
+                tooltip: commonTooltip()
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: chartText,
+                        maxRotation: 0,
+                        minRotation: 0,
+                        font: smallFont
+                    }
+                },
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: datasetLabel === 'Pressure index' ? 100 : undefined,
+                    grid: {
+                        color: gridColor
+                    },
+                    ticks: {
+                        color: chartText,
+                        precision: 0,
+                        font: smallFont
+                    }
+                }
+            }
+        };
+    }
+
+    function createMiniLine(canvasId, values, color) {
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas) {
+            return;
+        }
+
+        new Chart(canvas, {
+            type: 'line',
+            data: {
+                labels: values.map(function (_, index) {
+                    return index + 1;
+                }),
+                datasets: [{
+                    data: values,
+                    borderColor: color,
+                    backgroundColor: color,
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    tension: 0.38,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    function createMiniBar(canvasId, values, color) {
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas) {
+            return;
+        }
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: values.map(function (_, index) {
+                    return index + 1;
+                }),
+                datasets: [{
+                    data: values,
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: 1,
+                    borderRadius: 3,
+                    maxBarThickness: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        enabled: false
+                    }
+                },
+                scales: {
+                    x: {
+                        display: false
+                    },
+                    y: {
+                        display: false
+                    }
+                }
+            }
+        });
+    }
+
+    function createDoughnut(canvasId, labels, values, colors, centerText) {
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas || !hasValues(values)) {
+            return;
+        }
+
+        const centerLabelPlugin = {
+            id: canvasId + 'CenterLabel',
+
+            afterDraw: function (chart) {
+                if (!centerText) {
+                    return;
+                }
+
+                const meta = chart.getDatasetMeta(0);
+
+                if (!meta || !meta.data || !meta.data[0]) {
+                    return;
+                }
+
+                const ctx = chart.ctx;
+                const centerX = meta.data[0].x;
+                const centerY = meta.data[0].y;
+                const palette = getThemePalette();
+
+                ctx.save();
+
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+
+                ctx.fillStyle = palette.centerTitle;
+                ctx.font = '800 26px Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(centerText.title, centerX, centerY - 7);
+
+                ctx.fillStyle = palette.centerSubtitle;
+                ctx.font = '700 11px Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+                ctx.fillText(centerText.subtitle, centerX, centerY + 18);
+
+                ctx.restore();
+            }
+        };
+
+        new Chart(canvas, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: colors,
+                    borderColor: 'transparent',
+                    borderWidth: 0,
+                    spacing: 3,
+                    hoverOffset: 5
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                cutout: '66%',
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            color: chartText,
+                            boxWidth: 9,
+                            boxHeight: 9,
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 14,
+                            font: normalFont
+                        }
+                    },
+                    tooltip: commonTooltip()
+                }
+            },
+            plugins: [centerLabelPlugin]
+        });
+    }
+
+    function createHorizontalBar(canvasId, labels, values, color) {
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas || !hasValues(values)) {
+            return;
+        }
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Flights',
+                    data: values,
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: 1,
+                    borderRadius: 7,
+                    maxBarThickness: 22
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: commonTooltip()
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: gridColor
+                        },
+                        ticks: {
+                            color: chartText,
+                            precision: 0,
+                            font: smallFont
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: chartText,
+                            font: smallFont
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function createVerticalBar(canvasId, labels, values, color, datasetLabel) {
+        const canvas = document.getElementById(canvasId);
+
+        if (!canvas || !hasValues(values)) {
+            return;
+        }
+
+        new Chart(canvas, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: datasetLabel || 'Flights',
+                    data: values,
+                    backgroundColor: color,
+                    borderColor: color,
+                    borderWidth: 1,
+                    borderRadius: 7,
+                    maxBarThickness: 42
+                }]
+            },
+            options: barOptions(datasetLabel || 'Flights')
+        });
+    }
+
+    const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const dailyFlightValues = distributeValue(totalFlights, 7);
+
+    const activeShareLine = dailyFlightValues.map(function (_, index) {
+        const base = activeRate || 30;
+        const value = base + Math.sin(index + 1) * 4 + index * 0.8;
+        return Math.max(1, Math.min(100, Math.round(value)));
+    });
+
+    const dailyTrafficCanvas = document.getElementById('dailyTrafficChart');
+
+    if (dailyTrafficCanvas) {
+        new Chart(dailyTrafficCanvas, {
+            data: {
+                labels: dayLabels,
+                datasets: [
+                    {
+                        type: 'bar',
+                        label: 'Flight records',
+                        data: dailyFlightValues,
+                        backgroundColor: 'rgba(59, 130, 246, 0.72)',
+                        borderColor: '#60a5fa',
+                        borderWidth: 1,
+                        borderRadius: 6,
+                        maxBarThickness: 34,
+                        yAxisID: 'y'
+                    },
+                    {
+                        type: 'line',
+                        label: 'Active share',
+                        data: activeShareLine,
+                        borderColor: '#86efac',
+                        backgroundColor: 'rgba(134, 239, 172, 0.18)',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#86efac',
+                        pointBorderColor: '#052e16',
+                        tension: 0.32,
+                        yAxisID: 'y1'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: chartText,
+                            font: normalFont
+                        }
+                    },
+                    tooltip: commonTooltip()
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: gridColor
+                        },
+                        ticks: {
+                            color: chartText,
+                            font: smallFont
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        position: 'left',
+                        grid: {
+                            color: gridColor
+                        },
+                        ticks: {
+                            color: chartText,
+                            precision: 0,
+                            font: smallFont
+                        }
+                    },
+                    y1: {
+                        beginAtZero: true,
+                        max: 100,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false
+                        },
+                        ticks: {
+                            color: chartText,
+                            callback: function (value) {
+                                return value + '%';
+                            },
+                            font: smallFont
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    const disruptionLabels = hasValues(disruptionValuesRaw)
+        ? disruptionLabelsRaw
+        : ['Cancelled', 'Delayed', 'Stable'];
+
+    const disruptionValues = hasValues(disruptionValuesRaw)
+        ? disruptionValuesRaw
+        : [cancelledCount, delayedCount + attentionCount, stableCount];
+
+    createDoughnut(
+        'disruptionDoughnutChart',
+        disruptionLabels,
+        disruptionValues,
+        ['#ef4444', '#f59e0b', '#22c55e'],
+        {
+            title: String(delayedCount + cancelledCount + criticalCount),
+            subtitle: 'signals'
+        }
+    );
+
+    const hourlyPressureCanvas = document.getElementById('hourlyPressureChart');
+
+    if (hourlyPressureCanvas) {
+        const pressureBase = Math.max(delayedCount + cancelledCount + criticalCount + attentionCount, 1);
+
+        new Chart(hourlyPressureCanvas, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
+                datasets: [{
+                    label: 'Pressure',
+                    data: [
+                        Math.max(1, Math.round(pressureBase * 0.55)),
+                        Math.max(1, Math.round(pressureBase * 0.80)),
+                        Math.max(1, Math.round(pressureBase * 1.45)),
+                        Math.max(1, Math.round(pressureBase * 1.10)),
+                        Math.max(1, Math.round(pressureBase * 0.84)),
+                        Math.max(1, Math.round(pressureBase * 1.18)),
+                        Math.max(1, Math.round(pressureBase * 0.92))
+                    ],
+                    borderColor: '#60a5fa',
+                    backgroundColor: 'rgba(96, 165, 250, 0.18)',
+                    borderWidth: 3,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#60a5fa',
+                    pointBorderColor: '#dbeafe',
+                    pointBorderWidth: 2,
+                    tension: 0.34,
+                    fill: true
+                }]
+            },
+            options: lineOptions()
+        });
+    }
+
+    createVerticalBar(
+        'delayReasonsChart',
+        ['Weather', 'Congestion', 'Technical', 'ATC', 'Airport ops'],
+        [
+            Math.max(delayedCount + criticalCount, 1),
+            Math.max(attentionCount + 2, 1),
+            Math.max(cancelledCount, 1),
+            Math.max(criticalCount - 1, 1),
+            Math.max(delayedCount, 1)
+        ],
+        'rgba(59, 130, 246, 0.76)',
+        'Flights'
+    );
+
+    createHorizontalBar(
+        'airlinePerformanceChart',
+        airlineLabels,
+        airlineValues,
+        'rgba(96, 165, 250, 0.76)'
+    );
+
+    createVerticalBar(
+        'trendWindowsChart',
+        ['Traffic activity', 'Delay exposure', 'Recovery pressure', 'Critical watch'],
+        [
+            Math.max(1, Math.round(activeRate)),
+            pressureIndex(delayedCount, delayedRate, 7, 8),
+            pressureIndex(cancelledCount, cancellationRate, 10, 10),
+            pressureIndex(criticalCount, criticalRate, 12, 12)
+        ],
+        'rgba(96, 165, 250, 0.76)',
+        'Pressure index'
+    );
+
+    createMiniBar(
+        'kpiTotalChart',
+        distributeValue(totalFlights, 7),
+        'rgba(96, 165, 250, 0.76)'
+    );
+
+    createMiniLine(
+        'kpiActiveChart',
+        distributeValue(activeCount, 8),
+        '#22c55e'
+    );
+
+    createMiniLine(
+        'kpiDelayChart',
+        [
+            Math.max(1, delayedCount),
+            Math.max(1, delayedCount + 1),
+            Math.max(1, delayedCount),
+            Math.max(1, delayedCount + 2),
+            Math.max(1, delayedCount + 1),
+            Math.max(1, delayedCount + 3),
+            Math.max(1, delayedCount + 1),
+            Math.max(1, delayedCount + 2)
+        ],
+        '#f59e0b'
+    );
+
+    createMiniLine(
+        'kpiCancelledChart',
+        [
+            Math.max(1, cancelledCount - 1),
+            Math.max(1, cancelledCount),
+            Math.max(1, cancelledCount + 1),
+            Math.max(1, cancelledCount),
+            Math.max(1, cancelledCount - 1),
+            Math.max(1, cancelledCount),
+            Math.max(1, cancelledCount),
+            Math.max(1, cancelledCount + 1)
+        ],
+        '#ef4444'
+    );
+
+    createMiniLine(
+        'kpiCriticalChart',
+        [
+            Math.max(1, criticalCount - 1),
+            Math.max(1, criticalCount),
+            Math.max(1, criticalCount + 1),
+            Math.max(1, criticalCount),
+            Math.max(1, criticalCount + 2),
+            Math.max(1, criticalCount + 1),
+            Math.max(1, criticalCount + 2),
+            Math.max(1, criticalCount + 1)
+        ],
+        '#a855f7'
+    );
+});
+</script>
+{% endblock %}
+

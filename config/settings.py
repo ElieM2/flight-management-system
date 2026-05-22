@@ -12,137 +12,422 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+
 from dotenv import load_dotenv
+from django.utils.translation import gettext_lazy as _
 
-# Charger les variables d'environnement
-load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# =========================================================
+# BASE DIRECTORY / ENVIRONMENT
+# =========================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+load_dotenv(BASE_DIR / ".env")
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# =========================================================
+# SECURITY
+# =========================================================
 SECRET_KEY = os.getenv(
-    'SECRET_KEY',
-    'django-insecure-)^nbcj+=+fkoi*miadut7f#m=d2c7z!4htdk5*=2j^gr+n47b&'
+    "SECRET_KEY",
+    "django-insecure-change-this-key-in-production",
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS_RAW = os.getenv("ALLOWED_HOSTS", "")
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in ALLOWED_HOSTS_RAW.split(",")
+    if host.strip()
+]
+
+if DEBUG and not ALLOWED_HOSTS:
+    ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
-# Application definition
-
+# =========================================================
+# APPLICATIONS
+# =========================================================
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 
-    # Applications externes
-    'rest_framework',
+    "rest_framework",
 
-    # Applications du projet
-    'apps.users',
-    'apps.airlines',
-    'apps.airports',
-    'apps.aircraft',
-    'apps.flights',
-    'apps.monitoring',
-    'apps.integrations',
-    'apps.chatbot',
-    'apps.dashboard',
+    "apps.users",
+    "apps.accounts",
+    "apps.history",
+    "apps.airlines",
+    "apps.airports",
+    "apps.aircraft",
+    "apps.flights.apps.FlightsConfig",
+    "apps.monitoring",
+    "apps.integrations",
+    "apps.copilot",
+    "apps.dashboard",
+    "apps.analytics.apps.AnalyticsConfig",
 ]
 
+
+# =========================================================
+# MIDDLEWARE
+# =========================================================
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'config.urls'
 
+# =========================================================
+# ROOT URLS / WSGI
+# =========================================================
+ROOT_URLCONF = "config.urls"
+WSGI_APPLICATION = "config.wsgi.application"
+
+
+# =========================================================
+# TEMPLATES
+# =========================================================
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            BASE_DIR / "templates",
+        ],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.request",
+                "django.template.context_processors.i18n",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-
+# =========================================================
+# DATABASE
+# =========================================================
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
     }
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
-
+# =========================================================
+# PASSWORD VALIDATION
+# =========================================================
 AUTH_PASSWORD_VALIDATORS = []
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/6.0/topics/i18n/
+# =========================================================
+# INTERNATIONALIZATION
+# =========================================================
+LANGUAGE_CODE = "en"
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGES = [
+    ("en", _("English")),
+    ("fr", _("French")),
+    ("ru", _("Russian")),
+]
 
-TIME_ZONE = 'Europe/Paris'
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
+
+TIME_ZONE = "Europe/Paris"
 
 USE_I18N = True
-
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
-
-STATIC_URL = '/static/'
+# =========================================================
+# STATIC FILES
+# =========================================================
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / "static",
 ]
 
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# =========================================================
+# MEDIA FILES
+# =========================================================
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
 
 
-# Auth redirects
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# =========================================================
+# AUTH REDIRECTS
+# =========================================================
+LOGIN_URL = "accounts:login"
+LOGIN_REDIRECT_URL = "dashboard:dashboard"
+LOGOUT_REDIRECT_URL = "dashboard:home"
 
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/6.0/ref/settings/#default-auto-field
+# =========================================================
+# WEATHER / MAP LAYERS
+# =========================================================
+OPENWEATHERMAP_API_KEY = os.getenv(
+    "OPENWEATHERMAP_API_KEY",
+    "",
+).strip()
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# =========================================================
+# OPENSKY CONFIGURATION
+# =========================================================
+OPENSKY_CLIENT_ID = os.getenv(
+    "OPENSKY_CLIENT_ID",
+    "",
+).strip()
+
+OPENSKY_CLIENT_SECRET = os.getenv(
+    "OPENSKY_CLIENT_SECRET",
+    "",
+).strip()
+
+OPENSKY_TIMEOUT = int(
+    os.getenv(
+        "OPENSKY_TIMEOUT",
+        "20",
+    )
+)
+
+OPENSKY_REGION = {
+    "lamin": float(os.getenv("OPENSKY_LAMIN", "35.0")),
+    "lomin": float(os.getenv("OPENSKY_LOMIN", "-10.0")),
+    "lamax": float(os.getenv("OPENSKY_LAMAX", "60.0")),
+    "lomax": float(os.getenv("OPENSKY_LOMAX", "40.0")),
+}
+
+
+# =========================================================
+# AIRLABS CONFIGURATION
+# =========================================================
+AIRLABS_API_KEY = os.getenv(
+    "AIRLABS_API_KEY",
+    "",
+).strip()
+
+AIRLABS_BASE_URL = os.getenv(
+    "AIRLABS_BASE_URL",
+    "https://airlabs.co/api/v9",
+).strip().rstrip("/")
+
+
+# =========================================================
+# AVIATIONSTACK CONFIGURATION
+# =========================================================
+AVIATIONSTACK_API_KEY = os.getenv(
+    "AVIATIONSTACK_API_KEY",
+    "",
+).strip()
+
+AVIATIONSTACK_BASE_URL = os.getenv(
+    "AVIATIONSTACK_BASE_URL",
+    "http://api.aviationstack.com/v1",
+).strip().rstrip("/")
+
+
+# =========================================================
+# OPERATIONAL COPILOT - EXTERNAL LLM / OPENAI
+# OpenAI API is disabled because it is paid.
+# =========================================================
+COPILOT_EXTERNAL_LLM_ENABLED = os.getenv(
+    "COPILOT_EXTERNAL_LLM_ENABLED",
+    "False",
+).lower() == "true"
+
+COPILOT_LLM_PROVIDER = os.getenv(
+    "COPILOT_LLM_PROVIDER",
+    "openai",
+).strip().lower()
+
+OPENAI_API_KEY = os.getenv(
+    "OPENAI_API_KEY",
+    "",
+).strip()
+
+COPILOT_LLM_MODEL = os.getenv(
+    "COPILOT_LLM_MODEL",
+    "gpt-4.1-mini",
+).strip()
+
+COPILOT_LLM_TEMPERATURE = float(
+    os.getenv(
+        "COPILOT_LLM_TEMPERATURE",
+        "0.2",
+    )
+)
+
+COPILOT_LLM_MAX_OUTPUT_TOKENS = int(
+    os.getenv(
+        "COPILOT_LLM_MAX_OUTPUT_TOKENS",
+        "700",
+    )
+)
+
+COPILOT_LLM_TIMEOUT_SECONDS = int(
+    os.getenv(
+        "COPILOT_LLM_TIMEOUT_SECONDS",
+        "30",
+    )
+)
+
+
+# =========================================================
+# OPERATIONAL COPILOT - OLD GPT4ALL SETTINGS
+# Disabled to avoid mixing GPT4All and Ollama.
+# =========================================================
+COPILOT_GPT4ALL_ENABLED = os.getenv(
+    "COPILOT_GPT4ALL_ENABLED",
+    "False",
+).lower() == "true"
+
+COPILOT_GPT4ALL_MODEL_NAME = os.getenv(
+    "COPILOT_GPT4ALL_MODEL_NAME",
+    "",
+).strip()
+
+COPILOT_GPT4ALL_MODEL_PATH = os.getenv(
+    "COPILOT_GPT4ALL_MODEL_PATH",
+    "",
+).strip()
+
+COPILOT_GPT4ALL_DEVICE = os.getenv(
+    "COPILOT_GPT4ALL_DEVICE",
+    "cpu",
+).strip()
+
+COPILOT_GPT4ALL_THREADS = int(
+    os.getenv(
+        "COPILOT_GPT4ALL_THREADS",
+        "8",
+    )
+)
+
+COPILOT_GPT4ALL_CTX = int(
+    os.getenv(
+        "COPILOT_GPT4ALL_CTX",
+        "2048",
+    )
+)
+
+COPILOT_GPT4ALL_MAX_TOKENS = int(
+    os.getenv(
+        "COPILOT_GPT4ALL_MAX_TOKENS",
+        "120",
+    )
+)
+
+COPILOT_GPT4ALL_TEMP = float(
+    os.getenv(
+        "COPILOT_GPT4ALL_TEMP",
+        "0.1",
+    )
+)
+
+# Compatibility aliases for old services that may still read GPT4ALL_* names.
+GPT4ALL_DEVICE = COPILOT_GPT4ALL_DEVICE
+GPT4ALL_THREADS = COPILOT_GPT4ALL_THREADS
+GPT4ALL_CTX = COPILOT_GPT4ALL_CTX
+
+
+# =========================================================
+# OPERATIONAL COPILOT - LOCAL LLM / OLLAMA
+# =========================================================
+COPILOT_LOCAL_LLM_ENABLED = os.getenv(
+    "COPILOT_LOCAL_LLM_ENABLED",
+    "False",
+).lower() == "true"
+
+COPILOT_LOCAL_LLM_PROVIDER = os.getenv(
+    "COPILOT_LOCAL_LLM_PROVIDER",
+    "ollama",
+).strip().lower()
+
+COPILOT_OLLAMA_BASE_URL = os.getenv(
+    "COPILOT_OLLAMA_BASE_URL",
+    "http://localhost:11434",
+).strip().rstrip("/")
+
+COPILOT_OLLAMA_MODEL = os.getenv(
+    "COPILOT_OLLAMA_MODEL",
+    "llama3.2:3b",
+).strip()
+
+COPILOT_OLLAMA_TEMPERATURE = float(
+    os.getenv(
+        "COPILOT_OLLAMA_TEMPERATURE",
+        "0.2",
+    )
+)
+
+COPILOT_OLLAMA_TIMEOUT_SECONDS = int(
+    os.getenv(
+        "COPILOT_OLLAMA_TIMEOUT_SECONDS",
+        "60",
+    )
+)
+
+
+# =========================================================
+# OPERATIONAL COPILOT - LOCAL AI REWRITE
+# Ollama reformulates trusted Django answers.
+# Django remains the source of facts.
+# =========================================================
+COPILOT_LOCAL_REWRITE_ENABLED = os.getenv(
+    "COPILOT_LOCAL_REWRITE_ENABLED",
+    "False",
+).lower() == "true"
+
+COPILOT_LOCAL_REWRITE_MAX_LENGTH = int(
+    os.getenv(
+        "COPILOT_LOCAL_REWRITE_MAX_LENGTH",
+        "900",
+    )
+)
+
+
+# =========================================================
+# OPERATIONAL COPILOT - SAFETY SETTINGS
+# =========================================================
+COPILOT_ALLOW_EXTERNAL_GENERAL_CHAT = os.getenv(
+    "COPILOT_ALLOW_EXTERNAL_GENERAL_CHAT",
+    "False",
+).lower() == "true"
+
+COPILOT_STRICT_DATABASE_GROUNDING = os.getenv(
+    "COPILOT_STRICT_DATABASE_GROUNDING",
+    "True",
+).lower() == "true"
+
+COPILOT_DEFAULT_LANGUAGE = os.getenv(
+    "COPILOT_DEFAULT_LANGUAGE",
+    "en",
+).strip().lower()
+
+
+# =========================================================
+# DEFAULT PRIMARY KEY
+# =========================================================
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

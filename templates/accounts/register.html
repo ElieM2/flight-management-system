@@ -1,0 +1,77 @@
+﻿{% extends "base_auth.html" %}
+{% load static %}
+
+{% block title %}Create account | FlightLogos{% endblock %}
+
+{% block content %}
+<section class="auth-page auth-page-register">
+    <div class="auth-page-background"></div>
+    <div class="auth-page-overlay"></div>
+
+    <div class="public-container auth-page-container">
+        <div class="auth-card auth-card-centered">
+            <div class="auth-card-header">
+                <span class="auth-eyebrow">Private access</span>
+                <h1>Create account</h1>
+                <p>Register a new user to access the private operational system.</p>
+            </div>
+
+            <form method="post" class="auth-form" novalidate>
+                {% csrf_token %}
+
+                {% if next %}
+                    <input type="hidden" name="next" value="{{ next }}">
+                {% endif %}
+
+                <div class="auth-form-grid">
+                    <div class="auth-form-group">
+                        <label for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% for error in form.username.errors %}
+                            <div class="auth-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                        {% for error in form.email.errors %}
+                            <div class="auth-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="{{ form.password1.id_for_label }}">Password</label>
+                        {{ form.password1 }}
+                        {% for error in form.password1.errors %}
+                            <div class="auth-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="auth-form-group">
+                        <label for="{{ form.password2.id_for_label }}">Confirm password</label>
+                        {{ form.password2 }}
+                        {% for error in form.password2.errors %}
+                            <div class="auth-field-error">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                {% if form.non_field_errors %}
+                    <div class="auth-form-error">
+                        {% for error in form.non_field_errors %}
+                            <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="auth-actions">
+                    <button type="submit" class="auth-submit-btn">Create account</button>
+                    <a href="{% url 'accounts:login' %}" class="auth-secondary-btn">Already have an account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}
+

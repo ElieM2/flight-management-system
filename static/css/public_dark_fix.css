@@ -1,0 +1,586 @@
+﻿/* =========================================================
+   FLIGHTLOGOS - PUBLIC DARK MODE FIX
+   Flights / Airlines / Airports / Aircraft
+   This file must be loaded after public.css and public_landing.css
+========================================================= */
+
+/* =========================================================
+   PAGE READABILITY
+========================================================= */
+
+html[data-theme="dark"] .flights-page,
+html[data-theme="dark"] .airlines-page,
+html[data-theme="dark"] .airports-page,
+html[data-theme="dark"] .aircraft-page,
+body[data-theme="dark"] .flights-page,
+body[data-theme="dark"] .airlines-page,
+body[data-theme="dark"] .airports-page,
+body[data-theme="dark"] .aircraft-page,
+html.dark-mode .flights-page,
+html.dark-mode .airlines-page,
+html.dark-mode .airports-page,
+html.dark-mode .aircraft-page,
+body.dark-mode .flights-page,
+body.dark-mode .airlines-page,
+body.dark-mode .airports-page,
+body.dark-mode .aircraft-page {
+    color: #e5edf7 !important;
+}
+
+/* =========================================================
+   HEADER TITLES
+========================================================= */
+
+html[data-theme="dark"] .flights-header h1,
+html[data-theme="dark"] .airlines-header h1,
+html[data-theme="dark"] .airports-header h1,
+html[data-theme="dark"] .aircraft-header h1,
+body[data-theme="dark"] .flights-header h1,
+body[data-theme="dark"] .airlines-header h1,
+body[data-theme="dark"] .airports-header h1,
+body[data-theme="dark"] .aircraft-header h1,
+html.dark-mode .flights-header h1,
+html.dark-mode .airlines-header h1,
+html.dark-mode .airports-header h1,
+html.dark-mode .aircraft-header h1,
+body.dark-mode .flights-header h1,
+body.dark-mode .airlines-header h1,
+body.dark-mode .airports-header h1,
+body.dark-mode .aircraft-header h1 {
+    color: #f8fafc !important;
+    opacity: 1 !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="dark"] .flights-header p,
+html[data-theme="dark"] .airlines-header p,
+html[data-theme="dark"] .airports-subtitle,
+html[data-theme="dark"] .aircraft-subtitle,
+body[data-theme="dark"] .flights-header p,
+body[data-theme="dark"] .airlines-header p,
+body[data-theme="dark"] .airports-subtitle,
+body[data-theme="dark"] .aircraft-subtitle,
+html.dark-mode .flights-header p,
+html.dark-mode .airlines-header p,
+html.dark-mode .airports-subtitle,
+html.dark-mode .aircraft-subtitle,
+body.dark-mode .flights-header p,
+body.dark-mode .airlines-header p,
+body.dark-mode .airports-subtitle,
+body.dark-mode .aircraft-subtitle {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+html[data-theme="dark"] .flights-kicker,
+html[data-theme="dark"] .airlines-kicker,
+html[data-theme="dark"] .airports-kicker,
+html[data-theme="dark"] .aircraft-kicker,
+body[data-theme="dark"] .flights-kicker,
+body[data-theme="dark"] .airlines-kicker,
+body[data-theme="dark"] .airports-kicker,
+body[data-theme="dark"] .aircraft-kicker,
+html.dark-mode .flights-kicker,
+html.dark-mode .airlines-kicker,
+html.dark-mode .airports-kicker,
+html.dark-mode .aircraft-kicker,
+body.dark-mode .flights-kicker,
+body.dark-mode .airlines-kicker,
+body.dark-mode .airports-kicker,
+body.dark-mode .aircraft-kicker {
+    color: #60a5fa !important;
+}
+
+/* =========================================================
+   KPI CARDS
+========================================================= */
+
+html[data-theme="dark"] .flights-kpi-card,
+html[data-theme="dark"] .airlines-kpi-card,
+html[data-theme="dark"] .airports-kpi-card,
+html[data-theme="dark"] .aircraft-kpi-card,
+body[data-theme="dark"] .flights-kpi-card,
+body[data-theme="dark"] .airlines-kpi-card,
+body[data-theme="dark"] .airports-kpi-card,
+body[data-theme="dark"] .aircraft-kpi-card,
+html.dark-mode .flights-kpi-card,
+html.dark-mode .airlines-kpi-card,
+html.dark-mode .airports-kpi-card,
+html.dark-mode .aircraft-kpi-card,
+body.dark-mode .flights-kpi-card,
+body.dark-mode .airlines-kpi-card,
+body.dark-mode .airports-kpi-card,
+body.dark-mode .aircraft-kpi-card {
+    background: #ffffff !important;
+    border-color: #dbe3ef !important;
+    box-shadow: 0 14px 34px rgba(2, 6, 23, 0.28) !important;
+}
+
+html[data-theme="dark"] .flights-kpi-label,
+html[data-theme="dark"] .airlines-kpi-label,
+html[data-theme="dark"] .airports-kpi-label,
+html[data-theme="dark"] .aircraft-kpi-label,
+body[data-theme="dark"] .flights-kpi-label,
+body[data-theme="dark"] .airlines-kpi-label,
+body[data-theme="dark"] .airports-kpi-label,
+body[data-theme="dark"] .aircraft-kpi-label,
+html.dark-mode .flights-kpi-label,
+html.dark-mode .airlines-kpi-label,
+html.dark-mode .airports-kpi-label,
+html.dark-mode .aircraft-kpi-label,
+body.dark-mode .flights-kpi-label,
+body.dark-mode .airlines-kpi-label,
+body.dark-mode .airports-kpi-label,
+body.dark-mode .aircraft-kpi-label {
+    color: #020617 !important;
+}
+
+html[data-theme="dark"] .flights-kpi-note,
+html[data-theme="dark"] .airlines-kpi-note,
+html[data-theme="dark"] .airports-kpi-note,
+html[data-theme="dark"] .aircraft-kpi-note,
+body[data-theme="dark"] .flights-kpi-note,
+body[data-theme="dark"] .airlines-kpi-note,
+body[data-theme="dark"] .airports-kpi-note,
+body[data-theme="dark"] .aircraft-kpi-note,
+html.dark-mode .flights-kpi-note,
+html.dark-mode .airlines-kpi-note,
+html.dark-mode .airports-kpi-note,
+html.dark-mode .aircraft-kpi-note,
+body.dark-mode .flights-kpi-note,
+body.dark-mode .airlines-kpi-note,
+body.dark-mode .airports-kpi-note,
+body.dark-mode .aircraft-kpi-note {
+    color: #475569 !important;
+}
+
+/* =========================================================
+   TABLE CARDS AND TOOLBARS
+========================================================= */
+
+html[data-theme="dark"] .flights-board-card,
+html[data-theme="dark"] .airlines-table-card,
+html[data-theme="dark"] .airports-table-card,
+html[data-theme="dark"] .aircraft-table-card,
+body[data-theme="dark"] .flights-board-card,
+body[data-theme="dark"] .airlines-table-card,
+body[data-theme="dark"] .airports-table-card,
+body[data-theme="dark"] .aircraft-table-card,
+html.dark-mode .flights-board-card,
+html.dark-mode .airlines-table-card,
+html.dark-mode .airports-table-card,
+html.dark-mode .aircraft-table-card,
+body.dark-mode .flights-board-card,
+body.dark-mode .airlines-table-card,
+body.dark-mode .airports-table-card,
+body.dark-mode .aircraft-table-card {
+    background: #ffffff !important;
+    border-color: #dbe3ef !important;
+    box-shadow: 0 18px 46px rgba(2, 6, 23, 0.28) !important;
+}
+
+html[data-theme="dark"] .flights-toolbar,
+html[data-theme="dark"] .airlines-toolbar,
+html[data-theme="dark"] .airports-toolbar,
+html[data-theme="dark"] .aircraft-toolbar,
+body[data-theme="dark"] .flights-toolbar,
+body[data-theme="dark"] .airlines-toolbar,
+body[data-theme="dark"] .airports-toolbar,
+body[data-theme="dark"] .aircraft-toolbar,
+html.dark-mode .flights-toolbar,
+html.dark-mode .airlines-toolbar,
+html.dark-mode .airports-toolbar,
+html.dark-mode .aircraft-toolbar,
+body.dark-mode .flights-toolbar,
+body.dark-mode .airlines-toolbar,
+body.dark-mode .airports-toolbar,
+body.dark-mode .aircraft-toolbar {
+    background: #ffffff !important;
+    border-bottom-color: #e5eaf2 !important;
+}
+
+/* =========================================================
+   TABLES
+========================================================= */
+
+html[data-theme="dark"] .flights-table th,
+html[data-theme="dark"] .airlines-table th,
+html[data-theme="dark"] .airports-table th,
+html[data-theme="dark"] .aircraft-table th,
+body[data-theme="dark"] .flights-table th,
+body[data-theme="dark"] .airlines-table th,
+body[data-theme="dark"] .airports-table th,
+body[data-theme="dark"] .aircraft-table th,
+html.dark-mode .flights-table th,
+html.dark-mode .airlines-table th,
+html.dark-mode .airports-table th,
+html.dark-mode .aircraft-table th,
+body.dark-mode .flights-table th,
+body.dark-mode .airlines-table th,
+body.dark-mode .airports-table th,
+body.dark-mode .aircraft-table th {
+    background: #f8fafc !important;
+    color: #020617 !important;
+    border-bottom-color: #dbe3ef !important;
+}
+
+html[data-theme="dark"] .flights-table td,
+html[data-theme="dark"] .airlines-table td,
+html[data-theme="dark"] .airports-table td,
+html[data-theme="dark"] .aircraft-table td,
+body[data-theme="dark"] .flights-table td,
+body[data-theme="dark"] .airlines-table td,
+body[data-theme="dark"] .airports-table td,
+body[data-theme="dark"] .aircraft-table td,
+html.dark-mode .flights-table td,
+html.dark-mode .airlines-table td,
+html.dark-mode .airports-table td,
+html.dark-mode .aircraft-table td,
+body.dark-mode .flights-table td,
+body.dark-mode .airlines-table td,
+body.dark-mode .airports-table td,
+body.dark-mode .aircraft-table td {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-bottom-color: #edf1f7 !important;
+}
+
+html[data-theme="dark"] .flights-table tbody tr:hover,
+html[data-theme="dark"] .airlines-table tbody tr:hover,
+html[data-theme="dark"] .airports-table tbody tr:hover,
+html[data-theme="dark"] .aircraft-table tbody tr:hover,
+body[data-theme="dark"] .flights-table tbody tr:hover,
+body[data-theme="dark"] .airlines-table tbody tr:hover,
+body[data-theme="dark"] .airports-table tbody tr:hover,
+body[data-theme="dark"] .aircraft-table tbody tr:hover,
+html.dark-mode .flights-table tbody tr:hover,
+html.dark-mode .airlines-table tbody tr:hover,
+html.dark-mode .airports-table tbody tr:hover,
+html.dark-mode .aircraft-table tbody tr:hover,
+body.dark-mode .flights-table tbody tr:hover,
+body.dark-mode .airlines-table tbody tr:hover,
+body.dark-mode .airports-table tbody tr:hover,
+body.dark-mode .aircraft-table tbody tr:hover {
+    background: #f8fafc !important;
+}
+
+/* =========================================================
+   MAIN TEXT INSIDE TABLES
+========================================================= */
+
+html[data-theme="dark"] .flight-code,
+html[data-theme="dark"] .flight-route,
+html[data-theme="dark"] .flight-airline-name,
+html[data-theme="dark"] .flight-aircraft,
+html[data-theme="dark"] .flight-time,
+html[data-theme="dark"] .airline-title,
+html[data-theme="dark"] .airline-code-pair,
+html[data-theme="dark"] .airline-country,
+html[data-theme="dark"] .airport-name-link,
+html[data-theme="dark"] .airport-code-stack span,
+html[data-theme="dark"] .airport-location-stack span,
+html[data-theme="dark"] .airport-coordinates span,
+html[data-theme="dark"] .airport-flight-count,
+html[data-theme="dark"] .aircraft-name-link,
+html[data-theme="dark"] .aircraft-registration,
+html[data-theme="dark"] .aircraft-model,
+html[data-theme="dark"] .aircraft-operator,
+html[data-theme="dark"] .aircraft-capacity,
+body[data-theme="dark"] .flight-code,
+body[data-theme="dark"] .flight-route,
+body[data-theme="dark"] .flight-airline-name,
+body[data-theme="dark"] .flight-aircraft,
+body[data-theme="dark"] .flight-time,
+body[data-theme="dark"] .airline-title,
+body[data-theme="dark"] .airline-code-pair,
+body[data-theme="dark"] .airline-country,
+body[data-theme="dark"] .airport-name-link,
+body[data-theme="dark"] .airport-code-stack span,
+body[data-theme="dark"] .airport-location-stack span,
+body[data-theme="dark"] .airport-coordinates span,
+body[data-theme="dark"] .airport-flight-count,
+body[data-theme="dark"] .aircraft-name-link,
+body[data-theme="dark"] .aircraft-registration,
+body[data-theme="dark"] .aircraft-model,
+body[data-theme="dark"] .aircraft-operator,
+body[data-theme="dark"] .aircraft-capacity,
+html.dark-mode .flight-code,
+html.dark-mode .flight-route,
+html.dark-mode .flight-airline-name,
+html.dark-mode .flight-aircraft,
+html.dark-mode .flight-time,
+html.dark-mode .airline-title,
+html.dark-mode .airline-code-pair,
+html.dark-mode .airline-country,
+html.dark-mode .airport-name-link,
+html.dark-mode .airport-code-stack span,
+html.dark-mode .airport-location-stack span,
+html.dark-mode .airport-coordinates span,
+html.dark-mode .airport-flight-count,
+html.dark-mode .aircraft-name-link,
+html.dark-mode .aircraft-registration,
+html.dark-mode .aircraft-model,
+html.dark-mode .aircraft-operator,
+html.dark-mode .aircraft-capacity,
+body.dark-mode .flight-code,
+body.dark-mode .flight-route,
+body.dark-mode .flight-airline-name,
+body.dark-mode .flight-aircraft,
+body.dark-mode .flight-time,
+body.dark-mode .airline-title,
+body.dark-mode .airline-code-pair,
+body.dark-mode .airline-country,
+body.dark-mode .airport-name-link,
+body.dark-mode .airport-code-stack span,
+body.dark-mode .airport-location-stack span,
+body.dark-mode .airport-coordinates span,
+body.dark-mode .airport-flight-count,
+body.dark-mode .aircraft-name-link,
+body.dark-mode .aircraft-registration,
+body.dark-mode .aircraft-model,
+body.dark-mode .aircraft-operator,
+body.dark-mode .aircraft-capacity {
+    color: #020617 !important;
+}
+
+html[data-theme="dark"] .flight-route small,
+html[data-theme="dark"] .flight-airline-name,
+html[data-theme="dark"] .flight-aircraft,
+html[data-theme="dark"] .airline-subtitle,
+html[data-theme="dark"] .airport-meta,
+html[data-theme="dark"] .airport-code-stack small,
+html[data-theme="dark"] .airport-location-stack small,
+html[data-theme="dark"] .airport-coordinates small,
+html[data-theme="dark"] .aircraft-meta,
+body[data-theme="dark"] .flight-route small,
+body[data-theme="dark"] .flight-airline-name,
+body[data-theme="dark"] .flight-aircraft,
+body[data-theme="dark"] .airline-subtitle,
+body[data-theme="dark"] .airport-meta,
+body[data-theme="dark"] .airport-code-stack small,
+body[data-theme="dark"] .airport-location-stack small,
+body[data-theme="dark"] .airport-coordinates small,
+body[data-theme="dark"] .aircraft-meta,
+html.dark-mode .flight-route small,
+html.dark-mode .flight-airline-name,
+html.dark-mode .flight-aircraft,
+html.dark-mode .airline-subtitle,
+html.dark-mode .airport-meta,
+html.dark-mode .airport-code-stack small,
+html.dark-mode .airport-location-stack small,
+html.dark-mode .airport-coordinates small,
+html.dark-mode .aircraft-meta,
+body.dark-mode .flight-route small,
+body.dark-mode .flight-airline-name,
+body.dark-mode .flight-aircraft,
+body.dark-mode .airline-subtitle,
+body.dark-mode .airport-meta,
+body.dark-mode .airport-code-stack small,
+body.dark-mode .airport-location-stack small,
+body.dark-mode .airport-coordinates small,
+body.dark-mode .aircraft-meta {
+    color: #64748b !important;
+}
+
+/* =========================================================
+   FORM CONTROLS
+========================================================= */
+
+html[data-theme="dark"] .flights-search input,
+html[data-theme="dark"] .airlines-search-box input,
+html[data-theme="dark"] .airports-search-box input,
+html[data-theme="dark"] .aircraft-search-box input,
+html[data-theme="dark"] .flights-select,
+html[data-theme="dark"] .airports-filter-select,
+html[data-theme="dark"] .aircraft-filter-select,
+body[data-theme="dark"] .flights-search input,
+body[data-theme="dark"] .airlines-search-box input,
+body[data-theme="dark"] .airports-search-box input,
+body[data-theme="dark"] .aircraft-search-box input,
+body[data-theme="dark"] .flights-select,
+body[data-theme="dark"] .airports-filter-select,
+body[data-theme="dark"] .aircraft-filter-select,
+html.dark-mode .flights-search input,
+html.dark-mode .airlines-search-box input,
+html.dark-mode .airports-search-box input,
+html.dark-mode .aircraft-search-box input,
+html.dark-mode .flights-select,
+html.dark-mode .airports-filter-select,
+html.dark-mode .aircraft-filter-select,
+body.dark-mode .flights-search input,
+body.dark-mode .airlines-search-box input,
+body.dark-mode .airports-search-box input,
+body.dark-mode .aircraft-search-box input,
+body.dark-mode .flights-select,
+body.dark-mode .airports-filter-select,
+body.dark-mode .aircraft-filter-select {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cfd8e6 !important;
+}
+
+html[data-theme="dark"] .flights-search input::placeholder,
+html[data-theme="dark"] .airlines-search-box input::placeholder,
+html[data-theme="dark"] .airports-search-box input::placeholder,
+html[data-theme="dark"] .aircraft-search-box input::placeholder,
+body[data-theme="dark"] .flights-search input::placeholder,
+body[data-theme="dark"] .airlines-search-box input::placeholder,
+body[data-theme="dark"] .airports-search-box input::placeholder,
+body[data-theme="dark"] .aircraft-search-box input::placeholder,
+html.dark-mode .flights-search input::placeholder,
+html.dark-mode .airlines-search-box input::placeholder,
+html.dark-mode .airports-search-box input::placeholder,
+html.dark-mode .aircraft-search-box input::placeholder,
+body.dark-mode .flights-search input::placeholder,
+body.dark-mode .airlines-search-box input::placeholder,
+body.dark-mode .airports-search-box input::placeholder,
+body.dark-mode .aircraft-search-box input::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+html[data-theme="dark"] .flights-reset-btn,
+html[data-theme="dark"] .airlines-reset-button,
+html[data-theme="dark"] .airports-reset-button,
+html[data-theme="dark"] .aircraft-reset-button,
+body[data-theme="dark"] .flights-reset-btn,
+body[data-theme="dark"] .airlines-reset-button,
+body[data-theme="dark"] .airports-reset-button,
+body[data-theme="dark"] .aircraft-reset-button,
+html.dark-mode .flights-reset-btn,
+html.dark-mode .airlines-reset-button,
+html.dark-mode .airports-reset-button,
+html.dark-mode .aircraft-reset-button,
+body.dark-mode .flights-reset-btn,
+body.dark-mode .airlines-reset-button,
+body.dark-mode .airports-reset-button,
+body.dark-mode .aircraft-reset-button {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #cfd8e6 !important;
+}
+
+html[data-theme="dark"] .flights-submit-btn,
+html[data-theme="dark"] .airlines-search-submit,
+html[data-theme="dark"] .airports-apply-button,
+html[data-theme="dark"] .aircraft-apply-button,
+body[data-theme="dark"] .flights-submit-btn,
+body[data-theme="dark"] .airlines-search-submit,
+body[data-theme="dark"] .airports-apply-button,
+body[data-theme="dark"] .aircraft-apply-button,
+html.dark-mode .flights-submit-btn,
+html.dark-mode .airlines-search-submit,
+html.dark-mode .airports-apply-button,
+html.dark-mode .aircraft-apply-button,
+body.dark-mode .flights-submit-btn,
+body.dark-mode .airlines-search-submit,
+body.dark-mode .airports-apply-button,
+body.dark-mode .aircraft-apply-button {
+    background: #2563eb !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="dark"] .flights-submit-btn:hover,
+html[data-theme="dark"] .airlines-search-submit:hover,
+html[data-theme="dark"] .airports-apply-button:hover,
+html[data-theme="dark"] .aircraft-apply-button:hover,
+body[data-theme="dark"] .flights-submit-btn:hover,
+body[data-theme="dark"] .airlines-search-submit:hover,
+body[data-theme="dark"] .airports-apply-button:hover,
+body[data-theme="dark"] .aircraft-apply-button:hover,
+html.dark-mode .flights-submit-btn:hover,
+html.dark-mode .airlines-search-submit:hover,
+html.dark-mode .airports-apply-button:hover,
+html.dark-mode .aircraft-apply-button:hover,
+body.dark-mode .flights-submit-btn:hover,
+body.dark-mode .airlines-search-submit:hover,
+body.dark-mode .airports-apply-button:hover,
+body.dark-mode .aircraft-apply-button:hover {
+    background: #1d4ed8 !important;
+    color: #ffffff !important;
+}
+
+/* =========================================================
+   ACTION MENUS
+========================================================= */
+
+html[data-theme="dark"] .flight-actions-menu summary span,
+html[data-theme="dark"] .airline-actions-menu summary span,
+html[data-theme="dark"] .airport-actions-menu summary span,
+html[data-theme="dark"] .aircraft-actions-menu summary span,
+body[data-theme="dark"] .flight-actions-menu summary span,
+body[data-theme="dark"] .airline-actions-menu summary span,
+body[data-theme="dark"] .airport-actions-menu summary span,
+body[data-theme="dark"] .aircraft-actions-menu summary span,
+html.dark-mode .flight-actions-menu summary span,
+html.dark-mode .airline-actions-menu summary span,
+html.dark-mode .airport-actions-menu summary span,
+html.dark-mode .aircraft-actions-menu summary span,
+body.dark-mode .flight-actions-menu summary span,
+body.dark-mode .airline-actions-menu summary span,
+body.dark-mode .airport-actions-menu summary span,
+body.dark-mode .aircraft-actions-menu summary span {
+    background: #020617 !important;
+}
+
+html[data-theme="dark"] .flight-actions-dropdown,
+html[data-theme="dark"] .airline-actions-dropdown,
+html[data-theme="dark"] .airport-actions-dropdown,
+html[data-theme="dark"] .aircraft-actions-dropdown,
+body[data-theme="dark"] .flight-actions-dropdown,
+body[data-theme="dark"] .airline-actions-dropdown,
+body[data-theme="dark"] .airport-actions-dropdown,
+body[data-theme="dark"] .aircraft-actions-dropdown,
+html.dark-mode .flight-actions-dropdown,
+html.dark-mode .airline-actions-dropdown,
+html.dark-mode .airport-actions-dropdown,
+html.dark-mode .aircraft-actions-dropdown,
+body.dark-mode .flight-actions-dropdown,
+body.dark-mode .airline-actions-dropdown,
+body.dark-mode .airport-actions-dropdown,
+body.dark-mode .aircraft-actions-dropdown {
+    background: #ffffff !important;
+    border-color: #dbe3ef !important;
+}
+
+html[data-theme="dark"] .flight-actions-dropdown a,
+html[data-theme="dark"] .airline-actions-dropdown a,
+html[data-theme="dark"] .airport-actions-dropdown a,
+html[data-theme="dark"] .aircraft-actions-dropdown a,
+body[data-theme="dark"] .flight-actions-dropdown a,
+body[data-theme="dark"] .airline-actions-dropdown a,
+body[data-theme="dark"] .airport-actions-dropdown a,
+body[data-theme="dark"] .aircraft-actions-dropdown a,
+html.dark-mode .flight-actions-dropdown a,
+html.dark-mode .airline-actions-dropdown a,
+html.dark-mode .airport-actions-dropdown a,
+html.dark-mode .aircraft-actions-dropdown a,
+body.dark-mode .flight-actions-dropdown a,
+body.dark-mode .airline-actions-dropdown a,
+body.dark-mode .airport-actions-dropdown a,
+body.dark-mode .aircraft-actions-dropdown a {
+    color: #334155 !important;
+}
+
+html[data-theme="dark"] .flight-actions-dropdown a:hover,
+html[data-theme="dark"] .airline-actions-dropdown a:hover,
+html[data-theme="dark"] .airport-actions-dropdown a:hover,
+html[data-theme="dark"] .aircraft-actions-dropdown a:hover,
+body[data-theme="dark"] .flight-actions-dropdown a:hover,
+body[data-theme="dark"] .airline-actions-dropdown a:hover,
+body[data-theme="dark"] .airport-actions-dropdown a:hover,
+body[data-theme="dark"] .aircraft-actions-dropdown a:hover,
+html.dark-mode .flight-actions-dropdown a:hover,
+html.dark-mode .airline-actions-dropdown a:hover,
+html.dark-mode .airport-actions-dropdown a:hover,
+html.dark-mode .aircraft-actions-dropdown a:hover,
+body.dark-mode .flight-actions-dropdown a:hover,
+body.dark-mode .airline-actions-dropdown a:hover,
+body.dark-mode .airport-actions-dropdown a:hover,
+body.dark-mode .aircraft-actions-dropdown a:hover {
+    background: #eff6ff !important;
+    color: #1d4ed8 !important;
+}

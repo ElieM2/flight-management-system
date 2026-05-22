@@ -1,0 +1,5557 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-05 07:45+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+
+msgid "Scheduled"
+msgstr "Запланирован"
+
+msgid "Boarding"
+msgstr "Посадка"
+
+msgid "Departed"
+msgstr "Вылетел"
+
+msgid "In Air"
+msgstr "В полёте"
+
+msgid "Landed"
+msgstr "Приземлился"
+
+msgid "Delayed"
+msgstr "Задержан"
+
+msgid "Cancelled"
+msgstr "Отменён"
+
+msgid "Unknown"
+msgstr "Неизвестно"
+
+msgid "API synchronized"
+msgstr "Синхронизировано API"
+
+msgid "Local records"
+msgstr "Локальные записи"
+
+msgid "Unspecified source"
+msgstr "Сбалансированные источники"
+
+msgid "Strong operating quality"
+msgstr "Система работает нормально"
+
+msgid "Good performance with visible pressure"
+msgstr "Хорошая производительность при видимом давлении"
+
+msgid "Moderate performance requiring attention"
+msgstr "Операционные сигналы, требующие внимания"
+
+msgid "High operational pressure"
+msgstr "Высокое оперативное давление"
+
+msgid "No data"
+msgstr "Нет данных"
+
+msgid "Unknown airline"
+msgstr "Неизвестная авиакомпания"
+
+msgid "Unknown airport"
+msgstr "Неизвестная авиакомпания"
+
+msgid "Critical Supervision"
+msgstr "Критический контроль"
+
+msgid ""
+"Critical operational pressure is visible. Prioritize cancelled flights, "
+"high-risk records, and the busiest corridor before expanding the analysis."
+msgstr ""
+"Давление разрушения видно. Расставьте приоритеты отмененных рейсов, "
+"отложенных операций и самого загруженного коридора, прежде чем расширять "
+"анализ."
+
+msgid "Elevated Supervision"
+msgstr "Усиленный контроль"
+
+msgid ""
+"Operations remain readable, but delayed flights and attention-level records "
+"require targeted monitoring."
+msgstr ""
+"Слой операционных оповещений для сигналов сбоев, давления источников и "
+"внимания мониторинга."
+
+msgid "Stable Operations"
+msgstr "Стабильные операции"
+
+msgid ""
+"The visible operational picture is stable. Continue standard supervision and"
+" data validation."
+msgstr ""
+"Операции стабильны. Поддерживайте стандартный контроль и проверку данных."
+
+msgid ""
+"No flight records are visible in this report. Check filters or synchronize "
+"operational data."
+msgstr "Записи рейсов, видимые в текущем операционном наборе данных."
+
+msgid ""
+"Review critical records first: cancelled flights and high-risk operations "
+"require priority handling."
+msgstr ""
+
+msgid ""
+"Keep attention flights under monitoring and compare them with route "
+"concentration and airport activity."
+msgstr ""
+"Проверяйте задержанные рейсы и сравнивайте их с концентрацией маршрутов и "
+"активностью аэропортов."
+
+msgid ""
+"Validate recovery actions for cancelled flights before presenting the "
+"operational report."
+msgstr "Отменённые рейсы и действия восстановления"
+
+msgid ""
+"Track delayed flights and identify whether the pressure is concentrated on "
+"specific corridors."
+msgstr ""
+"Проверяйте задержанные рейсы и сравнивайте их с концентрацией маршрутов и "
+"активностью аэропортов."
+
+msgid ""
+"Irregular operations share is high. Treat the current report as an "
+"attention-required operating view."
+msgstr ""
+"Доля нарушений высока. Относитесь к настоящему докладу как к требующему "
+"внимания оперативному взгляду."
+
+msgid ""
+"External synchronized data is dominant. Explain this as a hybrid data model "
+"supported by API ingestion."
+msgstr ""
+"Внешние синхронизированные данные являются доминирующими. Подтвердите "
+"согласованность API и объясните это как гибридную модель данных."
+
+msgid ""
+"Local records are dominant. Explain this as manual control over the internal"
+" operational database."
+msgstr ""
+"Местные рекорды доминируют. Объясните это как ручное управление внутренней "
+"операционной базой данных."
+
+#, python-format
+msgid "Priority corridor to watch: %(route)s."
+msgstr "Priority corridor to watch: %(route)s."
+
+msgid ""
+"Operations are stable. Maintain standard supervision and data validation."
+msgstr ""
+"Операции стабильны. Поддерживайте стандартный контроль и проверку данных."
+
+msgid "Critical records"
+msgstr "Локальные записи"
+
+msgid "Attention records"
+msgstr "Панель внимания"
+
+msgid "Stable records"
+msgstr "Видимые записи"
+
+msgid "Other records"
+msgstr "Последние записи"
+
+msgid "No route data"
+msgstr "Нет данных маршрута"
+
+msgid "API-led dataset"
+msgstr "Набор данных с преобладанием API"
+
+msgid "External synchronized records currently lead the operational dataset."
+msgstr ""
+"Внешние синхронизированные записи сейчас преобладают в операционном наборе "
+"данных."
+
+msgid "Local-led dataset"
+msgstr "Набор данных с преобладанием локальных записей"
+
+msgid "Local records currently represent the largest part of the dataset."
+msgstr "Локальные записи сейчас составляют большую часть данных."
+
+msgid "Balanced sources"
+msgstr "Сбалансированные источники"
+
+msgid "API and local records are currently balanced or unavailable."
+msgstr "API и локальные записи сейчас сбалансированы или недоступны."
+
+msgid "Normal"
+msgstr "Нормально"
+
+msgid "Operations are stable. Continue routine supervision."
+msgstr "Операции стабильны. Продолжайте обычный контроль."
+
+msgid "Standard Control"
+msgstr "Стандартный контроль"
+
+msgid "Monitor active flights and keep route visibility stable."
+msgstr ""
+"Контролируйте активные рейсы и сохраняйте стабильную видимость маршрутов."
+
+msgid "High"
+msgstr "Высокий"
+
+msgid ""
+"Recovery pressure is high. Review cancelled and high-risk flights before "
+"routine monitoring."
+msgstr ""
+"Давление сбоев высокое. Сначала проверьте отмены, задержанные рейсы и "
+"затронутые маршруты."
+
+msgid "Recovery Supervision"
+msgstr "Усиленный контроль"
+
+msgid "Cancelled and high-risk recovery cases"
+msgstr "Отменённые рейсы и действия восстановления"
+
+msgid "Medium"
+msgstr "Средний"
+
+msgid ""
+"Operational attention is required. Keep recovery cases and delayed flights "
+"under closer review."
+msgstr ""
+"Видна умеренная нестабильность. Держите приоритетные рейсы под более "
+"внимательным контролем."
+
+msgid "Recovery cases requiring validation"
+msgstr "Исключения Operational, требующие проверки"
+
+msgid "Delayed flights requiring attention monitoring"
+msgstr "Задержки рейсов, требующие более тщательного рассмотрения"
+
+msgid "Traffic volume is active. Maintain supervision of airborne operations."
+msgstr "Объём трафика активный. Поддерживайте контроль рейсов в воздухе."
+
+msgid "Live Traffic Monitoring"
+msgstr "Мониторинг активного трафика"
+
+msgid "Airborne flights under active supervision"
+msgstr "Полеты воздушных судов под активным наблюдением"
+
+msgid "No active operational pressure is visible in the current dataset."
+msgstr "В текущих данных не видно активной операционной нагрузки."
+
+msgid "Low Activity"
+msgstr "Низкая активность"
+
+msgid "Registry consistency and source coverage"
+msgstr "Согласованность реестра и покрытие источников"
+
+#, python-format
+msgid "%(count)s critical flight needs recovery handling."
+msgid_plural "%(count)s critical flights need recovery handling."
+msgstr[0] "%(count)s отменённый рейс требует проверки восстановления."
+msgstr[1] "%(count)s отменённых рейса требуют проверки восстановления."
+
+#, python-format
+msgid "%(count)s cancelled flight requires recovery review."
+msgid_plural "%(count)s cancelled flights require recovery review."
+msgstr[0] "%(count)s отменённый рейс требует проверки восстановления."
+msgstr[1] "%(count)s отменённых рейса требуют проверки восстановления."
+
+#, python-format
+msgid "%(count)s delayed flight remains under attention monitoring."
+msgid_plural "%(count)s delayed flights remain under attention monitoring."
+msgstr[0] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+msgstr[1] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+msgstr[2] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+msgstr[3] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+
+#, python-format
+msgid "%(airline)s is the busiest airline in the current dataset."
+msgstr "%(airline)s — самая активная авиакомпания в текущем наборе данных."
+
+#, python-format
+msgid "Most monitored route: %(route)s."
+msgstr "Самый контролируемый маршрут: %(route)s."
+
+msgid "API-synchronized flights currently dominate the dataset."
+msgstr ""
+"В настоящее время в наборе данных доминируют синхронизированные рейсы API."
+
+msgid "Local flight records remain important for operational continuity."
+msgstr "Местные летные записи по-прежнему важны для непрерывности работы."
+
+#, python-format
+msgid "%(count)s flight is currently in air."
+msgid_plural "%(count)s flights are currently in air."
+msgstr[0] "%(count)s рейс сейчас в воздухе."
+msgstr[1] "%(count)s рейса сейчас в воздухе."
+
+msgid "No major operational pressure is visible in the current dataset."
+msgstr "В текущих данных не видно серьёзной операционной нагрузки."
+
+#, python-format
+msgid "%(count)s delayed flight is currently detected in the platform."
+msgid_plural ""
+"%(count)s delayed flights are currently detected in the platform."
+msgstr[0] "%(count)s delayed flight is currently detected in the platform."
+msgstr[1] "%(count)s delayed flights are currently detected in the platform."
+
+#, python-format
+msgid "%(count)s cancelled flight is visible in the operational dataset."
+msgid_plural ""
+"%(count)s cancelled flights are visible in the operational dataset."
+msgstr[0] "%(count)s cancelled flight is visible in the operational dataset."
+msgstr[1] ""
+"%(count)s cancelled flights are visible in the operational dataset."
+
+#, python-format
+msgid ""
+"%(count)s critical recovery case is visible in the operational dataset."
+msgid_plural ""
+"%(count)s critical recovery cases are visible in the operational dataset."
+msgstr[0] "%(count)s cancelled flight is visible in the operational dataset."
+msgstr[1] ""
+"%(count)s cancelled flights are visible in the operational dataset."
+
+#, python-format
+msgid "%(airline)s is currently the most active airline in the system."
+msgstr "%(airline)s is currently the most active airline in the system."
+
+#, python-format
+msgid "The busiest route currently tracked is %(route)s."
+msgstr "The busiest route currently tracked is %(route)s."
+
+msgid ""
+"The platform is ready to centralize flights, monitoring, analytics and "
+"external synchronization."
+msgstr ""
+"Платформа готова к централизации полетов, мониторингу, аналитике и внешней "
+"синхронизации."
+
+msgid "Local"
+msgstr "Локально"
+
+msgid "API Synced"
+msgstr "Синхронизировано API"
+
+msgid "Flight number"
+msgstr "Номер рейса"
+
+msgid "Airline"
+msgstr "Авиакомпания"
+
+msgid "Aircraft"
+msgstr "Самолёт"
+
+msgid "Origin airport"
+msgstr "Аэропорт вылета"
+
+msgid "Destination airport"
+msgstr "Аэропорт прибытия"
+
+msgid "Scheduled departure"
+msgstr "Плановый вылет"
+
+msgid "Scheduled arrival"
+msgstr "Плановое прибытие"
+
+msgid "Actual departure"
+msgstr "Фактический вылет"
+
+msgid "Actual arrival"
+msgstr "Фактическое прибытие"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Source type"
+msgstr "Тип источника"
+
+msgid "External ID"
+msgstr "Внешний ID"
+
+msgid "Live latitude"
+msgstr "Широта Live"
+
+msgid "Live longitude"
+msgstr "Live долгота"
+
+msgid "Live altitude"
+msgstr "Live высота"
+
+msgid "Live speed"
+msgstr "Скорость Live"
+
+msgid "Live direction"
+msgstr "Направление Live"
+
+msgid "Last synchronized at"
+msgstr "Последний синхронизированный"
+
+msgid "Created at"
+msgstr "Создан в"
+
+msgid "Updated at"
+msgstr "Обновлено в"
+
+msgid "Flight"
+msgstr "Рейс"
+
+msgid "Flights"
+msgstr "Рейсы"
+
+msgid "Origin and destination airports must be different."
+msgstr "Аэропорты вылета и прибытия должны быть разными."
+
+msgid "Scheduled arrival must be after scheduled departure."
+msgstr "Плановое прибытие должно быть позже планового вылета."
+
+msgid "Actual departure date looks invalid."
+msgstr "Дата фактического вылета выглядит некорректной."
+
+msgid "Actual arrival cannot be earlier than actual departure."
+msgstr "Фактическое прибытие не может быть раньше фактического вылета."
+
+msgid "Latitude must be between -90 and 90."
+msgstr "Широта должна быть от -90 до 90."
+
+msgid "Longitude must be between -180 and 180."
+msgstr "Долгота должна быть от -180 до 180."
+
+msgid "Live speed cannot be negative."
+msgstr "Скорость live не может быть отрицательной."
+
+msgid "Live altitude cannot be negative."
+msgstr "Высота live не может быть отрицательной."
+
+msgid "Live direction must be between 0 and 360."
+msgstr "Направление live должно быть от 0 до 360."
+
+msgid "Created"
+msgstr "Созданный"
+
+msgid "Status Change"
+msgstr "Изменение Status"
+
+msgid "Schedule Change"
+msgstr "Изменение расписания"
+
+msgid "Live Data Change"
+msgstr "Live Data Изменение"
+
+msgid "Mixed Change"
+msgstr "Смешанные изменения"
+
+msgid "Previous status"
+msgstr "Предыдущий статус"
+
+msgid "New status"
+msgstr "Новый статус"
+
+msgid "Change type"
+msgstr "Тип изменения"
+
+msgid "Source type snapshot"
+msgstr "Снимок типа источника"
+
+msgid "Scheduled departure snapshot"
+msgstr "Запланированный снимок вылета"
+
+msgid "Scheduled arrival snapshot"
+msgstr "Запланированный снимок прибытия"
+
+msgid "Actual departure snapshot"
+msgstr "Снимок фактического отъезда"
+
+msgid "Actual arrival snapshot"
+msgstr "Реальный снимок прибытия"
+
+msgid "Departure delay minutes"
+msgstr "Минута задержки отправления"
+
+msgid "Arrival delay minutes"
+msgstr "Минута задержки прибытия"
+
+msgid "Disruption event"
+msgstr "Событие срыва"
+
+msgid "Status changed"
+msgstr "Status изменился"
+
+msgid "Schedule changed"
+msgstr "Расписание изменено"
+
+msgid "Live data changed"
+msgstr "Изменились данные Live"
+
+msgid "Change summary"
+msgstr "Изменить резюме"
+
+msgid "Changed by"
+msgstr "Измененный путем"
+
+msgid "Changed at"
+msgstr "Изменился в"
+
+msgid "Flight Status History"
+msgstr "Flight Status История"
+
+msgid "Immediate"
+msgstr "Немедленно"
+
+msgid "Critical"
+msgstr "Критично"
+
+msgid "Active"
+msgstr "Активно"
+
+msgid "Attention"
+msgstr "Внимание"
+
+msgid "Routine"
+msgstr "Рутина"
+
+msgid "High Risk"
+msgstr "Высокий риск"
+
+msgid "Medium Risk"
+msgstr "Средний риск"
+
+msgid "Low Risk"
+msgstr "Низкий риск"
+
+msgid "API"
+msgstr "API"
+
+msgid "System operating normally"
+msgstr "Система работает нормально"
+
+msgid "Critical recovery pressure detected"
+msgstr "Выявлено давление задержки"
+
+msgid "Moderate disruption or attention pressure detected"
+msgstr "Обнаружено умеренное нарушение"
+
+#, python-format
+msgid "%(count)s delayed flight should remain under attention monitoring."
+msgid_plural ""
+"%(count)s delayed flights should remain under attention monitoring."
+msgstr[0] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+msgstr[1] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+msgstr[2] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+msgstr[3] ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+
+#, python-format
+msgid ""
+"%(count)s critical flight is currently prioritized for operational review."
+msgid_plural ""
+"%(count)s critical flights are currently prioritized for operational review."
+msgstr[0] ""
+"%(count)s cancelled flight detected. Prioritize manual operational review."
+msgstr[1] ""
+"%(count)s cancelled flights detected. Prioritize manual operational review."
+
+#, python-format
+msgid ""
+"%(airline)s is currently the most active airline and should be monitored "
+"closely."
+msgstr ""
+"%(airline)s is currently the most active airline and should be monitored "
+"closely."
+
+#, python-format
+msgid ""
+"The busiest route is %(route)s. Consider route-level performance tracking."
+msgstr ""
+"The busiest route is %(route)s. Consider route-level performance tracking."
+
+msgid ""
+"API-synchronized flights dominate the monitoring dataset. Validate external "
+"data freshness regularly."
+msgstr ""
+"Синхронизированные рейсы API доминируют в наборе данных мониторинга. "
+"Регулярно проверяйте свежесть внешних данных."
+
+msgid ""
+"Local flights remain significant in the monitoring dataset. Keep manual "
+"operational updates consistent."
+msgstr ""
+"Местные рейсы остаются значительными в наборе данных мониторинга. "
+"Поддерживайте последовательные ручные обновления."
+
+msgid ""
+"Live operational activity exceeds waiting departures. Focus on airborne "
+"supervision and arrival coordination."
+msgstr ""
+"Операционная активность Live превышает вылеты в ожидании. Сосредоточьтесь на"
+" воздушном наблюдении и координации прибытия."
+
+msgid "Flight cancelled. Immediate disruption review required."
+msgstr "Рейс отменён. Требуется немедленная проверка сбоя."
+
+msgid ""
+"Flight delayed. Check turnaround, route congestion, and downstream impact."
+msgstr ""
+"Рейс задержан. Проверьте turnaround, перегрузку маршрута и последующее "
+"влияние."
+
+msgid "Flight currently active in airspace and under live supervision."
+msgstr "Рейс активен в воздушном пространстве и находится под live-контролем."
+
+msgid "Boarding in progress. Departure readiness should be monitored."
+msgstr "Посадка продолжается. Нужно контролировать готовность к вылету."
+
+msgid "Departure confirmed. Track progression toward stable airborne state."
+msgstr ""
+"Вылет подтверждён. Следите за переходом к стабильному состоянию в полёте."
+
+msgid "Flight completed. Keep for traceability and post-operation analysis."
+msgstr "Рейс завершён. Сохранить для трассируемости и последующего анализа."
+
+msgid "Standard monitoring state."
+msgstr "Стандартное состояние мониторинга."
+
+msgid "Immediate Action"
+msgstr "Немедленное действие"
+
+msgid "Attention Review"
+msgstr "Очередь внимания"
+
+msgid "Live Tracking"
+msgstr "Live-отслеживание"
+
+msgid "Departure Control"
+msgstr "Контроль вылета"
+
+msgid "Routine Check"
+msgstr "Рутинная проверка"
+
+msgid "Simulated"
+msgstr "Смоделировано"
+
+msgid "Simulated continuity"
+msgstr "Смоделированная непрерывность"
+
+msgid "Interpolated route progression"
+msgstr "Интерполированная прогрессия маршрута"
+
+msgid ""
+"No live coordinates available. Position is simulated from route progression."
+msgstr ""
+"Live-координаты недоступны. Позиция смоделирована по прогрессии маршрута."
+
+msgid "Live Confirmed"
+msgstr "Live подтверждён"
+
+msgid "Trusted live tracking"
+msgstr "Надёжное live-отслеживание"
+
+msgid "Live"
+msgstr "Live"
+
+msgid "External live feed"
+msgstr "Внешний live-поток"
+
+msgid "Live coordinates matched through strong external association."
+msgstr "Live-координаты сопоставлены через сильную внешнюю связь."
+
+msgid "Live Associated"
+msgstr "Live связан"
+
+msgid "Associated live tracking"
+msgstr "Связанное live-отслеживание"
+
+msgid "Associated live feed"
+msgstr "Связанный live-поток"
+
+msgid ""
+"Live coordinates are associated to the flight, but not with the strongest "
+"identification level."
+msgstr ""
+"Live-координаты связаны с рейсом, но не на самом сильном уровне "
+"идентификации."
+
+msgid "Live Low Confidence"
+msgstr "Live с низкой уверенностью"
+
+msgid "Validate before escalation"
+msgstr "Проверить перед эскалацией"
+
+msgid "Low-confidence live association"
+msgstr "Live-связь с низкой уверенностью"
+
+msgid ""
+"Live coordinates exist, but flight identity should be validated before "
+"strong operational decisions."
+msgstr ""
+"Live-координаты есть, но личность рейса нужно подтвердить перед сильными "
+"операционными решениями."
+
+msgid "Critical Corridor"
+msgstr "Критический коридор"
+
+msgid "Disrupted Corridor"
+msgstr "Нарушенный коридор"
+
+msgid "Sensitive Corridor"
+msgstr "Чувствительный коридор"
+
+msgid "Active Corridor"
+msgstr "Активный коридор"
+
+msgid "Monitored Corridor"
+msgstr "Контролируемый коридор"
+
+msgid "Normal Corridor"
+msgstr "Нормальный коридор"
+
+msgid "Escalate to recovery handling and disruption review."
+msgstr "Эскалировать в критический мониторинг и проверку сбоя."
+
+msgid "Keep under attention monitoring and review delay propagation."
+msgstr ""
+
+msgid ""
+"Validate aircraft identity before relying on live position for strong "
+"escalation."
+msgstr ""
+"Подтвердить идентичность самолёта перед использованием live-позиции для "
+"сильной эскалации."
+
+msgid "Maintain close live supervision until arrival."
+msgstr "Поддерживать плотный live-контроль до прибытия."
+
+msgid "Track arrival readiness and route progression."
+msgstr "Следить за готовностью прибытия и прогрессией маршрута."
+
+msgid "Verify departure readiness."
+msgstr "Проверить готовность к вылету."
+
+msgid "Confirm transition to stable in-air state."
+msgstr "Подтвердить переход к стабильному состоянию в полёте."
+
+msgid "Archive for traceability and analytics."
+msgstr "Архивировать для трассируемости и аналитики."
+
+msgid "Continue routine monitoring."
+msgstr "Продолжить рутинный мониторинг."
+
+msgid ""
+"Recovery handling required. Confirm disruption scope, re-evaluate corridor "
+"continuity, and route this flight into the recovery workflow."
+msgstr ""
+"Необходим немедленный оперативный обзор. Подтвердите масштабы сбоев, "
+"переоцените непрерывность коридора и направьте этот полет в рабочий процесс "
+"критического надзора."
+
+#, python-format
+msgid ""
+"Strong delay pressure detected with about %(minutes)s minutes of departure "
+"deviation. Prioritize route review, turnaround validation, and downstream "
+"schedule impact."
+msgstr ""
+"Strong delay pressure detected with about %(minutes)s minutes of departure "
+"deviation. Prioritize route review, turnaround validation, and downstream "
+"schedule impact."
+
+msgid ""
+"Delay pressure detected. Keep the flight under attention monitoring, verify "
+"turnaround causes, and anticipate propagation impact on connected "
+"operations."
+msgstr ""
+"Выявлено давление задержки. Приоритетное наблюдение за маршрутом, проверка "
+"причин поворота и прогнозирование воздействия распространения на связанные "
+"операции."
+
+msgid ""
+"Live position is associated with low confidence. Keep the route visible, but"
+" validate aircraft identity before taking strong operational decisions."
+msgstr ""
+"Позиция Live связана с низкой степенью достоверности. Держите маршрут "
+"видимым, но удостоверяйте личность самолета, прежде чем принимать "
+"решительные оперативные решения."
+
+#, python-format
+msgid ""
+"Flight is airborne with elevated sensitivity and about %(remaining_km)s km "
+"remaining. Maintain close supervision, monitor approach stability, and "
+"prepare arrival coordination."
+msgstr ""
+"Flight is airborne with elevated sensitivity and about %(remaining_km)s km "
+"remaining. Maintain close supervision, monitor approach stability, and "
+"prepare arrival coordination."
+
+#, python-format
+msgid ""
+"Flight is airborne with about %(remaining_km)s km remaining. Continue route "
+"supervision and prepare arrival-side coordination."
+msgstr ""
+"Flight is airborne with about %(remaining_km)s km remaining. Continue route "
+"supervision and prepare arrival-side coordination."
+
+msgid ""
+"Boarding is active. Verify whether the flight can convert to departure on "
+"schedule and watch for early operational drift."
+msgstr ""
+"Посадка активна. Проверьте, может ли рейс конвертироваться в вылет по "
+"расписанию и следите за ранним оперативным дрейфом."
+
+msgid ""
+"Departure confirmed. Track early route progression until the flight reaches "
+"a stable in-air profile."
+msgstr ""
+"Вылет подтвержден. Отслеживайте раннее продвижение по маршруту, пока рейс не"
+" достигнет стабильного воздушного профиля."
+
+#, python-format
+msgid ""
+"Flight has landed with about %(minutes)s minutes of arrival deviation. Keep "
+"this record for post-operation review and performance interpretation."
+msgstr ""
+"Flight has landed with about %(minutes)s minutes of arrival deviation. Keep "
+"this record for post-operation review and performance interpretation."
+
+msgid ""
+"Flight completed normally. Preserve this record for traceability and "
+"historical analytics."
+msgstr ""
+"Flight работает нормально. Сохраните эту запись для отслеживания и "
+"исторической аналитики."
+
+msgid ""
+"Low immediate operational pressure. Continue routine monitoring and data "
+"consistency checks."
+msgstr ""
+"Низкое оперативное давление. Продолжайте рутинный мониторинг и проверку "
+"согласованности данных."
+
+msgid "Low Operational Impact"
+msgstr "Влияние Operational"
+
+msgid "Next routine review"
+msgstr "Следующий рутинный обзор"
+
+msgid "Standard monitoring window"
+msgstr "Стандартное окно мониторинга"
+
+msgid "Observe"
+msgstr "Наблюдать"
+
+msgid ""
+"Escalate cancellation, isolate disruption scope, and coordinate downstream "
+"recovery actions."
+msgstr ""
+"Эскалировать отмену, изолировать область сбоев и координировать действия по "
+"восстановлению вниз по течению."
+
+msgid "Network Disruption Risk"
+msgstr "Сетевой риск разрушения"
+
+msgid "Now"
+msgstr "Теперь"
+
+msgid "Recovery supervision until disruption is contained"
+msgstr "Критический контроль до тех пор, пока нарушение не будет остановлено"
+
+msgid "Recover"
+msgstr "Восстановить"
+
+msgid ""
+"Review turnaround blockage, route pressure, and recovery sequencing before "
+"further propagation."
+msgstr ""
+"Обзор блокировки поворота, давления маршрута и секвенирования восстановления"
+" перед дальнейшим распространением."
+
+msgid "Departure Wave Pressure"
+msgstr "Вылет волновой разрыв"
+
+msgid "Within 15 minutes"
+msgstr "Через 15 минут"
+
+msgid "Tight attention cycle until departure stability is restored"
+msgstr "Твердый надзор до восстановления стабильности вылета"
+
+msgid "Stabilize"
+msgstr "Стабилизировать"
+
+msgid ""
+"Validate delay source, monitor propagation, and prepare recovery if schedule"
+" pressure increases."
+msgstr ""
+"Проверяйте источник задержки, отслеживайте распространение и подготовьте "
+"восстановление, если давление увеличивается."
+
+msgid "Moderate Schedule Impact"
+msgstr "Умеренное влияние графика"
+
+msgid "Within 30 minutes"
+msgstr "Через 30 минут"
+
+msgid "Short attention cycle"
+msgstr "Короткий цикл наблюдения"
+
+msgid "Monitor"
+msgstr "Монитор"
+
+msgid ""
+"Validate aircraft identity before using this live position for strong "
+"operational escalation."
+msgstr ""
+"Проверяйте идентификацию самолета перед использованием этой позиции для "
+"сильной эксплуатационной эскалации."
+
+msgid "Tracking Reliability Risk"
+msgstr "Отслеживание риска надежности"
+
+msgid "Before next escalation"
+msgstr "Перед следующей эскалацией"
+
+msgid "Identity validation window"
+msgstr "Окно проверки личности"
+
+msgid "Validate"
+msgstr "Подтверждать"
+
+msgid "unknown ETA"
+msgstr "неизвестный ETA"
+
+#, python-format
+msgid ""
+"Maintain close en-route supervision, monitor approach stability, and prepare"
+" arrival coordination before %(eta)s."
+msgstr ""
+"Maintain close en-route supervision, monitor approach stability, and prepare"
+" arrival coordination before %(eta)s."
+
+msgid "Arrival Coordination Risk"
+msgstr "Координационный риск прибытия"
+
+msgid "Before approach phase"
+msgstr "Перед началом фазы приближения"
+
+msgid "Continuous until landing"
+msgstr "Непрерывно до посадки"
+
+msgid "Control"
+msgstr "Контроль"
+
+#, python-format
+msgid ""
+"Track route progression and prepare arrival-side coordination with about "
+"%(remaining_km)s km remaining."
+msgstr ""
+"Track route progression and prepare arrival-side coordination with about "
+"%(remaining_km)s km remaining."
+
+msgid "Moderate Arrival Pressure"
+msgstr "Умеренное давление прибытия"
+
+msgid "Before arrival sequence"
+msgstr "Перед прибытием последовательность"
+
+msgid "Active flight supervision window"
+msgstr "Окно активного наблюдения за полетом"
+
+#, python-format
+msgid ""
+"Maintain route supervision and prepare normal arrival handling with about "
+"%(remaining_km)s km remaining."
+msgstr ""
+"Maintain route supervision and prepare normal arrival handling with about "
+"%(remaining_km)s km remaining."
+
+msgid "Contained Operational Impact"
+msgstr "Производитель: Operational Impact"
+
+msgid "Before arrival"
+msgstr "До прибытия"
+
+msgid "Active monitoring window"
+msgstr "Окно активного мониторинга"
+
+msgid "Track"
+msgstr "Следы"
+
+msgid ""
+"Verify departure readiness and detect early drift before pushback execution."
+msgstr ""
+"Проверяйте готовность к вылету и обнаруживайте ранний дрейф перед "
+"выполнением отжима."
+
+msgid "Gate-to-departure Risk"
+msgstr "Риск от входа до выезда"
+
+msgid "Before departure release"
+msgstr "Перед отъездом освобождение"
+
+msgid "Pre-departure control window"
+msgstr "Окно управления перед вылетом"
+
+msgid "Prepare"
+msgstr "Подготовиться"
+
+msgid ""
+"Confirm clean transition into stable airborne state and monitor initial "
+"route execution."
+msgstr ""
+"Подтвердить чистый переход в стабильное воздушно-десантное состояние и "
+"контролировать выполнение начального маршрута."
+
+msgid "Early Flight Stability Risk"
+msgstr "Ранний риск стабильности Flight"
+
+msgid "Within next control cycle"
+msgstr "Следующий контрольный цикл"
+
+msgid "Initial climb and route stabilization window"
+msgstr "Начальное окно стабилизации подъема и маршрута"
+
+msgid "Confirm"
+msgstr "Подтвердите"
+
+msgid ""
+"Close operation, register arrival deviation, and preserve traceability for "
+"performance review."
+msgstr ""
+"Закрыть операцию, зарегистрировать отклонение прибытия и сохранить "
+"прослеживаемость для проверки производительности."
+
+msgid "Post-operation Deviation"
+msgstr "Отклонение после операции"
+
+msgid "Before archival review"
+msgstr "Перед архивным обзором"
+
+msgid "Post-arrival analysis window"
+msgstr "Окно анализа после прибытия"
+
+msgid "Archive"
+msgstr "Архив"
+
+msgid "Close supervision cycle and preserve operation data for analytics."
+msgstr ""
+"Закрыть цикл наблюдения и сохранить операционные данные для аналитики."
+
+msgid "Standard closure"
+msgstr "Стандартное закрытие"
+
+msgid "Archive window"
+msgstr "Архивное окно"
+
+msgid "Close"
+msgstr "Закрыть"
+
+msgid "Elevated"
+msgstr "Повышенный"
+
+msgid "Standard"
+msgstr "Стандарт"
+
+msgid "No major disruption currently detected on the mapped traffic."
+msgstr ""
+"Никаких серьезных сбоев в настоящее время не обнаружено на карте трафика."
+
+msgid "Crisis Supervision"
+msgstr "Кризисный надзор"
+
+#, python-format
+msgid ""
+"%(cancelled)s cancelled, %(delayed)s delayed, %(critical)s critical "
+"flight(s). Immediate operational coordination required."
+msgstr ""
+"%(cancelled)s cancelled, %(delayed)s delayed, %(critical)s critical "
+"flight(s). Immediate operational coordination required."
+
+#, python-format
+msgid ""
+"%(delayed)s delayed and %(attention)s attention-level flight(s) are "
+"increasing operational pressure."
+msgstr ""
+"%(delayed)s delayed and %(attention)s attention-level flight(s) are "
+"increasing operational pressure."
+
+msgid "Airport unavailable"
+msgstr "Данные маршрутов недоступны."
+
+msgid "Not assigned"
+msgstr "Не назначено"
+
+msgid "External synchronized record"
+msgstr "Внешняя синхронизированная запись"
+
+msgid "Manually maintained local record"
+msgstr "В ручном режиме ведется локальный учет"
+
+msgid "ETA unavailable"
+msgstr "Данные маршрутов недоступны."
+
+msgid "No critical flight currently requires recovery handling."
+msgstr "Нет приоритетного рейса, требующего проверки."
+
+#, python-format
+msgid "%(count)s critical flight currently requires recovery handling."
+msgid_plural "%(count)s critical flights currently require recovery handling."
+msgstr[0] "%(count)s рейс сейчас требует обработки сбоя."
+msgstr[1] "%(count)s рейса сейчас требуют обработки сбоя."
+
+msgid "Critical recovery pressure"
+msgstr "Область восстановления"
+
+msgid ""
+"Critical recovery pressure is visible across the monitored traffic picture."
+msgstr ""
+
+msgid "Cancelled flights require recovery"
+msgstr "Отменённые рейсы и действия восстановления"
+
+#, python-format
+msgid "%(count)s cancelled flight requires recovery handling."
+msgid_plural "%(count)s cancelled flights require recovery handling."
+msgstr[0] "%(count)s отменённый рейс требует проверки восстановления."
+msgstr[1] "%(count)s отменённых рейса требуют проверки восстановления."
+
+msgid "Critical flights prioritized"
+msgstr "Последние записи рейсов"
+
+#, python-format
+msgid ""
+"%(count)s flight is classified as critical according to the recovery logic."
+msgid_plural ""
+"%(count)s flights are classified as critical according to the recovery "
+"logic."
+msgstr[0] ""
+"%(count)s flights are classified as critical according to the recovery "
+"logic."
+msgstr[1] ""
+"%(count)s flights are classified as critical according to the recovery "
+"logic."
+msgstr[2] ""
+"%(count)s flights are classified as critical according to the recovery "
+"logic."
+msgstr[3] ""
+"%(count)s flights are classified as critical according to the recovery "
+"logic."
+
+msgid "Attention-level delay pressure"
+msgstr "Рейсы с видимой задержкой."
+
+msgid "Attention monitoring required"
+msgstr "Окно активного мониторинга"
+
+#, python-format
+msgid "%(count)s flight is currently in attention posture."
+msgid_plural "%(count)s flights are currently in attention posture."
+msgstr[0] "%(count)s рейс сейчас в воздухе."
+msgstr[1] "%(count)s рейса сейчас в воздухе."
+
+msgid "External source dominance"
+msgstr "Доминирование внешних источников"
+
+msgid ""
+"Monitoring dataset is mostly API-driven. Validate external freshness and "
+"consistency."
+msgstr ""
+"Набор данных Monitoring в основном основан на API. Проверяйте внешнюю "
+"свежесть и последовательность."
+
+msgid "No dominant alert signal"
+msgstr "Нет доминирующего сигнала тревоги"
+
+msgid ""
+"The current monitoring dataset does not expose a major operational alert."
+msgstr ""
+"Текущий набор данных мониторинга не выявляет серьезного оперативного "
+"предупреждения."
+
+msgid "No active flight is currently moving through live execution states."
+msgstr ""
+"Ни один активный полет в настоящее время не проходит через штаты исполнения."
+
+#, python-format
+msgid "%(count)s flight is currently moving through live execution states."
+msgid_plural ""
+"%(count)s flights are currently moving through live execution states."
+msgstr[0] ""
+"%(count)s flight is currently moving through live execution states."
+msgstr[1] ""
+"%(count)s flights are currently moving through live execution states."
+
+msgid "Live Operations"
+msgstr "Активные операции"
+
+msgid "Flights currently in active operational progression."
+msgstr "Рейсы, находящиеся в активном операционном процессе."
+
+msgid "English"
+msgstr "Английский"
+
+msgid "French"
+msgstr "Французский"
+
+msgid "Russian"
+msgstr "Русский"
+
+msgid "Example: Boeing, Airbus, registration number, airline"
+msgstr "Пример: Boeing, Airbus, регистрационный номер авиакомпании"
+
+msgid "Aircraft directory"
+msgstr "Направление Live"
+
+msgid "Aircraft and fleet records."
+msgstr "Последние записи рейсов"
+
+msgid ""
+"Review aircraft registration numbers, models, assigned operators, capacity "
+"and operational status from a clean public reference board."
+msgstr ""
+"Просмотрите регистрационные номера самолетов, модели, назначенных "
+"операторов, пропускную способность и эксплуатационный статус с чистой "
+"общественной справочной платы."
+
+msgid "Total aircraft"
+msgstr "Самолёт"
+
+msgid "Active fleet"
+msgstr "Активные рейсы"
+
+msgid "Operators"
+msgstr "Активные операции"
+
+msgid "Total seats"
+msgstr "Всего рейсов"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "Find an aircraft"
+msgstr "Активные рейсы"
+
+msgid "Search by registration number, model, aircraft type or operator."
+msgstr ""
+"Поиск по регистрационному номеру, модели, типу самолета или оператору."
+
+msgid "Aircraft search"
+msgstr "Самолёт"
+
+msgid "Reset"
+msgstr "Сбросить"
+
+msgid "All aircraft"
+msgstr "Самолёт"
+
+msgid "Directory"
+msgstr "Картина данных"
+
+msgid "Aircraft records"
+msgstr "Последние записи"
+
+msgid ""
+"Fleet data with registration, model, type, operator, capacity and status."
+msgstr ""
+"Данные флота с регистрацией, моделью, типом, оператором, пропускной "
+"способностью и статусом."
+
+#, python-format
+msgid "%(result_count)s result"
+msgid_plural "%(result_count)s results"
+msgstr[0] "Результат %(result_count)s"
+msgstr[1] "Результаты %(result_count)s"
+msgstr[2] "%(result_count)s results"
+msgstr[3] "%(result_count)s results"
+
+msgid "Registration"
+msgstr "Реестр"
+
+msgid "Model"
+msgstr "Модель"
+
+msgid "Type"
+msgstr "Тип"
+
+msgid "Capacity"
+msgstr "Вместимость"
+
+msgid "Aircraft record"
+msgstr "Самолёт"
+
+msgid "No aircraft found"
+msgstr "Всего рейсов"
+
+msgid "No aircraft record matches the current search."
+msgstr "Нет контролируемых рейсов, соответствующих текущим фильтрам."
+
+msgid "Airline profile"
+msgstr "Нагрузка авиакомпаний"
+
+msgid ""
+"Airline identity, public identifiers and recent flight activity available in"
+" the FlightLogos platform."
+msgstr ""
+"Идентификатор авиакомпании, общедоступные идентификаторы и последние полеты "
+"доступны на платформе FlightLogos."
+
+msgid "IATA"
+msgstr "IATA"
+
+msgid "ICAO"
+msgstr "ICAO"
+
+msgid "Country unavailable"
+msgstr "Данные маршрутов недоступны."
+
+msgid "Inactive"
+msgstr "Неактивный"
+
+msgid "Total flights"
+msgstr "Всего рейсов"
+
+msgid "Disruptions"
+msgstr "Оценка сбоев"
+
+msgid "Completed"
+msgstr "Завершенный"
+
+msgid "Identity"
+msgstr "Идентификаторы"
+
+msgid "Airline information"
+msgstr "Позиция на карте"
+
+msgid "Reference values used across the flight and monitoring modules."
+msgstr ""
+"Основные идентификаторы, используемые бортовой доской и страницами "
+"мониторинга."
+
+msgid "Name"
+msgstr "Название"
+
+msgid "Country"
+msgstr "Страна"
+
+msgid "Operations"
+msgstr "Активные операции"
+
+msgid "Current reading"
+msgstr "Четкое чтение"
+
+msgid "Short interpretation based on linked flight records."
+msgstr "Поиск, просмотр и открытие отдельных записей рейсов."
+
+msgid "Active flights"
+msgstr "Активные рейсы"
+
+msgid "Completed flights"
+msgstr "Выбранный рейс"
+
+msgid "Registered aircraft"
+msgstr "Зарегистрированный самолет"
+
+msgid "Recent operations"
+msgstr "Операции Live"
+
+msgid "Latest linked flights"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Recent flight records connected to this airline."
+msgstr "Последние записи рейсов"
+
+msgid "Back to airlines"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Origin"
+msgstr "Аэропорт вылета"
+
+msgid "Destination"
+msgstr "Аэропорт прибытия"
+
+msgid "Departure"
+msgstr "Вылет"
+
+msgid "Arrival"
+msgstr "Прибытие"
+
+msgid "No recent flights"
+msgstr "Последние рейсы отсутствуют."
+
+msgid "No recent flight is currently available for this airline."
+msgstr "Последние рейсы отсутствуют."
+
+msgid "Airlines"
+msgstr "Авиакомпании"
+
+msgid "Example: Air France, AF, AFR, France"
+msgstr "Пример: AF6398, Air France, CDG, Париж, RUH"
+
+msgid "Airline directory"
+msgstr "Направление Live"
+
+msgid "Airlines available in the platform."
+msgstr "Самые последние записи рейсов в платформе."
+
+msgid ""
+"Browse airline records, check public identifiers, review operational "
+"activity, and open airline profiles linked to flight data in the system."
+msgstr ""
+"Просматривайте записи авиакомпаний, проверяйте общедоступные идентификаторы,"
+" просматривайте оперативную деятельность и открывайте профили авиакомпаний, "
+"связанные с данными о рейсах в системе."
+
+msgid "Total airlines"
+msgstr "Все авиакомпании"
+
+msgid "Active airlines"
+msgstr "Активные рейсы"
+
+msgid "Countries"
+msgstr "Страны"
+
+msgid "Linked flights"
+msgstr "Активные рейсы"
+
+msgid "Find an airline"
+msgstr "Неизвестная авиакомпания"
+
+msgid "Search by airline name, IATA code, ICAO code or country."
+msgstr "Поиск по названию авиакомпании, коду IATA, коду ICAO или стране."
+
+msgid "Airline search"
+msgstr "Авиакомпании"
+
+msgid "All airlines"
+msgstr "Все авиакомпании"
+
+msgid "Airline records"
+msgstr "Live-записи API"
+
+msgid ""
+"Public airline data with identifiers, country, status and linked flight "
+"volume."
+msgstr ""
+"Данные государственных авиакомпаний с идентификаторами, страной, статусом и "
+"связанным объемом рейсов."
+
+msgid "Open airline profile"
+msgstr "Открытый профиль авиакомпании"
+
+msgid "No airlines found"
+msgstr "Всего рейсов"
+
+msgid "No airline matches the current search."
+msgstr "Нет контролируемых рейсов, соответствующих текущим фильтрам."
+
+msgid "Airport profile"
+msgstr "Аэропорт"
+
+msgid ""
+"Airport identity, data readiness and recent activity connected to departures"
+" and arrivals in the platform."
+msgstr ""
+"Идентификация аэропорта, готовность к данным и недавняя деятельность, "
+"связанная с вылетами и прибытиями на платформу."
+
+msgid "Coordinates available"
+msgstr "Данные маршрутов недоступны."
+
+msgid "Coordinates missing"
+msgstr "Координаты отсутствуют"
+
+msgid "Departures"
+msgstr "Вылет"
+
+msgid "Arrivals"
+msgstr "Прибытие"
+
+msgid "Data score"
+msgstr "Картина данных"
+
+msgid "Airport information"
+msgstr "Позиция на карте"
+
+msgid "Reference data and geographic fields attached to this airport."
+msgstr ""
+"Справочные данные и географические поля, прилагаемые к этому аэропорту."
+
+msgid "City"
+msgstr "Город"
+
+msgid "Latitude"
+msgstr "Широта Live"
+
+msgid "Longitude"
+msgstr "Live долгота"
+
+msgid "Data quality"
+msgstr "Качество Data"
+
+msgid "Data readiness"
+msgstr "Картина данных"
+
+msgid "Completeness score based on city, country, latitude and longitude."
+msgstr "Оценка полноты, основанная на городе, стране, широте и долготе."
+
+msgid "Missing fields"
+msgstr "Пропавшие поля"
+
+msgid "No missing core fields"
+msgstr "Недостающие ключевые поля"
+
+msgid "Recent linked flights"
+msgstr "Активные рейсы"
+
+msgid "Flights connected to this airport as origin or destination."
+msgstr "Рейс, авиакомпания, аэропорт или IATA"
+
+msgid "Back to airports"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Route"
+msgstr "Маршрут"
+
+msgid "No linked flights"
+msgstr "Контролируемые рейсы"
+
+msgid "No recent flight is currently associated with this airport."
+msgstr "No recent flight is currently associated with this airport."
+
+msgid "Airports"
+msgstr "Аэропорты"
+
+msgid "Example: CDG, Charles de Gaulle, Paris, France"
+msgstr "Пример: CDG, Шарль де Голль, Париж, Франция"
+
+msgid "Airport directory"
+msgstr "Направление Live"
+
+msgid "Airport data and operational coverage."
+msgstr "Вернуться в основную операционную рабочую зону."
+
+msgid ""
+"Search airport records by name, code, city or country. Review data "
+"readiness, linked flights and public airport information from one structured"
+" directory."
+msgstr ""
+"Поиск записей аэропорта по имени, коду, городу или стране. Обзор готовности "
+"данных, связанных рейсов и информации об общественных аэропортах из одного "
+"структурированного каталога."
+
+msgid "Total airports"
+msgstr "Всего рейсов"
+
+msgid "Active airports"
+msgstr "Активные рейсы"
+
+msgid "Complete data"
+msgstr "Нет данных маршрута"
+
+msgid "Partial data"
+msgstr "Гибридные данные"
+
+msgid "Minimal data"
+msgstr "Минимальные данные"
+
+msgid "Find an airport"
+msgstr "Аэропорт прибытия"
+
+msgid "Search by airport name, IATA code, ICAO code, city or country."
+msgstr "Поиск по названию аэропорта, коду IATA, коду ICAO, городу или стране."
+
+msgid "Airport search"
+msgstr "Аэропорты"
+
+msgid "All airports"
+msgstr "Аэропорты"
+
+msgid "Airport records"
+msgstr "Аэропорты"
+
+msgid "Airport identity, location, linked flight volume and data quality."
+msgstr ""
+"Идентификацию аэропорта, местоположение, связанный объем рейсов и качество "
+"данных."
+
+msgid "Airport"
+msgstr "Аэропорт"
+
+msgid "Open airport profile"
+msgstr "Открыть контроль"
+
+msgid "No airports found"
+msgstr "Всего рейсов"
+
+msgid "No airport matches the current search."
+msgstr "Нет контролируемых рейсов, соответствующих текущим фильтрам."
+
+msgid "Charts"
+msgstr "Графики"
+
+msgid "Operational Intelligence"
+msgstr "Операционная аналитика"
+
+msgid "Visual analysis for flight operations."
+msgstr ""
+
+msgid "Operational Charts"
+msgstr "Операционные оповещения"
+
+msgid ""
+"Use charts to understand pressure, delays, routes and data sources before "
+"opening detailed records."
+msgstr ""
+
+msgid "Back to overview"
+msgstr "Обзор выполнения"
+
+msgid "Open reports"
+msgstr "Посмотреть отчёты"
+
+msgid "Use this page for"
+msgstr ""
+
+msgid "Seeing the situation faster"
+msgstr "Открыть нужный операционный слой"
+
+msgid "Charts help you notice pressure before reading the full flight table."
+msgstr ""
+
+msgid "Check records"
+msgstr "Последние записи"
+
+msgid "Main signal"
+msgstr "Основное состояние"
+
+msgid "Disruption balance"
+msgstr "Оценка сбоев"
+
+msgid "Start by checking stable, attention and critical records."
+msgstr ""
+
+msgid "After charts"
+msgstr "Открыть графики"
+
+msgid "Reports show the real flights behind each chart."
+msgstr ""
+
+msgid "Disruption"
+msgstr "Состав сбоев"
+
+msgid "Stable, attention and critical records"
+msgstr ""
+
+msgid "A simple view of how much of the dataset needs supervision."
+msgstr ""
+
+msgid "Flight states"
+msgstr "Состояния рейсов"
+
+msgid "Status distribution"
+msgstr "Распределение статусов"
+
+msgid "See how flights are distributed by operational status."
+msgstr "Текущее распределение по операционным состояниям."
+
+msgid "Data source"
+msgstr "Картина данных"
+
+msgid "API and local records"
+msgstr "API и локальные данные"
+
+msgid "Check where the current data comes from."
+msgstr ""
+
+msgid "Most active airlines"
+msgstr "Самая активная авиакомпания"
+
+msgid "Airlines with the highest visible activity."
+msgstr "Авиакомпания с самой высокой видимой активностью."
+
+msgid "View airline records"
+msgstr "Live-записи API"
+
+msgid "Routes"
+msgstr "Дороги"
+
+msgid "Busiest routes"
+msgstr "Самые загруженные коридоры"
+
+msgid "Routes with the strongest traffic concentration."
+msgstr "Маршруты с самой высокой видимой концентрацией."
+
+msgid "View route pressure"
+msgstr "Высокое давление сбоев"
+
+msgid "How to use"
+msgstr ""
+
+msgid "Read charts first, then confirm with records"
+msgstr ""
+
+msgid ""
+"Charts are here to guide your attention. They show where to look, but the "
+"final check should happen in reports."
+msgstr ""
+
+msgid "Feedback Intelligence"
+msgstr "Открыть аналитику"
+
+msgid ""
+"Future experience layer for user feedback, public perception and platform "
+"usability interpretation."
+msgstr ""
+
+msgid "Feedback intelligence"
+msgstr "Открыть аналитику"
+
+msgid "Experience layer, not operational truth"
+msgstr ""
+
+msgid ""
+"This page prepares a future extension where users can submit feedback about "
+"platform clarity, public flight information, navigation and trust. Feedback "
+"helps improve the product, but it does not replace operational flight "
+"records."
+msgstr ""
+
+msgid "Module status"
+msgstr "Текущий статус"
+
+msgid "Planned layer"
+msgstr ""
+
+msgid "Usability and perception"
+msgstr ""
+
+msgid "Operational records"
+msgstr "Операционные оповещения"
+
+msgid "Flight records remain the source for operational monitoring."
+msgstr "Местные летные записи по-прежнему важны для непрерывности работы."
+
+msgid ""
+"Priority operational cases are still measured from flight data, not "
+"feedback."
+msgstr ""
+
+msgid "Attention-level monitoring remains linked to operational records."
+msgstr ""
+
+msgid "Experience layer"
+msgstr ""
+
+msgid "Future"
+msgstr ""
+
+msgid "Feedback will support usability, communication and public readability."
+msgstr ""
+
+msgid "Public feedback"
+msgstr "Run отзывы"
+
+msgid "User experience reports"
+msgstr "Посмотреть отчёты"
+
+msgid ""
+"Passengers, visitors or public users may later submit comments, ratings and "
+"observations about the platform experience. These reports should stay "
+"separate from operational performance."
+msgstr ""
+
+msgid "Example rating"
+msgstr ""
+
+msgid "Based on public experience, not aircraft operations."
+msgstr ""
+
+msgid "Common signal"
+msgstr ""
+
+msgid "Communication quality"
+msgstr "Система работает нормально"
+
+msgid "Useful for improving public clarity and user trust."
+msgstr ""
+
+msgid "Visitor analytics"
+msgstr ""
+
+msgid "Platform usage layer"
+msgstr ""
+
+msgid ""
+"Visitor analytics can help understand which parts of the platform are "
+"useful: flight map, reports, public pages, route analysis or operational "
+"intelligence."
+msgstr ""
+
+msgid "Most useful pages"
+msgstr ""
+
+msgid "Map and reports"
+msgstr "Посмотреть отчёты"
+
+msgid "Expected areas for high user interest."
+msgstr ""
+
+msgid "Product value"
+msgstr ""
+
+msgid "Better navigation"
+msgstr "Навигация активных операций"
+
+msgid "Helps improve structure without inventing aviation data."
+msgstr ""
+
+msgid "Interpretation rule"
+msgstr "Интерпретация оповещений"
+
+msgid "Feedback must stay separated from flight monitoring"
+msgstr ""
+
+msgid ""
+"A user may complain about a confusing page even when operations are stable. "
+"Another user may give a good rating during a disruption. That is why "
+"feedback should be treated as experience data, not aviation truth."
+msgstr ""
+
+msgid "Operational baseline"
+msgstr "Операционный поток"
+
+msgid ""
+"The operational posture continues to come from flight records, critical "
+"cases, attention records, route concentration and data source coverage."
+msgstr ""
+
+msgid "Future feedback signals"
+msgstr ""
+
+msgid "What this module could measure"
+msgstr ""
+
+msgid "Page clarity"
+msgstr ""
+
+msgid "Readable"
+msgstr ""
+
+msgid "Can users understand flight status and route information quickly?"
+msgstr ""
+
+msgid "Trust perception"
+msgstr ""
+
+msgid "Confidence"
+msgstr "Live с низкой уверенностью"
+
+msgid "Do users understand whether data is synchronized, local or semi-real?"
+msgstr ""
+
+msgid "Navigation quality"
+msgstr "Качество Data"
+
+msgid "Usability"
+msgstr "Прослеживаемость"
+
+msgid ""
+"Can users move between map, reports, routes and details without confusion?"
+msgstr ""
+
+msgid "Public communication"
+msgstr "Общественные консультации"
+
+msgid "Clarity"
+msgstr ""
+
+msgid ""
+"Can the platform explain delays, cancellations and recovery context clearly?"
+msgstr ""
+
+msgid "Conceptual workflow"
+msgstr ""
+
+msgid "How feedback could be used later"
+msgstr ""
+
+msgid ""
+"The future module can collect user perception, classify feedback themes, and"
+" compare them with operational indicators without mixing the two data types."
+msgstr ""
+
+msgid "Step 1"
+msgstr ""
+
+msgid "Collect"
+msgstr "Выбрать"
+
+msgid ""
+"Receive feedback about page clarity, public information, navigation and "
+"trust."
+msgstr ""
+
+msgid "Step 2"
+msgstr ""
+
+msgid "Classify"
+msgstr ""
+
+msgid ""
+"Group comments into themes such as map readability, report clarity or "
+"communication quality."
+msgstr ""
+
+msgid "Step 3"
+msgstr ""
+
+msgid "Compare"
+msgstr "Завершенный"
+
+msgid ""
+"Compare perception with operational context only as supporting information."
+msgstr ""
+
+msgid "Step 4"
+msgstr ""
+
+msgid "Improve"
+msgstr ""
+
+msgid "Use feedback to improve interface design, wording and user confidence."
+msgstr ""
+
+msgid "Defense note"
+msgstr "Защитная формулировка"
+
+msgid "How to defend this extension"
+msgstr "Как читать сигнал"
+
+msgid ""
+"Feedback Intelligence should be presented as a future usability and "
+"experience module. It is useful for improving public clarity, trust and "
+"navigation, but it must not be confused with certified aviation performance."
+" The system can compare experience signals with operational indicators only "
+"as contextual support."
+msgstr ""
+
+msgid "Operational Intelligence navigation"
+msgstr "Интеллектуальная навигация Operational"
+
+msgid ""
+"Operational reading for traffic pressure, disruption signals, route exposure"
+" and source confidence."
+msgstr "Краткая операционная сводка, созданная по текущим данным рейсов."
+
+msgid "Overview"
+msgstr "Обзор"
+
+msgid "Reports"
+msgstr "Отчёты"
+
+msgid "Data Reliability"
+msgstr "Качество Data"
+
+msgid "Filters"
+msgstr "Фильтры"
+
+msgid "Period"
+msgstr ""
+
+msgid "All statuses"
+msgstr "Все статусы"
+
+msgid "Source"
+msgstr "Источник"
+
+msgid "All sources"
+msgstr "Все источники"
+
+msgid "Apply filters"
+msgstr "Применить фильтры"
+
+msgid ""
+"Decision cockpit for traffic pressure, disruption exposure, recovery "
+"priorities and source confidence."
+msgstr ""
+
+msgid "Decision cockpit"
+msgstr "Маршруты решений"
+
+msgid ""
+"A decision layer that converts flight records into supervision signals: "
+"traffic load, delay exposure, recovery pressure, critical watch and data "
+"confidence."
+msgstr ""
+
+msgid "Live operating picture"
+msgstr "Операционная картина"
+
+msgid "Open charts"
+msgstr "Открыть графики"
+
+msgid "Open total flight records"
+msgstr "Последние записи рейсов"
+
+msgid "Open report"
+msgstr "Посмотреть отчёты"
+
+msgid "Current operating dataset"
+msgstr "Текущие операционные оповещения"
+
+msgid "Open active movement analytics"
+msgstr "Активное движение"
+
+msgid "Active movement"
+msgstr "Активное движение"
+
+msgid "Inspect flow"
+msgstr ""
+
+msgid "currently active"
+msgstr "Текущий вид"
+
+msgid "Open delay pressure records"
+msgstr "Выявлено давление задержки"
+
+msgid "Delay pressure"
+msgstr "Выявлено давление задержки"
+
+msgid "Review delays"
+msgstr "Проверка"
+
+msgid "under delay watch"
+msgstr "Задержка часов"
+
+msgid "Open cancelled flight recovery records"
+msgstr "Отменённые рейсы и действия восстановления"
+
+msgid "Cancelled flights"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Plan recovery"
+msgstr "Восстановление"
+
+msgid "require recovery reading"
+msgstr "Чтение восстановления"
+
+msgid "Open critical flight supervision records"
+msgstr "Окно активного наблюдения за полетом"
+
+msgid "Critical flights"
+msgstr "Локальные рейсы"
+
+msgid "Prioritize"
+msgstr "Приоритет"
+
+msgid "need priority supervision"
+msgstr "Контроль оповещений"
+
+msgid "Operator reading"
+msgstr "Операционное чтение"
+
+msgid "Current pressure remains controlled"
+msgstr ""
+
+msgid ""
+"Most records remain stable, but delay and recovery signals should be "
+"reviewed before opening the next operating window."
+msgstr ""
+
+msgid "Review signals"
+msgstr "Ключевые сигналы"
+
+msgid "Watch area"
+msgstr ""
+
+msgid "Delay exposure"
+msgstr "Экспозиция маршрутов"
+
+msgid ""
+"Check delayed records and identify whether pressure is concentrated by "
+"airport, airline or route."
+msgstr ""
+
+msgid "Next action"
+msgstr "Следующее действие"
+
+msgid "Validate recovery list"
+msgstr "Открыть список восстановления"
+
+msgid ""
+"Cancelled and critical records should be reviewed before operational "
+"handover."
+msgstr ""
+
+msgid "Daily traffic"
+msgstr "Весь трафик"
+
+msgid "Flight volume and active share"
+msgstr ""
+
+msgid ""
+"Combined reading of visible flight volume and active movement across the "
+"current operating window."
+msgstr ""
+
+msgid "Open traffic chart"
+msgstr "Открыть графики"
+
+msgid "Disruption distribution"
+msgstr "Оценка сбоев"
+
+msgid "Delay, cancellation and stable records"
+msgstr "Доля задержек и отмен"
+
+msgid ""
+"Current balance between stable operations and records that require closer "
+"attention."
+msgstr ""
+
+msgid "Review disruption"
+msgstr "Состав сбоев"
+
+msgid "Hourly pressure"
+msgstr "Давление статусов"
+
+msgid "Operational pressure by time window"
+msgstr "Операционная нагрузка от задержанных и отменённых записей."
+
+msgid ""
+"Pressure curve used to understand supervision rhythm and escalation timing."
+msgstr ""
+
+msgid "Open pressure chart"
+msgstr "Высокое оперативное давление"
+
+msgid "Airport pressure"
+msgstr "Аэропорт"
+
+msgid "Top origin airports"
+msgstr "По аэропорту вылета"
+
+msgid "Airports generating the strongest departure-side operational load."
+msgstr "Аэропорты с самой высокой активностью вылетов."
+
+msgid "Share"
+msgstr "Доля"
+
+msgid "No airport pressure available."
+msgstr "Отчёт по аэропортам вылета недоступен."
+
+msgid "Open route exposure"
+msgstr "Экспозиция маршрутов"
+
+msgid "Delay causes"
+msgstr "Задержан"
+
+msgid "Reasons behind disruption pressure"
+msgstr "Высокое давление сбоев"
+
+msgid ""
+"Operational reading of the main factors behind delayed or exposed records."
+msgstr ""
+
+msgid "Inspect delay causes"
+msgstr "Доля задержанных и отменённых рейсов."
+
+msgid "Airline performance"
+msgstr "Позиция на карте"
+
+msgid "Carriers with the strongest visible activity in the current dataset."
+msgstr "%(airline)s — самая активная авиакомпания в текущем наборе данных."
+
+msgid "Open airline reading"
+msgstr "Открытый профиль авиакомпании"
+
+msgid "Pressure index"
+msgstr ""
+
+msgid "Operating pressure balance"
+msgstr "Высокое оперативное давление"
+
+msgid ""
+"Normalized decision index for traffic activity, delay exposure, recovery "
+"pressure and critical supervision."
+msgstr ""
+
+msgid "Open pressure index"
+msgstr "Высокое оперативное давление"
+
+msgid "Recent events"
+msgstr "Последние записи"
+
+msgid "Latest operational signals"
+msgstr "Текущие операционные оповещения"
+
+msgid ""
+"Recent records that help the operator understand the live operating picture."
+msgstr "Сигналы, помогающие оператору увидеть, что требует внимания."
+
+msgid "No record"
+msgstr "Локальная запись"
+
+msgid "No recent operational signal available."
+msgstr "Последние операционные записи отсутствуют."
+
+msgid "Open event feed"
+msgstr "Внешний live-поток"
+
+msgid "Operational feed"
+msgstr "Операционный поток"
+
+msgid "Recent flight records"
+msgstr "Последние записи рейсов"
+
+msgid ""
+"Latest records captured by the system across operations and data sources."
+msgstr "Последние записи, собранные системой из операций и источников данных."
+
+msgid "Open full report"
+msgstr "Посмотреть отчёты"
+
+msgid "Operational state"
+msgstr "Операционное состояние"
+
+msgid "No recent operational records available."
+msgstr "Последние операционные записи отсутствуют."
+
+msgid ""
+"Operational Intelligence does not replace monitoring. It helps the operator "
+"read pressure, routes and source quality before deeper inspection."
+msgstr ""
+
+msgid "Data Confidence"
+msgstr "Live с низкой уверенностью"
+
+msgid "Data source confidence for operational supervision."
+msgstr "Операции стабильны. Продолжайте обычный контроль."
+
+msgid "Data confidence"
+msgstr "Картина данных"
+
+msgid ""
+"Check where the flight records come from and whether the data is ready for "
+"reporting."
+msgstr ""
+
+msgid "Main reading"
+msgstr "Четкое чтение"
+
+msgid "Source visibility matters"
+msgstr "Operational видимость"
+
+msgid ""
+"A good monitoring system must show whether records come from API "
+"synchronization, local input, or an unknown source."
+msgstr ""
+
+msgid "View records"
+msgstr "Посмотреть отчёты"
+
+msgid "API coverage"
+msgstr "Доля API"
+
+msgid "Share of synchronized records."
+msgstr "Запись, синхронизированная через API"
+
+msgid "Unknown source"
+msgstr "Неизвестная авиакомпания"
+
+msgid "Records that should be verified."
+msgstr ""
+
+msgid "Source balance"
+msgstr "Баланс источников"
+
+msgid "API, local and unknown records"
+msgstr ""
+
+msgid "This chart shows the source composition of the current dataset."
+msgstr "%(airline)s — самая активная авиакомпания в текущем наборе данных."
+
+msgid "Open source records"
+msgstr "Последние записи"
+
+msgid "What the system knows"
+msgstr ""
+
+msgid "Source summary"
+msgstr "Изменить резюме"
+
+msgid ""
+"Clear source labels help operators trust the dashboard without overclaiming "
+"data quality."
+msgstr ""
+
+msgid "Records imported from external aviation data sources."
+msgstr ""
+
+msgid "Manual or controlled records used for supervision and demonstration."
+msgstr ""
+
+msgid "Records that need source verification."
+msgstr ""
+
+msgid "Why it matters"
+msgstr ""
+
+msgid "Transparent data is stronger"
+msgstr ""
+
+msgid ""
+"This page helps the operator and the evaluator understand the limits and "
+"reliability of the dataset."
+msgstr ""
+
+msgid "API records show external synchronization."
+msgstr "Существующие записи обновлялись синхронизацией."
+
+msgid "Local records support fallback and controlled testing."
+msgstr ""
+
+msgid "Unknown records should be checked before formal reporting."
+msgstr ""
+
+msgid "Check source quality before trusting the report"
+msgstr ""
+
+msgid ""
+"Use this page before presenting numbers. It helps you explain which records "
+"are synchronized, local, or still unclear."
+msgstr ""
+
+msgid "Filtered flight records for operational review."
+msgstr "%(count)s отменённый рейс требует немедленной операционной проверки."
+
+msgid "Flight Reports"
+msgstr "Запись рейса"
+
+msgid ""
+"Review flight records, check their state, and confirm what needs attention "
+"before opening the map."
+msgstr ""
+
+msgid "Check routes"
+msgstr "Маршруты решений"
+
+msgid "Delayed flights"
+msgstr "Отслеживаемые рейсы"
+
+#, python-format
+msgid ""
+"\n"
+"                    %(rate)s%% of the current operating picture.\n"
+"                "
+msgstr ""
+"\n"
+"                    %(rate)s%% of the current dataset.\n"
+"                "
+
+#, python-format
+msgid ""
+"\n"
+"                    %(rate)s%% require recovery reading.\n"
+"                "
+msgstr ""
+"\n"
+"                    %(rate)s%% delay rate.\n"
+"                "
+
+msgid "Records"
+msgstr "Восстановить"
+
+msgid "Flight records"
+msgstr "Запись рейса"
+
+msgid ""
+"Use this table to inspect real flights, not only statistics. Apply filters "
+"from the left panel when you need a focused view."
+msgstr ""
+
+msgid "Open flight map"
+msgstr "Открыть табло рейсов"
+
+msgid "State"
+msgstr "Статус"
+
+msgid "No records match the selected filters."
+msgstr "Нет контролируемых рейсов, соответствующих текущим фильтрам."
+
+msgid "Summary"
+msgstr ""
+
+msgid "What matters now"
+msgstr "Что требует внимания в первую очередь"
+
+msgid ""
+"A short reading of the current records, useful before opening routes or the "
+"map."
+msgstr ""
+
+msgid "Visible records"
+msgstr "Видимые записи"
+
+msgid "Flights currently available for review."
+msgstr "Последние рейсы отсутствуют."
+
+msgid "Most active airline"
+msgstr "Самая активная авиакомпания"
+
+msgid "Airline with the strongest visible activity."
+msgstr "Авиакомпания с самой высокой видимой активностью."
+
+msgid "Priority route"
+msgstr "Приоритет"
+
+msgid "Route to check first if pressure increases."
+msgstr ""
+
+msgid "Filter, inspect, then confirm"
+msgstr ""
+
+msgid ""
+"Use the left filters to reduce noise. Read the matching records here, then "
+"confirm the situation on the route page or flight map."
+msgstr ""
+
+msgid "Open routes"
+msgstr "Посмотреть отчёты"
+
+msgid "Open map"
+msgstr "Открыть карту"
+
+msgid "Route pressure and airport concentration."
+msgstr ""
+"Проверяйте задержанные рейсы и сравнивайте их с концентрацией маршрутов и "
+"активностью аэропортов."
+
+msgid "Route Pressure"
+msgstr "Экспозиция маршрутов"
+
+msgid ""
+"Use this page to see which routes and airports are carrying the strongest "
+"load."
+msgstr ""
+
+msgid "Main route"
+msgstr "Основной маршрут"
+
+msgid "This is the busiest visible route in the current operating picture."
+msgstr "Записи рейсов, видимые в текущем операционном наборе данных."
+
+msgid "Inspect on map"
+msgstr "Открыть карту"
+
+msgid "Flights used for route reading."
+msgstr ""
+
+msgid "Flights that may need priority supervision."
+msgstr "Рейсы, уже покинувшие аэропорт вылета."
+
+msgid "Corridors"
+msgstr "Активный коридор"
+
+msgid ""
+"Start from the first rows when traffic or disruption pressure increases."
+msgstr ""
+
+msgid "Reading"
+msgstr "В ожидании"
+
+msgid "Priority"
+msgstr "Приоритет"
+
+msgid "Monitored"
+msgstr "Монитор"
+
+msgid "No route data available."
+msgstr "Данные маршрутов недоступны."
+
+msgid "Airports generating the strongest departure-side load."
+msgstr "Аэропорты с самой высокой активностью вылетов."
+
+msgid "No origin airport data available."
+msgstr "Отчёт по аэропортам вылета недоступен."
+
+msgid "Top destination airports"
+msgstr "По аэропорту прибытия"
+
+msgid "Airports receiving the strongest arrival-side load."
+msgstr "Аэропорты с самой высокой активностью прибытий."
+
+msgid "No destination airport data available."
+msgstr "Отчёт по аэропортам прибытия недоступен."
+
+msgid "Knowing where to look on the map"
+msgstr ""
+
+msgid ""
+"Routes show where traffic is concentrated. The map confirms the situation "
+"visually."
+msgstr ""
+
+msgid "First check"
+msgstr ""
+
+msgid "Open this corridor first when reviewing traffic pressure."
+msgstr ""
+
+msgid "Then compare"
+msgstr ""
+
+msgid "Look at the origin and destination pressure before opening the map."
+msgstr ""
+
+msgid "Recommended checks"
+msgstr "Рекомендуемый порядок чтения"
+
+msgid "Before opening the map"
+msgstr ""
+
+msgid "Use these checks to avoid opening the map without a clear reason."
+msgstr ""
+
+msgid "No route needs special escalation. Continue standard supervision."
+msgstr "Операции стабильны. Продолжайте обычный контроль."
+
+msgid "Operational Copilot"
+msgstr "Операционный Copilot"
+
+msgid ""
+"Ask operational questions and receive data-based answers from the flight "
+"monitoring system."
+msgstr ""
+
+msgid "Ask the system"
+msgstr ""
+
+msgid ""
+"Use the Copilot to read flight operations, synchronization health, route "
+"pressure and disruption signals."
+msgstr ""
+
+msgid "Quick questions"
+msgstr "Быстрые действия"
+
+msgid "Give me the current operational summary"
+msgstr "Сводка активных операций"
+
+msgid "Current operational summary"
+msgstr "Текущие операционные оповещения"
+
+msgid "Which flights need attention?"
+msgstr "Что требует внимания в первую очередь"
+
+msgid "Flights needing attention"
+msgstr "Что требует внимания в первую очередь"
+
+msgid "What is the API sync status?"
+msgstr ""
+
+msgid "API sync status"
+msgstr "Предыдущий статус"
+
+msgid "What is the top route by flight volume?"
+msgstr ""
+
+msgid "Top route by volume"
+msgstr ""
+
+msgid "Show me delayed flights"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Show me cancelled flights"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Recent prompts"
+msgstr "Последние записи"
+
+msgid ""
+"The Copilot answers from controlled Django business logic. It should not "
+"invent operational data."
+msgstr ""
+
+msgid "Business assistant"
+msgstr "Открыть ассистента"
+
+msgid "Flight data, monitoring, analytics and sync support"
+msgstr ""
+
+msgid "Clear"
+msgstr "Чисто"
+
+msgid "Ready"
+msgstr ""
+
+msgid "How can I help your flight operations?"
+msgstr ""
+
+msgid ""
+"Ask about delayed flights, cancelled records, priority attention, route "
+"volume, API synchronization, source breakdown or operational summary."
+msgstr ""
+
+msgid "Sync"
+msgstr "Синхронизация"
+
+msgid "Ask about flights, delays, cancellations, routes or sync health..."
+msgstr "Анализировать задержки, отмены, давление маршрутов и KPI."
+
+msgid "Send message"
+msgstr "Послание"
+
+msgid "Press Ctrl + Enter to send."
+msgstr ""
+
+msgid "Answers are based on internal operational data."
+msgstr "Записи рейсов, видимые в текущем операционном наборе данных."
+
+msgid "Reading data"
+msgstr "Оставшееся расстояние"
+
+msgid "Copilot"
+msgstr "Copilot"
+
+msgid "Request failed"
+msgstr "Последние записи"
+
+msgid "Metrics"
+msgstr ""
+
+msgid "Recommended module"
+msgstr "Рекомендуемый порядок чтения"
+
+msgid "Not available"
+msgstr "Данные маршрутов недоступны."
+
+msgid "Yes"
+msgstr "Да"
+
+msgid "No"
+msgstr "Теперь"
+
+msgid "Flight detail"
+msgstr "Карта рейсов"
+
+msgid "API data"
+msgstr "Доля API"
+
+msgid "Local record"
+msgstr "Локальная запись"
+
+msgid "Back to flights"
+msgstr "Отслеживаемые рейсы"
+
+msgid "Monitoring"
+msgstr "Мониторинг"
+
+msgid "Current route attached to this flight record."
+msgstr "Последние записи рейсов"
+
+msgid "Status changes"
+msgstr "Status изменился"
+
+msgid "Status evolution events stored in history."
+msgstr "События эволюции Status хранятся в истории."
+
+msgid "Delay or cancellation events recorded for this flight."
+msgstr "Высокое давление задержки или отмены, обнаруженное в сети."
+
+msgid "Live updates"
+msgstr "Активные операции"
+
+msgid "Live-data changes stored over time."
+msgstr "Изменились данные Live"
+
+msgid "Identifiers"
+msgstr "Идентификаторы"
+
+msgid "Main flight information"
+msgstr "Позиция на карте"
+
+msgid "Core identifiers used by the flight board and monitoring pages."
+msgstr ""
+"Основные идентификаторы, используемые бортовой доской и страницами "
+"мониторинга."
+
+msgid "Current status"
+msgstr "Текущий статус"
+
+msgid "Route and schedule"
+msgstr "Маршрутная тревога"
+
+msgid "Airports and timing"
+msgstr "Аэропорт"
+
+msgid "Scheduled and actual timing attached to this operational record."
+msgstr ""
+"Расписание и фактические сроки, прилагаемые к этому оперативному отчету."
+
+msgid "Departure delay"
+msgstr "Минута задержки отправления"
+
+#, python-format
+msgid "%(minutes)s min"
+msgstr "%(minutes)s мин"
+
+msgid "Arrival delay"
+msgstr "Минута задержки прибытия"
+
+msgid "Operational note"
+msgstr "Операционный балл"
+
+msgid "Current situation"
+msgstr "Текущий статус"
+
+msgid "Latest event"
+msgstr "Последний забег"
+
+msgid "History"
+msgstr "История"
+
+msgid "Flight history timeline"
+msgstr "Реестр рейсов"
+
+msgid "Chronological updates for status, schedule and live data changes."
+msgstr ""
+"Хронологические обновления для изменения статуса, расписания и живых данных."
+
+msgid "No history recorded yet"
+msgstr "Пробега пока не зафиксировано."
+
+msgid ""
+"No status, schedule or live-data history has been recorded for this flight."
+msgstr ""
+"Для этого рейса не было зарегистрировано никакого статуса, расписания или "
+"истории живых данных."
+
+msgid "Example: AF6398, Air France, CDG, Paris, RUH"
+msgstr "Пример: AF6398, Air France, CDG, Париж, RUH"
+
+msgid "Flight board"
+msgstr "Табло рейсов"
+
+msgid "Search and review flight activity."
+msgstr "Последняя активность рейсов"
+
+msgid ""
+"Browse registered flights, check airline and route information, review "
+"current status, and open the map or monitoring workspace when operational "
+"follow-up is needed."
+msgstr ""
+"Найдите зарегистрированные рейсы, проверьте информацию о маршруте и "
+"прочитайте текущее состояние каждой операции."
+
+msgid "Disruption rate"
+msgstr "Оценка сбоев"
+
+msgid "Find a flight"
+msgstr "Активные рейсы"
+
+msgid "Use flight number, airline, airport, city, IATA or ICAO code."
+msgstr "Рейс, авиакомпания, аэропорт или IATA"
+
+msgid "In air"
+msgstr "В полёте"
+
+msgid "Flights currently marked as delayed in this view."
+msgstr "Рейсы, отмеченные как находящиеся в полёте."
+
+msgid "Flights currently marked as cancelled in this view."
+msgstr "Рейсы, отмеченные как находящиеся в полёте."
+
+msgid "Completed flights visible in the current board."
+msgstr "Никаких рейсов в нынешнем виде"
+
+msgid "Share of records coming from synchronized data."
+msgstr "Доля записей, поступающих из синхронизированных данных."
+
+msgid "Flight list"
+msgstr "Рейсы"
+
+msgid "Current flight records"
+msgstr "Последние записи рейсов"
+
+#, python-format
+msgid "Showing %(visible_count)s visible record from the flight database."
+msgid_plural ""
+"Showing %(visible_count)s visible records from the flight database."
+msgstr[0] "Показать запись %(visible_count)s из базы данных полета."
+msgstr[1] "Показать записи %(visible_count)s из базы данных полетов."
+msgstr[2] ""
+"Showing %(visible_count)s visible records from the flight database."
+msgstr[3] ""
+"Showing %(visible_count)s visible records from the flight database."
+
+msgid "Access"
+msgstr "Доступ"
+
+msgid "Details"
+msgstr "Детали"
+
+msgid "Map"
+msgstr "Карта"
+
+msgid "No flights found"
+msgstr "Всего рейсов"
+
+msgid "Try another flight number, airport, airline, route, status or source."
+msgstr ""
+"Отчёты с фильтрацией по авиакомпании, аэропорту, маршруту, статусу и "
+"источнику данных."
+
+msgid "Previous"
+msgstr "Предыдущий статус"
+
+#, python-format
+msgid "Page %(current_page)s of %(total_pages)s"
+msgstr "Страница %(current_page)s %(total_pages)s"
+
+msgid "Next"
+msgstr "Следующее действие"
+
+msgid "FlightLogos | Flight Monitoring & Operations"
+msgstr "FlightLogos | Flight Monitoring & Operations"
+
+msgid "Flight monitoring platform"
+msgstr "Платформа мониторинга Flight"
+
+msgid "FlightLogos is central to aviation monitoring."
+msgstr "Операционная сеть FlightLogos"
+
+msgid ""
+"Search flights, review routes, check airports and continue into the private "
+"operations workspace when deeper supervision is needed."
+msgstr ""
+"Поиск записей о рейсах, просмотр данных авиакомпаний и аэропортов, "
+"отслеживание активности маршрута на карте и открытие рабочего пространства "
+"для частных операций для мониторинга и отчетов."
+
+msgid "Search for flight, airport, airline or route"
+msgstr ""
+"Отчёты с фильтрацией по авиакомпании, аэропорту, маршруту, статусу и "
+"источнику данных."
+
+msgid "Flight status"
+msgstr "Состояния рейсов"
+
+msgid "Live map"
+msgstr "Открыть live-карту"
+
+msgid "Operations Center"
+msgstr "Центр операций"
+
+msgid "Follow the operating picture on the flight map."
+msgstr ""
+
+msgid ""
+"Open the map to inspect routes, active traffic, airport pairs and "
+"operational exposure from the private monitoring workspace."
+msgstr ""
+
+msgid "Track now"
+msgstr "Следы"
+
+msgid ""
+"Search registered flights and quickly read their route, airline and current "
+"operational state."
+msgstr ""
+
+msgid "Route visibility"
+msgstr "Operational видимость"
+
+msgid ""
+"Use the flight map to understand visible traffic movement and airport-pair "
+"activity."
+msgstr ""
+"Используйте карту, когда оповещению нужна видимость маршрута, аэропорта или "
+"позиции."
+
+msgid "Operational workspace"
+msgstr "Операционный балл"
+
+msgid ""
+"Continue into the private side for monitoring, reports, synchronization and "
+"operational intelligence."
+msgstr ""
+
+msgid "Data Sync"
+msgstr "Синхронизация"
+
+msgid "Keep flight data updated from trusted aviation sources."
+msgstr ""
+
+msgid "Flight data synchronization"
+msgstr "Синхронизация данных Flight"
+
+msgid ""
+"Refresh external flight records, update the local database and check whether"
+" the latest data is ready for monitoring, reports and operational decisions."
+msgstr ""
+"Импорт внешних записей о полетах, обновление локальной базы данных и "
+"сохранение четкого следа запусков провайдера, созданные записи, обновленные "
+"записи и ошибки синхронизации."
+
+msgid "Run sync"
+msgstr "Синхронизация Run"
+
+msgid "Refresh page"
+msgstr ""
+
+msgid "Latest update"
+msgstr "Активные операции"
+
+msgid "No synchronization yet"
+msgstr "Синхронизировано API"
+
+msgid "Records received"
+msgstr "Рекорды, полученные"
+
+msgid "Records read from external providers"
+msgstr "Локальные записи и данные внешних поставщиков"
+
+msgid "Updated flights"
+msgstr "Выбранный рейс"
+
+msgid "Existing flight records refreshed"
+msgstr "Существующие записи обновлялись синхронизацией."
+
+msgid "Needs review"
+msgstr "Уточнить вид отчёта"
+
+msgid "Older traces kept for audit and control"
+msgstr ""
+
+msgid "Import"
+msgstr "Аэропорт"
+
+msgid "Run a controlled sync"
+msgstr "Run - контролируемый импорт"
+
+msgid ""
+"Search by flight or airport when you need fresh records without loading "
+"unnecessary provider data."
+msgstr ""
+
+msgid "Provider status"
+msgstr "Текущий статус"
+
+msgid "Limit"
+msgstr ""
+
+msgid "Start import"
+msgstr "Всего рейсов"
+
+msgid "Open flights"
+msgstr "Открыть табло рейсов"
+
+msgid "Open intelligence"
+msgstr "Открыть аналитику"
+
+msgid "Sources"
+msgstr "Источник"
+
+msgid "Data sources"
+msgstr "Картина данных"
+
+msgid "Providers currently used by the platform."
+msgstr "Все записи рейсов, которые сейчас хранятся в платформе."
+
+msgid "Flights, statuses and route data"
+msgstr ""
+
+msgid "Airports and reference data"
+msgstr "Справочное покрытие"
+
+msgid "Aircraft positions when available"
+msgstr ""
+
+msgid "Watch"
+msgstr ""
+
+msgid "Quick check before using imported records."
+msgstr ""
+
+msgid "Success rate"
+msgstr "Успешность"
+
+msgid "Review rate"
+msgstr "Проверка"
+
+msgid "Latest run"
+msgstr "Последний забег"
+
+msgid "Review"
+msgstr "Проверка"
+
+msgid "Provider"
+msgstr "Provider"
+
+msgid ""
+"If a recent run needs review, check provider access before using imported "
+"records in monitoring or reports."
+msgstr ""
+
+msgid "Activity"
+msgstr "Низкая активность"
+
+msgid "Recent sync activity"
+msgstr "Последняя активность рейсов"
+
+msgid "Latest useful runs shown first, with one review item when available."
+msgstr ""
+
+msgid "Latest + review"
+msgstr "Последний забег"
+
+msgid "received"
+msgstr "Полученный"
+
+msgid "updated"
+msgstr "Обновлено"
+
+msgid "No synchronization activity yet."
+msgstr "Приоритетные рейсы отсутствуют."
+
+msgid "Technical trace"
+msgstr "След синхронизации"
+
+msgid "Last sync details"
+msgstr "Синхронизация"
+
+msgid "Use this only when you need to verify the latest provider response."
+msgstr ""
+
+msgid "Last + review"
+msgstr "Map первый взгляд"
+
+msgid "Received"
+msgstr "Полученный"
+
+msgid "Updated"
+msgstr "Обновлено"
+
+msgid "Started"
+msgstr "Вылетел"
+
+msgid "Message"
+msgstr "Послание"
+
+msgid "Provider response requires review."
+msgstr "Нет приоритетного рейса, требующего проверки."
+
+msgid "Synchronization completed successfully."
+msgstr "Казни Provider завершились успешно."
+
+msgid "No technical trace available."
+msgstr "Данные маршрутов недоступны."
+
+msgid "Unavailable"
+msgstr "Данные маршрутов недоступны."
+
+msgid "Private Operations"
+msgstr "Закрытая зона"
+
+msgid ""
+"Private aviation workspace for flight supervision, disruption review, route "
+"visibility and operational reporting."
+msgstr ""
+"Закрытая рабочая зона для контроля рейсов, анализа сбоев, видимости "
+"маршрутов и операционной отчётности."
+
+msgid "FlightLogos operations network"
+msgstr "Операционная сеть FlightLogos"
+
+msgid ""
+"Disruption pressure is high. Review cancellations, delayed flights and "
+"affected routes first."
+msgstr ""
+"Давление сбоев высокое. Сначала проверьте отмены, задержанные рейсы и "
+"затронутые маршруты."
+
+msgid "Primary operational focus"
+msgstr "Главный операционный фокус"
+
+msgid "Cancelled flights and recovery actions"
+msgstr "Отменённые рейсы и действия восстановления"
+
+msgid ""
+"Start with the highest pressure signal, then move to control, map "
+"visibility, irregular operations or intelligence reports."
+msgstr ""
+"Начните с самого сильного сигнала нагрузки, затем переходите к контролю, "
+"карте, нештатным операциям или аналитическим отчётам."
+
+msgid "Open control"
+msgstr "Открыть контроль"
+
+msgid "Irregular ops"
+msgstr "Нештатные операции"
+
+msgid "Flight map"
+msgstr "Карта рейсов"
+
+msgid "Intelligence"
+msgstr "Аналитика"
+
+msgid "Records in platform"
+msgstr "Записи в платформе"
+
+msgid "%(rate)s% active share"
+msgstr "%(rate)s%% активная доля"
+
+msgid "Delayed + cancelled"
+msgstr "Задержаны + отменены"
+
+msgid "Main state"
+msgstr "Основное состояние"
+
+msgid "Dominant status now"
+msgstr "Текущий доминирующий статус"
+
+msgid "All flight records currently stored in the platform."
+msgstr "Все записи рейсов, которые сейчас хранятся в платформе."
+
+msgid "%(rate)s% of the current flight dataset."
+msgstr "%(rate)s%% текущего набора рейсов."
+
+msgid "Flights currently marked as airborne."
+msgstr "Рейсы, отмеченные как находящиеся в полёте."
+
+msgid "%(rate)s% delay rate."
+msgstr "%(rate)s%% уровень задержек."
+
+msgid "%(rate)s% cancellation rate."
+msgstr "%(rate)s%% уровень отмен."
+
+msgid "Stable"
+msgstr "Стабильно"
+
+msgid "Scheduled and landed records."
+msgstr "Запланированные и завершённые записи."
+
+msgid "Attention board"
+msgstr "Панель внимания"
+
+msgid "What should be checked first"
+msgstr "Что проверить первым"
+
+msgid "Short operational reading generated from the current flight dataset."
+msgstr "Краткая операционная сводка, созданная по текущим данным рейсов."
+
+msgid "%(count)s cancelled flight needs recovery review."
+msgstr "%(count)s отменённый рейс требует проверки восстановления."
+
+msgid "%(count)s cancelled flights need recovery review."
+msgstr "%(count)s отменённых рейсов требуют проверки восстановления."
+
+#, python-format
+msgid "%(count)s delayed flight is adding pressure to the operating picture."
+msgstr "%(count)s задержанный рейс добавляет нагрузку к операционной картине."
+
+msgid ""
+"%(count)s delayed flights are adding pressure to the operating picture."
+msgstr ""
+"%(count)s задержанных рейсов добавляют нагрузку к операционной картине."
+
+msgid "Data picture"
+msgstr "Картина данных"
+
+msgid "API flights"
+msgstr "Рейсы API"
+
+msgid "Local flights"
+msgstr "Локальные рейсы"
+
+msgid "%(rate)s% of total records."
+msgstr "%(rate)s%% всех записей."
+
+msgid "Most represented corridor."
+msgstr "Наиболее представленный коридор."
+
+msgid "Critical rate"
+msgstr "Критический показатель"
+
+msgid "Delayed and cancelled share."
+msgstr "Доля задержанных и отменённых рейсов."
+
+msgid "Workspace routing"
+msgstr "Навигация рабочего пространства"
+
+msgid "Open the right operational layer"
+msgstr "Открыть нужный операционный слой"
+
+msgid "Each module has a clear role inside the private aviation workspace."
+msgstr ""
+"У каждого модуля есть чёткая роль в закрытой авиационной рабочей зоне."
+
+msgid "Start supervision"
+msgstr "Начать контроль"
+
+msgid "Assistant"
+msgstr "Помощник"
+
+msgid "Ask Copilot"
+msgstr "Спросить Copilot"
+
+msgid ""
+"Monitor flight activity, disruptions, route exposure and data sources from "
+"one operations view."
+msgstr ""
+"Контролируйте активность рейсов, сбои, маршруты и источники данных из одной "
+"операционной панели."
+
+msgid "Operations view"
+msgstr "Операционная панель"
+
+msgid "Current flight performance overview"
+msgstr "Обзор текущей эффективности рейсов"
+
+msgid ""
+"Follow the main operating picture from the flight database: active movement,"
+" delayed and cancelled flights, busiest corridors, airline activity and data"
+" source coverage."
+msgstr ""
+"Отслеживайте основную операционную картину из базы рейсов: активное "
+"движение, задержанные и отменённые рейсы, самые загруженные коридоры, "
+"активность авиакомпаний и покрытие источников данных."
+
+msgid "View reports"
+msgstr "Посмотреть отчёты"
+
+msgid "Flight records visible in the current operational dataset."
+msgstr "Записи рейсов, видимые в текущем операционном наборе данных."
+
+msgid "%(rate)s% of records are currently in active flow."
+msgstr "%(rate)s%% записей сейчас находятся в активном потоке."
+
+msgid "%(rate)s% of the current dataset."
+msgstr "%(rate)s%% текущего набора данных."
+
+msgid "Operations briefing"
+msgstr "Операционный брифинг"
+
+msgid "What needs attention first"
+msgstr "Что требует внимания в первую очередь"
+
+msgid ""
+"This short briefing turns the current data into a readable operational "
+"summary. It is meant for supervision, reporting and decision support."
+msgstr ""
+"Этот краткий брифинг превращает текущие данные в понятную операционную "
+"сводку. Он предназначен для контроля, отчётности и поддержки решений."
+
+msgid "Priority corridor"
+msgstr "Приоритетный коридор"
+
+msgid ""
+"Route with the highest concentration inside the current flight dataset."
+msgstr "Маршрут с самой высокой концентрацией в текущем наборе данных рейсов."
+
+msgid "Key signals"
+msgstr "Ключевые сигналы"
+
+msgid "Current highlights"
+msgstr "Текущие основные показатели"
+
+msgid "Operational score"
+msgstr "Операционный балл"
+
+msgid "Dominant state"
+msgstr "Доминирующее состояние"
+
+msgid "Main status in the visible dataset."
+msgstr "Основной статус в видимом наборе данных."
+
+msgid "Airline with the highest visible activity."
+msgstr "Авиакомпания с самой высокой видимой активностью."
+
+msgid "API %(api)s / Local %(local)s"
+msgstr "API %(api)s / Локально %(local)s"
+
+msgid "External data and local records in the platform."
+msgstr "Внешние данные и локальные записи в платформе."
+
+msgid "Breakdown of the visible records by operational state."
+msgstr "Разделение видимых записей по операционным состояниям."
+
+msgid "Route exposure"
+msgstr "Экспозиция маршрутов"
+
+msgid "Busiest corridors"
+msgstr "Самые загруженные коридоры"
+
+msgid "Top route concentration in the current data view."
+msgstr "Наибольшая концентрация маршрутов в текущем представлении данных."
+
+msgid ""
+"A cross-platform assistance layer available across the private operations "
+"workspace."
+msgstr "Слой помощи, доступный во всей закрытой операционной рабочей зоне."
+
+msgid "FlightLogos Assist"
+msgstr "Ассистент FlightLogos"
+
+msgid "Operational Copilot is not a separate workspace"
+msgstr "Операционный Copilot не является отдельным рабочим пространством"
+
+msgid ""
+"The Copilot works as a floating assistant available across the private "
+"platform. Use it while viewing operations, monitoring, flight records, route"
+" exposure, analytics or data synchronization."
+msgstr ""
+"Copilot работает как плавающий ассистент, доступный по всей закрытой "
+"платформе. Используйте его при просмотре операций, мониторинга, записей "
+"рейсов, маршрутов, аналитики или синхронизации данных."
+
+msgid "Open the assistant"
+msgstr "Открыть ассистента"
+
+msgid "Start a quick operational question from this page."
+msgstr "Задать быстрый операционный вопрос с этой страницы."
+
+msgid "Ask about operations"
+msgstr "Спросить об операциях"
+
+msgid "Read delays, cancellations, route pressure and KPIs."
+msgstr "Анализировать задержки, отмены, давление маршрутов и KPI."
+
+msgid "Go to Operations Center"
+msgstr "Перейти в центр операций"
+
+msgid "Return to the main operational workspace."
+msgstr "Вернуться в основную операционную рабочую зону."
+
+msgid "Open Intelligence"
+msgstr "Открыть аналитику"
+
+msgid "Review reports, charts, routes and data quality."
+msgstr "Просмотреть отчёты, графики, маршруты и качество данных."
+
+#~ msgid "High disruption pressure"
+#~ msgstr "Высокое давление сбоев"
+
+#~ msgid "Delayed flights and route-level disruption"
+#~ msgstr "Задержка рейсов и нарушение маршрута"
+
+#~ msgid "High delay or cancellation pressure detected"
+#~ msgstr "Обнаружено высокое давление задержек или отмен"
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s delayed flight detected. Investigate route congestion and "
+#~ "turnaround pressure."
+#~ msgid_plural ""
+#~ "%(count)s delayed flights detected. Investigate route congestion and "
+#~ "turnaround pressure."
+#~ msgstr[0] ""
+#~ "%(count)s delayed flight detected. Investigate route congestion and "
+#~ "turnaround pressure."
+#~ msgstr[1] ""
+#~ "%(count)s delayed flights detected. Investigate route congestion and "
+#~ "turnaround pressure."
+
+#~ msgid "Route Review"
+#~ msgstr "Проверка маршрута"
+
+#~ msgid "Review delay propagation and route pressure."
+#~ msgstr "Проверить распространение задержки и давление маршрута."
+
+#~ msgid "Escalate"
+#~ msgstr "Эскалация"
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s cancelled route detected on the map. Review affected corridors "
+#~ "first."
+#~ msgid_plural ""
+#~ "%(count)s cancelled routes detected on the map. Review affected corridors "
+#~ "first."
+#~ msgstr[0] ""
+#~ "%(count)s cancelled route detected on the map. Review affected corridors "
+#~ "first."
+#~ msgstr[1] ""
+#~ "%(count)s cancelled routes detected on the map. Review affected corridors "
+#~ "first."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s delayed route visible. Prioritize delay clusters by destination "
+#~ "and departure waves."
+#~ msgid_plural ""
+#~ "%(count)s delayed routes visible. Prioritize delay clusters by destination "
+#~ "and departure waves."
+#~ msgstr[0] ""
+#~ "%(count)s delayed route visible. Prioritize delay clusters by destination "
+#~ "and departure waves."
+#~ msgstr[1] ""
+#~ "%(count)s delayed routes visible. Prioritize delay clusters by destination "
+#~ "and departure waves."
+
+#, python-format
+#~ msgid "%(count)s flight currently relies on confirmed live tracking."
+#~ msgid_plural "%(count)s flights currently rely on confirmed live tracking."
+#~ msgstr[0] "%(count)s flight currently relies on confirmed live tracking."
+#~ msgstr[1] "%(count)s flights currently rely on confirmed live tracking."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s flight currently relies on associated live tracking with medium "
+#~ "confidence."
+#~ msgid_plural ""
+#~ "%(count)s flights currently rely on associated live tracking with medium "
+#~ "confidence."
+#~ msgstr[0] ""
+#~ "%(count)s flight currently relies on associated live tracking with medium "
+#~ "confidence."
+#~ msgstr[1] ""
+#~ "%(count)s flights currently rely on associated live tracking with medium "
+#~ "confidence."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s flight uses low-confidence live association. Validate identity "
+#~ "before escalation."
+#~ msgid_plural ""
+#~ "%(count)s flights use low-confidence live association. Validate identity "
+#~ "before escalation."
+#~ msgstr[0] ""
+#~ "%(count)s flight uses low-confidence live association. Validate identity "
+#~ "before escalation."
+#~ msgstr[1] ""
+#~ "%(count)s flights use low-confidence live association. Validate identity "
+#~ "before escalation."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s flight uses simulated progression. This preserves map continuity "
+#~ "when live GPS is missing."
+#~ msgid_plural ""
+#~ "%(count)s flights use simulated progression. This preserves map continuity "
+#~ "when live GPS is missing."
+#~ msgstr[0] ""
+#~ "%(count)s flight uses simulated progression. This preserves map continuity "
+#~ "when live GPS is missing."
+#~ msgstr[1] ""
+#~ "%(count)s flights use simulated progression. This preserves map continuity "
+#~ "when live GPS is missing."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s route is currently in air. Highlight it during demonstration as "
+#~ "active operational traffic."
+#~ msgid_plural ""
+#~ "%(count)s routes are currently in air. Highlight them during demonstration "
+#~ "as active operational traffic."
+#~ msgstr[0] ""
+#~ "%(count)s route is currently in air. Highlight it during demonstration as "
+#~ "active operational traffic."
+#~ msgstr[1] ""
+#~ "%(count)s routes are currently in air. Highlight them during demonstration "
+#~ "as active operational traffic."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s high-risk flight is currently visible. Use the map to focus "
+#~ "operational attention quickly."
+#~ msgid_plural ""
+#~ "%(count)s high-risk flights are currently visible. Use the map to focus "
+#~ "operational attention quickly."
+#~ msgstr[0] ""
+#~ "%(count)s high-risk flight is currently visible. Use the map to focus "
+#~ "operational attention quickly."
+#~ msgstr[1] ""
+#~ "%(count)s high-risk flights are currently visible. Use the map to focus "
+#~ "operational attention quickly."
+
+#, python-format
+#~ msgid ""
+#~ "%(count)s flight is currently promoted on the map because its operational "
+#~ "visibility matters more right now."
+#~ msgid_plural ""
+#~ "%(count)s flights are currently promoted on the map because their "
+#~ "operational visibility matters more right now."
+#~ msgstr[0] ""
+#~ "%(count)s flight is currently promoted on the map because its operational "
+#~ "visibility matters more right now."
+#~ msgstr[1] ""
+#~ "%(count)s flights are currently promoted on the map because their "
+#~ "operational visibility matters more right now."
+
+#~ msgid "No delayed or cancelled flight currently requires disruption handling."
+#~ msgstr ""
+#~ "Ни один задержанный или отмененный рейс в настоящее время не требует "
+#~ "обработки сбоев."
+
+#~ msgid "High delay or cancellation pressure detected across the network."
+#~ msgstr "Высокое давление задержки или отмены, обнаруженное в сети."
+
+#~ msgid "Cancelled flights detected"
+#~ msgstr "Обнаружены отмененные рейсы"
+
+#, python-format
+#~ msgid "%(count)s delayed flight is impacting the supervision flow."
+#~ msgid_plural "%(count)s delayed flights are impacting the supervision flow."
+#~ msgstr[0] "%(count)s задержанный рейс влияет на поток контроля."
+#~ msgstr[1] "%(count)s задержанных рейса влияют на поток контроля."
+
+#~ msgid ""
+#~ "Dedicated graphical board for operational distribution, airline exposure, "
+#~ "routes, and data sources."
+#~ msgstr ""
+#~ "Графическая панель для распределения операций, нагрузки авиакомпаний, "
+#~ "маршрутов и источников данных."
+
+#~ msgid "Graphical analysis board."
+#~ msgstr "Панель графического анализа."
+
+#~ msgid ""
+#~ "This page isolates the graphs so visual interpretation stays clean. It is "
+#~ "closer to a real operational analytics screen."
+#~ msgstr ""
+#~ "Эта страница отделяет графики, чтобы визуальная интерпретация оставалась "
+#~ "понятной. Она ближе к настоящему экрану операционной аналитики."
+
+#~ msgid "Operational states distribution"
+#~ msgstr "Распределение операционных состояний"
+
+#~ msgid "Scheduled, active, landed, delayed and cancelled records."
+#~ msgstr ""
+#~ "Запланированные, активные, завершённые, задержанные и отменённые записи."
+
+#~ msgid "Airline exposure"
+#~ msgstr "Нагрузка авиакомпаний"
+
+#~ msgid "Highest operational load"
+#~ msgstr "Наибольшая операционная нагрузка"
+
+#~ msgid "Airlines carrying the largest number of records."
+#~ msgstr "Авиакомпании с наибольшим количеством записей."
+
+#~ msgid "Route concentration"
+#~ msgstr "Концентрация маршрутов"
+
+#~ msgid "Priority corridors"
+#~ msgstr "Приоритетные коридоры"
+
+#~ msgid "Hybrid data composition used by the platform."
+#~ msgstr "Гибридный состав данных, используемый платформой."
+
+#~ msgid "Disruption mix"
+#~ msgstr "Состав сбоев"
+
+#~ msgid "Simple view separating delayed, cancelled and other visible records."
+#~ msgstr ""
+#~ "Простое представление, разделяющее задержанные, отменённые и другие видимые "
+#~ "записи."
+
+#~ msgid "Tracked flights"
+#~ msgstr "Отслеживаемые рейсы"
+
+#~ msgid "Performance, routes, reports and source quality"
+#~ msgstr "Производительность, маршруты, отчеты и качество источников"
+
+#~ msgid "Data Quality"
+#~ msgstr "Качество Data"
+
+#~ msgid "Feedback"
+#~ msgstr "Обратная связь"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    %(rate)s%% of records are currently in active flow.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    %(rate)s%% of records are currently in active flow.\n"
+#~ "                "
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                            API %(api)s / Local %(local)s\n"
+#~ "                        "
+#~ msgstr ""
+#~ "\n"
+#~ "                            API %(api)s / Local %(local)s\n"
+#~ "                        "
+
+#~ msgid "Filtered reports by airline, airport, route, status, and data source."
+#~ msgstr ""
+#~ "Отчёты с фильтрацией по авиакомпании, аэропорту, маршруту, статусу и "
+#~ "источнику данных."
+
+#~ msgid "Readable operational reports."
+#~ msgstr "Понятные операционные отчёты."
+
+#~ msgid ""
+#~ "Use this page for structured tables. It is intentionally separated from "
+#~ "charts so the report layer stays calm, searchable, and easy to defend."
+#~ msgstr ""
+#~ "Используйте эту страницу для структурированных таблиц. Она специально "
+#~ "отделена от графиков, чтобы слой отчётов оставался спокойным, удобным для "
+#~ "поиска и понятным на защите."
+
+#~ msgid "Current posture"
+#~ msgstr "Текущая позиция"
+
+#~ msgid "Refine report view"
+#~ msgstr "Уточнить вид отчёта"
+
+#~ msgid "Filter records by status, source, or airline."
+#~ msgstr "Фильтруйте записи по статусу, источнику или авиакомпании."
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    Filtered view active. Showing %(total)s records from %(base_total)s total registered flights.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "Активен фильтрованный вид. Показано %(total)s записей из %(base_total)s зарегистрированных рейсов."
+
+#~ msgid "Records matching the current report."
+#~ msgstr "Записи, соответствующие текущему отчёту."
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    %(rate)s%% active flow.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    %(rate)s%% delay rate.\n"
+#~ "                "
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    %(rate)s%% cancelled.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    %(rate)s%% cancellation rate.\n"
+#~ "                "
+
+#~ msgid "By airline"
+#~ msgstr "По авиакомпании"
+
+#~ msgid "Airline activity report"
+#~ msgstr "Отчёт активности авиакомпаний"
+
+#~ msgid "Operational load grouped by airline."
+#~ msgstr "Операционная нагрузка, сгруппированная по авиакомпаниям."
+
+#~ msgid "No airline report available."
+#~ msgstr "Отчёт по авиакомпаниям недоступен."
+
+#~ msgid "Departure concentration"
+#~ msgstr "Концентрация вылетов"
+
+#~ msgid "Arrival concentration"
+#~ msgstr "Концентрация прибытий"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                            %(rate)s%% active share\n"
+#~ "                        "
+#~ msgstr ""
+#~ "\n"
+#~ "                            %(rate)s%% active share\n"
+#~ "                        "
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    %(rate)s%% of the current flight dataset.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    %(rate)s%% of the current flight dataset.\n"
+#~ "                "
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    %(rate)s%% delay rate.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    %(rate)s%% delay rate.\n"
+#~ "                "
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                    %(rate)s%% cancellation rate.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                    %(rate)s%% cancellation rate.\n"
+#~ "                "
+
+#~ msgid "Decision board"
+#~ msgstr "Поддержка принятия решений"
+
+#~ msgid ""
+#~ "Delayed and cancelled flights currently shaping the supervision priority."
+#~ msgstr ""
+#~ "Ни один задержанный или отмененный рейс в настоящее время не требует "
+#~ "обработки сбоев."
+
+#~ msgid "Main corridor"
+#~ msgstr "Приоритетный коридор"
+
+#~ msgid "Source picture"
+#~ msgstr "Тип источника"
+
+#~ msgid "Dataset readiness"
+#~ msgstr "Картина данных"
+
+#~ msgid "Quick view of synchronized records, manual records and critical share."
+#~ msgstr ""
+#~ "Быстрый просмотр синхронизированных записей, ручных записей и критической "
+#~ "доли."
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                            %(rate)s%% of total records.\n"
+#~ "                        "
+#~ msgstr ""
+#~ "\n"
+#~ "                            %(rate)s%% of total records.\n"
+#~ "                        "
+
+#~ msgid "Active share"
+#~ msgstr "Активная доля"
+
+#~ msgid "Current active traffic share."
+#~ msgstr "Активный трафик"
+
+#~ msgid "Operations Control"
+#~ msgstr "Контроль операций"
+
+#~ msgid "Supervise active flights, disruptions and selected flight review."
+#~ msgstr "Контроль активных рейсов, сбоев и выбранного рейса."
+
+#~ msgid "Flight Map"
+#~ msgstr "Карта рейсов"
+
+#~ msgid "Review route exposure, airports and geospatial visibility."
+#~ msgstr "Анализ маршрутов, аэропортов и геопространственной видимости."
+
+#~ msgid "Read performance indicators, routes, source quality and reports."
+#~ msgstr "Просмотр показателей, маршрутов, качества источников и отчётов."
+
+#~ msgid "Manage external synchronization and keep the dataset updated."
+#~ msgstr "Управление внешней синхронизацией и обновлением данных."
+
+#~ msgid "Assist"
+#~ msgstr "Помощь"
+
+#~ msgid "Ask structured questions about platform and operational data."
+#~ msgstr ""
+#~ "Задавайте структурированные вопросы о платформе и операционных данных."
+
+#~ msgid "Data"
+#~ msgstr "Данные"
+
+#~ msgid "Flight Board"
+#~ msgstr "Табло рейсов"
+
+#~ msgid "Search, review and open individual flight records."
+#~ msgstr "Поиск, просмотр и открытие отдельных записей рейсов."
+
+#~ msgid "System scope"
+#~ msgstr "Покрытие системы"
+
+#~ msgid "Reference coverage"
+#~ msgstr "Справочное покрытие"
+
+#~ msgid "Business objects connected to the current operational platform."
+#~ msgstr "Бизнес-объекты, связанные с текущей операционной платформой."
+
+#~ msgid "API rate"
+#~ msgstr "Доля API"
+
+#~ msgid "Local rate"
+#~ msgstr "Доля локальных"
+
+#~ msgid "Priority flights"
+#~ msgstr "Приоритетные рейсы"
+
+#~ msgid "Flights requiring faster review"
+#~ msgstr "Рейсы, требующие быстрой проверки"
+
+#~ msgid "Ranked by operational status and source visibility."
+#~ msgstr "Отсортировано по операционному статусу и видимости источника."
+
+#~ msgid "Open irregular ops"
+#~ msgstr "Открыть нештатные операции"
+
+#~ msgid "No priority flights available."
+#~ msgstr "Приоритетные рейсы отсутствуют."
+
+#~ msgid "Latest flight activity"
+#~ msgstr "Последняя активность рейсов"
+
+#~ msgid "Most recent flight records available in the platform."
+#~ msgstr "Самые последние записи рейсов в платформе."
+
+#~ msgid "Open flight board"
+#~ msgstr "Открыть табло рейсов"
+
+#~ msgid "No recent flights available."
+#~ msgstr "Последние рейсы отсутствуют."
+
+#~ msgid "Flight operations platform"
+#~ msgstr "Платформа мониторинга Flight"
+
+#~ msgid "Monitor flights, routes and airport activity from one clear workspace."
+#~ msgstr ""
+#~ "Отслеживать полеты, аэропорты и маршрутную деятельность из одного "
+#~ "авиационного рабочего пространства."
+
+#~ msgid ""
+#~ "FlightLogos helps users search aviation data, follow route activity, review "
+#~ "flight status and support operational decisions through maps, reports and "
+#~ "synchronized records."
+#~ msgstr ""
+#~ "FlightLogos помогает пользователям искать авиационные данные, отслеживать "
+#~ "маршрутную активность, просматривать статус полета и поддерживать "
+#~ "оперативные решения с помощью карт, отчетов и синхронизированных записей."
+
+#~ msgid "Flight number, airline, airport, route or destination"
+#~ msgstr "Рейс, авиакомпания, аэропорт или IATA"
+
+#~ msgid "Search flights"
+#~ msgstr "Нештатные рейсы"
+
+#~ msgid "Current network view"
+#~ msgstr "Текущий вид"
+
+#~ msgid "Operational snapshot"
+#~ msgstr "Операционный балл"
+
+#~ msgid "Cancellation rate"
+#~ msgstr "Cancellation rate"
+
+#~ msgid ""
+#~ "Public data remains easy to consult while connected users can open the "
+#~ "private operations center for deeper monitoring."
+#~ msgstr ""
+#~ "Пользователи могут ознакомиться с данными. Подключенные пользователи могут "
+#~ "получить доступ к рабочему пространству операций."
+
+#~ msgid "Platform sections"
+#~ msgstr "Готовы к проверке"
+
+#~ msgid "Search and status"
+#~ msgstr "Доска поиска и статуса"
+
+#~ msgid "Carrier records"
+#~ msgstr "Направление Live"
+
+#~ msgid "Airport data"
+#~ msgstr "Аэропорт"
+
+#~ msgid "Fleet records"
+#~ msgstr "Последние записи"
+
+#~ msgid "Reports and signals"
+#~ msgstr "Отчёты и сигналы данных."
+
+#~ msgid "Traffic overview"
+#~ msgstr "Обзор выполнения"
+
+#~ msgid "Route activity preview"
+#~ msgstr "Проверка маршрута"
+
+#~ msgid ""
+#~ "A geographic view helps identify route distribution, active corridors and "
+#~ "airport pairs directly from the public interface."
+#~ msgstr ""
+#~ "Географический обзор помогает определить распределение маршрутов, активные "
+#~ "коридоры и пары аэропортов непосредственно с общественного интерфейса."
+
+#~ msgid "Open live map"
+#~ msgstr "Открыть карту"
+
+#~ msgid "Routes, airports and flight movement"
+#~ msgstr "Активное движение рейсов."
+
+#~ msgid "Open the full map to inspect operational traffic and route exposure."
+#~ msgstr "Карта Live вид оперативного трафика и открытых сервисов."
+
+#~ msgid "Flight records currently available in the operational database."
+#~ msgstr "Записи рейсов, видимые в текущем операционном наборе данных."
+
+#~ msgid "Flights moving through active operational states."
+#~ msgstr ""
+#~ "Ни один активный полет в настоящее время не проходит через штаты исполнения."
+
+#~ msgid "Records requiring closer schedule and route attention."
+#~ msgstr "Рейсы, требующие обработки сбоя"
+
+#~ msgid "Share of cancelled records in the visible dataset."
+#~ msgstr "Задержанные и отменённые рейсы на проверке восстановления."
+
+#~ msgid "Platform capabilities"
+#~ msgstr "Готовы к проверке"
+
+#~ msgid "Designed for aviation data consultation and operational monitoring."
+#~ msgstr "Короткий уровень интерпретации для презентации и чтения оператором."
+
+#~ msgid ""
+#~ "The platform connects public search, flight records, aircraft data, route "
+#~ "maps, synchronization traces and operational reports in one coherent web "
+#~ "system."
+#~ msgstr ""
+#~ "Система соединяет рейсы с авиакомпаниями, аэропортами, самолетами, "
+#~ "видимостью карты, следами синхронизации и оперативной аналитикой."
+
+#~ msgid ""
+#~ "Search registered flights, check airline information, read status and open a"
+#~ " selected record for deeper review."
+#~ msgstr ""
+#~ "Найдите зарегистрированные рейсы, проверьте информацию о маршруте и "
+#~ "прочитайте текущее состояние каждой операции."
+
+#~ msgid ""
+#~ "Review performance indicators, disruption signals, source quality and route "
+#~ "exposure from the analytics workspace."
+#~ msgstr "Просмотр показателей, маршрутов, качества источников и отчётов."
+
+#~ msgid "Aviation records connected to the rest of the platform."
+#~ msgstr "Бизнес-объекты, связанные с текущей операционной платформой."
+
+#~ msgid ""
+#~ "Airlines, airports and aircraft are presented as clean reference "
+#~ "directories, supporting flight search, route reading and operational "
+#~ "supervision."
+#~ msgstr ""
+#~ "Авиакомпании, аэропорты и самолеты представлены в виде чистых справочных "
+#~ "справочников, поддерживающих поиск рейсов, чтение маршрутов и оперативный "
+#~ "надзор."
+
+#~ msgid "Carrier identifiers and flight activity"
+#~ msgstr ""
+#~ "Просматривайте записи авиакомпаний, проверяйте общедоступные идентификаторы,"
+#~ " просматривайте оперативную деятельность и открывайте профили авиакомпаний, "
+#~ "связанные с данными о рейсах в системе."
+
+#~ msgid "Codes, location and route usage"
+#~ msgstr "Коды, местоположение и использование маршрута"
+
+#~ msgid "Fleet records and assigned operators"
+#~ msgstr "Записи флота и назначенные операторы"
+
+#~ msgid "Latest records"
+#~ msgstr "Последние записи"
+
+#~ msgid "Latest flight records available in the public database."
+#~ msgstr "Самые последние записи рейсов в платформе."
+
+#~ msgid "View all flights"
+#~ msgstr "Активные рейсы"
+
+#~ msgid "No recent flights available"
+#~ msgstr "Последние рейсы отсутствуют."
+
+#~ msgid "Flight records will appear here when data is available in the system."
+#~ msgstr "Записи Flight появятся здесь, когда данные будут доступны в системе."
+
+#~ msgid "Data Sync Hub"
+#~ msgstr "Синхронизация"
+
+#~ msgid ""
+#~ "External flight data synchronization, provider logs, import status and local"
+#~ " database updates."
+#~ msgstr ""
+#~ "Внешняя синхронизация полетных данных, журналы поставщиков, статус импорта и"
+#~ " обновления локальной базы данных."
+
+#~ msgid "External data feed"
+#~ msgstr "Внешний live-поток"
+
+#~ msgid "Total runs"
+#~ msgstr "Всего рейсов"
+
+#~ msgid "Unstable history"
+#~ msgstr "Нестабильная история"
+
+#~ msgid "Stable history"
+#~ msgstr "Стабильно"
+
+#~ msgid "Healthy"
+#~ msgstr "Здоровый"
+
+#~ msgid "No history"
+#~ msgstr "Нет истории"
+
+#~ msgid "Recent synchronization history contains a high failure rate."
+#~ msgstr "Недавняя история синхронизации содержит высокую частоту отказов."
+
+#~ msgid "Recent synchronization history is stable."
+#~ msgstr "История синхронизации стабильна."
+
+#~ msgid "No synchronization run has been recorded yet."
+#~ msgstr "На данный момент синхронизация не зафиксирована."
+
+#~ msgid "Success"
+#~ msgstr "Доступ"
+
+#~ msgid "Failed"
+#~ msgstr "Неудачник"
+
+#~ msgid "No run recorded yet."
+#~ msgstr "Пробега пока не зафиксировано."
+
+#~ msgid "Latest duration"
+#~ msgstr "Следующее действие"
+
+#~ msgid "Measured from provider request start to recorded completion."
+#~ msgstr ""
+#~ "Измеряется от начала запроса поставщика до зарегистрированного завершения."
+
+#~ msgid "Hybrid data"
+#~ msgstr "Гибридные данные"
+
+#~ msgid "Logs"
+#~ msgstr "Лог"
+
+#~ msgid "Last response"
+#~ msgstr "Последний ответ"
+
+#~ msgid "Message returned after the latest synchronization action."
+#~ msgstr "Сообщение вернулось после последнего действия синхронизации."
+
+#~ msgid "Successful runs"
+#~ msgstr "Успешные бегуны"
+
+#~ msgid "Failed runs"
+#~ msgstr "Неудачные пробежки"
+
+#~ msgid "Runs that ended with provider, access or network errors."
+#~ msgstr "Runs, который закончился ошибками провайдера, доступа или сети."
+
+#~ msgid "Created records"
+#~ msgstr "Последние записи"
+
+#~ msgid "New local flight records created from external data."
+#~ msgstr "Все записи рейсов, которые сейчас хранятся в платформе."
+
+#~ msgid "Updated records"
+#~ msgstr "Локальные записи"
+
+#~ msgid "Sync console"
+#~ msgstr "Консоль Sync"
+
+#~ msgid ""
+#~ "Use a flight number or airport codes for a focused demonstration. A small "
+#~ "limit is better for defense and easier to explain."
+#~ msgstr ""
+#~ "Используйте номер рейса или код аэропорта для целенаправленной демонстрации."
+#~ " Небольшой лимит лучше для защиты и легче объяснить."
+
+#~ msgid "Flight IATA"
+#~ msgstr "Рейс"
+
+#~ msgid "Departure IATA"
+#~ msgstr "Вылет"
+
+#~ msgid "Arrival IATA"
+#~ msgstr "Прибытие"
+
+#~ msgid "Record limit"
+#~ msgstr "Восстановление"
+
+#~ msgid "Last synchronization result"
+#~ msgstr "Последний результат синхронизации"
+
+#~ msgid "Most recent provider execution recorded by the platform."
+#~ msgstr "Самые последние записи рейсов в платформе."
+
+#~ msgid ""
+#~ "Run a focused import when demonstrating the API layer to avoid unnecessary "
+#~ "provider load."
+#~ msgstr ""
+#~ "Run - это целенаправленный импорт при демонстрации уровня API, чтобы "
+#~ "избежать ненужной нагрузки поставщика."
+
+#~ msgid ""
+#~ "After every run, check received, created and updated records before opening "
+#~ "reports."
+#~ msgstr ""
+#~ "После каждого запуска проверяйте полученные, созданные и обновленные записи "
+#~ "перед открытием отчетов."
+
+#~ msgid ""
+#~ "Failed runs remain visible in the log so provider errors can be explained "
+#~ "and traced."
+#~ msgstr ""
+#~ "Неудачные запуски остаются видимыми в журнале, поэтому ошибки провайдера "
+#~ "могут быть объяснены и отслежены."
+
+#~ msgid "Hybrid data model"
+#~ msgstr "Гибридная модель данных"
+
+#~ msgid ""
+#~ "The system is not only a static database. It combines manually controlled "
+#~ "records with external flight data imported through the synchronization "
+#~ "layer."
+#~ msgstr ""
+#~ "Это не просто статическая база данных. Он сочетает в себе управляемые "
+#~ "вручную записи с внешними данными о полетах, импортируемыми через слой "
+#~ "синхронизации."
+
+#~ msgid "Local database"
+#~ msgstr "Набор данных с преобладанием локальных записей"
+
+#~ msgid "Controlled records"
+#~ msgstr "Локальные live-записи"
+
+#~ msgid ""
+#~ "Flights, airlines, airports and aircraft can exist locally and remain "
+#~ "manageable inside the project."
+#~ msgstr ""
+#~ "Авиакомпании, аэропорты и самолеты Flights могут существовать на местном "
+#~ "уровне и оставаться управляемыми в рамках проекта."
+
+#~ msgid "External provider"
+#~ msgstr "Внешний ID"
+
+#~ msgid ""
+#~ "The provider feed enriches the platform with external flight data when "
+#~ "synchronization is executed."
+#~ msgstr ""
+#~ "Корм провайдера обогащает платформу внешними полетными данными при "
+#~ "выполнении синхронизации."
+
+#~ msgid "Sync logs"
+#~ msgstr "Синхронизация"
+
+#~ msgid ""
+#~ "Every run keeps status, provider, timestamps, volumes and message for "
+#~ "review."
+#~ msgstr ""
+#~ "Каждый запуск сохраняет статус, поставщика, временные метки, тома и "
+#~ "сообщение для обзора."
+
+#~ msgid "Synchronization readout"
+#~ msgstr "Прочтение синхронизации"
+
+#~ msgid "Short summary of recent provider behavior and database changes."
+#~ msgstr ""
+#~ "Краткое описание недавних изменений поведения провайдера и базы данных."
+
+#~ msgid "Recent outcomes"
+#~ msgstr "Последние записи"
+
+#~ msgid "Success and failure balance"
+#~ msgstr "Баланс успеха и неудачи"
+
+#~ msgid "Quick view of the latest recorded results."
+#~ msgstr "Быстрый просмотр последних зарегистрированных результатов."
+
+#~ msgid "Failure rate"
+#~ msgstr "Доля локальных"
+
+#~ msgid "Average duration"
+#~ msgstr "Средняя продолжительность"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                                    Failed run — %(provider)s / %(sync_type)s on %(started)s.\n"
+#~ "                                "
+#~ msgstr ""
+#~ "\n"
+#~ "                                    Failed run — %(provider)s / %(sync_type)s on %(started)s.\n"
+#~ "                                "
+
+#~ msgid "No recent failed synchronization is visible in the current log list."
+#~ msgstr "В текущих данных не видно активной операционной нагрузки."
+
+#~ msgid "Provider execution history, ingestion volume and technical messages."
+#~ msgstr "История выполнения Provider, объем приема и технические сообщения."
+
+#~ msgid "Finished"
+#~ msgstr "Закончено"
+
+#~ msgid "Duration"
+#~ msgstr "Продолжительность"
+
+#~ msgid "No synchronization logs available."
+#~ msgstr "Приоритетные рейсы отсутствуют."
+
+#~ msgid "Alert Review"
+#~ msgstr "Уровень оповещения"
+
+#~ msgid ""
+#~ "Active operational alerts requiring validation, supervision, or escalation."
+#~ msgstr ""
+#~ "Активные оперативные оповещения, требующие проверки, надзора или эскалации."
+
+#~ msgid "Monitoring workspace navigation"
+#~ msgstr "Навигация рабочей зоны мониторинга"
+
+#~ msgid "Monitoring suite"
+#~ msgstr "Комплекс мониторинга"
+
+#~ msgid "Escalation signals, disruption posture and alert validation."
+#~ msgstr "Сигналы эскалации, поза сбоя и проверка оповещения."
+
+#~ msgid "Monitoring modules"
+#~ msgstr "Модули мониторинга"
+
+#~ msgid "Alerts"
+#~ msgstr "Оповещения"
+
+#~ msgid "Alert posture"
+#~ msgstr "Текущая позиция"
+
+#~ msgid "Alert review"
+#~ msgstr "Уровень оповещения"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                        %(level)s alert status\n"
+#~ "                    "
+#~ msgstr ""
+#~ "\n"
+#~ "                        %(level)s alert status\n"
+#~ "                    "
+
+#~ msgid "Normal alert status"
+#~ msgstr "Текущий статус"
+
+#~ msgid "No dominant operational alert currently threatens the network flow."
+#~ msgstr "Операционные оповещения сейчас отсутствуют."
+
+#~ msgid "View active alerts"
+#~ msgstr "Проверить оповещения"
+
+#~ msgid "Irregular operations"
+#~ msgstr "Нештатные операции"
+
+#~ msgid "Back to control"
+#~ msgstr "Назад к контролю"
+
+#~ msgid "Escalation posture"
+#~ msgstr "Эскалационная позиция"
+
+#~ msgid "Immediate supervision"
+#~ msgstr "Усиленный контроль"
+
+#~ msgid "Stable alert posture"
+#~ msgstr "Стабильные операции"
+
+#~ msgid ""
+#~ "Validate the strongest operational signal before moving to recovery handling"
+#~ " or flight-level review."
+#~ msgstr ""
+#~ "Оцените текущую операционную нагрузку перед просмотром отдельного рейса."
+
+#~ msgid "Alert review summary"
+#~ msgstr "Сводка оповещений"
+
+#~ msgid "Alert level"
+#~ msgstr "Уровень оповещения"
+
+#~ msgid "Current alert reading from the monitoring workspace."
+#~ msgstr "Всего записей, видимых в текущей зоне мониторинга."
+
+#~ msgid "Disruption score"
+#~ msgstr "Оценка сбоев"
+
+#~ msgid ""
+#~ "Current disruption pressure score calculated from visible flight states."
+#~ msgstr ""
+#~ "Текущая оценка давления разрушения, рассчитанная из видимых состояний "
+#~ "полета."
+
+#~ msgid "Flights contributing to delay pressure in the current view."
+#~ msgstr "Рейсы, требующие проверки задержки."
+
+#~ msgid "Flights requiring recovery and disruption handling."
+#~ msgstr "Рейсы, требующие обработки сбоя"
+
+#~ msgid "Alert signal"
+#~ msgstr "Ключевые сигналы"
+
+#~ msgid "Current escalation posture"
+#~ msgstr "Текущая позиция"
+
+#~ msgid ""
+#~ "Immediate reading of network alert pressure, disruption exposure and review "
+#~ "urgency."
+#~ msgstr ""
+#~ "Немедленное чтение давления сетевого оповещения, воздействия сбоев и "
+#~ "срочности обзора."
+
+#~ msgid "Current focus"
+#~ msgstr "Текущий статус"
+
+#~ msgid "Immediate supervision and escalation are required."
+#~ msgstr "Немедленный контекст контроля выбранного рейса."
+
+#~ msgid "Network alert posture remains stable."
+#~ msgstr "Положение сетевого оповещения остается стабильным."
+
+#~ msgid "No active operational alert is currently visible."
+#~ msgstr "Операционные оповещения сейчас отсутствуют."
+
+#~ msgid "API records"
+#~ msgstr "Записи API"
+
+#~ msgid "Decision routing"
+#~ msgstr "Маршрутизация решений"
+
+#~ msgid "Where operators should go next"
+#~ msgstr "Что должен понять оператор"
+
+#~ msgid "Use the alert posture to move toward the right monitoring surface."
+#~ msgstr ""
+#~ "Используйте оповещение, чтобы двигаться к правильной поверхности "
+#~ "мониторинга."
+
+#~ msgid "Return to the main supervision workspace."
+#~ msgstr "Вернуться в основную операционную рабочую зону."
+
+#~ msgid "Irregular Operations"
+#~ msgstr "Нештатные операции"
+
+#~ msgid "Review active flight execution."
+#~ msgstr "Проверить слой активного выполнения."
+
+#~ msgid "Inspect route and corridor exposure."
+#~ msgstr "Проверить маршрут и геопространственную видимость."
+
+#~ msgid "Alert handling"
+#~ msgstr "Список оповещений"
+
+#~ msgid ""
+#~ "Check delayed and cancelled flights before opening deeper recovery views."
+#~ msgstr "Задержанные и отменённые рейсы на проверке восстановления."
+
+#~ msgid "Review source balance"
+#~ msgstr "Баланс источников"
+
+#~ msgid "Compare API and local records to understand the current data picture."
+#~ msgstr "API и локальные записи сейчас сбалансированы или недоступны."
+
+#~ msgid "Open map if location matters"
+#~ msgstr "Открыть нужный операционный слой"
+
+#~ msgid ""
+#~ "Use map visibility when the route, airport pair or corridor exposure is "
+#~ "important."
+#~ msgstr ""
+#~ "Используйте видимость карты, когда важен маршрут, пара аэропортов или "
+#~ "коридор."
+
+#~ msgid "Operational meaning"
+#~ msgstr "Операционное чтение"
+
+#~ msgid "How to interpret this alert"
+#~ msgstr "Как защитить эту страницу"
+
+#~ msgid "Short interpretation layer for presentation and operator reading."
+#~ msgstr "Короткий уровень интерпретации для презентации и чтения оператором."
+
+#~ msgid "Alert meaning"
+#~ msgstr "Сводка оповещений"
+
+#~ msgid ""
+#~ "The current dataset contains enough disruption pressure to justify immediate"
+#~ " operator attention."
+#~ msgstr ""
+#~ "Текущий набор данных содержит достаточное давление, чтобы оправдать "
+#~ "немедленное внимание оператора."
+
+#~ msgid ""
+#~ "The current dataset shows elevated pressure and should be reviewed before "
+#~ "normal monitoring continues."
+#~ msgstr ""
+#~ "Текущий набор данных показывает повышенное давление и должен быть "
+#~ "пересмотрен до продолжения нормального мониторинга."
+
+#~ msgid "The current dataset does not show a dominant alert signal."
+#~ msgstr "Текущий набор данных не показывает доминирующий сигнал тревоги."
+
+#~ msgid "Next step"
+#~ msgstr "Следующее действие"
+
+#~ msgid "Open Irregular Operations and start with cancelled flights."
+#~ msgstr ""
+#~ "Используйте страницу нештатных операций, когда оповещение касается "
+#~ "задержанных или отменённых рейсов."
+
+#~ msgid "Open Irregular Operations and review delayed flights."
+#~ msgstr ""
+#~ "Используйте страницу нештатных операций, когда оповещение касается "
+#~ "задержанных или отменённых рейсов."
+
+#~ msgid "Continue standard monitoring from Operations Control."
+#~ msgstr "Продолжить стандартный мониторинг"
+
+#~ msgid ""
+#~ "This module does not replace an air traffic control system. It helps "
+#~ "structure operational supervision from stored and synchronized flight "
+#~ "records."
+#~ msgstr ""
+#~ "Этот модуль не заменяет систему управления воздушным движением. Это помогает"
+#~ " структурировать оперативный надзор из сохраненных и синхронизированных "
+#~ "записей полетов."
+
+#~ msgid "Active alerts"
+#~ msgstr "Активные рейсы"
+
+#~ msgid "Operational alerts currently surfaced"
+#~ msgstr "Операционные оповещения сейчас отсутствуют."
+
+#~ msgid "Alert objects requiring validation, supervision or escalation."
+#~ msgstr "Предупреждение объектов, требующих проверки, надзора или эскалации."
+
+#~ msgid "No active alerts are currently visible."
+#~ msgstr "Операционные оповещения сейчас отсутствуют."
+
+#~ msgid ""
+#~ "Delayed and cancelled flights requiring disruption review and recovery "
+#~ "handling."
+#~ msgstr ""
+#~ "Задержанные и отменённые рейсы, требующие анализа сбоя и восстановления."
+
+#~ msgid "Disruption, recovery, delayed and cancelled flights."
+#~ msgstr "Операционная нагрузка от задержанных и отменённых записей."
+
+#~ msgid "Recovery desk"
+#~ msgstr "Панель восстановления"
+
+#~ msgid "Irregular registry"
+#~ msgstr "Нештатный реестр"
+
+#~ msgid "Disruption recovery desk"
+#~ msgstr "Панель восстановления сбоев"
+
+#~ msgid ""
+#~ "Review delayed and cancelled flights in one focused workspace. This page is "
+#~ "designed for quick recovery reading before opening the full flight file or "
+#~ "map view."
+#~ msgstr ""
+#~ "Сначала проверяйте задержанные и отменённые рейсы. Этот слой предназначен "
+#~ "для восстановления, а не для просмотра всех записей."
+
+#~ msgid "Immediate review"
+#~ msgstr "Немедленно"
+
+#~ msgid "Delay supervision"
+#~ msgstr "Live-контроль"
+
+#~ msgid ""
+#~ "Priority should be given to cancelled flights first, then delayed operations"
+#~ " and route exposure."
+#~ msgstr ""
+#~ "Приоритет должен быть отдан сначала отмененным рейсам, а затем отложенным "
+#~ "операциям и воздействию маршрута."
+
+#~ msgid "Irregular operations summary"
+#~ msgstr "Сводка нештатных операций"
+
+#~ msgid "Flights requiring recovery or cancellation review."
+#~ msgstr "Рейсы, требующие проверки восстановления."
+
+#~ msgid "Irregular total"
+#~ msgstr "Нештатные операции"
+
+#~ msgid "Delayed and cancelled records in the current view."
+#~ msgstr "Задержанные и отменённые рейсы на проверке восстановления."
+
+#~ msgid "Current operational posture for disruption handling."
+#~ msgstr "Перейти к обработке сбоя."
+
+#~ msgid "Recovery logic"
+#~ msgstr "Восстановление"
+
+#~ msgid "What should be handled first"
+#~ msgstr "Что проверить первым"
+
+#~ msgid ""
+#~ "The recovery desk separates immediate disruption from lower-pressure "
+#~ "monitoring."
+#~ msgstr ""
+#~ "Отдел восстановления отделяет немедленное нарушение от мониторинга низкого "
+#~ "давления."
+
+#~ msgid ""
+#~ "Check affected route, passenger impact assumption, and recovery action."
+#~ msgstr ""
+#~ "Проверьте затронутый маршрут, предположение о воздействии на пассажира и "
+#~ "действия по восстановлению."
+
+#~ msgid "Map confirmation"
+#~ msgstr "Позиция на карте"
+
+#~ msgid "Open the map when route, airport pair or corridor exposure matters."
+#~ msgstr ""
+#~ "Откройте карту, когда имеет значение маршрут, пара аэропортов или коридор."
+
+#~ msgid "Move to the right module"
+#~ msgstr "Модули мониторинга"
+
+#~ msgid "Keep the irregular page focused. Use these routes for deeper review."
+#~ msgstr ""
+#~ "Сосредоточьте нерегулярную страницу. Используйте эти маршруты для более "
+#~ "глубокого анализа."
+
+#~ msgid "Main supervision desk."
+#~ msgstr "Панель контроля"
+
+#~ msgid "Active flight movement."
+#~ msgstr "Активное движение рейсов."
+
+#~ msgid "Operational alert posture."
+#~ msgstr "Операционные оповещения"
+
+#~ msgid "Reports and data signals."
+#~ msgstr "Отчёты и сигналы данных."
+
+#~ msgid "Irregular flights"
+#~ msgstr "Нештатные рейсы"
+
+#~ msgid "Flights requiring disruption handling"
+#~ msgstr "Рейсы, требующие обработки сбоя"
+
+#~ msgid ""
+#~ "Operational registry of delayed and cancelled flights currently under "
+#~ "recovery review."
+#~ msgstr ""
+#~ "Операционный реестр задержанных и отменённых рейсов на проверке "
+#~ "восстановления."
+
+#~ msgid "Open"
+#~ msgstr "Открыть"
+
+#~ msgid "No delayed or cancelled flights are currently visible."
+#~ msgstr ""
+#~ "На панели восстановления сейчас нет задержанных или отменённых рейсов."
+
+#~ msgid ""
+#~ "Live supervision workspace for active flights, disruption pressure, selected"
+#~ " flight review and operational routing."
+#~ msgstr ""
+#~ "Рабочая зона live-контроля для активных рейсов, сбоев, выбранного рейса и "
+#~ "операционной навигации."
+
+#~ msgid "Continue standard monitoring"
+#~ msgstr "Продолжить стандартный мониторинг"
+
+#~ msgid "No specific monitoring reason available for this flight."
+#~ msgstr "Для этого рейса нет конкретной причины мониторинга."
+
+#~ msgid "Main supervision desk for active records, disruptions and routing."
+#~ msgstr "Главная панель контроля активных записей, сбоев и маршрутизации."
+
+#~ msgid "Supervision desk"
+#~ msgstr "Панель контроля"
+
+#~ msgid "Operations control"
+#~ msgstr "Контроль операций"
+
+#~ msgid "Current supervision desk"
+#~ msgstr "Текущая панель контроля"
+
+#~ msgid ""
+#~ "Monitor active flight records, review disruption pressure, select a flight "
+#~ "for operational reading, and move quickly to the right supervision layer."
+#~ msgstr ""
+#~ "Контролируйте активные рейсы, анализируйте давление сбоев, выбирайте рейс "
+#~ "для операционного чтения и быстро переходите к нужному слою."
+
+#~ msgid "Open flight registry"
+#~ msgstr "Открыть реестр рейсов"
+
+#~ msgid ""
+#~ "This desk combines live traffic, disruptions, source balance and selected "
+#~ "flight review."
+#~ msgstr ""
+#~ "Эта панель объединяет активный трафик, сбои, баланс источников и выбранный "
+#~ "рейс."
+
+#~ msgid "Operations summary"
+#~ msgstr "Операционная сводка"
+
+#~ msgid "Monitored flights"
+#~ msgstr "Контролируемые рейсы"
+
+#~ msgid "Total records visible in the current monitoring workspace."
+#~ msgstr "Всего записей, видимых в текущей зоне мониторинга."
+
+#~ msgid "Flights still requiring operational visibility."
+#~ msgstr "Рейсы, которые всё ещё требуют операционной видимости."
+
+#~ msgid "Flights requiring recovery review."
+#~ msgstr "Рейсы, требующие проверки восстановления."
+
+#~ msgid "Network supervision snapshot"
+#~ msgstr "Снимок контроля сети"
+
+#~ msgid "Read the current operational load before entering flight-level review."
+#~ msgstr ""
+#~ "Оцените текущую операционную нагрузку перед просмотром отдельного рейса."
+
+#~ msgid "Monitoring mode"
+#~ msgstr "Режим мониторинга"
+
+#~ msgid "Elevated supervision"
+#~ msgstr "Усиленный контроль"
+
+#~ msgid "Standard supervision"
+#~ msgstr "Стандартный контроль"
+
+#~ msgid ""
+#~ "The control desk centralizes status, route, source and disruption signals "
+#~ "for quick interpretation."
+#~ msgstr ""
+#~ "Панель контроля объединяет статусы, маршруты, источники и сигналы сбоев для "
+#~ "быстрой интерпретации."
+
+#~ msgid "Where to go next"
+#~ msgstr "Куда перейти дальше"
+
+#~ msgid "Move from the control desk to the correct operational layer."
+#~ msgstr "Перейдите с панели контроля к нужному операционному слою."
+
+#~ msgid "Irregular"
+#~ msgstr "Нерегулярный"
+
+#~ msgid "Delayed and cancelled flights."
+#~ msgstr "Задержка и отмена рейсов."
+
+#~ msgid "Live operations"
+#~ msgstr "Операции Live"
+
+#~ msgid "Routes and position view."
+#~ msgstr "Просмотр маршрутов и позиций."
+
+#~ msgid "Operational intelligence"
+#~ msgstr "Operational интеллект"
+
+#~ msgid "Flights to review first"
+#~ msgstr "Рейсы для первичной проверки"
+
+#~ msgid "Priority list built from operational status and supervision relevance."
+#~ msgstr "Список приоритетов, созданный по статусу и значимости контроля."
+
+#~ msgid "Priority item unavailable"
+#~ msgstr "Приоритетный элемент недоступен"
+
+#~ msgid "This attention item does not contain a valid flight identifier."
+#~ msgstr "Этот элемент не содержит корректного идентификатора рейса."
+
+#~ msgid "Control scope"
+#~ msgstr "Область контроля"
+
+#~ msgid "Current view coverage"
+#~ msgstr "Покрытие текущего вида"
+
+#~ msgid "Quick reading of source balance and operational state."
+#~ msgstr "Быстрая оценка баланса источников и операционного состояния."
+
+#~ msgid "Flight registry"
+#~ msgstr "Реестр рейсов"
+
+#~ msgid "Operational flight list"
+#~ msgstr "Операционный список рейсов"
+
+#~ msgid ""
+#~ "Search, filter and select a flight. The review layer opens as a floating "
+#~ "panel after selection."
+#~ msgstr ""
+#~ "Ищите, фильтруйте и выбирайте рейс. Слой проверки открывается как плавающая "
+#~ "панель."
+
+#~ msgid "Selected flight open"
+#~ msgstr "Выбранный рейс открыт"
+
+#~ msgid "Flight, airline, airport or IATA"
+#~ msgstr "Рейс, авиакомпания, аэропорт или IATA"
+
+#~ msgid "Apply"
+#~ msgstr "Применить"
+
+#~ msgid "Action"
+#~ msgstr "Действие"
+
+#~ msgid "Selected flight review layer"
+#~ msgstr "Слой проверки выбранного рейса"
+
+#~ msgid "Close selected flight layer"
+#~ msgstr "Закрыть слой выбранного рейса"
+
+#~ msgid "Selected flight layer"
+#~ msgstr "Слой выбранного рейса"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                                %(flight_number)s supervision review\n"
+#~ "                            "
+#~ msgstr ""
+#~ "\n"
+#~ "Проверка контроля %(flight_number)s"
+
+#~ msgid "Flight review panel"
+#~ msgstr "Панель проверки рейса"
+
+#~ msgid "Immediate supervision context for the selected flight."
+#~ msgstr "Немедленный контекст контроля выбранного рейса."
+
+#~ msgid "Monitoring reason"
+#~ msgstr "Причина мониторинга"
+
+#~ msgid "Open the right view"
+#~ msgstr "Открыть правильный вид"
+
+#~ msgid "Continue the analysis from the selected flight context."
+#~ msgstr "Продолжить анализ из контекста выбранного рейса."
+
+#~ msgid "Full flight review"
+#~ msgstr "Полная проверка рейса"
+
+#~ msgid "Open the complete monitoring file."
+#~ msgstr "Открыть полный файл мониторинга."
+
+#~ msgid "Map position"
+#~ msgstr "Позиция на карте"
+
+#~ msgid "Inspect route and geospatial exposure."
+#~ msgstr "Проверить маршрут и геопространственную видимость."
+
+#~ msgid "Registry"
+#~ msgstr "Реестр"
+
+#~ msgid "Open the formal registry detail."
+#~ msgstr "Открыть официальную карточку реестра."
+
+#~ msgid "Move to disruption handling."
+#~ msgstr "Перейти к обработке сбоя."
+
+#~ msgid "Review active execution layer."
+#~ msgstr "Проверить слой активного выполнения."
+
+#~ msgid ""
+#~ "Flights currently in active execution across boarding, departed, and "
+#~ "airborne states."
+#~ msgstr "Рейсы, проходящие состояния посадки, вылета и полёта."
+
+#~ msgid "Active movement, execution visibility and live traffic scope."
+#~ msgstr "Активное движение, видимость исполнения и объем живого трафика."
+
+#~ msgid "Active traffic"
+#~ msgstr "Активный трафик"
+
+#~ msgid "Active traffic supervision"
+#~ msgstr "Контроль активного трафика"
+
+#~ msgid ""
+#~ "Monitor flights currently progressing through boarding, departed and "
+#~ "airborne states. This page separates active movement from scheduled, "
+#~ "completed, delayed and cancelled records."
+#~ msgstr ""
+#~ "Контролируйте рейсы в состояниях посадки, вылета и полёта. Эта страница "
+#~ "фокусируется на активном движении, а не на истории."
+
+#~ msgid "View live registry"
+#~ msgstr "Открыть live-реестр"
+
+#~ msgid "Execution scope"
+#~ msgstr "Обзор выполнения"
+
+#~ msgid "Boarding, departed and airborne flights"
+#~ msgstr "Рейсы, проходящие состояния посадки, вылета и полёта."
+
+#~ msgid ""
+#~ "Use this view when the operator needs a focused reading of flights still "
+#~ "moving through execution states."
+#~ msgstr "Активные рейсы, проходящие этапы выполнения."
+
+#~ msgid "Live flights"
+#~ msgstr "Активные рейсы"
+
+#~ msgid "Flights currently active in the live execution view."
+#~ msgstr "Рейсы, находящиеся в активных состояниях выполнения."
+
+#~ msgid "Flights currently preparing for departure."
+#~ msgstr "Рейсы, отмеченные как находящиеся в полёте."
+
+#~ msgid "Active execution picture"
+#~ msgstr "Картина активного выполнения"
+
+#~ msgid "Current traffic still moving through operational execution states."
+#~ msgstr "Current traffic still moving through operational execution states."
+
+#~ msgid "Monitoring posture"
+#~ msgstr "Комплекс мониторинга"
+
+#, python-format
+#~ msgid ""
+#~ "\n"
+#~ "                            %(count)s active flights\n"
+#~ "                        "
+#~ msgstr ""
+#~ "\n"
+#~ "%(count)s активных рейсов"
+
+#~ msgid ""
+#~ "Start with airborne flights, then review departed and boarding records. Open"
+#~ " the map when route or position visibility matters."
+#~ msgstr ""
+#~ "Начните с воздушных рейсов, затем просмотрите отправленные и посадочные "
+#~ "записи. Откройте карту, когда имеет значение видимость маршрута или "
+#~ "местоположения."
+
+#~ msgid "Source coverage"
+#~ msgstr "Покрытие источников"
+
+#~ msgid "Live data balance"
+#~ msgstr "Баланс live-данных"
+
+#~ msgid "Quick reading of active records by data source."
+#~ msgstr "Разделение видимых записей по операционным состояниям."
+
+#~ msgid "Live registry"
+#~ msgstr "Live-реестр"
+
+#~ msgid "Active flight records"
+#~ msgstr "Последние записи рейсов"
+
+#~ msgid ""
+#~ "Flights currently progressing through boarding, departed and airborne "
+#~ "execution."
+#~ msgstr "Рейсы, проходящие состояния посадки, вылета и полёта."
+
+#~ msgid "Actions"
+#~ msgstr "Действия"
+
+#~ msgid "No live flights available."
+#~ msgstr "Активные рейсы отсутствуют."
+
+#~ msgid "Flight Operations Map"
+#~ msgstr "Flight Операции Map"
+
+#~ msgid ""
+#~ "Geospatial view of active traffic, route exposure, and operational "
+#~ "priorities."
+#~ msgstr ""
+#~ "Геопространственное представление активного трафика, экспозиции маршрута и "
+#~ "операционных приоритетов."
+
+#~ msgid "Flight, airline, route"
+#~ msgstr "Flight, авиакомпания, маршрут"
+
+#~ msgid "Visible"
+#~ msgstr "Видимый"
+
+#~ msgid "Impact"
+#~ msgstr "Воздействие"
+
+#~ msgid "Critical Only"
+#~ msgstr "Только критический"
+
+#~ msgid "Fullscreen"
+#~ msgstr "Полный экран"
+
+#~ msgid "No major disruption."
+#~ msgstr "Никаких сбоев."
+
+#~ msgid "Traffic Surface"
+#~ msgstr "Транспортная поверхность"
+
+#~ msgid "Live map view of operational traffic and exposed services."
+#~ msgstr "Карта Live вид оперативного трафика и открытых сервисов."
+
+#~ msgid "Confirmed"
+#~ msgstr "Подтверждено"
+
+#~ msgid "Associated"
+#~ msgstr "Связанный"
+
+#~ msgid "Low"
+#~ msgstr "Низкий"
+
+#~ msgid "Map tools"
+#~ msgstr "Инструменты Map"
+
+#~ msgid "Map controls"
+#~ msgstr "Управление Map"
+
+#~ msgid "Layers"
+#~ msgstr "Слои"
+
+#~ msgid "Base map"
+#~ msgstr "Базовая карта"
+
+#~ msgid "Dark"
+#~ msgstr "Темный"
+
+#~ msgid "Satellite"
+#~ msgstr "Спутник"
+
+#~ msgid "Weather"
+#~ msgstr "Погода"
+
+#~ msgid "Off"
+#~ msgstr "Оставить"
+
+#~ msgid "Clouds"
+#~ msgstr "Облака"
+
+#~ msgid "Rain"
+#~ msgstr "Дождь"
+
+#~ msgid "Display"
+#~ msgstr "Дисплей"
+
+#~ msgid "Labels"
+#~ msgstr "Этикетки"
+
+#~ msgid "Focus selected"
+#~ msgstr "Выбранный фокус"
+
+#~ msgid "Reset view"
+#~ msgstr "Перезагрузить вид"
+
+#~ msgid "My location"
+#~ msgstr "Мое местоположение"
+
+#~ msgid "No flights in the current view"
+#~ msgstr "Никаких рейсов в нынешнем виде"
+
+#~ msgid "Adjust filters or widen the scope to bring traffic back into focus."
+#~ msgstr ""
+#~ "Настройка фильтров или расширение области, чтобы вернуть трафик в фокус."
+
+#~ msgid "Ops desk"
+#~ msgstr "Опс-стол"
+
+#~ msgid "Selected flight"
+#~ msgstr "Выбранный рейс"
+
+#~ msgid "Focus"
+#~ msgstr "Фокус"
+
+#~ msgid "Standby"
+#~ msgstr "Дежурный"
+
+#~ msgid "Ready for inspection"
+#~ msgstr "Готовы к проверке"
+
+#~ msgid ""
+#~ "Select a flight on the map to review tracking, route progression, and the "
+#~ "next operational action."
+#~ msgstr ""
+#~ "Выберите рейс на карте, чтобы просмотреть отслеживание, прогрессирование "
+#~ "маршрута и следующие оперативные действия."
+
+#~ msgid "Map-first view"
+#~ msgstr "Map первый взгляд"
+
+#~ msgid "Operational visibility"
+#~ msgstr "Operational видимость"
+
+#~ msgid ""
+#~ "Use the map to identify active services, delayed traffic and flights that "
+#~ "deserve closer attention."
+#~ msgstr ""
+#~ "Используйте карту для определения активных сервисов, задержек движения и "
+#~ "рейсов, которые заслуживают более пристального внимания."
+
+#~ msgid "Decision support"
+#~ msgstr "Поддержка принятия решений"
+
+#~ msgid ""
+#~ "The panel keeps only the information needed for a fast operational review."
+#~ msgstr ""
+#~ "Группа хранит только информацию, необходимую для быстрого оперативного "
+#~ "обзора."
+
+#~ msgid ""
+#~ "Start with a delayed flight, a selected route, or a service flagged in the "
+#~ "visible traffic."
+#~ msgstr ""
+#~ "Начните с задержки рейса, выбранного маршрута или службы, отмеченной в "
+#~ "видимом трафике."
+
+#~ msgid "Tracking"
+#~ msgstr "Отслеживание"
+
+#~ msgid "Decision reading"
+#~ msgstr "Чтение решения"
+
+#~ msgid "Why highlighted"
+#~ msgstr "Почему подчеркивается"
+
+#~ msgid "Exposure"
+#~ msgstr "Экспозиция"
+
+#~ msgid "Next move"
+#~ msgstr "Следующий ход"
+
+#~ msgid "Execution details"
+#~ msgstr "Подробности исполнения"
+
+#~ msgid "Progress"
+#~ msgstr "Прогресс"
+
+#~ msgid "Live freshness"
+#~ msgstr "Live свежесть"
+
+#~ msgid "Risk score"
+#~ msgstr "Оценка рисков"
+
+#~ msgid "Route alert"
+#~ msgstr "Маршрутная тревога"
+
+#~ msgid "Recommendation"
+#~ msgstr "Рекомендация"
+
+#~ msgid "Detail"
+#~ msgstr "Подробнее"
+
+#~ msgid "More"
+#~ msgstr "Больше"
+
+#~ msgid "Traffic map"
+#~ msgstr "Транспортная поверхность"
+
+#~ msgid ""
+#~ "A map-based view helps users understand how flight activity is distributed "
+#~ "across airports and corridors."
+#~ msgstr ""
+#~ "Картографическое представление помогает пользователям понять, как "
+#~ "распределяется полетная активность в аэропортах и коридорах."
+
+#~ msgid "Explore live map"
+#~ msgstr "Исследуйте живую карту"
+
+#~ msgid "A clear public interface connected to a private operations workspace."
+#~ msgstr "Слой помощи, доступный во всей закрытой операционной рабочей зоне."
+
+#~ msgid ""
+#~ "FlightLogos separates public consultation from operational supervision. "
+#~ "Visitors can search aviation data, while connected users can monitor "
+#~ "flights, analyze disruptions and review synchronized information."
+#~ msgstr ""
+#~ "FlightLogos отделяет общественные консультации от частных операций. "
+#~ "Платформа дает пользователям четкий способ поиска данных, в то время как "
+#~ "операторы могут отслеживать, анализировать и управлять информацией за "
+#~ "кулисами."
+
+#~ msgid "Data layers"
+#~ msgstr "Картина данных"
+
+#~ msgid "Built around the main aviation reference data."
+#~ msgstr "Построены вокруг основных уровней данных авиации."
+
+#~ msgid "Browse airlines"
+#~ msgstr "По авиакомпании"
+
+#~ msgid ""
+#~ "Review airport identity, city, country, coordinates and linked flight "
+#~ "volume."
+#~ msgstr ""
+#~ "Данные государственных авиакомпаний с идентификаторами, страной, статусом и "
+#~ "связанным объемом рейсов."
+
+#~ msgid "Browse airports"
+#~ msgstr "Отслеживаемые рейсы"
+
+#~ msgid ""
+#~ "Keep aircraft registration, model, operator, capacity and status available "
+#~ "as structured reference data."
+#~ msgstr ""
+#~ "Просмотрите регистрационные номера самолетов, модели, назначенных "
+#~ "операторов, пропускную способность и эксплуатационный статус с чистой "
+#~ "общественной справочной платы."
+
+#~ msgid "Browse aircraft"
+#~ msgstr "Нет данных маршрута"
+
+#~ msgid "No recent flights available yet"
+#~ msgstr "Последние рейсы отсутствуют."
+
+#~ msgid ""
+#~ "Once flight records are synchronized or created, the latest activity will "
+#~ "appear here."
+#~ msgstr ""
+#~ "После синхронизации или создания летных записей здесь появится последняя "
+#~ "информация."
+
+#~ msgid "About FlightLogos"
+#~ msgstr "Ассистент FlightLogos"
+
+#~ msgid ""
+#~ "FlightLogos is designed as a web information system for managing and "
+#~ "monitoring flight operations. It combines public consultation, internal "
+#~ "supervision, route visibility, synchronization traces and operational "
+#~ "intelligence in one coherent platform."
+#~ msgstr ""
+#~ "FlightLogos разработан как веб-информационная система для управления и "
+#~ "мониторинга полетов. Он сочетает в себе консультации с общественностью, "
+#~ "внутренний надзор, видимость маршрута, следы синхронизации и оперативную "
+#~ "разведку в одной согласованной платформе."
+
+#~ msgid ""
+#~ "Users can search flights, airlines, airports, aircraft and route information"
+#~ " from a clear public interface."
+#~ msgstr ""
+#~ "Пользователи могут искать информацию о рейсах, авиакомпаниях, аэропортах, "
+#~ "самолетах и маршрутах с помощью четкого общедоступного интерфейса."
+
+#~ msgid "Private operations"
+#~ msgstr "Закрытая зона"
+
+#~ msgid ""
+#~ "Operators can review disruptions, active flights, monitoring alerts, "
+#~ "synchronization status and decision indicators."
+#~ msgstr ""
+#~ "Операторы могут просматривать сбои, активные полеты, мониторинг оповещений, "
+#~ "состояние синхронизации и показатели принятия решений."
+
+#~ msgid "Academic scope"
+#~ msgstr "Покрытие системы"
+
+#~ msgid ""
+#~ "The project demonstrates Django development, database modeling, API "
+#~ "synchronization, mapping, analytics and multilingual interface support."
+#~ msgstr ""
+#~ "Проект демонстрирует разработку Django, моделирование баз данных, "
+#~ "синхронизацию API, картографирование, аналитику и поддержку многоязычного "
+#~ "интерфейса."
+
+#~ msgid "System snapshot"
+#~ msgstr "Снимок типа источника"
+
+#~ msgid "Current database view"
+#~ msgstr "Текущий вид"
+
+#~ msgid "Fleet references"
+#~ msgstr "Ссылки на флот"
+
+#~ msgid "Geospatial view"
+#~ msgstr "Перезагрузить вид"
+
+#~ msgid "Routes, positions and corridors"
+#~ msgstr "Просмотр маршрутов и позиций."
+
+#~ msgid "Operations monitoring"
+#~ msgstr "Контроль операций"
+
+#~ msgid ""
+#~ "Follow active flights, identify delays and cancellations, and keep "
+#~ "supervision focused on the most important signals."
+#~ msgstr ""
+#~ "Следите за активными рейсами, выявляйте задержки и отмены и следите за "
+#~ "наиболее важными сигналами."
+
+#~ msgid "Open monitoring"
+#~ msgstr "Продолжить мониторинг"
+
+#~ msgid "Data directories"
+#~ msgstr "Картина данных"
+
+#~ msgid ""
+#~ "Keep airline, airport and aircraft information available as structured "
+#~ "reference data for the rest of the system."
+#~ msgstr ""
+#~ "Держите информацию об авиалиниях, аэропортах и самолетах в качестве "
+#~ "структурированных справочных данных для остальной части системы."
+
+#~ msgid ""
+#~ "No recent flights are available yet. Add or synchronize flight records to "
+#~ "populate this board."
+#~ msgstr ""
+#~ "Последние рейсы пока не доступны. Добавьте или синхронизируйте записи "
+#~ "рейсов, чтобы заполнить эту доску."
+
+#~ msgid ""
+#~ "Analytics pages help explain performance, source coverage, route exposure "
+#~ "and important operational signals."
+#~ msgstr ""
+#~ "Страницы аналитики помогают объяснить производительность, охват источника, "
+#~ "экспозицию маршрута и важные операционные сигналы."
+
+#~ msgid "Access the operations workspace."
+#~ msgstr "Вернуться в основную операционную рабочую зону."
+
+#~ msgid ""
+#~ "Registered users can open the private workspace to manage records, monitor "
+#~ "flight activity, review analytics and use operational tools."
+#~ msgstr ""
+#~ "Зарегистрированные пользователи могут открывать личное рабочее пространство "
+#~ "для управления записями, мониторинга полетной активности, анализа обзоров и "
+#~ "использования операционных инструментов."
+
+#~ msgid "Open Operations Center"
+#~ msgstr "Центр операций"
+
+#~ msgid "Login"
+#~ msgstr "Логин"
+
+#~ msgid "Register"
+#~ msgstr "Реестр"
+
+#~ msgid "No alert description available."
+#~ msgstr "Описание оповещения недоступно."
+
+#~ msgid "Operational alerts navigation"
+#~ msgstr "Навигация операционных оповещений"
+
+#~ msgid "Alert desk"
+#~ msgstr "Панель оповещений"
+
+#~ msgid ""
+#~ "This page groups alert signals from the monitored flight dataset. It helps "
+#~ "the operator understand whether the current pressure comes from delays, "
+#~ "cancellations, data sources or general traffic activity."
+#~ msgstr ""
+#~ "Эта страница группирует сигналы оповещений из данных мониторинга и помогает "
+#~ "понять, откуда идёт нагрузка: задержки, отмены, источники данных или общая "
+#~ "активность."
+
+#~ msgid "No major alert reason is currently available."
+#~ msgstr "Сейчас нет основной причины оповещения."
+
+#~ msgid "Total records included in the alert reading."
+#~ msgstr "Всего записей, включённых в чтение оповещений."
+
+#~ msgid "Delay signal currently visible in the dataset."
+#~ msgstr "Сигнал задержки сейчас виден в данных."
+
+#~ msgid "Cancellation signal requiring recovery awareness."
+#~ msgstr "Сигнал отмены, требующий внимания восстановления."
+
+#~ msgid "Combined pressure generated from irregular records."
+#~ msgstr "Суммарная нагрузка от нештатных записей."
+
+#~ msgid "Signals generated from the current monitoring snapshot."
+#~ msgstr "Сигналы, созданные по текущему снимку мониторинга."
+
+#~ msgid "Open recovery desk"
+#~ msgstr "Открыть панель восстановления"
+
+#~ msgid "Check map"
+#~ msgstr "Проверить карту"
+
+#~ msgid "Read report"
+#~ msgstr "Прочитать отчёт"
+
+#~ msgid ""
+#~ "Alerts should guide the operator toward the correct action, not replace "
+#~ "operational judgment."
+#~ msgstr ""
+#~ "Оповещения должны направлять оператора к правильному действию, но не "
+#~ "заменять операционное решение."
+
+#~ msgid ""
+#~ "The system shows strong disruption pressure. Start from cancelled and "
+#~ "delayed flights, then validate routes and affected records."
+#~ msgstr ""
+#~ "Система показывает сильное давление сбоев. Начните с отменённых и "
+#~ "задержанных рейсов, затем проверьте маршруты и затронутые записи."
+
+#~ msgid ""
+#~ "The system shows moderate pressure. Keep priority flights under review and "
+#~ "compare alerts with route visibility."
+#~ msgstr ""
+#~ "Система показывает умеренное давление. Держите приоритетные рейсы под "
+#~ "контролем и сравнивайте оповещения с видимостью маршрутов."
+
+#~ msgid ""
+#~ "The current operating picture is stable. Continue routine supervision and "
+#~ "watch for new irregular signals."
+#~ msgstr ""
+#~ "Текущая операционная картина стабильна. Продолжайте обычный контроль и "
+#~ "следите за новыми нештатными сигналами."
+
+#~ msgid "Operational guidance"
+#~ msgstr "Операционные указания"
+
+#~ msgid ""
+#~ "Use the alerts as an entry point, then continue with the appropriate "
+#~ "operational layer."
+#~ msgstr ""
+#~ "Используйте оповещения как точку входа, затем переходите к нужному "
+#~ "операционному слою."
+
+#~ msgid ""
+#~ "Start with high alerts because they usually point to cancellations, delays "
+#~ "or recovery pressure."
+#~ msgstr ""
+#~ "Начинайте с высоких оповещений, потому что они часто указывают на отмены, "
+#~ "задержки или давление восстановления."
+
+#~ msgid ""
+#~ "Use operational intelligence when the alert needs explanation through "
+#~ "indicators and reports."
+#~ msgstr ""
+#~ "Используйте операционную аналитику, когда оповещение требует объяснения "
+#~ "через показатели и отчёты."
+
+#~ msgid "Open the right workspace"
+#~ msgstr "Открыть нужное рабочее пространство"
+
+#~ msgid "Move from alert reading to the correct supervision screen."
+#~ msgstr "Перейти от чтения оповещений к нужному экрану контроля."
+
+#~ msgid "Return to the main supervision desk."
+#~ msgstr "Вернуться на главную панель контроля."
+
+#~ msgid "Check active execution states."
+#~ msgstr "Проверить активные состояния выполнения."
+
+#~ msgid "System recommendations"
+#~ msgstr "Рекомендации системы"
+
+#~ msgid "Monitoring notes"
+#~ msgstr "Заметки мониторинга"
+
+#~ msgid ""
+#~ "Additional operational notes generated from the current monitoring snapshot."
+#~ msgstr ""
+#~ "Дополнительные операционные заметки, созданные по текущему снимку "
+#~ "мониторинга."
+
+#~ msgid "No additional monitoring recommendation is currently available."
+#~ msgstr "Дополнительные рекомендации мониторинга сейчас отсутствуют."
+
+#~ msgid "No irregular flight available."
+#~ msgstr "Нештатные рейсы отсутствуют."
+
+#~ msgid "Irregular operations navigation"
+#~ msgstr "Навигация нештатных операций"
+
+#~ msgid ""
+#~ "Review delay and cancellation pressure before moving to route-level "
+#~ "analysis."
+#~ msgstr ""
+#~ "Оцените давление задержек и отмен перед переходом к анализу маршрутов."
+
+#~ msgid "Flights requiring cancellation recovery."
+#~ msgstr "Рейсы, требующие восстановления после отмены."
+
+#~ msgid "What needs handling now"
+#~ msgstr "Что нужно обработать сейчас"
+
+#~ msgid ""
+#~ "This layer separates disruption work from normal monitoring so the operator "
+#~ "can focus on recovery."
+#~ msgstr ""
+#~ "Этот слой отделяет работу со сбоями от обычного мониторинга, чтобы оператор "
+#~ "сосредоточился на восстановлении."
+
+#~ msgid "Primary focus"
+#~ msgstr "Главный фокус"
+
+#~ msgid "Delayed flights and route pressure"
+#~ msgstr "Задержанные рейсы и давление маршрутов"
+
+#~ msgid "No irregular pressure"
+#~ msgstr "Нет нештатной нагрузки"
+
+#~ msgid ""
+#~ "Start with cancelled flights because they require the strongest recovery "
+#~ "explanation and operational validation."
+#~ msgstr ""
+#~ "Начните с отменённых рейсов, потому что они требуют наиболее серьёзного "
+#~ "объяснения и операционной проверки."
+
+#~ msgid ""
+#~ "Start with delayed flights and check whether the delay affects route flow, "
+#~ "destination pressure or later operations."
+#~ msgstr ""
+#~ "Начните с задержанных рейсов и проверьте влияние задержки на маршрут, пункт "
+#~ "назначения и дальнейшие операции."
+
+#~ msgid ""
+#~ "Check cancelled flights first, because they usually require manual "
+#~ "explanation and recovery action."
+#~ msgstr ""
+#~ "Сначала проверяйте отменённые рейсы, потому что они обычно требуют ручного "
+#~ "объяснения и действий восстановления."
+
+#~ msgid "Use the map when the disruption needs route or airport visibility."
+#~ msgstr ""
+#~ "Используйте карту, когда сбой требует видимости маршрута или аэропорта."
+
+#~ msgid "Continue the recovery review"
+#~ msgstr "Продолжить проверку восстановления"
+
+#~ msgid "Move from irregular operations to the correct supporting layer."
+#~ msgstr "Перейдите от нештатных операций к нужному вспомогательному слою."
+
+#~ msgid "Read indicators, routes and source quality."
+#~ msgstr "Прочитать показатели, маршруты и качество источников."
+
+#~ msgid "Recovery registry"
+#~ msgstr "Реестр восстановления"
+
+#~ msgid "Filter irregular flights by status"
+#~ msgstr "Фильтр нештатных рейсов по статусу"
+
+#~ msgid "All irregular flights"
+#~ msgstr "Все нештатные рейсы"
+
+#~ msgid "Delayed only"
+#~ msgstr "Только задержанные"
+
+#~ msgid "Cancelled only"
+#~ msgstr "Только отменённые"
+
+#~ msgid "Operational explanation"
+#~ msgstr "Операционное объяснение"
+
+#~ msgid ""
+#~ "Use this explanation during the defense to show that the page has a clear "
+#~ "operational purpose."
+#~ msgstr ""
+#~ "Используйте это объяснение на защите, чтобы показать ясное операционное "
+#~ "назначение страницы."
+
+#~ msgid ""
+#~ "This page isolates delayed and cancelled flights instead of mixing them with"
+#~ " normal traffic."
+#~ msgstr ""
+#~ "Эта страница отделяет задержанные и отменённые рейсы от обычного трафика."
+
+#~ msgid ""
+#~ "It helps the operator identify which flights need recovery review first."
+#~ msgstr ""
+#~ "Она помогает оператору определить, какие рейсы требуют первичной проверки "
+#~ "восстановления."
+
+#~ msgid ""
+#~ "The page connects recovery work with control, map visibility and operational"
+#~ " reports."
+#~ msgstr ""
+#~ "Страница связывает восстановление с контролем, картой и операционными "
+#~ "отчётами."
+
+#~ msgid "Current disruption picture"
+#~ msgstr "Текущая картина сбоев"
+
+#~ msgid "Simple summary of visible irregular operations."
+#~ msgstr "Краткая сводка видимых нештатных операций."
+
+#~ msgid "Score"
+#~ msgstr "Оценка"
+
+#~ msgid "Flights still in boarding or departure preparation."
+#~ msgstr "Рейсы, находящиеся на посадке или подготовке к вылету."
+
+#~ msgid "Read the current live traffic before opening individual flight review."
+#~ msgstr ""
+#~ "Оцените текущий активный трафик перед открытием отдельной проверки рейса."
+
+#~ msgid ""
+#~ "This layer keeps active traffic separate from the full registry. It helps "
+#~ "the operator focus only on flights still moving through the current "
+#~ "operation."
+#~ msgstr ""
+#~ "Этот слой отделяет активный трафик от полного реестра и помогает оператору "
+#~ "сосредоточиться на рейсах в текущей операции."
+
+#~ msgid "Move from live traffic to action"
+#~ msgstr "От активного трафика к действию"
+
+#~ msgid ""
+#~ "Use this section to continue the review from active movement to map, control"
+#~ " or irregular operations."
+#~ msgstr ""
+#~ "Используйте этот раздел для перехода от активного движения к карте, контролю"
+#~ " или нештатным операциям."
+
+#~ msgid "Review delayed and cancelled records."
+#~ msgstr "Проверить задержанные и отменённые записи."
+
+#~ msgid "Inspect route and position visibility."
+#~ msgstr "Проверить видимость маршрута и позиции."
+
+#~ msgid "Read indicators and route exposure."
+#~ msgstr "Прочитать показатели и видимость маршрутов."
+
+#~ msgid "Flights currently in motion"
+#~ msgstr "Рейсы в движении"
+
+#~ msgid "Live state reading"
+#~ msgstr "Чтение live-состояния"
+
+#~ msgid ""
+#~ "This section explains the purpose of the live layer without exaggerating the"
+#~ " system."
+#~ msgstr ""
+#~ "Этот раздел объясняет назначение live-слоя без преувеличения возможностей "
+#~ "системы."
+
+#~ msgid ""
+#~ "Live operations show only flights that are still active in the operational "
+#~ "flow."
+#~ msgstr ""
+#~ "Live-операции показывают только рейсы, которые ещё активны в операционном "
+#~ "потоке."
+
+#~ msgid ""
+#~ "Boarding and departed flights help detect early departure pressure before "
+#~ "the flight becomes fully airborne."
+#~ msgstr ""
+#~ "Рейсы на посадке и после вылета помогают выявить раннее давление до полного "
+#~ "перехода в полёт."
+
+#~ msgid ""
+#~ "Airborne flights should be checked on the map when route visibility or "
+#~ "arrival coordination matters."
+#~ msgstr ""
+#~ "Рейсы в воздухе нужно проверять на карте, когда важны маршрут или "
+#~ "координация прибытия."
+
+#~ msgid ""
+#~ "Separate synchronized data from locally managed records during operational "
+#~ "explanation."
+#~ msgstr ""
+#~ "Разделяйте синхронизированные данные и локальные записи при операционном "
+#~ "объяснении."
+
+#~ msgid "Airborne"
+#~ msgstr "В воздухе"
+
+#~ msgid "Charts | Operational Intelligence"
+#~ msgstr "Графики | Операционная аналитика"
+
+#~ msgid "%(rate)s% active flow."
+#~ msgstr "%(rate)s%% активного потока."
+
+#~ msgid "%(rate)s% delayed."
+#~ msgstr "%(rate)s%% задержанных."
+
+#~ msgid "%(rate)s% cancelled."
+#~ msgstr "%(rate)s%% отменённых."

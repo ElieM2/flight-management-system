@@ -1,0 +1,88 @@
+﻿<tr
+    class="control-flight-row {% if selected_flight and selected_flight.pk == flight.pk %}is-selected{% endif %}"
+    data-is-selected="{% if selected_flight and selected_flight.pk == flight.pk %}true{% else %}false{% endif %}"
+    data-flight="{{ flight.flight_number|default:'â€”'|escape }}"
+    data-airline="{{ flight.airline.name|default:unknown_airline|escape }}"
+    data-origin="{{ flight.origin_airport.iata_code|default:'--'|escape }}"
+    data-origin-city="{{ flight.origin_airport.city|default:'Origin airport'|escape }}"
+    data-destination="{{ flight.destination_airport.iata_code|default:'--'|escape }}"
+    data-destination-city="{{ flight.destination_airport.city|default:'Destination airport'|escape }}"
+    data-departure="{{ flight.scheduled_departure|date:'H:i'|default:'â€”' }}"
+    data-arrival="{{ flight.scheduled_arrival|date:'H:i'|default:'â€”' }}"
+    data-departure-date="{{ flight.scheduled_departure|date:'Y-m-d'|default:'â€”' }}"
+    data-arrival-date="{{ flight.scheduled_arrival|date:'Y-m-d'|default:'â€”' }}"
+    data-status="{{ status_label|default:'Scheduled'|escape }}"
+    data-status-key="{{ flight.status|default:'scheduled'|escape }}"
+    data-risk="{{ risk_label|default:'Low'|escape }}"
+    data-risk-key="{{ risk_class|default:'low'|escape }}"
+    data-source="{% if flight.source_type == 'api' %}API synchronized record{% else %}Local operational record{% endif %}"
+    data-detail-url="{% url 'monitoring:monitoring_flight_detail' flight.pk %}"
+    data-map-url="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}"
+    data-recommendation="{{ recommendation|default:'Continue standard monitoring.'|escape }}"
+>
+    <td>
+        <span class="flight-cell">
+            <strong>{{ flight.flight_number|default:"â€”" }}</strong>
+            <small>
+                {% if flight.source_type == "api" %}
+                    API
+                {% else %}
+                    Local
+                {% endif %}
+            </small>
+        </span>
+    </td>
+
+    <td>
+        <span class="route-pill">
+            {{ flight.origin_airport.iata_code|default:"--" }}
+            â†’
+            {{ flight.destination_airport.iata_code|default:"--" }}
+        </span>
+    </td>
+
+    <td>
+        {{ flight.airline.name|default:unknown_airline }}
+    </td>
+
+    <td>
+        {{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"â€”" }}
+    </td>
+
+    <td>
+        {{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"â€”" }}
+    </td>
+
+    <td>
+        <span class="control-status control-status-{{ status_class|default:'normal' }}">
+            {{ status_label|default:"Scheduled" }}
+        </span>
+    </td>
+
+    <td>
+        <span class="control-risk control-risk-{{ risk_class|default:'low' }}">
+            {{ risk_label|default:"Low" }}
+        </span>
+    </td>
+
+    <td>
+        {% if flight.source_type == "api" %}
+            <span class="control-source control-source-api">API</span>
+        {% else %}
+            <span class="control-source control-source-local">Local</span>
+        {% endif %}
+    </td>
+
+    <td>
+        <span class="control-row-actions">
+            <a href="{% url 'monitoring:monitoring_flight_detail' flight.pk %}">
+                Review
+            </a>
+
+            <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">
+                Map
+            </a>
+        </span>
+    </td>
+</tr>
+

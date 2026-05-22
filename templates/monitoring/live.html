@@ -1,0 +1,946 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}Live Operations | FlightLogos{% endblock %}
+
+{% block content %}
+
+<style>
+    .live-ops-page {
+        --bg: #07111d;
+        --bg-soft: #0b1624;
+        --panel: #101d2c;
+        --panel-dark: #0b1624;
+        --line: rgba(148, 163, 184, 0.16);
+        --line-strong: rgba(59, 130, 246, 0.54);
+        --text: #f8fafc;
+        --soft: #cbd5e1;
+        --muted: #94a3b8;
+        --blue: #3b82f6;
+        --green: #22c55e;
+        --amber: #f59e0b;
+        --red: #ef4444;
+        --purple: #a855f7;
+        --table-head: #08111d;
+        --row-bg: rgba(17, 31, 48, 0.86);
+        --row-hover: rgba(37, 99, 235, 0.16);
+        --shadow: 0 20px 52px rgba(0, 0, 0, 0.18);
+
+        min-height: calc(100vh - 74px);
+        padding: 20px 24px 28px;
+        background:
+            radial-gradient(circle at top left, rgba(59, 130, 246, 0.10), transparent 30%),
+            linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 52%, var(--bg) 100%);
+        color: var(--text);
+        transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    body.theme-light .live-ops-page {
+        --bg: #eef3fb;
+        --bg-soft: #dfe8f5;
+        --panel: #ffffff;
+        --panel-dark: #eef4fc;
+        --line: rgba(100, 116, 139, 0.24);
+        --line-strong: rgba(37, 99, 235, 0.54);
+        --text: #0f172a;
+        --soft: #1e293b;
+        --muted: #475569;
+        --blue: #2563eb;
+        --green: #047857;
+        --amber: #b45309;
+        --red: #b91c1c;
+        --purple: #6d28d9;
+        --table-head: #eaf1fb;
+        --row-bg: #ffffff;
+        --row-hover: #eef5ff;
+        --shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+    }
+
+    .live-page-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 24px;
+        margin-bottom: 18px;
+    }
+
+    .live-page-head h1 {
+        margin: 0;
+        color: var(--text);
+        font-size: 25px;
+        font-weight: 900;
+        letter-spacing: -0.035em;
+    }
+
+    .live-page-head p {
+        margin: 8px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .live-refresh {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: var(--soft);
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .live-clock {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--soft);
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    .live-clock strong {
+        color: var(--text);
+        font-weight: 800;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .live-refresh button {
+        display: grid;
+        place-items: center;
+        width: 38px;
+        height: 38px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--soft);
+        cursor: pointer;
+        transition: 0.18s ease;
+        box-shadow: var(--shadow);
+    }
+
+    .live-refresh button:hover {
+        border-color: var(--line-strong);
+        color: var(--blue);
+        transform: translateY(-1px);
+    }
+
+    .live-kpis {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 16px;
+        margin-bottom: 18px;
+    }
+
+    .live-kpi {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        min-height: 96px;
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        color: var(--text);
+        text-decoration: none;
+        box-shadow: var(--shadow);
+        transition: 0.18s ease;
+    }
+
+    .live-kpi:hover {
+        transform: translateY(-3px);
+        border-color: var(--line-strong);
+        box-shadow: 0 24px 70px rgba(37, 99, 235, 0.18);
+    }
+
+    .live-kpi__icon {
+        display: grid;
+        place-items: center;
+        width: 54px;
+        height: 54px;
+        flex: 0 0 54px;
+        border-radius: 999px;
+        font-size: 22px;
+    }
+
+    .live-kpi__icon.blue {
+        color: #60a5fa;
+        background: rgba(59, 130, 246, 0.16);
+    }
+
+    .live-kpi__icon.green {
+        color: #86efac;
+        background: rgba(34, 197, 94, 0.15);
+    }
+
+    .live-kpi__icon.amber {
+        color: #fbbf24;
+        background: rgba(245, 158, 11, 0.18);
+    }
+
+    .live-kpi__icon.purple {
+        color: #c084fc;
+        background: rgba(168, 85, 247, 0.18);
+    }
+
+    body.theme-light .live-kpi__icon.blue {
+        color: #1d4ed8;
+        background: #dbeafe;
+    }
+
+    body.theme-light .live-kpi__icon.green {
+        color: #047857;
+        background: #d1fae5;
+    }
+
+    body.theme-light .live-kpi__icon.amber {
+        color: #b45309;
+        background: #ffedd5;
+    }
+
+    body.theme-light .live-kpi__icon.purple {
+        color: #6d28d9;
+        background: #ede9fe;
+    }
+
+    .live-kpi span {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--soft);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .live-kpi strong {
+        display: block;
+        color: var(--text);
+        font-size: 28px;
+        line-height: 1;
+        font-weight: 950;
+    }
+
+    .live-kpi small {
+        display: block;
+        margin-top: 7px;
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .live-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(380px, 430px);
+        gap: 16px;
+        align-items: start;
+    }
+
+    .live-main,
+    .live-side {
+        min-width: 0;
+    }
+
+    .live-board,
+    .live-panel {
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--panel);
+        box-shadow: var(--shadow);
+    }
+
+    .live-board {
+        overflow: hidden;
+    }
+
+    .live-board-head,
+    .live-panel-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 18px;
+        border-bottom: 1px solid var(--line);
+        background: var(--panel-dark);
+    }
+
+    .live-board-head span,
+    .live-panel-head span {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--blue);
+        font-size: 11px;
+        font-weight: 950;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .live-board-head h2,
+    .live-panel-head h2 {
+        margin: 0;
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 950;
+        letter-spacing: -0.02em;
+    }
+
+    .live-board-head p,
+    .live-panel-head p {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .live-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .live-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel);
+        color: var(--soft);
+        font-size: 13px;
+        font-weight: 900;
+        text-decoration: none;
+        transition: 0.16s ease;
+        white-space: nowrap;
+    }
+
+    .live-btn:hover {
+        border-color: var(--line-strong);
+        color: var(--blue);
+        transform: translateY(-1px);
+    }
+
+    .live-btn-primary {
+        border-color: rgba(37, 99, 235, 0.48);
+        background: #2563eb;
+        color: #ffffff;
+    }
+
+    .live-btn-primary:hover {
+        color: #ffffff;
+        background: #1d4ed8;
+    }
+
+    .live-table-wrap {
+        overflow-x: auto;
+    }
+
+    .live-table {
+        width: 100%;
+        min-width: 980px;
+        border-collapse: collapse;
+    }
+
+    .live-table thead {
+        background: var(--table-head);
+    }
+
+    .live-table th {
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--line);
+        color: #93c5fd;
+        font-size: 11px;
+        font-weight: 950;
+        letter-spacing: 0.07em;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    body.theme-light .live-table th {
+        color: #1d4ed8;
+    }
+
+    .live-table td {
+        padding: 14px 18px;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+        color: var(--soft);
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    body.theme-light .live-table td {
+        color: #1e293b;
+    }
+
+    .live-table tbody tr {
+        background: var(--row-bg);
+        transition: 0.16s ease;
+    }
+
+    .live-table tbody tr:hover {
+        background: var(--row-hover);
+    }
+
+    .flight-cell {
+        display: grid;
+        gap: 4px;
+    }
+
+    .flight-cell strong {
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 950;
+    }
+
+    .flight-cell span {
+        width: fit-content;
+        padding: 3px 8px;
+        border-radius: 999px;
+        color: var(--blue);
+        background: rgba(59, 130, 246, 0.13);
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+    }
+
+    .route-pill {
+        display: inline-flex;
+        align-items: center;
+        padding: 5px 10px;
+        border: 1px solid rgba(59, 130, 246, 0.26);
+        border-radius: 999px;
+        color: var(--text);
+        background: rgba(59, 130, 246, 0.10);
+        font-weight: 900;
+    }
+
+    .status-badge,
+    .source-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 26px;
+        padding: 4px 10px;
+        border-radius: 7px;
+        font-size: 11px;
+        font-weight: 950;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .status-in_air,
+    .status-boarding,
+    .status-departed {
+        color: #86efac;
+        border: 1px solid rgba(34, 197, 94, 0.38);
+        background: rgba(34, 197, 94, 0.15);
+    }
+
+    .status-delayed {
+        color: #fdba74;
+        border: 1px solid rgba(249, 115, 22, 0.42);
+        background: rgba(249, 115, 22, 0.18);
+    }
+
+    .status-cancelled {
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.45);
+        background: rgba(239, 68, 68, 0.18);
+    }
+
+    .status-landed,
+    .status-scheduled {
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.38);
+        background: rgba(59, 130, 246, 0.14);
+    }
+
+    .source-api {
+        color: #93c5fd;
+        border: 1px solid rgba(59, 130, 246, 0.36);
+        background: rgba(59, 130, 246, 0.12);
+    }
+
+    .source-local {
+        color: #cbd5e1;
+        border: 1px solid rgba(148, 163, 184, 0.28);
+        background: rgba(148, 163, 184, 0.10);
+    }
+
+    body.theme-light .status-in_air,
+    body.theme-light .status-boarding,
+    body.theme-light .status-departed {
+        color: #047857;
+        border-color: rgba(4, 120, 87, 0.28);
+        background: #d1fae5;
+    }
+
+    body.theme-light .status-delayed {
+        color: #92400e;
+        border-color: rgba(180, 83, 9, 0.28);
+        background: #fef3c7;
+    }
+
+    body.theme-light .status-cancelled {
+        color: #b91c1c;
+        border-color: rgba(185, 28, 28, 0.25);
+        background: #fee2e2;
+    }
+
+    body.theme-light .status-landed,
+    body.theme-light .status-scheduled,
+    body.theme-light .source-api {
+        color: #1d4ed8;
+        border-color: rgba(37, 99, 235, 0.25);
+        background: #dbeafe;
+    }
+
+    body.theme-light .source-local {
+        color: #334155;
+        border-color: rgba(100, 116, 139, 0.24);
+        background: #f1f5f9;
+    }
+
+    .row-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .small-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border: 1px solid var(--line);
+        border-radius: 7px;
+        background: var(--panel-dark);
+        color: var(--soft);
+        font-size: 12px;
+        font-weight: 900;
+        text-decoration: none;
+        transition: 0.16s ease;
+    }
+
+    .small-btn:hover {
+        border-color: var(--line-strong);
+        color: var(--blue);
+        transform: translateY(-1px);
+    }
+
+    .small-btn-primary {
+        background: #2563eb;
+        border-color: rgba(37, 99, 235, 0.48);
+        color: #ffffff;
+    }
+
+    .small-btn-primary:hover {
+        color: #ffffff;
+        background: #1d4ed8;
+    }
+
+    .live-side {
+        position: sticky;
+        top: 94px;
+        display: grid;
+        gap: 16px;
+    }
+
+    .live-panel {
+        padding: 18px;
+    }
+
+    .live-panel-head {
+        padding: 0 0 16px;
+        margin-bottom: 16px;
+        background: transparent;
+    }
+
+    .live-mini-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+    }
+
+    .live-mini-card {
+        min-height: 86px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel-dark);
+    }
+
+    body.theme-light .live-mini-card {
+        background: #f8fbff;
+    }
+
+    .live-mini-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+    }
+
+    .live-mini-card strong {
+        display: block;
+        color: var(--text);
+        font-size: 24px;
+        font-weight: 950;
+    }
+
+    .live-note {
+        padding: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--panel-dark);
+    }
+
+    body.theme-light .live-note {
+        background: #f8fbff;
+    }
+
+    .live-note span {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--blue);
+        font-size: 11px;
+        font-weight: 950;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .live-note p {
+        margin: 0;
+        color: var(--soft);
+        font-size: 13px;
+        line-height: 1.6;
+        font-weight: 600;
+    }
+
+    .empty-state {
+        padding: 28px;
+        color: var(--muted);
+        text-align: center;
+        font-weight: 700;
+    }
+
+    @media (max-width: 1180px) {
+        .live-layout {
+            grid-template-columns: 1fr;
+        }
+
+        .live-side {
+            position: static;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    @media (max-width: 980px) {
+        .live-kpis {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .live-side {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .live-ops-page {
+            padding: 18px 14px 28px;
+        }
+
+        .live-page-head,
+        .live-board-head {
+            flex-direction: column;
+        }
+
+        .live-kpis,
+        .live-mini-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
+{% trans "Unknown airline" as unknown_airline %}
+{% trans "Not assigned" as not_assigned %}
+
+<section class="live-ops-page">
+
+    <header class="live-page-head">
+        <div>
+            <h1>Live Operations â€” Active Flight Execution</h1>
+            <p>Real-time supervision of boarding, departed and airborne flights.</p>
+        </div>
+
+        <div class="live-refresh">
+            <span class="live-clock">
+                Updated:
+                <strong id="liveOpsClock">--:--:--</strong>
+                UTC
+            </span>
+
+            <button type="button" onclick="window.location.reload()" aria-label="Refresh live operations">
+                <i class="bi bi-arrow-clockwise"></i>
+            </button>
+        </div>
+    </header>
+
+    <section class="live-kpis">
+        <a href="#live-registry" class="live-kpi">
+            <div class="live-kpi__icon blue">
+                <i class="bi bi-airplane-fill"></i>
+            </div>
+            <div>
+                <span>Live flights</span>
+                <strong>{{ live_count|default:"0" }}</strong>
+                <small>Open live registry</small>
+            </div>
+        </a>
+
+        <a href="#live-registry" class="live-kpi">
+            <div class="live-kpi__icon green">
+                <i class="bi bi-broadcast"></i>
+            </div>
+            <div>
+                <span>In air</span>
+                <strong>{{ in_air_count|default:"0" }}</strong>
+                <small>Airborne records</small>
+            </div>
+        </a>
+
+        <a href="#live-registry" class="live-kpi">
+            <div class="live-kpi__icon amber">
+                <i class="bi bi-send-check"></i>
+            </div>
+            <div>
+                <span>Departed</span>
+                <strong>{{ departed_count|default:"0" }}</strong>
+                <small>Departed flights</small>
+            </div>
+        </a>
+
+        <a href="#live-registry" class="live-kpi">
+            <div class="live-kpi__icon purple">
+                <i class="bi bi-door-open"></i>
+            </div>
+            <div>
+                <span>Boarding</span>
+                <strong>{{ boarding_count|default:"0" }}</strong>
+                <small>Preparing departure</small>
+            </div>
+        </a>
+    </section>
+
+    <section class="live-layout">
+
+        <main class="live-main">
+            <section id="live-registry" class="live-board">
+                <header class="live-board-head">
+                    <div>
+                        <span>Live registry</span>
+                        <h2>Active flight records</h2>
+                        <p>Flights currently progressing through boarding, departed and airborne execution.</p>
+                    </div>
+
+                    <div class="live-actions">
+                        <a href="{% url 'monitoring:monitoring_home' %}" class="live-btn">Control Desk</a>
+                        <a href="{% url 'monitoring:flight_map' %}" class="live-btn live-btn-primary">Open map</a>
+                    </div>
+                </header>
+
+                <div class="live-table-wrap">
+                    <table class="live-table">
+                        <thead>
+                            <tr>
+                                <th>Flight</th>
+                                <th>Airline</th>
+                                <th>Aircraft</th>
+                                <th>Route</th>
+                                <th>Departure</th>
+                                <th>Arrival</th>
+                                <th>Status</th>
+                                <th>Source</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for flight in live_flights %}
+                                <tr>
+                                    <td>
+                                        <div class="flight-cell">
+                                            <strong>{{ flight.flight_number }}</strong>
+
+                                            {% if flight.source_type == 'api' %}
+                                                <span>API</span>
+                                            {% elif flight.source_type == 'local' %}
+                                                <span>Local</span>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        {% if flight.airline and flight.airline.name %}
+                                            {{ flight.airline.name }}
+                                        {% else %}
+                                            {{ unknown_airline }}
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        {% if flight.aircraft %}
+                                            {{ flight.aircraft.registration_number }}
+                                        {% else %}
+                                            {{ not_assigned }}
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <span class="route-pill">
+                                            {{ flight.origin_airport.iata_code|default:"--" }}
+                                            â†’
+                                            {{ flight.destination_airport.iata_code|default:"--" }}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"â€”" }}</td>
+
+                                    <td>{{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"â€”" }}</td>
+
+                                    <td>
+                                        <span class="status-badge status-{{ flight.status }}">
+                                            {{ flight.get_status_display }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {% if flight.source_type == 'api' %}
+                                            <span class="source-badge source-api">API</span>
+                                        {% else %}
+                                            <span class="source-badge source-local">Local</span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td>
+                                        <div class="row-actions">
+                                            <a href="{% url 'monitoring:monitoring_flight_detail' flight.pk %}" class="small-btn small-btn-primary">
+                                                Open
+                                            </a>
+
+                                            <a href="{% url 'monitoring:monitoring_home' %}?flight={{ flight.pk }}#selected-flight" class="small-btn">
+                                                Control
+                                            </a>
+
+                                            <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}" class="small-btn">
+                                                Map
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="9">
+                                        <div class="empty-state">
+                                            No live flights available.
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <aside class="live-side">
+            <section class="live-panel">
+                <header class="live-panel-head">
+                    <div>
+                        <span>Execution scope</span>
+                        <h2>Live operations picture</h2>
+                        <p>Focused view of flights still moving through execution states.</p>
+                    </div>
+                </header>
+
+                <div class="live-mini-grid">
+                    <article class="live-mini-card">
+                        <span>API flights</span>
+                        <strong>{{ api_count|default:"0" }}</strong>
+                    </article>
+
+                    <article class="live-mini-card">
+                        <span>Local flights</span>
+                        <strong>{{ local_count|default:"0" }}</strong>
+                    </article>
+                </div>
+            </section>
+
+            <section class="live-panel">
+                <header class="live-panel-head">
+                    <div>
+                        <span>Operator note</span>
+                        <h2>How to read this page</h2>
+                    </div>
+                </header>
+
+                <article class="live-note">
+                    <span>Live supervision</span>
+                    <p>
+                        Start with airborne flights, then review departed and boarding records.
+                        Open the map when route, airport pair or geospatial visibility matters.
+                    </p>
+                </article>
+            </section>
+
+            <section class="live-panel">
+                <header class="live-panel-head">
+                    <div>
+                        <span>Quick routing</span>
+                        <h2>Operational shortcuts</h2>
+                    </div>
+                </header>
+
+                <div class="live-mini-grid">
+                    <a href="{% url 'monitoring:monitoring_home' %}" class="small-btn">Control</a>
+                    <a href="{% url 'monitoring:monitoring_critical' %}" class="small-btn">Irregular ops</a>
+                    <a href="{% url 'monitoring:monitoring_alerts' %}" class="small-btn">Alerts</a>
+                    <a href="{% url 'analytics:home' %}" class="small-btn">Intelligence</a>
+                </div>
+            </section>
+        </aside>
+
+    </section>
+
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const liveOpsClock = document.getElementById("liveOpsClock");
+
+        function updateLiveOpsClock() {
+            if (!liveOpsClock) {
+                return;
+            }
+
+            const now = new Date();
+
+            const hours = String(now.getUTCHours()).padStart(2, "0");
+            const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+            const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+
+            liveOpsClock.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        updateLiveOpsClock();
+        setInterval(updateLiveOpsClock, 1000);
+    });
+</script>
+
+{% endblock %}
+

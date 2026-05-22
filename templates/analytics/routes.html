@@ -1,0 +1,193 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Routes" %} | {% trans "Operational Intelligence" %}{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Operational Intelligence" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Route pressure and airport concentration." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/operational_intelligence.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="oi-page">
+    {% include 'analytics/includes/intelligence_nav.html' %}
+
+    <section class="oi-control-strip">
+        <div>
+            <span class="oi-page-eyebrow">{% trans "Routes" %}</span>
+            <h2>{% trans "Route Pressure" %}</h2>
+            <p>
+                {% trans "Identify the busiest routes and the airports carrying the strongest operational load." %}
+            </p>
+        </div>
+
+        <div class="oi-control-actions">
+            <a href="{% url 'analytics:home' %}" class="oi-btn oi-btn-light">
+                {% trans "Back to overview" %}
+            </a>
+
+            <a href="/monitoring/map/" class="oi-btn oi-btn-primary">
+                {% trans "Open flight map" %}
+            </a>
+        </div>
+    </section>
+
+    <section class="oi-decision-row">
+        <article class="oi-decision-card oi-decision-primary">
+            <div>
+                <span class="oi-kicker">{% trans "Main route" %}</span>
+                <h3>{{ busiest_route }}</h3>
+                <p>
+                    {% trans "Busiest visible route in the current operating picture." %}
+                </p>
+            </div>
+
+            <a href="/monitoring/map/" class="oi-mini-action">
+                {% trans "Inspect on map" %}
+            </a>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Records" %}</span>
+            <strong>{{ total_flights }}</strong>
+            <p>{% trans "Flights used for route reading." %}</p>
+        </article>
+
+        <article class="oi-decision-card">
+            <span class="oi-decision-label">{% trans "Critical" %}</span>
+            <strong>{{ critical_count }}</strong>
+            <p>{% trans "Flights requiring priority supervision." %}</p>
+        </article>
+    </section>
+
+    <section class="oi-main-cockpit">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Corridors" %}</span>
+                <h3>{% trans "Busiest routes" %}</h3>
+                <p>
+                    {% trans "Routes with the strongest traffic concentration." %}
+                </p>
+            </div>
+
+            <div class="oi-table-shell">
+                <table class="oi-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Route" %}</th>
+                            <th>{% trans "Flights" %}</th>
+                            <th>{% trans "Share" %}</th>
+                            <th>{% trans "Reading" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in top_routes %}
+                            <tr>
+                                <td>{{ item.route }}</td>
+                                <td>{{ item.total }}</td>
+                                <td>{{ item.share }}%</td>
+                                <td>
+                                    {% if forloop.first %}
+                                        <span class="oi-state-badge oi-state-delayed">
+                                            {% trans "Priority" %}
+                                        </span>
+                                    {% else %}
+                                        <span class="oi-state-badge oi-state-scheduled">
+                                            {% trans "Monitored" %}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4">{% trans "No route data available." %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Departures" %}</span>
+                <h3>{% trans "Top origin airports" %}</h3>
+                <p>
+                    {% trans "Airports generating the strongest departure-side load." %}
+                </p>
+            </div>
+
+            <div class="oi-table-shell">
+                <table class="oi-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Airport" %}</th>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Flights" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in top_origin_airports %}
+                            <tr>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.total }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">{% trans "No origin airport data available." %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Arrivals" %}</span>
+                <h3>{% trans "Top destination airports" %}</h3>
+                <p>
+                    {% trans "Airports receiving the strongest arrival-side load." %}
+                </p>
+            </div>
+
+            <div class="oi-table-shell">
+                <table class="oi-table">
+                    <thead>
+                        <tr>
+                            <th>{% trans "Airport" %}</th>
+                            <th>{% trans "Name" %}</th>
+                            <th>{% trans "Flights" %}</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for item in top_destination_airports %}
+                            <tr>
+                                <td>{{ item.code }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.total }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3">{% trans "No destination airport data available." %}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    </section>
+</section>
+{% endblock %}
+

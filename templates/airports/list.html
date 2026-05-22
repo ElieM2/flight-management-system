@@ -1,43 +1,288 @@
-{% extends 'base.html' %}
+﻿{% extends "base_public.html" %}
+{% load static %}
 
-{% block title %}Airports{% endblock %}
-{% block page_title %}Airports List{% endblock %}
+{% block title %}Airports | FlightLogos{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_airports.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="table-box">
-    <table class="flights-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>IATA Code</th>
-                <th>ICAO Code</th>
-                <th>City</th>
-                <th>Country</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for airport in airports %}
-            <tr>
-                <td>{{ airport.name }}</td>
-                <td>{{ airport.iata_code }}</td>
-                <td>{{ airport.icao_code }}</td>
-                <td>{{ airport.city }}</td>
-                <td>{{ airport.country }}</td>
-                <td>
-                    {% if airport.is_active %}
-                        <span class="status-badge status-landed">Active</span>
+<section class="airports-page">
+    <header class="airports-header">
+        <div class="airports-header-copy">
+            <p class="airports-kicker">Airports</p>
+
+            <h1>Airports</h1>
+
+            <p class="airports-subtitle">
+                Manage and monitor airport infrastructure, connectivity and operational readiness.
+            </p>
+        </div>
+    </header>
+
+    <section class="airports-kpi-grid" aria-label="Airport indicators">
+        <article class="airports-kpi-card airports-kpi-total">
+            <div class="airports-kpi-icon">
+                <span>âœˆ</span>
+            </div>
+
+            <div class="airports-kpi-content">
+                <span class="airports-kpi-label">Total Airports</span>
+                <strong class="airports-kpi-value">{{ total_airports }}</strong>
+                <span class="airports-kpi-note">All registered airports</span>
+            </div>
+        </article>
+
+        <article class="airports-kpi-card airports-kpi-active">
+            <div class="airports-kpi-icon">
+                <span>âœ“</span>
+            </div>
+
+            <div class="airports-kpi-content">
+                <span class="airports-kpi-label">Active Airports</span>
+                <strong class="airports-kpi-value">{{ active_airports }}</strong>
+                <span class="airports-kpi-note">Currently operational</span>
+            </div>
+        </article>
+
+        <article class="airports-kpi-card airports-kpi-country">
+            <div class="airports-kpi-icon">
+                <span>â—Ž</span>
+            </div>
+
+            <div class="airports-kpi-content">
+                <span class="airports-kpi-label">Countries</span>
+                <strong class="airports-kpi-value">{{ countries_count }}</strong>
+                <span class="airports-kpi-note">Network coverage</span>
+            </div>
+        </article>
+
+        <article class="airports-kpi-card airports-kpi-flights">
+            <div class="airports-kpi-icon">
+                <span>â†—</span>
+            </div>
+
+            <div class="airports-kpi-content">
+                <span class="airports-kpi-label">Linked Flights</span>
+                <strong class="airports-kpi-value">{{ linked_flights }}</strong>
+                <span class="airports-kpi-note">Departures and arrivals</span>
+            </div>
+        </article>
+    </section>
+
+    <section class="airports-table-card">
+        <div class="airports-toolbar">
+            <form method="get" class="airports-search-form">
+                <div class="airports-search-box">
+                    <span class="airports-search-icon">âŒ•</span>
+
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ query }}"
+                        placeholder="Search airports..."
+                        aria-label="Search airports"
+                    >
+                </div>
+
+                <select name="status" class="airports-filter-select" aria-label="Filter by status">
+                    <option value="" {% if not status %}selected{% endif %}>
+                        All statuses
+                    </option>
+
+                    <option value="active" {% if status == "active" %}selected{% endif %}>
+                        Active
+                    </option>
+
+                    <option value="inactive" {% if status == "inactive" %}selected{% endif %}>
+                        Inactive
+                    </option>
+                </select>
+
+                <button type="submit" class="airports-apply-button">
+                    Apply
+                </button>
+
+                {% if query or status %}
+                    <a href="{% url 'airports:airport_list' %}" class="airports-reset-button">
+                        Reset
+                    </a>
+                {% else %}
+                    <span class="airports-reset-button airports-reset-disabled">
+                        Reset
+                    </span>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="airports-table-wrap">
+            <table class="airports-table">
+                <thead>
+                    <tr>
+                        <th>Airport</th>
+                        <th>IATA / ICAO</th>
+                        <th>City / Country</th>
+                        <th>Coordinates</th>
+                        <th>Flights</th>
+                        <th>Status</th>
+                        <th class="airports-actions-column">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for airport in airports %}
+                        <tr>
+                            <td>
+                                <div class="airport-main-cell">
+                                    <span class="airport-avatar">
+                                        {{ airport.iata_code|default:"AP" }}
+                                    </span>
+
+                                    <div class="airport-main-info">
+                                        <a href="{% url 'airports:airport_detail' airport.pk %}" class="airport-name-link">
+                                            {{ airport.name }}
+                                        </a>
+
+                                        <span class="airport-meta">
+                                            Airport record
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="airport-code-stack">
+                                    <span>
+                                        {{ airport.iata_code }}
+                                        <small>/</small>
+                                        {{ airport.icao_code }}
+                                    </span>
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if airport.location_is_missing %}
+                                    <span class="airport-location-missing">
+                                        Location not specified
+                                    </span>
+                                {% else %}
+                                    <div class="airport-location-stack">
+                                        <span>{{ airport.display_city }}</span>
+                                        <small>{{ airport.display_country }}</small>
+                                    </div>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if airport.has_coordinates %}
+                                    <div class="airport-coordinates">
+                                        <span>{{ airport.latitude }}</span>
+                                        <small>{{ airport.longitude }}</small>
+                                    </div>
+                                {% else %}
+                                    <span class="airport-coordinate-missing">
+                                        Missing
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="airport-flight-count">
+                                    {{ airport.linked_flights_count }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if airport.is_active %}
+                                    <span class="airport-status airport-status-active">
+                                        <span></span>
+                                        Active
+                                    </span>
+                                {% else %}
+                                    <span class="airport-status airport-status-inactive">
+                                        <span></span>
+                                        Inactive
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="airports-actions-cell">
+                                <details class="airport-actions-menu">
+                                    <summary aria-label="Airport actions">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </summary>
+
+                                    <div class="airport-actions-dropdown">
+                                        <a href="{% url 'airports:airport_detail' airport.pk %}">
+                                            Details
+                                        </a>
+
+                                        {% if airport.has_coordinates %}
+                                            <a href="/monitoring/map/?airport={{ airport.iata_code }}">
+                                                Map
+                                            </a>
+                                        {% else %}
+                                            <span class="airport-action-disabled">
+                                                Map unavailable
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </details>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">
+                                <div class="airports-empty-state">
+                                    <h3>No airports found</h3>
+                                    <p>
+                                        No airport matches the current search or filter.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="airports-table-footer">
+            <p>
+                {% if page_obj.paginator.count > 0 %}
+                    Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} airports
+                {% else %}
+                    Showing 0 airports
+                {% endif %}
+            </p>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+                <nav class="airports-pagination" aria-label="Airports pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                            â†
+                        </a>
                     {% else %}
-                        <span class="status-badge status-cancelled">Inactive</span>
+                        <span class="disabled">â†</span>
                     {% endif %}
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No airports available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+
+                    <span class="current">
+                        {{ page_obj.number }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                            â†’
+                        </a>
+                    {% else %}
+                        <span class="disabled">â†’</span>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
+    </section>
+</section>
 {% endblock %}
+

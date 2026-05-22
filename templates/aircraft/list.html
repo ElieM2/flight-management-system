@@ -1,41 +1,280 @@
-{% extends 'base.html' %}
+﻿{% extends "base_public.html" %}
+{% load static %}
 
-{% block title %}Aircraft{% endblock %}
-{% block page_title %}Aircraft List{% endblock %}
+{% block title %}Aircraft | FlightLogos{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_aircraft.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="table-box">
-    <table class="flights-table">
-        <thead>
-            <tr>
-                <th>Registration</th>
-                <th>Model</th>
-                <th>Type</th>
-                <th>Airline</th>
-                <th>Capacity</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for aircraft in aircraft_list %}
-            <tr>
-                <td>{{ aircraft.registration_number }}</td>
-                <td>{{ aircraft.model }}</td>
-                <td>{{ aircraft.aircraft_type }}</td>
-                <td>{{ aircraft.airline.name }}</td>
-                <td>{{ aircraft.capacity }}</td>
-                <td>
-                    <span class="status-badge status-{{ aircraft.status }}">
-                        {{ aircraft.get_status_display }}
+<section class="aircraft-page">
+    <header class="aircraft-header">
+        <div class="aircraft-header-copy">
+            <p class="aircraft-kicker">Aircraft</p>
+            <h1>Aircraft</h1>
+            <p class="aircraft-subtitle">
+                Manage and monitor aircraft records, operators, capacity and operational status.
+            </p>
+        </div>
+    </header>
+
+    <section class="aircraft-kpi-grid" aria-label="Aircraft indicators">
+        <article class="aircraft-kpi-card aircraft-kpi-total">
+            <div class="aircraft-kpi-icon">
+                <span>âœˆ</span>
+            </div>
+
+            <div class="aircraft-kpi-content">
+                <span class="aircraft-kpi-label">Total Aircraft</span>
+                <strong class="aircraft-kpi-value">{{ total_aircraft }}</strong>
+                <span class="aircraft-kpi-note">Registered fleet records</span>
+            </div>
+        </article>
+
+        <article class="aircraft-kpi-card aircraft-kpi-active">
+            <div class="aircraft-kpi-icon">
+                <span>âœ“</span>
+            </div>
+
+            <div class="aircraft-kpi-content">
+                <span class="aircraft-kpi-label">Active Aircraft</span>
+                <strong class="aircraft-kpi-value">{{ active_aircraft }}</strong>
+                <span class="aircraft-kpi-note">Currently operational</span>
+            </div>
+        </article>
+
+        <article class="aircraft-kpi-card aircraft-kpi-operators">
+            <div class="aircraft-kpi-icon">
+                <span>OP</span>
+            </div>
+
+            <div class="aircraft-kpi-content">
+                <span class="aircraft-kpi-label">Operators</span>
+                <strong class="aircraft-kpi-value">{{ operators_count }}</strong>
+                <span class="aircraft-kpi-note">Assigned airlines</span>
+            </div>
+        </article>
+
+        <article class="aircraft-kpi-card aircraft-kpi-capacity">
+            <div class="aircraft-kpi-icon">
+                <span>SE</span>
+            </div>
+
+            <div class="aircraft-kpi-content">
+                <span class="aircraft-kpi-label">Total Seats</span>
+                <strong class="aircraft-kpi-value">{{ total_capacity }}</strong>
+                <span class="aircraft-kpi-note">Combined seat capacity</span>
+            </div>
+        </article>
+    </section>
+
+    <section class="aircraft-table-card">
+        <div class="aircraft-toolbar">
+            <form method="get" class="aircraft-search-form">
+                <div class="aircraft-search-box">
+                    <span class="aircraft-search-icon">âŒ•</span>
+                    <input
+                        type="search"
+                        name="q"
+                        value="{{ query }}"
+                        placeholder="Search aircraft..."
+                        aria-label="Search aircraft"
+                    >
+                </div>
+
+                <select name="status" class="aircraft-filter-select" aria-label="Filter by status">
+                    <option value="" {% if not status %}selected{% endif %}>
+                        All statuses
+                    </option>
+                    <option value="active" {% if status == "active" %}selected{% endif %}>
+                        Active
+                    </option>
+                    <option value="maintenance" {% if status == "maintenance" %}selected{% endif %}>
+                        Maintenance
+                    </option>
+                    <option value="inactive" {% if status == "inactive" %}selected{% endif %}>
+                        Inactive
+                    </option>
+                </select>
+
+                <button type="submit" class="aircraft-apply-button">
+                    Apply
+                </button>
+
+                {% if query or status %}
+                    <a href="{% url 'aircraft:aircraft_list' %}" class="aircraft-reset-button">
+                        Reset
+                    </a>
+                {% else %}
+                    <span class="aircraft-reset-button aircraft-reset-disabled">
+                        Reset
                     </span>
-                </td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No aircraft available.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+                {% endif %}
+            </form>
+        </div>
+
+        <div class="aircraft-table-wrap">
+            <table class="aircraft-table">
+                <thead>
+                    <tr>
+                        <th>Aircraft</th>
+                        <th>Registration</th>
+                        <th>Model / Type</th>
+                        <th>Operator</th>
+                        <th>Capacity</th>
+                        <th>Status</th>
+                        <th class="aircraft-actions-column">Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for aircraft in aircraft_list %}
+                        <tr>
+                            <td>
+                                <div class="aircraft-main-cell">
+                                    <span class="aircraft-avatar">
+                                        {{ aircraft.registration_number|slice:":3"|default:"AC" }}
+                                    </span>
+
+                                    <div class="aircraft-main-info">
+                                        <a href="{% url 'aircraft:aircraft_detail' aircraft.pk %}" class="aircraft-name-link">
+                                            {{ aircraft.model }}
+                                        </a>
+                                        <span class="aircraft-meta">
+                                            Aircraft record
+                                        </span>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="aircraft-code-stack">
+                                    <span>{{ aircraft.registration_number }}</span>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="aircraft-model-stack">
+                                    <span>{{ aircraft.model }}</span>
+                                    <small>{{ aircraft.aircraft_type }}</small>
+                                </div>
+                            </td>
+
+                            <td>
+                                {% if aircraft.airline %}
+                                    <div class="aircraft-operator-stack">
+                                        <span>{{ aircraft.airline.name }}</span>
+                                        <small>Assigned operator</small>
+                                    </div>
+                                {% else %}
+                                    <span class="aircraft-muted-badge">
+                                        Operator not assigned
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="aircraft-capacity">
+                                    {{ aircraft.capacity }}
+                                </span>
+                            </td>
+
+                            <td>
+                                {% if aircraft.status == "active" %}
+                                    <span class="aircraft-status aircraft-status-active">
+                                        <span></span>
+                                        {{ aircraft.get_status_display }}
+                                    </span>
+                                {% elif aircraft.status == "maintenance" %}
+                                    <span class="aircraft-status aircraft-status-maintenance">
+                                        <span></span>
+                                        {{ aircraft.get_status_display }}
+                                    </span>
+                                {% else %}
+                                    <span class="aircraft-status aircraft-status-inactive">
+                                        <span></span>
+                                        {{ aircraft.get_status_display }}
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <td class="aircraft-actions-cell">
+                                <details class="aircraft-actions-menu">
+                                    <summary aria-label="Aircraft actions">
+                                        <span></span>
+                                        <span></span>
+                                        <span></span>
+                                    </summary>
+
+                                    <div class="aircraft-actions-dropdown">
+                                        <a href="{% url 'aircraft:aircraft_detail' aircraft.pk %}">
+                                            Details
+                                        </a>
+
+                                        {% if aircraft.airline %}
+                                            <a href="{% url 'airlines:airline_detail' aircraft.airline.pk %}">
+                                                Operator
+                                            </a>
+                                        {% else %}
+                                            <span class="aircraft-action-disabled">
+                                                Operator unavailable
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </details>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7">
+                                <div class="aircraft-empty-state">
+                                    <h3>No aircraft found</h3>
+                                    <p>
+                                        No aircraft record matches the current search or filter.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="aircraft-table-footer">
+            <p>
+                {% if page_obj.paginator.count > 0 %}
+                    Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} aircraft
+                {% else %}
+                    Showing 0 aircraft
+                {% endif %}
+            </p>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+                <nav class="aircraft-pagination" aria-label="Aircraft pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                            â†
+                        </a>
+                    {% else %}
+                        <span class="disabled">â†</span>
+                    {% endif %}
+
+                    <span class="current">
+                        {{ page_obj.number }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
+                            â†’
+                        </a>
+                    {% else %}
+                        <span class="disabled">â†’</span>
+                    {% endif %}
+                </nav>
+            {% endif %}
+        </div>
+    </section>
+</section>
 {% endblock %}
+

@@ -1,0 +1,1196 @@
+{% load static i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+
+<!DOCTYPE html>
+<html lang="{{ CURRENT_LANGUAGE|default:'en' }}" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}FlightLogos{% endblock %}</title>
+
+    <script>
+        (function () {
+            try {
+                const savedTheme = localStorage.getItem("flightlogos-theme") || "dark";
+                const safeTheme = savedTheme === "light" ? "light" : "dark";
+
+                localStorage.setItem("flightlogos-theme", safeTheme);
+                localStorage.removeItem("flightlogosPublicTheme");
+                localStorage.removeItem("logosflight-theme");
+
+                document.documentElement.setAttribute("data-theme", safeTheme);
+            } catch (error) {
+                document.documentElement.setAttribute("data-theme", "dark");
+            }
+        })();
+    </script>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/public.css' %}">
+    <link rel="stylesheet" href="{% static 'css/public_landing.css' %}">
+
+        <link rel="stylesheet" href="{% static 'css/public_boards_fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/public_header_theme_fix.css' %}">
+<style>
+        :root {
+            --public-shell-bg: #eef3f9;
+            --public-shell-surface: #ffffff;
+            --public-shell-surface-2: #f8fafc;
+            --public-shell-header: rgba(255, 255, 255, 0.94);
+            --public-shell-header-strong: #ffffff;
+            --public-shell-text: #0f172a;
+            --public-shell-muted: #64748b;
+            --public-shell-border: rgba(203, 213, 225, 0.82);
+            --public-shell-blue: #2563eb;
+            --public-shell-blue-hover: #1d4ed8;
+            --public-shell-blue-soft: rgba(37, 99, 235, 0.10);
+            --public-shell-footer: #061a3a;
+            --public-shell-footer-2: #04142e;
+            --public-shell-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+        }
+
+        html[data-theme="dark"] {
+            --public-shell-bg: #06111f;
+            --public-shell-surface: #0b1728;
+            --public-shell-surface-2: #101f33;
+            --public-shell-header: rgba(3, 13, 28, 0.94);
+            --public-shell-header-strong: rgba(3, 13, 28, 0.98);
+            --public-shell-text: #f8fafc;
+            --public-shell-muted: #94a3b8;
+            --public-shell-border: rgba(148, 163, 184, 0.20);
+            --public-shell-blue: #2563eb;
+            --public-shell-blue-hover: #1d4ed8;
+            --public-shell-blue-soft: rgba(37, 99, 235, 0.16);
+            --public-shell-footer: #061a3a;
+            --public-shell-footer-2: #04142e;
+            --public-shell-shadow: 0 18px 42px rgba(2, 6, 23, 0.28);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body.public-app-body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
+                var(--public-shell-bg);
+            color: var(--public-shell-text);
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            transition: background 0.18s ease, color 0.18s ease;
+        }
+
+        .public-container {
+            width: min(1360px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        .public-app-header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--public-shell-header);
+            border-bottom: 1px solid var(--public-shell-border);
+            box-shadow: var(--public-shell-shadow);
+            backdrop-filter: blur(16px);
+        }
+
+        .public-app-header-inner {
+            min-height: 78px;
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .public-app-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            flex-shrink: 0;
+            text-decoration: none;
+            color: var(--public-shell-text);
+        }
+
+        .public-app-brand:hover {
+            color: var(--public-shell-text);
+            text-decoration: none;
+        }
+
+        .public-app-brand-mark {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2d74ff 0%, #1452cc 100%);
+            color: #ffffff;
+            font-size: 20px;
+            box-shadow:
+                0 14px 28px rgba(37, 99, 235, 0.32),
+                inset 0 1px 0 rgba(255, 255, 255, 0.18);
+        }
+
+        .public-app-brand-copy {
+            display: grid;
+            gap: 3px;
+            line-height: 1.1;
+        }
+
+        .public-app-brand-name {
+            color: var(--public-shell-text);
+            font-size: 18px;
+            font-weight: 850;
+            letter-spacing: -0.04em;
+        }
+
+        .public-app-brand-copy small {
+            color: var(--public-shell-muted);
+            font-size: 12px;
+            font-weight: 520;
+        }
+
+        .nav-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid var(--public-shell-border);
+            background: var(--public-shell-surface-2);
+            color: var(--public-shell-text);
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin-left: auto;
+        }
+
+        .public-app-nav {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            min-width: 0;
+        }
+
+        .public-app-nav ul {
+            list-style: none !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .public-app-nav li {
+            margin: 0;
+            padding: 0;
+        }
+
+        .public-app-nav a {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 78px;
+            padding: 0 16px;
+            color: var(--public-shell-muted);
+            font-size: 14px;
+            font-weight: 720;
+            text-decoration: none;
+            letter-spacing: -0.015em;
+            transition: color 0.18s ease, background 0.18s ease;
+        }
+
+        .public-app-nav a::after {
+            content: "";
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 0;
+            height: 3px;
+            border-radius: 999px 999px 0 0;
+            background: transparent;
+            opacity: 0;
+            transition: opacity 0.18s ease, background 0.18s ease;
+        }
+
+        .public-app-nav a:hover,
+        .public-app-nav a.active {
+            color: var(--public-shell-text);
+            text-decoration: none;
+        }
+
+        .public-app-nav a:hover::after,
+        .public-app-nav a.active::after {
+            opacity: 1;
+            background: #38a8ff;
+        }
+
+        .public-app-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .public-header-btn,
+        .public-theme-toggle,
+        .language-switcher__trigger {
+            min-height: 44px;
+            border-radius: 13px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 760;
+            line-height: 1;
+            text-decoration: none;
+            border: 1px solid transparent;
+            white-space: nowrap;
+            transition:
+                transform 0.18s ease,
+                box-shadow 0.18s ease,
+                background 0.18s ease,
+                border-color 0.18s ease,
+                color 0.18s ease;
+        }
+
+        .public-header-btn {
+            padding: 0 18px;
+        }
+
+        .public-header-btn:hover,
+        .public-theme-toggle:hover,
+        .language-switcher__trigger:hover {
+            transform: translateY(-1px);
+            text-decoration: none;
+        }
+
+        .public-header-btn-primary {
+            background: linear-gradient(135deg, #2b6fff 0%, #2563eb 100%);
+            border-color: rgba(59, 130, 246, 0.55);
+            color: #ffffff;
+            box-shadow: 0 12px 24px rgba(37, 99, 235, 0.28);
+        }
+
+        .public-header-btn-primary:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, #1f5fe8 0%, #1d4ed8 100%);
+        }
+
+        .public-header-btn-secondary,
+        .public-header-btn-ghost,
+        .public-theme-toggle,
+        .language-switcher__trigger {
+            background: var(--public-shell-surface-2);
+            border-color: var(--public-shell-border);
+            color: var(--public-shell-text);
+        }
+
+        .public-header-btn-secondary:hover,
+        .public-header-btn-ghost:hover,
+        .public-theme-toggle:hover,
+        .language-switcher__trigger:hover,
+        .language-switcher.is-open .language-switcher__trigger {
+            color: var(--public-shell-text);
+            background: var(--public-shell-blue-soft);
+            border-color: rgba(96, 165, 250, 0.42);
+        }
+
+        .public-theme-toggle {
+            width: 44px;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .language-switcher {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .language-switcher__trigger {
+            padding: 0 13px;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .language-switcher__code {
+            min-width: 24px;
+            text-align: center;
+            letter-spacing: 0.06em;
+        }
+
+        .language-switcher__menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 210px;
+            padding: 8px;
+            border-radius: 16px;
+            background: var(--public-shell-header-strong);
+            border: 1px solid var(--public-shell-border);
+            box-shadow: 0 22px 46px rgba(15, 23, 42, 0.22);
+            display: none;
+            z-index: 1200;
+        }
+
+        .language-switcher.is-open .language-switcher__menu {
+            display: block;
+        }
+
+        .language-switcher__menu form {
+            display: grid;
+            gap: 5px;
+            margin: 0;
+        }
+
+        .language-switcher__menu button {
+            width: 100%;
+            min-height: 42px;
+            padding: 0 10px;
+            border: 0;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--public-shell-text);
+            display: grid;
+            grid-template-columns: 36px 1fr;
+            align-items: center;
+            gap: 8px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .language-switcher__menu button:hover,
+        .language-switcher__menu button.is-active {
+            background: var(--public-shell-blue-soft);
+            color: var(--public-shell-blue);
+        }
+
+        .language-switcher__menu button span {
+            width: 30px;
+            height: 26px;
+            border-radius: 999px;
+            background: var(--public-shell-surface-2);
+            color: var(--public-shell-muted);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 850;
+        }
+
+        .language-switcher__menu button.is-active span {
+            background: var(--public-shell-blue);
+            color: #ffffff;
+        }
+
+        .language-switcher__menu button strong {
+            font-size: 13px;
+            font-weight: 760;
+        }
+
+        .public-flash-wrap {
+            padding: 14px 0 0;
+        }
+
+        .public-site-footer {
+            margin-top: 0;
+            background:
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.22), transparent 30%),
+                linear-gradient(180deg, var(--public-shell-footer) 0%, var(--public-shell-footer-2) 100%);
+            color: #ffffff;
+            border-top: 1px solid rgba(148, 163, 184, 0.18);
+        }
+
+        .public-footer-main {
+            display: grid;
+            grid-template-columns: minmax(300px, 0.95fr) minmax(0, 1.6fr);
+            gap: 42px;
+            padding: 52px 0 38px;
+        }
+
+        .public-footer-logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffffff;
+            text-decoration: none;
+            margin-bottom: 18px;
+        }
+
+        .public-footer-logo:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .public-footer-logo__mark {
+            width: 44px;
+            height: 44px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #2b6fff 0%, #1d4ed8 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .public-footer-logo strong {
+            display: block;
+            font-size: 18px;
+            font-weight: 850;
+            letter-spacing: -0.04em;
+        }
+
+        .public-footer-logo small {
+            display: block;
+            color: rgba(226, 232, 240, 0.72);
+            font-size: 12px;
+        }
+
+        .public-footer-brand p {
+            max-width: 430px;
+            color: rgba(226, 232, 240, 0.80);
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .public-footer-columns {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 28px;
+        }
+
+        .public-footer-column h3 {
+            margin: 0 0 14px;
+            font-size: 12px;
+            font-weight: 850;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: rgba(191, 219, 254, 0.92);
+        }
+
+        .public-footer-column a,
+        .public-footer-column span {
+            display: block;
+            margin: 0 0 10px;
+            color: rgba(226, 232, 240, 0.76);
+            font-size: 14px;
+            line-height: 1.55;
+            text-decoration: none;
+        }
+
+        .public-footer-column a:hover {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .public-footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 20px 0;
+            border-top: 1px solid rgba(148, 163, 184, 0.16);
+            color: rgba(226, 232, 240, 0.68);
+            font-size: 13px;
+        }
+
+        @media (max-width: 1100px) {
+            .public-app-header-inner {
+                flex-wrap: wrap;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                gap: 12px;
+            }
+
+            .nav-toggle {
+                display: inline-flex;
+            }
+
+            .public-app-nav {
+                display: none;
+                order: 3;
+                width: 100%;
+                flex: 0 0 100%;
+                justify-content: flex-start;
+            }
+
+            .public-app-nav.is-open {
+                display: block;
+            }
+
+            .public-app-nav ul {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+                padding: 10px !important;
+                border-radius: 16px;
+                background: var(--public-shell-surface-2);
+                border: 1px solid var(--public-shell-border);
+            }
+
+            .public-app-nav a {
+                min-height: 44px;
+                border-radius: 12px;
+                justify-content: flex-start;
+                padding: 0 12px;
+            }
+
+            .public-app-nav a::after {
+                display: none;
+            }
+
+            .public-app-nav a.active,
+            .public-app-nav a:hover {
+                background: var(--public-shell-blue-soft);
+            }
+
+            .public-app-actions {
+                margin-left: auto;
+            }
+
+            .public-footer-main {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .public-container {
+                width: calc(100% - 24px);
+            }
+
+            .public-app-brand-copy small {
+                display: none;
+            }
+
+            .public-app-actions {
+                width: 100%;
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .language-switcher,
+            .language-switcher__trigger,
+            .public-header-btn,
+            .public-theme-toggle {
+                width: 100%;
+            }
+
+            .language-switcher__menu {
+                left: 0;
+                right: auto;
+                width: 100%;
+            }
+
+            .public-app-nav ul,
+            .public-footer-columns {
+                grid-template-columns: 1fr;
+            }
+
+            .public-footer-bottom {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    {% block extra_head %}{% endblock %}
+
+    <style>
+        /* =========================================================
+           GLOBAL THEME STABILIZER
+           Makes public list pages, cards and tables follow dark/light mode
+        ========================================================= */
+
+        html[data-theme="light"] {
+            --public-page-bg: #eef3f9;
+            --public-page-surface: #ffffff;
+            --public-page-surface-2: #f8fafc;
+            --public-page-text: #0f172a;
+            --public-page-muted: #64748b;
+            --public-page-border: rgba(203, 213, 225, 0.82);
+            --public-page-table-head: #f1f5f9;
+            --public-page-row-hover: #f8fafc;
+            --public-page-input: #ffffff;
+        }
+
+        html[data-theme="dark"] {
+            --public-page-bg: #06111f;
+            --public-page-surface: #0b1728;
+            --public-page-surface-2: #101f33;
+            --public-page-text: #f8fafc;
+            --public-page-muted: #94a3b8;
+            --public-page-border: rgba(148, 163, 184, 0.18);
+            --public-page-table-head: #101f33;
+            --public-page-row-hover: rgba(59, 130, 246, 0.08);
+            --public-page-input: #0f1d2d;
+        }
+
+        html[data-theme="dark"] body.public-app-body {
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.08), transparent 28%),
+                #06111f !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="light"] body.public-app-body {
+            background:
+                radial-gradient(circle at top left, rgba(37, 99, 235, 0.07), transparent 26%),
+                linear-gradient(180deg, #f5f8fc 0%, #edf3f9 48%, #eef3f9 100%) !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body h1,
+        html[data-theme="dark"] .public-app-body h2,
+        html[data-theme="dark"] .public-app-body h3,
+        html[data-theme="dark"] .public-app-body h4,
+        html[data-theme="dark"] .public-app-body h5,
+        html[data-theme="dark"] .public-app-body h6 {
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body p,
+        html[data-theme="dark"] .public-app-body small,
+        html[data-theme="dark"] .public-app-body .text-muted {
+            color: var(--public-page-muted) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body main,
+        html[data-theme="dark"] .public-app-body .page,
+        html[data-theme="dark"] .public-app-body .content,
+        html[data-theme="dark"] .public-app-body .public-page,
+        html[data-theme="dark"] .public-app-body .aircraft-page,
+        html[data-theme="dark"] .public-app-body .airports-page,
+        html[data-theme="dark"] .public-app-body .airlines-page,
+        html[data-theme="dark"] .public-app-body .flights-page,
+        html[data-theme="dark"] .public-app-body .aircraft-board-page,
+        html[data-theme="dark"] .public-app-body .airports-board-page,
+        html[data-theme="dark"] .public-app-body .airlines-board-page,
+        html[data-theme="dark"] .public-app-body .flights-board-page {
+            background: transparent !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body .card,
+        html[data-theme="dark"] .public-app-body .stat-card,
+        html[data-theme="dark"] .public-app-body .kpi-card,
+        html[data-theme="dark"] .public-app-body .metric-card,
+        html[data-theme="dark"] .public-app-body .summary-card,
+        html[data-theme="dark"] .public-app-body [class*="card"],
+        html[data-theme="dark"] .public-app-body [class*="stat"],
+        html[data-theme="dark"] .public-app-body [class*="metric"] {
+            background: var(--public-page-surface) !important;
+            border-color: var(--public-page-border) !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body [class*="card"] h1,
+        html[data-theme="dark"] .public-app-body [class*="card"] h2,
+        html[data-theme="dark"] .public-app-body [class*="card"] h3,
+        html[data-theme="dark"] .public-app-body [class*="card"] h4,
+        html[data-theme="dark"] .public-app-body [class*="card"] p,
+        html[data-theme="dark"] .public-app-body [class*="card"] span,
+        html[data-theme="dark"] .public-app-body [class*="card"] small {
+            color: inherit;
+        }
+
+        html[data-theme="dark"] .public-app-body input,
+        html[data-theme="dark"] .public-app-body select,
+        html[data-theme="dark"] .public-app-body textarea,
+        html[data-theme="dark"] .public-app-body .form-control,
+        html[data-theme="dark"] .public-app-body .form-select {
+            background: var(--public-page-input) !important;
+            border-color: var(--public-page-border) !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body input::placeholder,
+        html[data-theme="dark"] .public-app-body textarea::placeholder {
+            color: var(--public-page-muted) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body select option {
+            background: #0f1d2d;
+            color: #f8fafc;
+        }
+
+        html[data-theme="dark"] .public-app-body table,
+        html[data-theme="dark"] .public-app-body .table {
+            --bs-table-bg: transparent;
+            --bs-table-color: var(--public-page-text);
+            --bs-table-border-color: var(--public-page-border);
+            --bs-table-striped-bg: rgba(255, 255, 255, 0.03);
+            --bs-table-striped-color: var(--public-page-text);
+            --bs-table-hover-bg: var(--public-page-row-hover);
+            --bs-table-hover-color: var(--public-page-text);
+
+            background: transparent !important;
+            color: var(--public-page-text) !important;
+            border-color: var(--public-page-border) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body thead,
+        html[data-theme="dark"] .public-app-body .table thead,
+        html[data-theme="dark"] .public-app-body table thead tr,
+        html[data-theme="dark"] .public-app-body .table thead tr {
+            background: var(--public-page-table-head) !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body th,
+        html[data-theme="dark"] .public-app-body td {
+            background: transparent !important;
+            border-color: var(--public-page-border) !important;
+            color: var(--public-page-text) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body tbody tr {
+            background: var(--public-page-surface) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body tbody tr:hover {
+            background: var(--public-page-row-hover) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body .table-responsive,
+        html[data-theme="dark"] .public-app-body .table-wrapper,
+        html[data-theme="dark"] .public-app-body .data-table,
+        html[data-theme="dark"] .public-app-body .list-table,
+        html[data-theme="dark"] .public-app-body [class*="table"],
+        html[data-theme="dark"] .public-app-body [class*="board"] {
+            border-color: var(--public-page-border) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body .bg-white,
+        html[data-theme="dark"] .public-app-body .bg-light,
+        html[data-theme="dark"] .public-app-body .shadow-sm,
+        html[data-theme="dark"] .public-app-body .rounded,
+        html[data-theme="dark"] .public-app-body .rounded-3,
+        html[data-theme="dark"] .public-app-body .rounded-4 {
+            background-color: var(--public-page-surface) !important;
+            color: var(--public-page-text) !important;
+            border-color: var(--public-page-border) !important;
+        }
+
+        html[data-theme="dark"] .public-app-body .bi-three-dots-vertical,
+        html[data-theme="dark"] .public-app-body .bi-three-dots {
+            color: var(--public-page-text) !important;
+        }
+    </style>
+</head>
+
+<body class="public-app-body {% block body_class %}{% endblock %}">
+
+<header class="public-app-header public-app-header-v2">
+    <div class="public-container public-app-header-inner">
+
+        <a href="{% url 'dashboard:home' %}" class="public-app-brand" aria-label="FlightLogos home">
+            <span class="public-app-brand-mark">
+                <i class="bi bi-airplane-fill"></i>
+            </span>
+
+            <span class="public-app-brand-copy">
+                <span class="public-app-brand-name">FlightLogos</span>
+                <small>
+                    {% if CURRENT_LANGUAGE == "fr" %}
+                        Suivi des vols & opÃ©rations
+                    {% elif CURRENT_LANGUAGE == "ru" %}
+                        ÐœÐ¾Ð½Ð¸Ñ‚Ð¾Ñ€Ð¸Ð½Ð³ Ñ€ÐµÐ¹ÑÐ¾Ð² Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹
+                    {% else %}
+                        Flight tracking & operations
+                    {% endif %}
+                </small>
+            </span>
+        </a>
+
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <nav class="public-app-nav" id="publicNav">
+            <ul>
+                <li>
+                    <a href="{% url 'dashboard:home' %}" class="{% if request.path == '/' %}active{% endif %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Accueil{% elif CURRENT_LANGUAGE == "ru" %}Ð“Ð»Ð°Ð²Ð½Ð°Ñ{% else %}Home{% endif %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'flights:flight_list' %}" class="{% if '/flights/' in request.path %}active{% endif %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Vols{% elif CURRENT_LANGUAGE == "ru" %}Ð ÐµÐ¹ÑÑ‹{% else %}Flights{% endif %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'airlines:airline_list' %}" class="{% if '/airlines/' in request.path %}active{% endif %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Compagnies{% elif CURRENT_LANGUAGE == "ru" %}ÐÐ²Ð¸Ð°ÐºÐ¾Ð¼Ð¿Ð°Ð½Ð¸Ð¸{% else %}Airlines{% endif %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'airports:airport_list' %}" class="{% if '/airports/' in request.path %}active{% endif %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}AÃ©roports{% elif CURRENT_LANGUAGE == "ru" %}ÐÑÑ€Ð¾Ð¿Ð¾Ñ€Ñ‚Ñ‹{% else %}Airports{% endif %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'aircraft:aircraft_list' %}" class="{% if '/aircraft/' in request.path %}active{% endif %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Appareils{% elif CURRENT_LANGUAGE == "ru" %}Ð’Ð¾Ð·Ð´ÑƒÑˆÐ½Ñ‹Ðµ ÑÑƒÐ´Ð°{% else %}Aircraft{% endif %}
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'monitoring:flight_map' %}" class="{% if '/monitoring/map/' in request.path %}active{% endif %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Carte{% elif CURRENT_LANGUAGE == "ru" %}ÐšÐ°Ñ€Ñ‚Ð°{% else %}Map{% endif %}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="public-app-actions">
+
+            <div class="language-switcher language-switcher-public" data-language-switcher>
+                <button type="button" class="language-switcher__trigger" aria-label="Change language" aria-expanded="false">
+                    <span class="language-switcher__code">
+                        {% if CURRENT_LANGUAGE == "fr" %}FR{% elif CURRENT_LANGUAGE == "ru" %}RU{% else %}EN{% endif %}
+                    </span>
+                    <i class="bi bi-chevron-down"></i>
+                </button>
+
+                <div class="language-switcher__menu">
+                    <form action="{% url 'set_language' %}" method="post">
+                        {% csrf_token %}
+                        <input name="next" type="hidden" value="{{ request.get_full_path }}">
+
+                        <button type="submit" name="language" value="en" class="{% if CURRENT_LANGUAGE == 'en' %}is-active{% endif %}">
+                            <span>EN</span>
+                            <strong>English</strong>
+                        </button>
+
+                        <button type="submit" name="language" value="fr" class="{% if CURRENT_LANGUAGE == 'fr' %}is-active{% endif %}">
+                            <span>FR</span>
+                            <strong>FranÃ§ais</strong>
+                        </button>
+
+                        <button type="submit" name="language" value="ru" class="{% if CURRENT_LANGUAGE == 'ru' %}is-active{% endif %}">
+                            <span>RU</span>
+                            <strong>Ð ÑƒÑÑÐºÐ¸Ð¹</strong>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <button class="public-theme-toggle" type="button" id="publicThemeToggle" aria-label="Switch theme">
+                <i class="bi bi-moon-stars" id="publicThemeIcon"></i>
+            </button>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'accounts:profile' %}" class="public-header-btn public-header-btn-secondary">
+                    {% if CURRENT_LANGUAGE == "fr" %}Mon compte{% elif CURRENT_LANGUAGE == "ru" %}ÐœÐ¾Ð¹ Ð°ÐºÐºÐ°ÑƒÐ½Ñ‚{% else %}My Account{% endif %}
+                </a>
+
+                <a href="{% url 'dashboard:dashboard' %}" class="public-header-btn public-header-btn-primary">
+                    {% if CURRENT_LANGUAGE == "fr" %}Centre opÃ©rations{% elif CURRENT_LANGUAGE == "ru" %}Ð¦ÐµÐ½Ñ‚Ñ€ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹{% else %}Operations Center{% endif %}
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:login' %}" class="public-header-btn public-header-btn-secondary">
+                    {% if CURRENT_LANGUAGE == "fr" %}Connexion{% elif CURRENT_LANGUAGE == "ru" %}Ð’Ð¾Ð¹Ñ‚Ð¸{% else %}Login{% endif %}
+                </a>
+
+                <a href="{% url 'accounts:register' %}" class="public-header-btn public-header-btn-primary">
+                    {% if CURRENT_LANGUAGE == "fr" %}Inscription{% elif CURRENT_LANGUAGE == "ru" %}Ð ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ{% else %}Register{% endif %}
+                </a>
+            {% endif %}
+
+        </div>
+    </div>
+</header>
+
+{% if messages %}
+    <div class="public-flash-wrap">
+        <div class="public-container">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags|default:'info' }} mb-2">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{% block public_page_intro %}{% endblock %}
+{% block content %}{% endblock %}
+
+<footer class="public-site-footer">
+    <div class="public-container">
+
+        <div class="public-footer-main">
+
+            <div class="public-footer-brand">
+                <a href="{% url 'dashboard:home' %}" class="public-footer-logo">
+                    <span class="public-footer-logo__mark">
+                        <i class="bi bi-airplane-fill"></i>
+                    </span>
+
+                    <span>
+                        <strong>FlightLogos</strong>
+                        <small>
+                            {% if CURRENT_LANGUAGE == "fr" %}
+                                Suivi des vols & opÃ©rations
+                            {% elif CURRENT_LANGUAGE == "ru" %}
+                                ÐœÐ¾Ð½Ð¸Ñ‚Ð¾Ñ€Ð¸Ð½Ð³ Ñ€ÐµÐ¹ÑÐ¾Ð² Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹
+                            {% else %}
+                                Flight tracking & operations
+                            {% endif %}
+                        </small>
+                    </span>
+                </a>
+
+                <p>
+                    {% if CURRENT_LANGUAGE == "fr" %}
+                        FlightLogos permet de consulter les donnÃ©es aÃ©riennes, suivre les vols,
+                        visualiser les routes et soutenir le monitoring opÃ©rationnel.
+                    {% elif CURRENT_LANGUAGE == "ru" %}
+                        FlightLogos â€” ÑÑ‚Ð¾ Ð²ÐµÐ±-Ð¿Ð»Ð°Ñ‚Ñ„Ð¾Ñ€Ð¼Ð° Ð´Ð»Ñ Ð¿Ñ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€Ð° Ð°Ð²Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ñ‹Ñ… Ð´Ð°Ð½Ð½Ñ‹Ñ…,
+                        Ð¼Ð¾Ð½Ð¸Ñ‚Ð¾Ñ€Ð¸Ð½Ð³Ð° Ñ€ÐµÐ¹ÑÐ¾Ð², Ð²Ð¸Ð·ÑƒÐ°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ð¸ Ð¼Ð°Ñ€ÑˆÑ€ÑƒÑ‚Ð¾Ð² Ð¸ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾Ð³Ð¾ Ð°Ð½Ð°Ð»Ð¸Ð·Ð°.
+                    {% else %}
+                        FlightLogos is a web platform for aviation data consultation,
+                        flight tracking, route visibility and operational monitoring.
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="public-footer-columns">
+
+                <div class="public-footer-column">
+                    <h3>{% if CURRENT_LANGUAGE == "fr" %}Plateforme{% elif CURRENT_LANGUAGE == "ru" %}ÐŸÐ»Ð°Ñ‚Ñ„Ð¾Ñ€Ð¼Ð°{% else %}Platform{% endif %}</h3>
+
+                    <a href="{% url 'flights:flight_list' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Vols{% elif CURRENT_LANGUAGE == "ru" %}Ð ÐµÐ¹ÑÑ‹{% else %}Flights{% endif %}
+                    </a>
+
+                    <a href="{% url 'airlines:airline_list' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Compagnies{% elif CURRENT_LANGUAGE == "ru" %}ÐÐ²Ð¸Ð°ÐºÐ¾Ð¼Ð¿Ð°Ð½Ð¸Ð¸{% else %}Airlines{% endif %}
+                    </a>
+
+                    <a href="{% url 'airports:airport_list' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}AÃ©roports{% elif CURRENT_LANGUAGE == "ru" %}ÐÑÑ€Ð¾Ð¿Ð¾Ñ€Ñ‚Ñ‹{% else %}Airports{% endif %}
+                    </a>
+
+                    <a href="{% url 'aircraft:aircraft_list' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Appareils{% elif CURRENT_LANGUAGE == "ru" %}Ð’Ð¾Ð·Ð´ÑƒÑˆÐ½Ñ‹Ðµ ÑÑƒÐ´Ð°{% else %}Aircraft{% endif %}
+                    </a>
+
+                    <a href="{% url 'monitoring:flight_map' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Carte des vols{% elif CURRENT_LANGUAGE == "ru" %}ÐšÐ°Ñ€Ñ‚Ð° Ñ€ÐµÐ¹ÑÐ¾Ð²{% else %}Flight map{% endif %}
+                    </a>
+                </div>
+
+                <div class="public-footer-column">
+                    <h3>{% if CURRENT_LANGUAGE == "fr" %}OpÃ©rations{% elif CURRENT_LANGUAGE == "ru" %}ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¸{% else %}Operations{% endif %}</h3>
+
+                    <a href="{% url 'dashboard:dashboard' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Centre opÃ©rations{% elif CURRENT_LANGUAGE == "ru" %}Ð¦ÐµÐ½Ñ‚Ñ€ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¹{% else %}Operations Center{% endif %}
+                    </a>
+
+                    <a href="/monitoring/">
+                        {% if CURRENT_LANGUAGE == "fr" %}Poste de contrÃ´le{% elif CURRENT_LANGUAGE == "ru" %}ÐŸÐ°Ð½ÐµÐ»ÑŒ ÐºÐ¾Ð½Ñ‚Ñ€Ð¾Ð»Ñ{% else %}Control desk{% endif %}
+                    </a>
+
+                    <a href="{% url 'monitoring:flight_map' %}">
+                        {% if CURRENT_LANGUAGE == "fr" %}Carte opÃ©rationnelle{% elif CURRENT_LANGUAGE == "ru" %}ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ ÐºÐ°Ñ€Ñ‚Ð°{% else %}Operations map{% endif %}
+                    </a>
+
+                    <a href="/analytics/">
+                        {% if CURRENT_LANGUAGE == "fr" %}Analyse opÃ©rationnelle{% elif CURRENT_LANGUAGE == "ru" %}ÐžÐ¿ÐµÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ Ð°Ð½Ð°Ð»Ð¸Ñ‚Ð¸ÐºÐ°{% else %}Operational analytics{% endif %}
+                    </a>
+
+                    <a href="/sync/">
+                        {% if CURRENT_LANGUAGE == "fr" %}Synchronisation{% elif CURRENT_LANGUAGE == "ru" %}Ð¡Ð¸Ð½Ñ…Ñ€Ð¾Ð½Ð¸Ð·Ð°Ñ†Ð¸Ñ{% else %}Data sync{% endif %}
+                    </a>
+                </div>
+
+                <div class="public-footer-column">
+                    <h3>{% if CURRENT_LANGUAGE == "fr" %}Projet{% elif CURRENT_LANGUAGE == "ru" %}ÐŸÑ€Ð¾ÐµÐºÑ‚{% else %}Project{% endif %}</h3>
+
+                    <span>
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            SystÃ¨me web de gestion et monitoring des vols
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            Ð’ÐµÐ±-Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ ÑÐ¸ÑÑ‚ÐµÐ¼Ð° Ð´Ð»Ñ ÑƒÐ¿Ñ€Ð°Ð²Ð»ÐµÐ½Ð¸Ñ Ð¸ Ð¼Ð¾Ð½Ð¸Ñ‚Ð¾Ñ€Ð¸Ð½Ð³Ð° Ð°Ð²Ð¸Ð°Ñ€ÐµÐ¹ÑÐ¾Ð²
+                        {% else %}
+                            Web system for flight management and monitoring
+                        {% endif %}
+                    </span>
+
+                    <span>Django Â· PostgreSQL Â· API Â· Leaflet Â· Analytics</span>
+
+                    <span>
+                        {% if CURRENT_LANGUAGE == "fr" %}
+                            Interface publique et espace privÃ© opÃ©rationnel
+                        {% elif CURRENT_LANGUAGE == "ru" %}
+                            ÐŸÑƒÐ±Ð»Ð¸Ñ‡Ð½Ñ‹Ð¹ Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ Ð¸ Ð¿Ñ€Ð¸Ð²Ð°Ñ‚Ð½Ð°Ñ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð°Ñ Ð·Ð¾Ð½Ð°
+                        {% else %}
+                            Public interface and private operations workspace
+                        {% endif %}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="public-footer-bottom">
+            <span>
+                Â© {% now "Y" %} FlightLogos.
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Plateforme acadÃ©mique de monitoring aÃ©rien.
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    ÐÐºÐ°Ð´ÐµÐ¼Ð¸Ñ‡ÐµÑÐºÐ°Ñ Ð¿Ð»Ð°Ñ‚Ñ„Ð¾Ñ€Ð¼Ð° Ð°Ð²Ð¸Ð°Ñ†Ð¸Ð¾Ð½Ð½Ð¾Ð³Ð¾ Ð¼Ð¾Ð½Ð¸Ñ‚Ð¾Ñ€Ð¸Ð½Ð³Ð°.
+                {% else %}
+                    Academic aviation monitoring platform.
+                {% endif %}
+            </span>
+
+            <span>
+                {% if CURRENT_LANGUAGE == "fr" %}
+                    Projet de diplÃ´me Â· Django web information system
+                {% elif CURRENT_LANGUAGE == "ru" %}
+                    Ð”Ð¸Ð¿Ð»Ð¾Ð¼Ð½Ñ‹Ð¹ Ð¿Ñ€Ð¾ÐµÐºÑ‚ Â· Django web information system
+                {% else %}
+                    Diploma project Â· Django web information system
+                {% endif %}
+            </span>
+        </div>
+
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const navToggle = document.getElementById("navToggle");
+    const publicNav = document.getElementById("publicNav");
+
+    if (navToggle && publicNav) {
+        navToggle.addEventListener("click", function () {
+            publicNav.classList.toggle("is-open");
+        });
+    }
+
+    const languageSwitchers = document.querySelectorAll("[data-language-switcher]");
+
+    languageSwitchers.forEach(function (switcher) {
+        const trigger = switcher.querySelector(".language-switcher__trigger");
+
+        if (!trigger) {
+            return;
+        }
+
+        trigger.addEventListener("click", function (event) {
+            event.stopPropagation();
+
+            languageSwitchers.forEach(function (otherSwitcher) {
+                if (otherSwitcher !== switcher) {
+                    otherSwitcher.classList.remove("is-open");
+
+                    const otherTrigger = otherSwitcher.querySelector(".language-switcher__trigger");
+
+                    if (otherTrigger) {
+                        otherTrigger.setAttribute("aria-expanded", "false");
+                    }
+                }
+            });
+
+            switcher.classList.toggle("is-open");
+            trigger.setAttribute(
+                "aria-expanded",
+                switcher.classList.contains("is-open") ? "true" : "false"
+            );
+        });
+    });
+
+    document.addEventListener("click", function () {
+        languageSwitchers.forEach(function (switcher) {
+            switcher.classList.remove("is-open");
+
+            const trigger = switcher.querySelector(".language-switcher__trigger");
+
+            if (trigger) {
+                trigger.setAttribute("aria-expanded", "false");
+            }
+        });
+    });
+
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+            languageSwitchers.forEach(function (switcher) {
+                switcher.classList.remove("is-open");
+
+                const trigger = switcher.querySelector(".language-switcher__trigger");
+
+                if (trigger) {
+                    trigger.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
+    });
+
+    const themeToggle = document.getElementById("publicThemeToggle");
+    const themeIcon = document.getElementById("publicThemeIcon");
+
+    function setTheme(theme) {
+        const safeTheme = theme === "light" ? "light" : "dark";
+
+        document.documentElement.setAttribute("data-theme", safeTheme);
+        document.body.classList.remove("is-public-light", "is-public-dark");
+        document.body.classList.add(safeTheme === "dark" ? "is-public-dark" : "is-public-light");
+
+        try {
+            localStorage.setItem("flightlogos-theme", safeTheme);
+            localStorage.removeItem("flightlogosPublicTheme");
+            localStorage.removeItem("logosflight-theme");
+        } catch (error) {}
+
+        if (themeIcon) {
+            themeIcon.className = safeTheme === "dark" ? "bi bi-sun" : "bi bi-moon-stars";
+        }
+    }
+
+    let initialTheme = "dark";
+
+    try {
+        initialTheme = localStorage.getItem("flightlogos-theme") || "dark";
+    } catch (error) {
+        initialTheme = "dark";
+    }
+
+    setTheme(initialTheme);
+
+    if (themeToggle) {
+        themeToggle.addEventListener("click", function () {
+            const currentTheme = document.documentElement.getAttribute("data-theme") === "light" ? "light" : "dark";
+            const nextTheme = currentTheme === "dark" ? "light" : "dark";
+
+            setTheme(nextTheme);
+        });
+    }
+});
+</script>
+
+<script src="{% static 'js/main.js' %}"></script>
+
+{% block extra_js %}{% endblock %}
+
+</body>
+</html>

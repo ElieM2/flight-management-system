@@ -1,0 +1,224 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
+
+{% block title %}{% trans "Feedback Intelligence" %} | {% trans "Operational Intelligence" %}{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Operational Intelligence" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "Future experience layer for user feedback, public perception and platform usability interpretation." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/operational_intelligence.css' %}?v=7207">
+{% endblock %}
+
+{% block content %}
+<section class="oi-page">
+    {% include 'analytics/includes/intelligence_nav.html' %}
+
+    <section class="oi-page-intro">
+        <div>
+            <span class="oi-kicker">{% trans "Feedback intelligence" %}</span>
+
+            <h2>{% trans "Experience layer, not operational truth" %}</h2>
+
+            <p>
+                {% trans "This page prepares a future extension where users can submit feedback about platform clarity, public flight information, navigation and trust. Feedback helps improve the product, but it does not replace operational flight records." %}
+            </p>
+        </div>
+
+        <div class="oi-page-status oi-posture-{{ supervision_class }}">
+            <span>{% trans "Module status" %}</span>
+            <strong>{% trans "Planned layer" %}</strong>
+            <small>{% trans "Usability and perception" %}</small>
+        </div>
+    </section>
+
+    <section class="oi-metric-grid oi-metric-grid-4">
+        <article class="oi-metric-card">
+            <span>{% trans "Operational records" %}</span>
+            <strong>{{ total_flights }}</strong>
+            <p>{% trans "Flight records remain the source for operational monitoring." %}</p>
+        </article>
+
+        <article class="oi-metric-card">
+            <span>{% trans "Critical records" %}</span>
+            <strong>{{ critical_count }}</strong>
+            <p>{% trans "Priority operational cases are still measured from flight data, not feedback." %}</p>
+        </article>
+
+        <article class="oi-metric-card oi-soft-warning">
+            <span>{% trans "Attention records" %}</span>
+            <strong>{{ attention_count }}</strong>
+            <p>{% trans "Attention-level monitoring remains linked to operational records." %}</p>
+        </article>
+
+        <article class="oi-metric-card">
+            <span>{% trans "Experience layer" %}</span>
+            <strong>{% trans "Future" %}</strong>
+            <p>{% trans "Feedback will support usability, communication and public readability." %}</p>
+        </article>
+    </section>
+
+    <section class="oi-feedback-grid">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Public feedback" %}</span>
+
+                <h3>{% trans "User experience reports" %}</h3>
+
+                <p>
+                    {% trans "Passengers, visitors or public users may later submit comments, ratings and observations about the platform experience. These reports should stay separate from operational performance." %}
+                </p>
+            </div>
+
+            <div class="oi-feedback-preview-box">
+                <div>
+                    <span>{% trans "Example rating" %}</span>
+                    <strong>4.2 / 5</strong>
+                    <small>{% trans "Based on public experience, not aircraft operations." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Common signal" %}</span>
+                    <strong>{% trans "Communication quality" %}</strong>
+                    <small>{% trans "Useful for improving public clarity and user trust." %}</small>
+                </div>
+            </div>
+        </article>
+
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Visitor analytics" %}</span>
+
+                <h3>{% trans "Platform usage layer" %}</h3>
+
+                <p>
+                    {% trans "Visitor analytics can help understand which parts of the platform are useful: flight map, reports, public pages, route analysis or operational intelligence." %}
+                </p>
+            </div>
+
+            <div class="oi-feedback-preview-box">
+                <div>
+                    <span>{% trans "Most useful pages" %}</span>
+                    <strong>{% trans "Map and reports" %}</strong>
+                    <small>{% trans "Expected areas for high user interest." %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Product value" %}</span>
+                    <strong>{% trans "Better navigation" %}</strong>
+                    <small>{% trans "Helps improve structure without inventing aviation data." %}</small>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="oi-board-layout">
+        <article class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Interpretation rule" %}</span>
+
+                <h3>{% trans "Feedback must stay separated from flight monitoring" %}</h3>
+
+                <p>
+                    {% trans "A user may complain about a confusing page even when operations are stable. Another user may give a good rating during a disruption. That is why feedback should be treated as experience data, not aviation truth." %}
+                </p>
+            </div>
+
+            <div class="oi-focus-card oi-posture-{{ supervision_class }}">
+                <span>{% trans "Operational baseline" %}</span>
+                <strong>{{ monitoring_mode }}</strong>
+                <p>
+                    {% trans "The operational posture continues to come from flight records, critical cases, attention records, route concentration and data source coverage." %}
+                </p>
+            </div>
+        </article>
+
+        <aside class="oi-card">
+            <div class="oi-section-head">
+                <span class="oi-kicker">{% trans "Future feedback signals" %}</span>
+                <h3>{% trans "What this module could measure" %}</h3>
+            </div>
+
+            <div class="oi-signal-list">
+                <div>
+                    <span>{% trans "Page clarity" %}</span>
+                    <strong>{% trans "Readable" %}</strong>
+                    <small>{% trans "Can users understand flight status and route information quickly?" %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Trust perception" %}</span>
+                    <strong>{% trans "Confidence" %}</strong>
+                    <small>{% trans "Do users understand whether data is synchronized, local or semi-real?" %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Navigation quality" %}</span>
+                    <strong>{% trans "Usability" %}</strong>
+                    <small>{% trans "Can users move between map, reports, routes and details without confusion?" %}</small>
+                </div>
+
+                <div>
+                    <span>{% trans "Public communication" %}</span>
+                    <strong>{% trans "Clarity" %}</strong>
+                    <small>{% trans "Can the platform explain delays, cancellations and recovery context clearly?" %}</small>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <section class="oi-card">
+        <div class="oi-section-head">
+            <span class="oi-kicker">{% trans "Conceptual workflow" %}</span>
+
+            <h3>{% trans "How feedback could be used later" %}</h3>
+
+            <p>
+                {% trans "The future module can collect user perception, classify feedback themes, and compare them with operational indicators without mixing the two data types." %}
+            </p>
+        </div>
+
+        <div class="oi-route-card-grid">
+            <article class="oi-route-card">
+                <span>{% trans "Step 1" %}</span>
+                <strong>{% trans "Collect" %}</strong>
+                <p>{% trans "Receive feedback about page clarity, public information, navigation and trust." %}</p>
+            </article>
+
+            <article class="oi-route-card">
+                <span>{% trans "Step 2" %}</span>
+                <strong>{% trans "Classify" %}</strong>
+                <p>{% trans "Group comments into themes such as map readability, report clarity or communication quality." %}</p>
+            </article>
+
+            <article class="oi-route-card">
+                <span>{% trans "Step 3" %}</span>
+                <strong>{% trans "Compare" %}</strong>
+                <p>{% trans "Compare perception with operational context only as supporting information." %}</p>
+            </article>
+
+            <article class="oi-route-card">
+                <span>{% trans "Step 4" %}</span>
+                <strong>{% trans "Improve" %}</strong>
+                <p>{% trans "Use feedback to improve interface design, wording and user confidence." %}</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="oi-card oi-defense-note">
+        <span class="oi-kicker">{% trans "Defense note" %}</span>
+
+        <h3>{% trans "How to defend this extension" %}</h3>
+
+        <p>
+            {% trans "Feedback Intelligence should be presented as a future usability and experience module. It is useful for improving public clarity, trust and navigation, but it must not be confused with certified aviation performance. The system can compare experience signals with operational indicators only as contextual support." %}
+        </p>
+    </section>
+</section>
+{% endblock %}
+

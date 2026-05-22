@@ -1,75 +1,459 @@
-{% extends 'base.html' %}
+﻿{% extends 'base_dashboard.html' %}
+{% load static i18n %}
 
-{% block title %}API Sync{% endblock %}
-{% block page_title %}API Synchronization{% endblock %}
+{% block title %}{% trans "Data Sync" %} | FlightLogos{% endblock %}
+
+{% block dashboard_title %}
+    {% trans "Data Sync" %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    {% trans "External aviation data synchronization and provider traceability." %}
+{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/integrations.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="table-box" style="margin-bottom: 20px;">
-    <h3 class="section-title">Run Flight Synchronization</h3>
+<section class="sync-page">
 
-    <form method="post">
-        {% csrf_token %}
-
-        <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px;">
-            <div>
-                <label>Flight IATA</label>
-                <input type="text" name="flight_iata" class="form-input" placeholder="AF101">
-            </div>
-
-            <div>
-                <label>Departure IATA</label>
-                <input type="text" name="dep_iata" class="form-input" placeholder="CDG">
-            </div>
-
-            <div>
-                <label>Arrival IATA</label>
-                <input type="text" name="arr_iata" class="form-input" placeholder="IST">
-            </div>
-
-            <div>
-                <label>Limit</label>
-                <input type="number" name="limit" class="form-input" value="10">
-            </div>
+    <header class="sync-hero">
+        <div class="sync-hero-copy">
+            <span class="sync-eyebrow">{% trans "Data synchronization" %}</span>
+            <h2>{% trans "Data Sync" %}</h2>
+            <p>
+                {% trans "Import external flight records, update the local database and verify whether synchronized data is ready for monitoring, analytics and operational supervision." %}
+            </p>
         </div>
 
-        <button type="submit" class="btn-back">Run Sync</button>
-    </form>
-</div>
+        <div class="sync-hero-actions">
+            <form method="post" action="{% url 'integrations:sync_page' %}" class="sync-inline-form">
+                {% csrf_token %}
+                <input type="hidden" name="limit" value="10">
 
-<div class="table-box">
-    <h3 class="section-title">Last Sync Logs</h3>
+                <button type="submit" class="sync-btn sync-btn-primary">
+                    {% trans "Run quick sync" %}
+                </button>
+            </form>
 
-    <table class="flights-table">
-        <thead>
-            <tr>
-                <th>Provider</th>
-                <th>Type</th>
-                <th>Status</th>
-                <th>Received</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th>Started</th>
-                <th>Finished</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for log in logs %}
-            <tr>
-                <td>{{ log.provider_name }}</td>
-                <td>{{ log.sync_type }}</td>
-                <td>{{ log.status }}</td>
-                <td>{{ log.records_received }}</td>
-                <td>{{ log.records_created }}</td>
-                <td>{{ log.records_updated }}</td>
-                <td>{{ log.started_at|date:"Y-m-d H:i" }}</td>
-                <td>{{ log.finished_at|date:"Y-m-d H:i" }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="8">No sync logs available.</td>
-            </tr>
+            <a href="{% url 'integrations:sync_page' %}" class="sync-btn sync-btn-soft">
+                {% trans "Refresh" %}
+            </a>
+        </div>
+    </header>
+
+    {% if messages %}
+        <section class="sync-messages">
+            {% for message in messages %}
+                <article class="sync-message {% if message.tags == 'error' %}is-error{% else %}is-success{% endif %}">
+                    <span>
+                        {% if message.tags == 'error' %}
+                            !
+                        {% else %}
+                            âœ“
+                        {% endif %}
+                    </span>
+
+                    <p>{{ message }}</p>
+                </article>
             {% endfor %}
-        </tbody>
-    </table>
-</div>
+        </section>
+    {% endif %}
+
+    <section class="sync-status-grid">
+        <article class="sync-status-card is-blue">
+            <span>{% trans "Latest run" %}</span>
+
+            <strong>
+                {% if latest_log %}
+                    {{ latest_log.started_at|date:"H:i" }} UTC
+                {% else %}
+                    â€”
+                {% endif %}
+            </strong>
+
+            <p>
+                {% if latest_log %}
+                    {{ latest_log.started_at|date:"Y-m-d" }}
+                {% else %}
+                    {% trans "No synchronization recorded yet" %}
+                {% endif %}
+            </p>
+        </article>
+
+        <article class="sync-status-card is-green">
+            <span>{% trans "Records received" %}</span>
+            <strong>{{ total_received|default:0 }}</strong>
+            <p>{% trans "External records returned by providers" %}</p>
+        </article>
+
+        <article class="sync-status-card is-amber">
+            <span>{% trans "Created / updated" %}</span>
+            <strong>{{ total_created|default:0 }} / {{ total_updated|default:0 }}</strong>
+            <p>{% trans "Database records affected by synchronization" %}</p>
+        </article>
+
+        <article class="sync-status-card is-red">
+            <span>{% trans "Review runs" %}</span>
+            <strong>{{ failed_count|default:0 }}</strong>
+            <p>{% trans "Runs requiring provider or configuration review" %}</p>
+        </article>
+    </section>
+
+    <section class="sync-main-grid">
+
+        <article class="sync-panel sync-import-panel" id="run-sync">
+            <div class="sync-panel-head sync-panel-head-row">
+                <div>
+                    <span class="sync-chip">{% trans "Controlled import" %}</span>
+                    <h3>{% trans "Run flight synchronization" %}</h3>
+                    <p>
+                        {% trans "Use flight number, departure airport or arrival airport to request a focused import from the external provider." %}
+                    </p>
+                </div>
+
+                <span class="sync-health-pill sync-health-{{ provider_health_class|default:'neutral' }}">
+                    {{ provider_health|default:_("Provider status") }}
+                </span>
+            </div>
+
+            <form method="post" action="{% url 'integrations:sync_page' %}" class="sync-form">
+                {% csrf_token %}
+
+                <div class="sync-field">
+                    <label for="flight_iata">{% trans "Flight" %}</label>
+                    <input
+                        id="flight_iata"
+                        type="text"
+                        name="flight_iata"
+                        class="sync-input"
+                        placeholder="AF101"
+                        maxlength="12"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="sync-field">
+                    <label for="dep_iata">{% trans "Departure" %}</label>
+                    <input
+                        id="dep_iata"
+                        type="text"
+                        name="dep_iata"
+                        class="sync-input"
+                        placeholder="CDG"
+                        maxlength="3"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="sync-field">
+                    <label for="arr_iata">{% trans "Arrival" %}</label>
+                    <input
+                        id="arr_iata"
+                        type="text"
+                        name="arr_iata"
+                        class="sync-input"
+                        placeholder="IST"
+                        maxlength="3"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <div class="sync-field">
+                    <label for="limit">{% trans "Limit" %}</label>
+                    <input
+                        id="limit"
+                        type="number"
+                        name="limit"
+                        class="sync-input"
+                        value="10"
+                        min="1"
+                        max="100"
+                    >
+                </div>
+
+                <div class="sync-form-actions">
+                    <button type="submit" class="sync-btn sync-btn-primary">
+                        {% trans "Start import" %}
+                    </button>
+
+                    <a href="/flights/" class="sync-btn sync-btn-soft">
+                        {% trans "Flight records" %}
+                    </a>
+
+                    <a href="/analytics/" class="sync-btn sync-btn-soft">
+                        {% trans "Open analytics" %}
+                    </a>
+                </div>
+            </form>
+        </article>
+
+        <article class="sync-panel sync-providers-panel">
+            <div class="sync-panel-head">
+                <div>
+                    <span class="sync-chip">{% trans "Providers" %}</span>
+                    <h3>{% trans "External data sources" %}</h3>
+                    <p>{% trans "Sources used by the platform for flights, airports and operational enrichment." %}</p>
+                </div>
+            </div>
+
+            <div class="sync-provider-list">
+                <article class="sync-provider-card is-active">
+                    <span class="sync-provider-dot"></span>
+
+                    <div>
+                        <strong>Aviationstack</strong>
+                        <p>{% trans "Flight records, statuses and route data" %}</p>
+                    </div>
+
+                    <small>{% trans "Active" %}</small>
+                </article>
+
+                <article class="sync-provider-card is-active">
+                    <span class="sync-provider-dot"></span>
+
+                    <div>
+                        <strong>AirLabs</strong>
+                        <p>{% trans "Airport reference enrichment" %}</p>
+                    </div>
+
+                    <small>{% trans "Active" %}</small>
+                </article>
+
+                <article class="sync-provider-card is-watch">
+                    <span class="sync-provider-dot"></span>
+
+                    <div>
+                        <strong>OpenSky Network</strong>
+                        <p>{% trans "Aircraft positions when available" %}</p>
+                    </div>
+
+                    <small>{% trans "Watch" %}</small>
+                </article>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="sync-operations-grid">
+
+        <article class="sync-panel sync-reading-panel">
+            <div class="sync-panel-head">
+                <div>
+                    <span class="sync-chip">{% trans "Readiness" %}</span>
+                    <h3>{% trans "Synchronization readiness" %}</h3>
+                    <p>{% trans "Operational reading of provider availability and recent synchronization quality." %}</p>
+                </div>
+            </div>
+
+            <div class="sync-reading-list">
+                <div class="sync-reading-item">
+                    <div>
+                        <span>{% trans "Success rate" %}</span>
+                        <strong>{{ success_rate|default:0 }}%</strong>
+                    </div>
+
+                    <progress
+                        class="sync-progress-native sync-progress-success"
+                        value="{{ success_rate|default:0 }}"
+                        max="100"
+                        aria-label="{% trans 'Success rate' %}"
+                    ></progress>
+                </div>
+
+                <div class="sync-reading-item">
+                    <div>
+                        <span>{% trans "Review rate" %}</span>
+                        <strong>{{ failure_rate|default:0 }}%</strong>
+                    </div>
+
+                    <progress
+                        class="sync-progress-native sync-progress-review"
+                        value="{{ failure_rate|default:0 }}"
+                        max="100"
+                        aria-label="{% trans 'Review rate' %}"
+                    ></progress>
+                </div>
+
+                <div class="sync-reading-summary">
+                    <article>
+                        <span>{% trans "Latest status" %}</span>
+
+                        <strong>
+                            {% if latest_log %}
+                                {% if latest_log.status == "success" %}
+                                    {% trans "Ready" %}
+                                {% elif latest_log.status == "failed" %}
+                                    {% trans "Review" %}
+                                {% else %}
+                                    {{ latest_log.status|title }}
+                                {% endif %}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </article>
+
+                    <article>
+                        <span>{% trans "Provider" %}</span>
+
+                        <strong>
+                            {% if latest_log %}
+                                {{ latest_log.provider_name }}
+                            {% else %}
+                                {{ latest_provider|default:"aviationstack" }}
+                            {% endif %}
+                        </strong>
+                    </article>
+
+                    <article>
+                        <span>{% trans "Average duration" %}</span>
+
+                        <strong>
+                            {% if average_duration_seconds %}
+                                {{ average_duration_seconds }}s
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </article>
+                </div>
+
+                <div class="sync-reading-note">
+                    {{ provider_health_reason|default:_("Run a controlled import before using external records for operational review.") }}
+                </div>
+            </div>
+        </article>
+
+        <article class="sync-panel sync-log-panel" id="sync-logs">
+            <div class="sync-panel-head sync-panel-head-row">
+                <div>
+                    <span class="sync-chip">{% trans "Activity" %}</span>
+                    <h3>{% trans "Recent synchronization activity" %}</h3>
+                    <p>{% trans "Latest synchronization runs and provider responses." %}</p>
+                </div>
+
+                <span class="sync-mini-note">
+                    {{ total_runs|default:0 }} {% trans "runs" %}
+                </span>
+            </div>
+
+            <div class="sync-log-list">
+                {% for log in logs|slice:":5" %}
+                    <article class="sync-log-item">
+                        <div class="sync-log-main">
+                            <strong>{{ log.provider_name }}</strong>
+                            <p>
+                                {{ log.started_at|date:"Y-m-d H:i" }}
+                                Â·
+                                {% if log.duration_seconds %}
+                                    {{ log.duration_seconds }}s
+                                {% else %}
+                                    â€”
+                                {% endif %}
+                            </p>
+                        </div>
+
+                        <div class="sync-log-numbers">
+                            <span>{{ log.records_received }} {% trans "received" %}</span>
+                            <span>{{ log.records_created }} {% trans "created" %}</span>
+                            <span>{{ log.records_updated }} {% trans "updated" %}</span>
+                        </div>
+
+                        <span class="sync-status-badge {% if log.status == 'success' %}is-success{% elif log.status == 'failed' %}is-review{% else %}is-warning{% endif %}">
+                            {% if log.status == "success" %}
+                                {% trans "Ready" %}
+                            {% elif log.status == "failed" %}
+                                {% trans "Review" %}
+                            {% else %}
+                                {{ log.status|title }}
+                            {% endif %}
+                        </span>
+                    </article>
+                {% empty %}
+                    <div class="sync-empty-state">
+                        {% trans "No synchronization activity yet." %}
+                    </div>
+                {% endfor %}
+            </div>
+        </article>
+
+    </section>
+
+    <section class="sync-panel sync-detail-panel">
+        <div class="sync-panel-head sync-panel-head-row">
+            <div>
+                <span class="sync-chip">{% trans "Traceability" %}</span>
+                <h3>{% trans "Synchronization trace" %}</h3>
+                <p>
+                    {% trans "Compact audit table for the latest provider responses and imported record counts." %}
+                </p>
+            </div>
+
+            <span class="sync-mini-note">{% trans "Latest records" %}</span>
+        </div>
+
+        <div class="sync-trace-table-wrap">
+            <table class="sync-trace-table">
+                <thead>
+                    <tr>
+                        <th>{% trans "Provider" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th>{% trans "Received" %}</th>
+                        <th>{% trans "Created" %}</th>
+                        <th>{% trans "Updated" %}</th>
+                        <th>{% trans "Started" %}</th>
+                        <th>{% trans "Message" %}</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for log in logs|slice:":5" %}
+                        <tr>
+                            <td>{{ log.provider_name }}</td>
+
+                            <td>
+                                <span class="sync-status-badge {% if log.status == 'success' %}is-success{% elif log.status == 'failed' %}is-review{% else %}is-warning{% endif %}">
+                                    {% if log.status == "success" %}
+                                        {% trans "Ready" %}
+                                    {% elif log.status == "failed" %}
+                                        {% trans "Review" %}
+                                    {% else %}
+                                        {{ log.status|title }}
+                                    {% endif %}
+                                </span>
+                            </td>
+
+                            <td>{{ log.records_received }}</td>
+                            <td>{{ log.records_created }}</td>
+                            <td>{{ log.records_updated }}</td>
+                            <td>{{ log.started_at|date:"Y-m-d H:i" }}</td>
+
+                            <td class="sync-trace-message">
+                                {% if log.status == "failed" %}
+                                    {% if log.message %}
+                                        {{ log.message }}
+                                    {% else %}
+                                        {% trans "Provider response requires review." %}
+                                    {% endif %}
+                                {% else %}
+                                    {% trans "Synchronization completed successfully." %}
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="sync-empty-cell">
+                                {% trans "No synchronization details available." %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</section>
 {% endblock %}
+

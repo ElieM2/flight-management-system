@@ -1,0 +1,95 @@
+﻿{% load i18n %}
+
+<nav class="oi-product-nav" aria-label="{% trans 'Operational Intelligence navigation' %}">
+    <div class="oi-product-nav__brand">
+        <span>{% trans "Operational Intelligence" %}</span>
+        <small>
+            {% trans "Traffic pressure, route exposure, disruption signals and data confidence." %}
+        </small>
+    </div>
+
+    <div class="oi-product-nav__links">
+        <a href="{% url 'analytics:home' %}"
+           class="{% if request.resolver_match.url_name == 'home' %}is-active{% endif %}">
+            {% trans "Overview" %}
+        </a>
+
+        <a href="{% url 'analytics:charts' %}"
+           class="{% if request.resolver_match.url_name == 'charts' %}is-active{% endif %}">
+            {% trans "Charts" %}
+        </a>
+
+        <a href="{% url 'analytics:reports' %}"
+           class="{% if request.resolver_match.url_name == 'reports' %}is-active{% endif %}">
+            {% trans "Reports" %}
+        </a>
+
+        <a href="{% url 'analytics:routes' %}"
+           class="{% if request.resolver_match.url_name == 'routes' %}is-active{% endif %}">
+            {% trans "Routes" %}
+        </a>
+
+        <a href="{% url 'analytics:reliability' %}"
+           class="{% if request.resolver_match.url_name == 'reliability' %}is-active{% endif %}">
+            {% trans "Data Quality" %}
+        </a>
+    </div>
+
+    <form method="get" action="{{ request.path }}" class="oi-filter-block">
+        <p class="oi-filter-title">{% trans "Filters" %}</p>
+
+        <div class="oi-sidebar-field">
+            <label for="oi-airline">{% trans "Airline" %}</label>
+            <select
+                id="oi-airline"
+                name="airline"
+                data-current-value="{{ request.GET.airline|default:'' }}"
+            >
+                <option value="">{% trans "All airlines" %}</option>
+
+                {% for item in top_airlines %}
+                    <option value="{{ item.name }}">{{ item.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="oi-sidebar-field">
+            <label for="oi-status">{% trans "Status" %}</label>
+            <select
+                id="oi-status"
+                name="status"
+                data-current-value="{{ request.GET.status|default:'' }}"
+            >
+                <option value="">{% trans "All statuses" %}</option>
+
+                {% for label in status_labels %}
+                    <option value="{{ label }}">{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="oi-sidebar-field">
+            <label for="oi-source">{% trans "Source" %}</label>
+            <select
+                id="oi-source"
+                name="source"
+                data-current-value="{{ request.GET.source|default:'' }}"
+            >
+                <option value="">{% trans "All sources" %}</option>
+                <option value="api">API</option>
+                <option value="local">{% trans "Local" %}</option>
+            </select>
+        </div>
+
+        <div class="oi-sidebar-actions">
+            <button type="submit">
+                {% trans "Apply" %}
+            </button>
+
+            <a href="{{ request.path }}">
+                {% trans "Reset" %}
+            </a>
+        </div>
+    </form>
+</nav>
+

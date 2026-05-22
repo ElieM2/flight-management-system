@@ -1,0 +1,316 @@
+﻿{% extends "base_public.html" %}
+{% load static %}
+
+{% block title %}{{ airport.name }} | FlightLogos{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/public_airport_detail.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="airport-detail-page">
+    <header class="airport-detail-header">
+        <div class="airport-detail-breadcrumb">
+            <a href="{% url 'airports:airport_list' %}">Airports</a>
+            <span>/</span>
+            <span>{{ airport.name }}</span>
+        </div>
+
+        <div class="airport-detail-header-main">
+            <div>
+                <h1>{{ airport.name }}</h1>
+                <p>
+                    Airport operational profile, reference data, location readiness and linked flight activity.
+                </p>
+            </div>
+
+            <div class="airport-detail-header-actions">
+                {% if airport.has_coordinates %}
+                    <a href="/monitoring/map/?airport={{ airport.iata_code }}" class="airport-detail-primary-action">
+                        Open Map
+                    </a>
+                {% endif %}
+
+                <a href="{% url 'airports:airport_list' %}" class="airport-detail-secondary-action">
+                    Back to Airports
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section class="airport-profile-card">
+        <div class="airport-profile-main">
+            <span class="airport-profile-avatar">
+                {{ airport.iata_code|default:"AP" }}
+            </span>
+
+            <div>
+                <h2>{{ airport.name }}</h2>
+
+                <div class="airport-profile-codes">
+                    <span>{{ airport.iata_code|default:"â€”" }}</span>
+                    <span>{{ airport.icao_code|default:"â€”" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="airport-profile-grid">
+            <div>
+                <span>Status</span>
+                {% if airport.is_active %}
+                    <strong class="airport-status airport-status-active">
+                        <span></span>
+                        Active
+                    </strong>
+                {% else %}
+                    <strong class="airport-status airport-status-inactive">
+                        <span></span>
+                        Inactive
+                    </strong>
+                {% endif %}
+            </div>
+
+            <div>
+                <span>City</span>
+                <strong>
+                    {% if airport.has_city %}
+                        {{ airport.display_city }}
+                    {% else %}
+                        Location not specified
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div>
+                <span>Country</span>
+                <strong>
+                    {% if airport.has_country %}
+                        {{ airport.display_country }}
+                    {% else %}
+                        Country not specified
+                    {% endif %}
+                </strong>
+            </div>
+
+            <div>
+                <span>Coordinates</span>
+                {% if airport.has_coordinates %}
+                    <strong>{{ airport.latitude }}, {{ airport.longitude }}</strong>
+                {% else %}
+                    <strong class="airport-muted-value">Missing</strong>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <section class="airport-detail-kpi-grid">
+        <article class="airport-detail-kpi-card">
+            <span>Total Flights</span>
+            <strong>{{ total_flights }}</strong>
+            <p>Linked to this airport</p>
+        </article>
+
+        <article class="airport-detail-kpi-card">
+            <span>Departures</span>
+            <strong>{{ departure_count }}</strong>
+            <p>Detected outbound relation</p>
+        </article>
+
+        <article class="airport-detail-kpi-card">
+            <span>Arrivals</span>
+            <strong>{{ arrival_count }}</strong>
+            <p>Detected inbound relation</p>
+        </article>
+
+        <article class="airport-detail-kpi-card">
+            <span>Data Score</span>
+            <strong>{{ data_quality_score }}%</strong>
+            <p>{{ data_quality_label }} airport data</p>
+        </article>
+    </section>
+
+    <section class="airport-detail-grid">
+        <article class="airport-panel airport-info-panel">
+            <div class="airport-panel-head">
+                <div>
+                    <span>Identity</span>
+                    <h2>Airport information</h2>
+                </div>
+            </div>
+
+            <div class="airport-info-list">
+                <div>
+                    <span>Name</span>
+                    <strong>{{ airport.name }}</strong>
+                </div>
+
+                <div>
+                    <span>IATA Code</span>
+                    <strong>{{ airport.iata_code|default:"â€”" }}</strong>
+                </div>
+
+                <div>
+                    <span>ICAO Code</span>
+                    <strong>{{ airport.icao_code|default:"â€”" }}</strong>
+                </div>
+
+                <div>
+                    <span>City</span>
+                    <strong>{{ airport.display_city }}</strong>
+                </div>
+
+                <div>
+                    <span>Country</span>
+                    <strong>{{ airport.display_country }}</strong>
+                </div>
+
+                <div>
+                    <span>Latitude</span>
+                    {% if airport.has_coordinates %}
+                        <strong>{{ airport.latitude }}</strong>
+                    {% else %}
+                        <strong class="airport-muted-value">Missing</strong>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <span>Longitude</span>
+                    {% if airport.has_coordinates %}
+                        <strong>{{ airport.longitude }}</strong>
+                    {% else %}
+                        <strong class="airport-muted-value">Missing</strong>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <span>Record status</span>
+                    {% if airport.is_active %}
+                        <strong>Active</strong>
+                    {% else %}
+                        <strong>Inactive</strong>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+
+        <article class="airport-panel airport-quality-panel">
+            <div class="airport-panel-head">
+                <div>
+                    <span>Data readiness</span>
+                    <h2>Reference quality</h2>
+                </div>
+            </div>
+
+            <div class="airport-quality-score">
+                {% if data_quality_level == "complete" %}
+                    <span class="airport-quality-badge airport-quality-complete">
+                        {{ data_quality_label }}
+                    </span>
+                {% elif data_quality_level == "partial" %}
+                    <span class="airport-quality-badge airport-quality-partial">
+                        {{ data_quality_label }}
+                    </span>
+                {% else %}
+                    <span class="airport-quality-badge airport-quality-minimal">
+                        {{ data_quality_label }}
+                    </span>
+                {% endif %}
+
+                <strong>{{ data_quality_score }}%</strong>
+            </div>
+
+            <div class="airport-quality-progress">
+                <span style="width: {{ data_quality_score }}%;"></span>
+            </div>
+
+            <div class="airport-missing-fields">
+                <span>Missing fields</span>
+
+                <div>
+                    {% if missing_data_fields %}
+                        {% for field in missing_data_fields %}
+                            <small>{{ field }}</small>
+                        {% endfor %}
+                    {% else %}
+                        <small>No missing core fields</small>
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="airport-panel airport-flights-panel">
+        <div class="airport-panel-head airport-panel-head-split">
+            <div>
+                <span>Operations</span>
+                <h2>Recent linked flights</h2>
+            </div>
+
+            <div class="airport-flight-summary">
+                <span>{{ active_flights }} active</span>
+                <span>{{ disrupted_flights }} disrupted</span>
+            </div>
+        </div>
+
+        <div class="airport-table-wrap">
+            <table class="airport-flights-table">
+                <thead>
+                    <tr>
+                        <th>Flight</th>
+                        <th>Airline</th>
+                        <th>Route</th>
+                        <th>Schedule</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for flight in recent_flights %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'flights:flight_detail' flight.pk %}">
+                                    {{ flight.flight_number }}
+                                </a>
+                            </td>
+
+                            <td>
+                                {% if flight.airline %}
+                                    {{ flight.airline.name }}
+                                {% else %}
+                                    â€”
+                                {% endif %}
+                            </td>
+
+                            <td>{{ flight.display_route }}</td>
+
+                            <td>
+                                {% if flight.scheduled_departure %}
+                                    {{ flight.scheduled_departure|date:"M d, H:i" }}
+                                {% else %}
+                                    â€”
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                <span class="flight-status flight-status-{{ flight.status }}">
+                                    {{ flight.get_status_display }}
+                                </span>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5">
+                                <div class="airport-empty-state">
+                                    <h3>No linked flights</h3>
+                                    <p>No recent flight is currently associated with this airport.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</section>
+{% endblock %}
+

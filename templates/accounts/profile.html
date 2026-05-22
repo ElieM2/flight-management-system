@@ -1,0 +1,686 @@
+﻿{% extends 'base_dashboard.html' %}
+{% load static %}
+
+{% block title %}Account | FlightLogos{% endblock %}
+{% block dashboard_title %}Account{% endblock %}
+{% block dashboard_subtitle %}Profile information and operational access.{% endblock %}
+
+{% block extra_head %}
+<style>
+    .account-page {
+        width: min(1160px, calc(100% - 48px));
+        margin: 0 auto;
+        padding: 28px 0 54px;
+        color: #0f172a;
+    }
+
+    .account-page,
+    .account-page * {
+        box-sizing: border-box;
+    }
+
+    .account-page a {
+        text-decoration: none;
+    }
+
+    .account-shell {
+        display: grid;
+        grid-template-columns: 300px minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+    }
+
+    .account-card,
+    .account-panel,
+    .account-toolbar {
+        background: #ffffff;
+        border: 1px solid #d7e0ec;
+        border-radius: 14px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.055);
+    }
+
+    .account-card {
+        overflow: hidden;
+    }
+
+    .account-cover {
+        height: 82px;
+        background:
+            linear-gradient(135deg, #0f172a 0%, #1d3d8f 58%, #2563eb 100%);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .account-card-body {
+        padding: 0 18px 18px;
+    }
+
+    .account-user-head {
+        display: grid;
+        grid-template-columns: 76px minmax(0, 1fr);
+        gap: 13px;
+        align-items: end;
+        margin-top: -35px;
+    }
+
+    .account-avatar {
+        width: 76px;
+        height: 76px;
+        border-radius: 15px;
+        overflow: hidden;
+        display: grid;
+        place-items: center;
+        background: #eff6ff;
+        border: 4px solid #ffffff;
+        box-shadow: 0 12px 22px rgba(15, 23, 42, 0.14);
+        color: #1d4ed8;
+    }
+
+    .account-avatar img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+    }
+
+    .account-avatar span {
+        font-size: 29px;
+        font-weight: 700;
+    }
+
+    .account-user-title {
+        min-width: 0;
+        padding-bottom: 4px;
+    }
+
+    .account-user-title h2 {
+        margin: 0;
+        color: #0f172a;
+        font-size: 23px;
+        line-height: 1.05;
+        font-weight: 650;
+        letter-spacing: -0.03em;
+    }
+
+    .account-user-title p {
+        margin: 6px 0 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.45;
+        word-break: break-word;
+    }
+
+    .account-status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        min-height: 38px;
+        padding: 0 11px;
+        border-radius: 10px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        color: #0f172a;
+        font-size: 12px;
+        font-weight: 650;
+    }
+
+    .account-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+    }
+
+    .account-summary {
+        display: grid;
+        gap: 9px;
+        margin-top: 14px;
+    }
+
+    .account-summary-row {
+        display: grid;
+        grid-template-columns: 86px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+        min-height: 43px;
+        padding: 10px 11px;
+        border-radius: 10px;
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+    }
+
+    .account-summary-row span {
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+    }
+
+    .account-summary-row strong {
+        color: #0f172a;
+        font-size: 12px;
+        line-height: 1.35;
+        font-weight: 650;
+        text-align: right;
+        word-break: break-word;
+    }
+
+    .account-main {
+        display: grid;
+        gap: 16px;
+    }
+
+    .account-topbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 18px;
+        padding: 18px 20px;
+        background: #ffffff;
+        border: 1px solid #d7e0ec;
+        border-radius: 14px;
+        box-shadow: 0 12px 28px rgba(15, 23, 42, 0.055);
+    }
+
+    .account-label {
+        display: inline-flex;
+        align-items: center;
+        width: fit-content;
+        min-height: 22px;
+        padding: 0 9px;
+        border-radius: 999px;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1d4ed8;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .account-topbar h1 {
+        margin: 10px 0 5px;
+        color: #0f172a;
+        font-size: 28px;
+        line-height: 1.08;
+        font-weight: 680;
+        letter-spacing: -0.035em;
+    }
+
+    .account-topbar p {
+        margin: 0;
+        max-width: 660px;
+        color: #475569;
+        font-size: 13px;
+        line-height: 1.55;
+    }
+
+    .account-access-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 999px;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .account-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 16px;
+    }
+
+    .account-panel {
+        padding: 18px;
+    }
+
+    .account-panel-head {
+        padding-bottom: 13px;
+        margin-bottom: 13px;
+        border-bottom: 1px solid #e2e8f0;
+    }
+
+    .account-panel-head h3 {
+        margin: 9px 0 5px;
+        color: #0f172a;
+        font-size: 19px;
+        line-height: 1.18;
+        font-weight: 680;
+        letter-spacing: -0.025em;
+    }
+
+    .account-panel-head p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .account-info-list {
+        display: grid;
+        gap: 9px;
+    }
+
+    .account-info-row {
+        display: grid;
+        grid-template-columns: 120px minmax(0, 1fr);
+        gap: 12px;
+        align-items: center;
+        min-height: 43px;
+        padding: 10px 11px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .account-info-row span {
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+    }
+
+    .account-info-row strong {
+        color: #0f172a;
+        font-size: 12px;
+        line-height: 1.4;
+        font-weight: 650;
+        text-align: right;
+        word-break: break-word;
+    }
+
+    .account-access-list {
+        display: grid;
+        gap: 9px;
+    }
+
+    .account-access-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 128px;
+        gap: 14px;
+        align-items: center;
+        min-height: 58px;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #e2e8f0;
+        background: #f8fafc;
+    }
+
+    .account-access-row span {
+        display: block;
+        margin-bottom: 4px;
+        color: #64748b;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.075em;
+        text-transform: uppercase;
+    }
+
+    .account-access-row p {
+        margin: 0;
+        color: #475569;
+        font-size: 12px;
+        line-height: 1.45;
+    }
+
+    .account-access-row strong {
+        color: #0f172a;
+        font-size: 12px;
+        font-weight: 650;
+        text-align: right;
+    }
+
+    .account-toolbar {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 18px;
+        align-items: center;
+        padding: 18px 20px;
+    }
+
+    .account-toolbar h3 {
+        margin: 9px 0 5px;
+        color: #0f172a;
+        font-size: 19px;
+        line-height: 1.2;
+        font-weight: 680;
+        letter-spacing: -0.025em;
+    }
+
+    .account-toolbar p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .account-actions {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 9px;
+        flex-wrap: wrap;
+    }
+
+    .account-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 10px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 650;
+        transition: 0.18s ease;
+        white-space: nowrap;
+    }
+
+    .account-btn:hover {
+        transform: translateY(-1px);
+    }
+
+    .account-btn-primary {
+        background: #2563eb;
+        color: #ffffff;
+        box-shadow: 0 10px 20px rgba(37, 99, 235, 0.15);
+    }
+
+    .account-btn-primary:hover {
+        background: #1d4ed8;
+        color: #ffffff;
+    }
+
+    .account-btn-light {
+        background: #ffffff;
+        color: #0f172a;
+        border-color: #cbd5e1;
+    }
+
+    .account-btn-light:hover {
+        background: #f8fafc;
+        color: #0f172a;
+    }
+
+    .account-btn-danger {
+        background: #fff1f2;
+        color: #991b1b;
+        border-color: #fecdd3;
+    }
+
+    .account-btn-danger:hover {
+        background: #fee2e2;
+        color: #7f1d1d;
+    }
+
+    @media (max-width: 1080px) {
+        .account-shell,
+        .account-grid,
+        .account-topbar,
+        .account-toolbar {
+            grid-template-columns: 1fr;
+        }
+
+        .account-access-pill,
+        .account-actions {
+            justify-content: flex-start;
+        }
+    }
+
+    @media (max-width: 720px) {
+        .account-page {
+            width: min(100% - 28px, 100%);
+            padding: 20px 0 42px;
+        }
+
+        .account-user-head {
+            grid-template-columns: 1fr;
+            align-items: start;
+        }
+
+        .account-info-row,
+        .account-access-row,
+        .account-summary-row {
+            grid-template-columns: 1fr;
+            gap: 5px;
+        }
+
+        .account-info-row strong,
+        .account-access-row strong,
+        .account-summary-row strong {
+            text-align: left;
+        }
+
+        .account-actions {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .account-btn {
+            width: 100%;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="account-page">
+
+    <section class="account-shell">
+
+        <aside class="account-card">
+            <div class="account-cover"></div>
+
+            <div class="account-card-body">
+                <div class="account-user-head">
+                    <div class="account-avatar">
+                        {% if profile_obj.avatar %}
+                            <img src="{{ profile_obj.avatar.url }}" alt="{{ user_obj.username }}">
+                        {% else %}
+                            <span>{{ user_obj.username|default:"U"|slice:":1"|upper }}</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="account-user-title">
+                        <h2>{{ user_obj.username }}</h2>
+                        <p>
+                            {% if user_obj.email %}
+                                {{ user_obj.email }}
+                            {% else %}
+                                Email not provided
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="account-status">
+                    <span class="account-status-dot"></span>
+                    {% if user_obj.is_active %}
+                        Active account
+                    {% else %}
+                        Inactive account
+                    {% endif %}
+                </div>
+
+                <div class="account-summary">
+                    <div class="account-summary-row">
+                        <span>Role</span>
+                        <strong>
+                            {% if user_obj.is_staff %}
+                                Operator
+                            {% else %}
+                                {{ profile_obj.get_role_display }}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="account-summary-row">
+                        <span>Access</span>
+                        <strong>
+                            {% if user_obj.is_staff %}
+                                Staff access
+                            {% else %}
+                                Standard access
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="account-summary-row">
+                        <span>Area</span>
+                        <strong>
+                            {% if user_obj.is_staff %}
+                                Operations
+                            {% else %}
+                                Standard
+                            {% endif %}
+                        </strong>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="account-main">
+
+            <section class="account-topbar">
+                <div>
+                    <span class="account-label">Account</span>
+                    <h1>Operator profile</h1>
+                    <p>
+                        Account information used inside the FlightLogos operations workspace.
+                        Keep this profile updated for supervision, reporting and data control.
+                    </p>
+                </div>
+
+                <span class="account-access-pill">
+                    {% if user_obj.is_staff %}
+                        Staff access enabled
+                    {% else %}
+                        Standard access enabled
+                    {% endif %}
+                </span>
+            </section>
+
+            <section class="account-grid">
+                <article class="account-panel">
+                    <div class="account-panel-head">
+                        <span class="account-label">Profile</span>
+                        <h3>Personal information</h3>
+                        <p>Main user details attached to this account.</p>
+                    </div>
+
+                    <div class="account-info-list">
+                        <div class="account-info-row">
+                            <span>Username</span>
+                            <strong>{{ user_obj.username }}</strong>
+                        </div>
+
+                        <div class="account-info-row">
+                            <span>Email</span>
+                            <strong>{{ user_obj.email|default:"Not provided" }}</strong>
+                        </div>
+
+                        <div class="account-info-row">
+                            <span>First name</span>
+                            <strong>{{ user_obj.first_name|default:"Not provided" }}</strong>
+                        </div>
+
+                        <div class="account-info-row">
+                            <span>Last name</span>
+                            <strong>{{ user_obj.last_name|default:"Not provided" }}</strong>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="account-panel">
+                    <div class="account-panel-head">
+                        <span class="account-label">Access</span>
+                        <h3>Operational access</h3>
+                        <p>Role and access information for the private workspace.</p>
+                    </div>
+
+                    <div class="account-access-list">
+                        <div class="account-access-row">
+                            <div>
+                                <span>Role</span>
+                                <p>Current account role in the platform.</p>
+                            </div>
+                            <strong>
+                                {% if user_obj.is_staff %}
+                                    Operator
+                                {% else %}
+                                    {{ profile_obj.get_role_display }}
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                        <div class="account-access-row">
+                            <div>
+                                <span>Access level</span>
+                                <p>Workspace permissions available to the account.</p>
+                            </div>
+                            <strong>
+                                {% if user_obj.is_staff %}
+                                    Staff access
+                                {% else %}
+                                    Standard access
+                                {% endif %}
+                            </strong>
+                        </div>
+
+                        <div class="account-access-row">
+                            <div>
+                                <span>Company</span>
+                                <p>Organization linked to the account.</p>
+                            </div>
+                            <strong>{{ profile_obj.company|default:"Not provided" }}</strong>
+                        </div>
+
+                        <div class="account-access-row">
+                            <div>
+                                <span>Phone</span>
+                                <p>Contact number for operational communication.</p>
+                            </div>
+                            <strong>{{ profile_obj.phone|default:"Not provided" }}</strong>
+                        </div>
+                    </div>
+                </article>
+            </section>
+
+            <section class="account-toolbar">
+                <div>
+                    <span class="account-label">Actions</span>
+                    <h3>Account options</h3>
+                    <p>Update profile details, return to operations or close the current session.</p>
+                </div>
+
+                <div class="account-actions">
+                    <a href="{% url 'accounts:edit_profile' %}" class="account-btn account-btn-primary">
+                        Edit profile
+                    </a>
+
+                    <a href="{% url 'dashboard:dashboard' %}" class="account-btn account-btn-light">
+                        Operations Center
+                    </a>
+
+                    <a href="{% url 'accounts:logout' %}" class="account-btn account-btn-danger">
+                        Logout
+                    </a>
+                </div>
+            </section>
+
+        </main>
+
+    </section>
+
+</section>
+{% endblock %}
+

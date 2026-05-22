@@ -1,0 +1,975 @@
+﻿{% extends 'base_public.html' %}
+{% load static i18n %}
+
+{% block title %}{{ airline.name }} | FlightLogos{% endblock %}
+{% block body_class %}public-reference-body{% endblock %}
+
+{% block extra_head %}
+<style>
+/* =========================================================
+   FLIGHTLOGOS - AIRLINE DETAIL
+   Real compact operational profile
+========================================================= */
+
+.airline-detail-page {
+    min-height: 100vh;
+    padding: 22px 0 44px;
+    background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.055), transparent 30%),
+        linear-gradient(180deg, #f8fafc 0%, #eef3f9 100%);
+    color: var(--public-shell-text, #0f172a);
+}
+
+html[data-theme="dark"] .airline-detail-page {
+    background:
+        radial-gradient(circle at 10% 0%, rgba(59, 130, 246, 0.14), transparent 32%),
+        linear-gradient(180deg, #07111f 0%, #0b1422 100%);
+}
+
+.airline-detail-page,
+.airline-detail-page * {
+    box-sizing: border-box;
+}
+
+.airline-detail-page a {
+    text-decoration: none;
+}
+
+.airline-detail-shell {
+    width: min(1320px, calc(100% - 44px));
+    margin: 0 auto;
+    display: grid;
+    gap: 14px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.airline-detail-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 4px 0 8px;
+}
+
+.airline-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.airline-breadcrumb a {
+    color: #2563eb;
+    font-weight: 720;
+}
+
+.airline-breadcrumb i {
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.airline-title-block {
+    margin-top: 18px;
+}
+
+.airline-title-block h1 {
+    margin: 0;
+    color: var(--public-shell-text, #0f172a);
+    font-size: clamp(34px, 4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.055em;
+    font-weight: 760;
+}
+
+.airline-title-block p {
+    margin: 8px 0 0;
+    max-width: 720px;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.airline-back-btn {
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 12px;
+    border: 1px solid var(--public-shell-border, rgba(203, 213, 225, 0.86));
+    background: var(--public-shell-surface, #ffffff);
+    color: var(--public-shell-text, #0f172a);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 720;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.045);
+    white-space: nowrap;
+    transition: 0.18s ease;
+}
+
+.airline-back-btn:hover {
+    border-color: rgba(37, 99, 235, 0.32);
+    color: #2563eb;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   SHARED CARD
+========================= */
+
+.airline-card {
+    overflow: hidden;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(203, 213, 225, 0.82);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.055);
+}
+
+html[data-theme="dark"] .airline-card {
+    background: rgba(15, 29, 45, 0.94);
+    border-color: rgba(148, 163, 184, 0.18);
+    box-shadow: 0 18px 42px rgba(2, 6, 23, 0.30);
+}
+
+.airline-card-head {
+    min-height: 52px;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.88);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+}
+
+html[data-theme="dark"] .airline-card-head {
+    border-bottom-color: rgba(148, 163, 184, 0.14);
+}
+
+.airline-card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.airline-card-title i {
+    width: 28px;
+    height: 28px;
+    border-radius: 10px;
+    background: rgba(37, 99, 235, 0.09);
+    color: #2563eb;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex: 0 0 auto;
+}
+
+.airline-card-title h2 {
+    margin: 0;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 15px;
+    line-height: 1.2;
+    font-weight: 760;
+    letter-spacing: -0.025em;
+}
+
+.airline-card-title p {
+    margin: 2px 0 0;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 12px;
+    line-height: 1.35;
+}
+
+/* =========================
+   IDENTITY
+========================= */
+
+.airline-identity-card {
+    padding: 18px 20px;
+}
+
+.airline-identity-main {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 24px;
+    align-items: center;
+}
+
+.airline-brand {
+    display: grid;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    min-width: 0;
+}
+
+.airline-logo {
+    width: 82px;
+    height: 82px;
+    border-radius: 22px;
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.95);
+    box-shadow: 0 14px 30px rgba(15, 23, 42, 0.08);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.airline-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 12px;
+}
+
+.airline-logo-fallback {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(circle at 22% 18%, rgba(96, 165, 250, 0.24), transparent 40%),
+        linear-gradient(135deg, #eff6ff, #ffffff);
+    color: #2563eb;
+    font-size: 26px;
+    font-weight: 780;
+    letter-spacing: -0.045em;
+}
+
+.airline-brand-text h2 {
+    margin: 0;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 24px;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    font-weight: 760;
+}
+
+.airline-brand-text p {
+    margin: 7px 0 0;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.airline-identity-grid {
+    display: grid;
+    grid-template-columns: 0.7fr 0.75fr 1fr 0.75fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.airline-info-block span {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 11px;
+    font-weight: 740;
+}
+
+.airline-info-block strong {
+    color: var(--public-shell-text, #0f172a);
+    font-size: 13.5px;
+    font-weight: 720;
+    line-height: 1.35;
+}
+
+.airline-country-line {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.airline-country-flag {
+    width: 22px;
+    height: 16px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid rgba(203, 213, 225, 0.9);
+}
+
+.airline-status-pill {
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    width: fit-content;
+    font-size: 12px;
+    font-weight: 760;
+}
+
+.airline-status-pill::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.airline-status-pill.is-active {
+    background: rgba(220, 252, 231, 0.94);
+    color: #047857;
+}
+
+.airline-status-pill.is-inactive {
+    background: rgba(241, 245, 249, 0.94);
+    color: #64748b;
+}
+
+/* =========================
+   KPI
+========================= */
+
+.airline-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.airline-kpi-card {
+    min-height: 90px;
+    padding: 15px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(203, 213, 225, 0.82);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.045);
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    gap: 12px;
+    align-items: center;
+}
+
+html[data-theme="dark"] .airline-kpi-card {
+    background: rgba(15, 29, 45, 0.94);
+    border-color: rgba(148, 163, 184, 0.18);
+}
+
+.airline-kpi-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.airline-kpi-icon.is-blue {
+    background: rgba(37, 99, 235, 0.10);
+    color: #2563eb;
+}
+
+.airline-kpi-icon.is-green {
+    background: rgba(34, 197, 94, 0.11);
+    color: #047857;
+}
+
+.airline-kpi-icon.is-orange {
+    background: rgba(245, 158, 11, 0.13);
+    color: #b45309;
+}
+
+.airline-kpi-icon.is-red {
+    background: rgba(239, 68, 68, 0.11);
+    color: #b91c1c;
+}
+
+.airline-kpi-icon.is-slate {
+    background: rgba(100, 116, 139, 0.11);
+    color: #475569;
+}
+
+.airline-kpi-content span {
+    display: block;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 11px;
+    font-weight: 740;
+}
+
+.airline-kpi-content strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 25px;
+    line-height: 1;
+    letter-spacing: -0.045em;
+    font-weight: 760;
+}
+
+.airline-kpi-content small {
+    display: block;
+    margin-top: 6px;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 11.5px;
+    font-weight: 650;
+}
+
+/* =========================
+   MAIN GRID
+========================= */
+
+.airline-main-grid {
+    display: grid;
+    grid-template-columns: 0.82fr 1.18fr;
+    gap: 12px;
+    align-items: start;
+}
+
+.airline-profile-list {
+    padding: 14px 16px 16px;
+    display: grid;
+    gap: 10px;
+}
+
+.airline-profile-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px;
+    align-items: center;
+}
+
+.airline-profile-row span {
+    color: var(--public-shell-muted, #64748b);
+    font-size: 12px;
+    font-weight: 680;
+}
+
+.airline-profile-row strong {
+    color: var(--public-shell-text, #0f172a);
+    font-size: 13px;
+    font-weight: 720;
+    line-height: 1.35;
+    min-width: 0;
+}
+
+.airline-note-box {
+    margin-top: 4px;
+    padding: 13px 14px;
+    border-radius: 14px;
+    background:
+        linear-gradient(135deg, rgba(37, 99, 235, 0.075), rgba(14, 165, 233, 0.04));
+    border: 1px solid rgba(37, 99, 235, 0.14);
+}
+
+.airline-note-box p {
+    margin: 0;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 13px;
+    line-height: 1.55;
+    font-weight: 620;
+}
+
+/* =========================
+   TABLE
+========================= */
+
+.airline-table-wrap {
+    overflow-x: auto;
+}
+
+.airline-flights-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+}
+
+.airline-flights-table th {
+    padding: 12px 14px;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 10.5px;
+    font-weight: 780;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: left;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    white-space: nowrap;
+}
+
+html[data-theme="dark"] .airline-flights-table th {
+    border-bottom-color: rgba(148, 163, 184, 0.14);
+}
+
+.airline-flights-table td {
+    padding: 12px 14px;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 12.8px;
+    font-weight: 620;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.72);
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+html[data-theme="dark"] .airline-flights-table td {
+    border-bottom-color: rgba(148, 163, 184, 0.12);
+}
+
+.airline-flights-table tbody tr:hover {
+    background: rgba(37, 99, 235, 0.035);
+}
+
+.airline-flight-link {
+    color: #2563eb;
+    font-weight: 780;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+}
+
+.airline-route-pill {
+    min-height: 28px;
+    padding: 0 10px;
+    border-radius: 999px;
+    background: var(--public-shell-soft, #f8fafc);
+    border: 1px solid rgba(226, 232, 240, 0.88);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 12px;
+    font-weight: 720;
+}
+
+html[data-theme="dark"] .airline-route-pill {
+    border-color: rgba(148, 163, 184, 0.16);
+}
+
+.airline-flight-status {
+    min-height: 26px;
+    padding: 0 9px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    width: fit-content;
+    font-size: 11.5px;
+    font-weight: 760;
+}
+
+.airline-flight-status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: currentColor;
+}
+
+.airline-status-scheduled,
+.airline-status-boarding {
+    background: rgba(219, 234, 254, 0.94);
+    color: #1d4ed8;
+}
+
+.airline-status-departed,
+.airline-status-in_air {
+    background: rgba(220, 252, 231, 0.94);
+    color: #047857;
+}
+
+.airline-status-delayed {
+    background: rgba(254, 243, 199, 0.96);
+    color: #b45309;
+}
+
+.airline-status-cancelled {
+    background: rgba(254, 226, 226, 0.96);
+    color: #b91c1c;
+}
+
+.airline-status-landed {
+    background: rgba(241, 245, 249, 0.96);
+    color: #475569;
+}
+
+.airline-empty {
+    padding: 30px 18px;
+    text-align: center;
+}
+
+.airline-empty h3 {
+    margin: 0 0 8px;
+    color: var(--public-shell-text, #0f172a);
+    font-size: 18px;
+    font-weight: 740;
+}
+
+.airline-empty p {
+    margin: 0;
+    color: var(--public-shell-muted, #64748b);
+    font-size: 13px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1200px) {
+    .airline-identity-main {
+        grid-template-columns: 1fr;
+    }
+
+    .airline-identity-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .airline-kpi-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .airline-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 760px) {
+    .airline-detail-shell {
+        width: min(100% - 28px, 1320px);
+    }
+
+    .airline-detail-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .airline-brand {
+        grid-template-columns: 1fr;
+    }
+
+    .airline-identity-grid,
+    .airline-kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .airline-profile-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+    }
+
+    .airline-title-block h1 {
+        font-size: 34px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<main class="airline-detail-page">
+    <div class="airline-detail-shell">
+
+        <section class="airline-detail-header">
+            <div>
+                <div class="airline-breadcrumb">
+                    <a href="{% url 'airlines:airline_list' %}">
+                        <i class="bi bi-airplane"></i>
+                        {% trans "Airlines" %}
+                    </a>
+                    <i class="bi bi-chevron-right"></i>
+                    <span>{{ airline.name }}</span>
+                </div>
+
+                <div class="airline-title-block">
+                    <h1>{{ airline.name }}</h1>
+                    <p>
+                        {% trans "Operational identity and recent flight activity based on available system records." %}
+                    </p>
+                </div>
+            </div>
+
+            <a href="{% url 'airlines:airline_list' %}" class="airline-back-btn">
+                <i class="bi bi-arrow-left"></i>
+                {% trans "Back to Airlines" %}
+            </a>
+        </section>
+
+        <section class="airline-card airline-identity-card">
+            <div class="airline-identity-main">
+
+                <div class="airline-brand">
+                    <span class="airline-logo">
+                        {% if airline.logo %}
+                            <img src="{{ airline.logo.url }}" alt="{{ airline.name }}">
+                        {% else %}
+                            <span class="airline-logo-fallback">
+                                {{ airline.logo_initials }}
+                            </span>
+                        {% endif %}
+                    </span>
+
+                    <div class="airline-brand-text">
+                        <h2>{{ airline.name }}</h2>
+                        <p>
+                            {{ airline.iata_code|default:"â€”" }} / {{ airline.icao_code|default:"â€”" }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="airline-identity-grid">
+                    <div class="airline-info-block">
+                        <span>{% trans "Status" %}</span>
+                        {% if airline.is_active %}
+                            <strong class="airline-status-pill is-active">{% trans "Active" %}</strong>
+                        {% else %}
+                            <strong class="airline-status-pill is-inactive">{% trans "Inactive" %}</strong>
+                        {% endif %}
+                    </div>
+
+                    <div class="airline-info-block">
+                        <span>{% trans "Country" %}</span>
+                        <strong class="airline-country-line">
+                            {% if airline.country and airline.country != 'Unknown' %}
+                                {% if airline.country_code %}
+                                    <img
+                                        src="https://flagcdn.com/w40/{{ airline.country_code|lower }}.png"
+                                        alt="{{ airline.country }}"
+                                        class="airline-country-flag"
+                                        loading="lazy"
+                                    >
+                                {% endif %}
+                                {{ airline.country }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="airline-info-block">
+                        <span>{% trans "Observed Main Airport" %}</span>
+                        <strong>
+                            {% if recent_flights.0.origin_airport %}
+                                {{ recent_flights.0.origin_airport.name }}
+                                {% if recent_flights.0.origin_airport.iata_code %}
+                                    ({{ recent_flights.0.origin_airport.iata_code }})
+                                {% endif %}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="airline-info-block">
+                        <span>{% trans "Aircraft Linked" %}</span>
+                        <strong>{{ aircraft_count }}</strong>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="airline-kpi-grid">
+            <article class="airline-kpi-card">
+                <span class="airline-kpi-icon is-blue">
+                    <i class="bi bi-airplane-engines"></i>
+                </span>
+                <div class="airline-kpi-content">
+                    <span>{% trans "Total Flights" %}</span>
+                    <strong>{{ total_flights }}</strong>
+                    <small>{% trans "Linked records" %}</small>
+                </div>
+            </article>
+
+            <article class="airline-kpi-card">
+                <span class="airline-kpi-icon is-green">
+                    <i class="bi bi-broadcast"></i>
+                </span>
+                <div class="airline-kpi-content">
+                    <span>{% trans "Active Flights" %}</span>
+                    <strong>{{ active_flights }}</strong>
+                    <small>{% trans "Live or scheduled" %}</small>
+                </div>
+            </article>
+
+            <article class="airline-kpi-card">
+                <span class="airline-kpi-icon is-orange">
+                    <i class="bi bi-check2-circle"></i>
+                </span>
+                <div class="airline-kpi-content">
+                    <span>{% trans "Completed" %}</span>
+                    <strong>{{ completed_flights }}</strong>
+                    <small>{% trans "Landed operations" %}</small>
+                </div>
+            </article>
+
+            <article class="airline-kpi-card">
+                <span class="airline-kpi-icon is-red">
+                    <i class="bi bi-exclamation-triangle"></i>
+                </span>
+                <div class="airline-kpi-content">
+                    <span>{% trans "Disruptions" %}</span>
+                    <strong>{{ disrupted_flights }}</strong>
+                    <small>{% trans "Delayed or cancelled" %}</small>
+                </div>
+            </article>
+
+            <article class="airline-kpi-card">
+                <span class="airline-kpi-icon is-slate">
+                    <i class="bi bi-airplane"></i>
+                </span>
+                <div class="airline-kpi-content">
+                    <span>{% trans "Aircraft" %}</span>
+                    <strong>{{ aircraft_count }}</strong>
+                    <small>{% trans "Linked aircraft" %}</small>
+                </div>
+            </article>
+        </section>
+
+        <section class="airline-main-grid">
+
+            <article class="airline-card">
+                <div class="airline-card-head">
+                    <div class="airline-card-title">
+                        <i class="bi bi-building"></i>
+                        <div>
+                            <h2>{% trans "Airline Profile" %}</h2>
+                            <p>{% trans "Stored carrier reference" %}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="airline-profile-list">
+                    <div class="airline-profile-row">
+                        <span>{% trans "Name" %}</span>
+                        <strong>{{ airline.name }}</strong>
+                    </div>
+
+                    <div class="airline-profile-row">
+                        <span>{% trans "IATA Code" %}</span>
+                        <strong>{{ airline.iata_code|default:"â€”" }}</strong>
+                    </div>
+
+                    <div class="airline-profile-row">
+                        <span>{% trans "ICAO Code" %}</span>
+                        <strong>{{ airline.icao_code|default:"â€”" }}</strong>
+                    </div>
+
+                    <div class="airline-profile-row">
+                        <span>{% trans "Country" %}</span>
+                        <strong>
+                            {% if airline.country and airline.country != 'Unknown' %}
+                                {{ airline.country }}
+                            {% else %}
+                                â€”
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="airline-profile-row">
+                        <span>{% trans "Country Code" %}</span>
+                        <strong>{{ airline.country_code|default:"â€”" }}</strong>
+                    </div>
+
+                    <div class="airline-profile-row">
+                        <span>{% trans "Status" %}</span>
+                        <strong>
+                            {% if airline.is_active %}
+                                {% trans "Active" %}
+                            {% else %}
+                                {% trans "Inactive" %}
+                            {% endif %}
+                        </strong>
+                    </div>
+
+                    <div class="airline-note-box">
+                        <p>{{ operational_note }}</p>
+                    </div>
+                </div>
+            </article>
+
+            <article class="airline-card">
+                <div class="airline-card-head">
+                    <div class="airline-card-title">
+                        <i class="bi bi-clock-history"></i>
+                        <div>
+                            <h2>{% trans "Recent Flights" %}</h2>
+                            <p>{% trans "Latest operations linked to this airline" %}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="airline-table-wrap">
+                    <table class="airline-flights-table">
+                        <thead>
+                            <tr>
+                                <th>{% trans "Flight" %}</th>
+                                <th>{% trans "Route" %}</th>
+                                <th>{% trans "Departure" %}</th>
+                                <th>{% trans "Arrival" %}</th>
+                                <th>{% trans "Status" %}</th>
+                                <th>{% trans "Source" %}</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for flight in recent_flights %}
+                                <tr>
+                                    <td>
+                                        <a href="{% url 'flights:flight_detail' flight.pk %}" class="airline-flight-link">
+                                            <i class="bi bi-airplane"></i>
+                                            {{ flight.flight_number }}
+                                        </a>
+                                    </td>
+
+                                    <td>
+                                        <span class="airline-route-pill">
+                                            {% if flight.origin_airport %}
+                                                {{ flight.origin_airport.iata_code|default:"--" }}
+                                            {% else %}
+                                                --
+                                            {% endif %}
+                                            â†’
+                                            {% if flight.destination_airport %}
+                                                {{ flight.destination_airport.iata_code|default:"--" }}
+                                            {% else %}
+                                                --
+                                            {% endif %}
+                                        </span>
+                                    </td>
+
+                                    <td>{{ flight.scheduled_departure|date:"M d, H:i"|default:"â€”" }}</td>
+                                    <td>{{ flight.scheduled_arrival|date:"M d, H:i"|default:"â€”" }}</td>
+
+                                    <td>
+                                        <span class="airline-flight-status airline-status-{{ flight.status }}">
+                                            {{ flight.get_status_display }}
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        {% if flight.source_type == "api" %}
+                                            API
+                                        {% else %}
+                                            Local
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="6">
+                                        <div class="airline-empty">
+                                            <h3>{% trans "No recent flights" %}</h3>
+                                            <p>{% trans "No recent flight is currently available for this airline." %}</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+        </section>
+
+    </div>
+</main>
+
+{% endblock %}
+
