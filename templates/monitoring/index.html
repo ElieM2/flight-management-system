@@ -4,7 +4,7 @@
 {% block title %}Control Desk | FlightLogos{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/monitoring.css' %}?v=server-pagination-20260520">
+<link rel="stylesheet" href="{% static 'css/monitoring.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -15,11 +15,9 @@
 
     <header class="control-desk-hero">
         <div>
-            <span class="control-kicker">Live monitoring</span>
+            <span class="control-kicker">Monitoring</span>
             <h1>Control Desk</h1>
-            <p>
-                Monitor flight records, status changes, delays, cancellations and operational priorities from one compact workspace.
-            </p>
+            <p>Track flight status, delays and cancellations from one operational workspace.</p>
         </div>
 
         <div class="control-hero-actions">
@@ -49,7 +47,6 @@
             <span class="control-kpi-copy">
                 <span>Total flights</span>
                 <strong>{{ total_count|default:active_count|default:"0" }}</strong>
-                <small>Current monitoring dataset</small>
             </span>
         </a>
 
@@ -61,7 +58,6 @@
             <span class="control-kpi-copy">
                 <span>Active flights</span>
                 <strong>{{ active_count|default:"0" }}</strong>
-                <small>Flights under live supervision</small>
             </span>
         </a>
 
@@ -73,7 +69,6 @@
             <span class="control-kpi-copy">
                 <span>Delayed</span>
                 <strong>{{ delayed_count|default:"0" }}</strong>
-                <small>Attention monitoring</small>
             </span>
         </a>
 
@@ -85,39 +80,23 @@
             <span class="control-kpi-copy">
                 <span>Cancelled</span>
                 <strong>{{ cancelled_count|default:"0" }}</strong>
-                <small>Recovery review needed</small>
-            </span>
-        </a>
-
-        <a href="{% url 'monitoring:monitoring_critical' %}" class="control-kpi-card">
-            <span class="control-kpi-icon control-kpi-icon-purple">
-                <i class="bi bi-exclamation-triangle-fill"></i>
-            </span>
-
-            <span class="control-kpi-copy">
-                <span>Critical</span>
-                <strong>{{ critical_count|default:"0" }}</strong>
-                <small>Priority supervision</small>
             </span>
         </a>
     </section>
 
-    <section class="control-layout control-layout-compact">
+    <section class="control-layout">
 
         <main class="control-main">
 
             <section class="control-panel control-board-panel">
                 <header class="control-panel-header">
                     <div>
-                        <span>Flight registry</span>
-                        <h2>Operational flight board</h2>
-                        <p>
-                            Filter the current dataset, inspect flight status and open the selected operational record.
-                        </p>
+                        <span>Flight board</span>
+                        <h2>Current flight records</h2>
                     </div>
 
                     <a href="{% url 'monitoring:flight_map' %}" class="control-button control-button-primary">
-                        Open flight map
+                        Open map
                     </a>
                 </header>
 
@@ -174,7 +153,6 @@
                                 <th>Departure</th>
                                 <th>Arrival</th>
                                 <th>Status</th>
-                                <th>Risk</th>
                                 <th>Source</th>
                                 <th>Access</th>
                             </tr>
@@ -182,48 +160,92 @@
 
                         <tbody id="controlFlightRows">
                             {% for flight in flights %}
+                                <tr
+                                    class="control-flight-row {% if selected_flight and selected_flight.pk == flight.pk %}is-selected{% endif %}"
+                                    data-is-selected="{% if selected_flight and selected_flight.pk == flight.pk %}true{% else %}false{% endif %}"
+                                    data-flight="{{ flight.flight_number|default:'—' }}"
+                                    data-airline="{{ flight.airline.name|default:unknown_airline }}"
+                                    data-origin="{{ flight.origin_airport.iata_code|default:'—' }}"
+                                    data-origin-city="{{ flight.origin_airport.city|default:'Origin' }}"
+                                    data-destination="{{ flight.destination_airport.iata_code|default:'—' }}"
+                                    data-destination-city="{{ flight.destination_airport.city|default:'Destination' }}"
+                                    data-departure="{{ flight.scheduled_departure|date:'H:i'|default:'—' }}"
+                                    data-arrival="{{ flight.scheduled_arrival|date:'H:i'|default:'—' }}"
+                                    data-departure-date="{{ flight.scheduled_departure|date:'Y-m-d'|default:'—' }}"
+                                    data-arrival-date="{{ flight.scheduled_arrival|date:'Y-m-d'|default:'—' }}"
+                                    data-status="{{ flight.get_status_display|default:'—' }}"
+                                    data-status-key="{{ flight.status|default:'scheduled' }}"
+                                    data-source="{{ flight.source_type|upper|default:'LOCAL' }}"
+                                    data-detail-url="{% url 'monitoring:monitoring_flight_detail' flight.pk %}"
+                                    data-map-url="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}"
+                                >
+                                    <td>
+                                        <span class="flight-cell">
+                                            <strong>{{ flight.flight_number|default:"—" }}</strong>
+                                            <small>{{ flight.source_type|upper|default:"LOCAL" }}</small>
+                                        </span>
+                                    </td>
 
-                                {% if flight.status == "cancelled" %}
-                                    {% with status_label="Cancelled" status_class="cancelled" risk_label="High" risk_class="high" recommendation="Cancelled flight. Keep this record under recovery handling until the situation is closed." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
+                                    <td>
+                                        <span class="route-pill">
+                                            {{ flight.origin_airport.iata_code|default:"—" }}
+                                            →
+                                            {{ flight.destination_airport.iata_code|default:"—" }}
+                                        </span>
+                                    </td>
 
-                                {% elif flight.status == "delayed" %}
-                                    {% with status_label="Delayed" status_class="delayed" risk_label="Medium" risk_class="medium" recommendation="Delayed flight. Keep the route and schedule under attention monitoring." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
+                                    <td>
+                                        {{ flight.airline.name|default:unknown_airline }}
+                                    </td>
 
-                                {% elif flight.status == "in_air" %}
-                                    {% with status_label="In air" status_class="active" risk_label="Low" risk_class="low" recommendation="Active flight. Continue standard live monitoring." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
+                                    <td>
+                                        {{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"—" }}
+                                    </td>
 
-                                {% elif flight.status == "boarding" %}
-                                    {% with status_label="Boarding" status_class="active" risk_label="Low" risk_class="low" recommendation="Boarding flight. Monitor departure progression." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
+                                    <td>
+                                        {{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"—" }}
+                                    </td>
 
-                                {% elif flight.status == "departed" %}
-                                    {% with status_label="Departed" status_class="active" risk_label="Low" risk_class="low" recommendation="Departed flight. Continue live operational supervision." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
+                                    <td>
+                                        {% if flight.status == "cancelled" %}
+                                            <span class="control-status control-status-cancelled">Cancelled</span>
+                                        {% elif flight.status == "delayed" %}
+                                            <span class="control-status control-status-delayed">Delayed</span>
+                                        {% elif flight.status == "in_air" %}
+                                            <span class="control-status control-status-active">In air</span>
+                                        {% elif flight.status == "boarding" %}
+                                            <span class="control-status control-status-active">Boarding</span>
+                                        {% elif flight.status == "departed" %}
+                                            <span class="control-status control-status-active">Departed</span>
+                                        {% elif flight.status == "landed" %}
+                                            <span class="control-status control-status-landed">Landed</span>
+                                        {% else %}
+                                            <span class="control-status control-status-normal">
+                                                {{ flight.get_status_display|default:"Scheduled" }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
 
-                                {% elif flight.status == "landed" %}
-                                    {% with status_label="Landed" status_class="landed" risk_label="Low" risk_class="low" recommendation="Completed flight. Keep the record available for traceability." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
+                                    <td>
+                                        {% if flight.source_type == "api" %}
+                                            <span class="control-source control-source-api">API</span>
+                                        {% else %}
+                                            <span class="control-source control-source-local">Local</span>
+                                        {% endif %}
+                                    </td>
 
-                                {% else %}
-                                    {% with status_label=flight.get_status_display status_class="normal" risk_label="Low" risk_class="low" recommendation="Standard flight record. Continue normal monitoring." %}
-                                        {% include "monitoring/partials/control_flight_row.html" %}
-                                    {% endwith %}
-                                {% endif %}
-
+                                    <td>
+                                        <span class="control-row-actions">
+                                            <a href="{% url 'monitoring:monitoring_flight_detail' flight.pk %}">Review</a>
+                                            <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">Map</a>
+                                        </span>
+                                    </td>
+                                </tr>
                             {% empty %}
                                 <tr>
-                                    <td colspan="9">
+                                    <td colspan="8">
                                         <div class="control-empty-state">
-                                            No flight record matches the current monitoring filters.
+                                            No flight record matches the current filters.
                                         </div>
                                     </td>
                                 </tr>
@@ -235,7 +257,7 @@
                 <footer class="control-table-footer">
                     <span>
                         {% if page_obj %}
-                            Showing {{ page_obj.start_index }}â€“{{ page_obj.end_index }} of {{ paginator.count }} flight records
+                            Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} flight records
                         {% else %}
                             Showing available flight records
                         {% endif %}
@@ -248,10 +270,10 @@
                                     href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.previous_page_number }}"
                                     class="control-page-link"
                                 >
-                                    â€¹
+                                    ‹
                                 </a>
                             {% else %}
-                                <span class="control-page-link is-disabled">â€¹</span>
+                                <span class="control-page-link is-disabled">‹</span>
                             {% endif %}
 
                             {% for page_number in paginator.page_range %}
@@ -272,7 +294,7 @@
                                         {{ page_number }}
                                     </a>
                                 {% elif page_number == page_obj.number|add:"-2" or page_number == page_obj.number|add:"2" %}
-                                    <span class="control-page-link is-disabled">â€¦</span>
+                                    <span class="control-page-link is-disabled">…</span>
                                 {% endif %}
                             {% endfor %}
 
@@ -281,10 +303,10 @@
                                     href="?{% if pagination_query %}{{ pagination_query }}&{% endif %}page={{ page_obj.next_page_number }}"
                                     class="control-page-link"
                                 >
-                                    â€º
+                                    ›
                                 </a>
                             {% else %}
-                                <span class="control-page-link is-disabled">â€º</span>
+                                <span class="control-page-link is-disabled">›</span>
                             {% endif %}
                         </div>
                     {% endif %}
@@ -299,10 +321,7 @@
                 <header class="control-panel-header">
                     <div>
                         <span>Selected flight</span>
-                        <h2>Operational profile</h2>
-                        <p>
-                            Click a row in the flight board to inspect its route, status and recommended action.
-                        </p>
+                        <h2>Flight profile</h2>
                     </div>
 
                     <span id="selectedStatusBadge" class="control-status-badge control-status-normal">
@@ -317,7 +336,7 @@
                         </div>
 
                         <div>
-                            <strong id="selectedFlightNumber">â€”</strong>
+                            <strong id="selectedFlightNumber">—</strong>
                             <span id="selectedAirlineName">Select a flight</span>
                             <small id="selectedSource">Monitoring record</small>
                         </div>
@@ -325,9 +344,9 @@
 
                     <div class="selected-route-box">
                         <div>
-                            <strong id="selectedOrigin">â€”</strong>
+                            <strong id="selectedOrigin">—</strong>
                             <span id="selectedOriginCity">Origin</span>
-                            <small id="selectedDeparture">â€”</small>
+                            <small id="selectedDeparture">—</small>
                         </div>
 
                         <div class="selected-route-line">
@@ -337,96 +356,43 @@
                         </div>
 
                         <div>
-                            <strong id="selectedDestination">â€”</strong>
+                            <strong id="selectedDestination">—</strong>
                             <span id="selectedDestinationCity">Destination</span>
-                            <small id="selectedArrival">â€”</small>
+                            <small id="selectedArrival">—</small>
                         </div>
                     </div>
 
                     <div class="selected-detail-grid">
                         <article>
                             <span>Status</span>
-                            <strong id="selectedStatusText">â€”</strong>
+                            <strong id="selectedStatusText">—</strong>
                         </article>
 
                         <article>
-                            <span>Risk</span>
-                            <strong id="selectedRiskText">â€”</strong>
+                            <span>Source</span>
+                            <strong id="selectedSourceText">—</strong>
                         </article>
 
                         <article>
                             <span>Departure date</span>
-                            <strong id="selectedDepartureDate">â€”</strong>
+                            <strong id="selectedDepartureDate">—</strong>
                         </article>
 
                         <article>
                             <span>Arrival date</span>
-                            <strong id="selectedArrivalDate">â€”</strong>
+                            <strong id="selectedArrivalDate">—</strong>
                         </article>
                     </div>
 
-                    <div class="selected-recommendation">
-                        <span>Recommended action</span>
-                        <p id="selectedRecommendation">
-                            Select a flight to display its operational recommendation.
-                        </p>
+                    <div class="selected-actions">
+                        <a href="#" id="selectedDetailLink" class="control-button control-button-primary">
+                            Open review
+                        </a>
 
-                        <div class="selected-actions">
-                            <a href="#" id="selectedDetailLink" class="control-button control-button-primary">
-                                Open review
-                            </a>
-
-                            <a href="#" id="selectedMapLink" class="control-button">
-                                Open map
-                            </a>
-                        </div>
+                        <a href="#" id="selectedMapLink" class="control-button">
+                            Open map
+                        </a>
                     </div>
-                </div>
-            </section>
-
-            <section class="control-panel attention-panel">
-                <header class="control-panel-header">
-                    <div>
-                        <span>Attention queue</span>
-                        <h2>Flights to review first</h2>
-                        <p>
-                            Priority records generated from the current monitoring situation.
-                        </p>
-                    </div>
-                </header>
-
-                <div class="attention-list">
-                    {% for item in attention_queue %}
-                        <article class="attention-row">
-                            <span class="attention-dot"></span>
-
-                            <span>
-                                <strong>
-                                    {% if item.flight %}
-                                        {{ item.flight.flight_number }}
-                                    {% elif item.flight_number %}
-                                        {{ item.flight_number }}
-                                    {% else %}
-                                        Flight record
-                                    {% endif %}
-                                </strong>
-
-                                <small>
-                                    {% if item.reason %}
-                                        {{ item.reason }}
-                                    {% elif item.label %}
-                                        {{ item.label }}
-                                    {% else %}
-                                        Requires operational attention.
-                                    {% endif %}
-                                </small>
-                            </span>
-                        </article>
-                    {% empty %}
-                        <div class="control-empty-state">
-                            No priority item is currently visible.
-                        </div>
-                    {% endfor %}
                 </div>
             </section>
 
@@ -445,8 +411,7 @@
                 return;
             }
 
-            const now = new Date();
-            clock.textContent = now.toISOString().slice(11, 19);
+            clock.textContent = new Date().toISOString().slice(11, 19);
         }
 
         updateClock();
@@ -460,6 +425,7 @@
         const selectedFlightNumber = document.getElementById("selectedFlightNumber");
         const selectedAirlineName = document.getElementById("selectedAirlineName");
         const selectedSource = document.getElementById("selectedSource");
+        const selectedSourceText = document.getElementById("selectedSourceText");
         const selectedOrigin = document.getElementById("selectedOrigin");
         const selectedOriginCity = document.getElementById("selectedOriginCity");
         const selectedDestination = document.getElementById("selectedDestination");
@@ -469,8 +435,6 @@
         const selectedDepartureDate = document.getElementById("selectedDepartureDate");
         const selectedArrivalDate = document.getElementById("selectedArrivalDate");
         const selectedStatusText = document.getElementById("selectedStatusText");
-        const selectedRiskText = document.getElementById("selectedRiskText");
-        const selectedRecommendation = document.getElementById("selectedRecommendation");
         const selectedDetailLink = document.getElementById("selectedDetailLink");
         const selectedMapLink = document.getElementById("selectedMapLink");
 
@@ -499,7 +463,7 @@
                 return;
             }
 
-            element.textContent = value || fallback || "â€”";
+            element.textContent = value || fallback || "—";
         }
 
         function setLink(element, url) {
@@ -529,20 +493,19 @@
 
             const data = row.dataset;
 
-            setText(selectedFlightNumber, data.flight, "â€”");
+            setText(selectedFlightNumber, data.flight, "—");
             setText(selectedAirlineName, data.airline, "Unknown airline");
             setText(selectedSource, data.source, "Monitoring record");
-            setText(selectedOrigin, data.origin, "â€”");
+            setText(selectedSourceText, data.source, "—");
+            setText(selectedOrigin, data.origin, "—");
             setText(selectedOriginCity, data.originCity, "Origin");
-            setText(selectedDestination, data.destination, "â€”");
+            setText(selectedDestination, data.destination, "—");
             setText(selectedDestinationCity, data.destinationCity, "Destination");
-            setText(selectedDeparture, data.departure, "â€”");
-            setText(selectedArrival, data.arrival, "â€”");
-            setText(selectedDepartureDate, data.departureDate, "â€”");
-            setText(selectedArrivalDate, data.arrivalDate, "â€”");
-            setText(selectedStatusText, data.status, "â€”");
-            setText(selectedRiskText, data.risk, "â€”");
-            setText(selectedRecommendation, data.recommendation, "Continue standard monitoring.");
+            setText(selectedDeparture, data.departure, "—");
+            setText(selectedArrival, data.arrival, "—");
+            setText(selectedDepartureDate, data.departureDate, "—");
+            setText(selectedArrivalDate, data.arrivalDate, "—");
+            setText(selectedStatusText, data.status, "—");
 
             if (selectedStatusBadge) {
                 selectedStatusBadge.textContent = data.status || "Ready";
@@ -572,4 +535,3 @@
 </script>
 
 {% endblock %}
-
