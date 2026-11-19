@@ -257,7 +257,7 @@
                 <footer class="control-table-footer">
                     <span>
                         {% if page_obj %}
-                            Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ paginator.count }} flight records
+                            {% blocktrans trimmed with start=page_start end=page_end total=page_total %}Showing {{ start }}–{{ end }} of {{ total }} flights{% endblocktrans %}
                         {% else %}
                             Showing available flight records
                         {% endif %}

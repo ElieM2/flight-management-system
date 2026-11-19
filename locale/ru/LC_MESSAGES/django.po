@@ -1227,16 +1227,16 @@ msgstr ""
 "общественной справочной платы."
 
 msgid "Total aircraft"
-msgstr "Самолёт"
+msgstr "Всего воздушных судов"
 
 msgid "Active fleet"
 msgstr "Активные рейсы"
 
 msgid "Operators"
-msgstr "Активные операции"
+msgstr "Эксплуатанты"
 
 msgid "Total seats"
-msgstr "Всего рейсов"
+msgstr "Всего мест"
 
 msgid "Search"
 msgstr "Поиск"
@@ -1278,7 +1278,7 @@ msgstr[2] "%(result_count)s results"
 msgstr[3] "%(result_count)s results"
 
 msgid "Registration"
-msgstr "Реестр"
+msgstr "Регистрационный номер"
 
 msgid "Model"
 msgstr "Модель"
@@ -1293,7 +1293,7 @@ msgid "Aircraft record"
 msgstr "Самолёт"
 
 msgid "No aircraft found"
-msgstr "Всего рейсов"
+msgstr "Воздушные суда не найдены"
 
 msgid "No aircraft record matches the current search."
 msgstr "Нет контролируемых рейсов, соответствующих текущим фильтрам."
@@ -1424,7 +1424,7 @@ msgid "Countries"
 msgstr "Страны"
 
 msgid "Linked flights"
-msgstr "Активные рейсы"
+msgstr "Связанные рейсы"
 
 msgid "Find an airline"
 msgstr "Неизвестная авиакомпания"
@@ -1553,10 +1553,10 @@ msgstr ""
 "структурированного каталога."
 
 msgid "Total airports"
-msgstr "Всего рейсов"
+msgstr "Всего аэропортов"
 
 msgid "Active airports"
-msgstr "Активные рейсы"
+msgstr "Активные аэропорты"
 
 msgid "Complete data"
 msgstr "Нет данных маршрута"
@@ -1594,7 +1594,7 @@ msgid "Open airport profile"
 msgstr "Открыть контроль"
 
 msgid "No airports found"
-msgstr "Всего рейсов"
+msgstr "Аэропорты не найдены"
 
 msgid "No airport matches the current search."
 msgstr "Нет контролируемых рейсов, соответствующих текущим фильтрам."
@@ -3361,7 +3361,7 @@ msgid "Public site"
 msgstr "Публичный сайт"
 
 msgid "Operator"
-msgstr "Оператор"
+msgstr "Эксплуатант"
 
 msgid "Signed in"
 msgstr "Выполнен вход"
@@ -3547,6 +3547,114 @@ msgstr "Отзывы"
 
 msgid "Create an account to access the operations workspace."
 msgstr "Создайте учётную запись для доступа к операционному разделу."
+
+msgid "On time"
+msgstr "По расписанию"
+
+msgid "flights"
+msgstr "рейсы"
+
+msgid "Click an aircraft to see its details."
+msgstr "Нажмите на воздушное судно, чтобы открыть сведения."
+
+msgid ""
+"This module is planned. It will collect comments about the site, not flight "
+"operations."
+msgstr ""
+"Этот модуль запланирован. Он будет собирать отзывы о сайте, а не о полётах."
+
+msgid "Showing %(start)s–%(end)s of %(total)s flights"
+msgstr "Показаны %(start)s–%(end)s из %(total)s рейсов"
+
+msgid "Active aircraft"
+msgstr "Активные воздушные суда"
+
+msgid "Assigned airlines"
+msgstr "Назначенные авиакомпании"
+
+msgid "Total seat capacity"
+msgstr "Общая вместимость"
+
+msgid "Search aircraft..."
+msgstr "Поиск воздушного судна..."
+
+msgid "Search aircraft"
+msgstr "Поиск воздушного судна"
+
+msgid "Filter by status"
+msgstr "Фильтр по статусу"
+
+msgid "Maintenance"
+msgstr "Техобслуживание"
+
+msgid "Model / type"
+msgstr "Модель / тип"
+
+msgid "Assigned operator"
+msgstr "Назначенный эксплуатант"
+
+msgid "Operator not assigned"
+msgstr "Эксплуатант не назначен"
+
+msgid "Aircraft actions"
+msgstr "Действия с воздушным судном"
+
+msgid "Operator unavailable"
+msgstr "Эксплуатант недоступен"
+
+msgid "No aircraft matches the current search or filter."
+msgstr "Нет воздушных судов, соответствующих поиску или фильтру."
+
+msgid "Showing %(start)s to %(end)s of %(total)s aircraft"
+msgstr "Показаны %(start)s–%(end)s из %(total)s воздушных судов"
+
+msgid "Showing 0 aircraft"
+msgstr "Показано 0 воздушных судов"
+
+msgid "Aircraft pagination"
+msgstr "Постраничный просмотр воздушных судов"
+
+msgid "Countries served"
+msgstr "Страны сети"
+
+msgid "Search airports..."
+msgstr "Поиск аэропорта..."
+
+msgid "Search airports"
+msgstr "Поиск аэропорта"
+
+msgid "IATA / ICAO"
+msgstr "IATA / ICAO"
+
+msgid "City / country"
+msgstr "Город / страна"
+
+msgid "Coordinates"
+msgstr "Координаты"
+
+msgid "Location not specified"
+msgstr "Место не указано"
+
+msgid "Missing"
+msgstr "Нет данных"
+
+msgid "Airport actions"
+msgstr "Действия с аэропортом"
+
+msgid "Map unavailable"
+msgstr "Карта недоступна"
+
+msgid "No airport matches the current search or filter."
+msgstr "Нет аэропортов, соответствующих поиску или фильтру."
+
+msgid "Showing %(start)s to %(end)s of %(total)s airports"
+msgstr "Показаны %(start)s–%(end)s из %(total)s аэропортов"
+
+msgid "Showing 0 airports"
+msgstr "Показано 0 аэропортов"
+
+msgid "Airports pagination"
+msgstr "Постраничный просмотр аэропортов"
 
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"

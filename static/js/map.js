@@ -110,12 +110,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const baseLayers = {
         dark: {
             name: "Dark map",
-            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+            url: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+            labelsUrl: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}",
             options: {
-                attribution: "&copy; OpenStreetMap contributors",
-                subdomains: "abc",
-                maxZoom: 19,
-                className: "map-tiles-dark"
+                attribution: "Tiles &copy; Esri",
+                maxZoom: 16
             }
         },
         light: {
@@ -979,16 +978,32 @@ document.addEventListener("DOMContentLoaded", function () {
             state.map.getPane("basemap").style.zIndex = 200;
         }
 
-        const basePane = state.map.getPane("basemap");
-        basePane.classList.toggle("map-pane-dark", cleanKey === "dark");
+        if (!state.map.getPane("basemapLabels")) {
+            state.map.createPane("basemapLabels");
+            state.map.getPane("basemapLabels").style.zIndex = 250;
+        }
 
         if (state.baseLayer) {
             state.map.removeLayer(state.baseLayer);
         }
 
+        if (state.baseLabelsLayer) {
+            state.map.removeLayer(state.baseLabelsLayer);
+            state.baseLabelsLayer = null;
+        }
+
         const options = Object.assign({}, layerConfig.options, { pane: "basemap" });
         state.baseLayer = L.tileLayer(layerConfig.url, options);
         state.baseLayer.addTo(state.map);
+
+        if (layerConfig.labelsUrl) {
+            state.baseLabelsLayer = L.tileLayer(
+                layerConfig.labelsUrl,
+                Object.assign({}, options, { pane: "basemapLabels" })
+            );
+            state.baseLabelsLayer.addTo(state.map);
+        }
+
         state.baseLayerKey = cleanKey;
 
         if (els.baseLayerSelect && els.baseLayerSelect.value !== cleanKey) {
@@ -1920,6 +1935,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         if (radarActive) {
+            els.weatherPreview.hidden = false;
             els.weatherPreview.innerHTML = [
                 '<div class="weather-radar-image-only weather-radar-image-live" style="',
                 previewStyle,
@@ -1928,11 +1944,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        els.weatherPreview.innerHTML = [
-            '<div class="weather-radar-unavailable">',
-            escapeHtml(i18nText("weather-unavailable", "Weather unavailable")),
-            '</div>'
-        ].join("");
+        els.weatherPreview.innerHTML = "";
+        els.weatherPreview.hidden = true;
     }
 
     function buildPopup(flight) {
@@ -2438,13 +2451,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 );
             }
 
-            updateText(els.mapCrisisModeLabel, "OPERATIONAL WATCH");
-            updateText(els.mapCrisisModeReason, parts.join(", ") + " visible on the map.");
+            updateText(els.mapCrisisModeLabel, "");
+            updateText(els.mapCrisisModeReason, parts.join(", ") + ".");
             return;
         }
 
-        updateText(els.mapCrisisModeLabel, "NORMAL OPERATIONS");
-        updateText(els.mapCrisisModeReason, "No visible disruption pressure on the map.");
+        updateText(els.mapCrisisModeLabel, "");
+        updateText(els.mapCrisisModeReason, "");
     }
 
     function toggleEmptyState() {

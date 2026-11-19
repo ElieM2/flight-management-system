@@ -1,7 +1,7 @@
 ﻿{% extends "base_public.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Airports | FlightLogos{% endblock %}
+{% block title %}{% trans "Airports" %} | FlightLogos{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/public_airports.css' %}">
@@ -12,7 +12,7 @@
     <header class="airports-header">
         <div class="airports-header-copy">
 
-            <h1>Airports</h1>
+            <h1>{% trans "Airports" %}</h1>
         </div>
     </header>
 
@@ -23,7 +23,7 @@
             </div>
 
             <div class="airports-kpi-content">
-                <span class="airports-kpi-label">Total Airports</span>
+                <span class="airports-kpi-label">{% trans "Total airports" %}</span>
                 <strong class="airports-kpi-value">{{ total_airports }}</strong>
             </div>
         </article>
@@ -34,7 +34,7 @@
             </div>
 
             <div class="airports-kpi-content">
-                <span class="airports-kpi-label">Active Airports</span>
+                <span class="airports-kpi-label">{% trans "Active airports" %}</span>
                 <strong class="airports-kpi-value">{{ active_airports }}</strong>
             </div>
         </article>
@@ -45,9 +45,9 @@
             </div>
 
             <div class="airports-kpi-content">
-                <span class="airports-kpi-label">Countries</span>
+                <span class="airports-kpi-label">{% trans "Countries" %}</span>
                 <strong class="airports-kpi-value">{{ countries_count }}</strong>
-                <span class="airports-kpi-note">Network coverage</span>
+                <span class="airports-kpi-note">{% trans "Countries served" %}</span>
             </div>
         </article>
 
@@ -57,9 +57,9 @@
             </div>
 
             <div class="airports-kpi-content">
-                <span class="airports-kpi-label">Linked Flights</span>
+                <span class="airports-kpi-label">{% trans "Linked flights" %}</span>
                 <strong class="airports-kpi-value">{{ linked_flights }}</strong>
-                <span class="airports-kpi-note">Departures and arrivals</span>
+                <span class="airports-kpi-note">{% trans "Departures and arrivals" %}</span>
             </div>
         </article>
     </section>
@@ -74,36 +74,36 @@
                         type="search"
                         name="q"
                         value="{{ query }}"
-                        placeholder="Search airports..."
-                        aria-label="Search airports"
+                        placeholder="{% trans 'Search airports...' %}"
+                        aria-label="{% trans 'Search airports' %}"
                     >
                 </div>
 
                 <select name="status" class="airports-filter-select" aria-label="Filter by status">
                     <option value="" {% if not status %}selected{% endif %}>
-                        All statuses
+                        {% trans "All statuses" %}
                     </option>
 
                     <option value="active" {% if status == "active" %}selected{% endif %}>
-                        Active
+                        {% trans "Active" %}
                     </option>
 
                     <option value="inactive" {% if status == "inactive" %}selected{% endif %}>
-                        Inactive
+                        {% trans "Inactive" %}
                     </option>
                 </select>
 
                 <button type="submit" class="airports-apply-button">
-                    Apply
+                    {% trans "Apply" %}
                 </button>
 
                 {% if query or status %}
                     <a href="{% url 'airports:airport_list' %}" class="airports-reset-button">
-                        Reset
+                        {% trans "Reset" %}
                     </a>
                 {% else %}
                     <span class="airports-reset-button airports-reset-disabled">
-                        Reset
+                        {% trans "Reset" %}
                     </span>
                 {% endif %}
             </form>
@@ -113,13 +113,13 @@
             <table class="airports-table">
                 <thead>
                     <tr>
-                        <th>Airport</th>
-                        <th>IATA / ICAO</th>
-                        <th>City / Country</th>
-                        <th>Coordinates</th>
-                        <th>Flights</th>
-                        <th>Status</th>
-                        <th class="airports-actions-column">Actions</th>
+                        <th>{% trans "Airport" %}</th>
+                        <th>{% trans "IATA / ICAO" %}</th>
+                        <th>{% trans "City / country" %}</th>
+                        <th>{% trans "Coordinates" %}</th>
+                        <th>{% trans "Flights" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th class="airports-actions-column">{% trans "Actions" %}</th>
                     </tr>
                 </thead>
 
@@ -138,7 +138,7 @@
                                         </a>
 
                                         <span class="airport-meta">
-                                            Airport record
+                                            {% trans "Airport" %}
                                         </span>
                                     </div>
                                 </div>
@@ -157,7 +157,7 @@
                             <td>
                                 {% if airport.location_is_missing %}
                                     <span class="airport-location-missing">
-                                        Location not specified
+                                        {% trans "Location not specified" %}
                                     </span>
                                 {% else %}
                                     <div class="airport-location-stack">
@@ -175,7 +175,7 @@
                                     </div>
                                 {% else %}
                                     <span class="airport-coordinate-missing">
-                                        Missing
+                                        {% trans "Missing" %}
                                     </span>
                                 {% endif %}
                             </td>
@@ -190,19 +190,19 @@
                                 {% if airport.is_active %}
                                     <span class="airport-status airport-status-active">
                                         <span></span>
-                                        Active
+                                        {% trans "Active" %}
                                     </span>
                                 {% else %}
                                     <span class="airport-status airport-status-inactive">
                                         <span></span>
-                                        Inactive
+                                        {% trans "Inactive" %}
                                     </span>
                                 {% endif %}
                             </td>
 
                             <td class="airports-actions-cell">
                                 <details class="airport-actions-menu">
-                                    <summary aria-label="Airport actions">
+                                    <summary aria-label="{% trans 'Airport actions' %}">
                                         <span></span>
                                         <span></span>
                                         <span></span>
@@ -210,16 +210,16 @@
 
                                     <div class="airport-actions-dropdown">
                                         <a href="{% url 'airports:airport_detail' airport.pk %}">
-                                            Details
+                                            {% trans "Details" %}
                                         </a>
 
                                         {% if airport.has_coordinates %}
                                             <a href="/monitoring/map/?airport={{ airport.iata_code }}">
-                                                Map
+                                                {% trans "Map" %}
                                             </a>
                                         {% else %}
                                             <span class="airport-action-disabled">
-                                                Map unavailable
+                                                {% trans "Map unavailable" %}
                                             </span>
                                         {% endif %}
                                     </div>
@@ -230,9 +230,9 @@
                         <tr>
                             <td colspan="7">
                                 <div class="airports-empty-state">
-                                    <h3>No airports found</h3>
+                                    <h3>{% trans "No airports found" %}</h3>
                                     <p>
-                                        No airport matches the current search or filter.
+                                        {% trans "No airport matches the current search or filter." %}
                                     </p>
                                 </div>
                             </td>
@@ -245,14 +245,14 @@
         <div class="airports-table-footer">
             <p>
                 {% if page_obj.paginator.count > 0 %}
-                    Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} airports
+                    {% blocktrans trimmed with start=page_obj.start_index end=page_obj.end_index total=page_obj.paginator.count %}Showing {{ start }} to {{ end }} of {{ total }} airports{% endblocktrans %}
                 {% else %}
-                    Showing 0 airports
+                    {% trans "Showing 0 airports" %}
                 {% endif %}
             </p>
 
             {% if page_obj.paginator.num_pages > 1 %}
-                <nav class="airports-pagination" aria-label="Airports pagination">
+                <nav class="airports-pagination" aria-label="{% trans 'Airports pagination' %}">
                     {% if page_obj.has_previous %}
                         <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
                             ←

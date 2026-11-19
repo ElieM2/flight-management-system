@@ -131,8 +131,8 @@
                         <span class="summary-icon blue">
                             <i class="bi bi-check2-circle"></i>
                         </span>
-                        <span>{% trans "Stable records" %}</span>
-                        <strong>{{ stable_count|default:0 }}</strong>
+                        <span>{% trans "On time" %}</span>
+                        <strong>{{ on_time_count|default:0 }}</strong>
                     </div>
 
                     <div class="summary-row">
@@ -186,17 +186,17 @@
                     <div class="real-chart-wrap">
                         <div class="chart-canvas-box">
                             <canvas
-                                id="disruptionChart"
+                                id="disruptionChart" data-total="{{ total_flights|default:0 }}" data-ontime="{{ on_time_count|default:0 }}"
                                 data-delayed="{{ delayed_count|default:0 }}"
                                 data-cancelled="{{ cancelled_count|default:0 }}"
-                                data-stable="{{ stable_count|default:0 }}"
+                                data-stable="{{ on_time_count|default:0 }}"
                                 data-active="{{ active_flights|default:0 }}"
                             ></canvas>
 
                             <div class="chart-center-label">
                                 <span>
-                                    <strong>{{ critical_count|default:0 }}</strong>
-                                    <span>{% trans "critical" %}</span>
+                                    <strong>{{ total_flights|default:0 }}</strong>
+                                    <span>{% trans "flights" %}</span>
                                 </span>
                             </div>
                         </div>
@@ -216,8 +216,8 @@
 
                             <div class="legend-row">
                                 <i style="background:#059669;"></i>
-                                <span>{% trans "Stable records" %}</span>
-                                <strong>{{ stable_count|default:0 }}</strong>
+                                <span>{% trans "On time" %}</span>
+                                <strong>{{ on_time_count|default:0 }}</strong>
                             </div>
 
                             <div class="legend-row">
@@ -230,49 +230,6 @@
                 </div>
             </section>
 
-            <section class="ops-panel">
-                <header class="panel-head">
-                    <div>
-                        <h2>{% trans "Data Coverage" %}</h2>
-                    </div>
-                </header>
-
-                <div class="chart-body">
-                    <div class="bar-chart">
-                        <div class="bar-row">
-                            <span>{% trans "API flights" %}</span>
-                            <div class="bar-track">
-                                <div class="bar-fill js-bar-fill" data-width="{{ api_rate|default:0 }}"></div>
-                            </div>
-                            <strong>{{ api_rate|default:"0" }}%</strong>
-                        </div>
-
-                        <div class="bar-row">
-                            <span>{% trans "Local flights" %}</span>
-                            <div class="bar-track">
-                                <div class="bar-fill js-bar-fill" data-width="{{ local_rate|default:0 }}"></div>
-                            </div>
-                            <strong>{{ local_rate|default:"0" }}%</strong>
-                        </div>
-
-                        <div class="bar-row">
-                            <span>{% trans "Active share" %}</span>
-                            <div class="bar-track">
-                                <div class="bar-fill js-bar-fill" data-width="{{ active_rate|default:0 }}"></div>
-                            </div>
-                            <strong>{{ active_rate|default:"0" }}%</strong>
-                        </div>
-
-                        <div class="bar-row">
-                            <span>{% trans "Critical share" %}</span>
-                            <div class="bar-track">
-                                <div class="bar-fill js-bar-fill" data-width="{{ critical_rate|default:0 }}"></div>
-                            </div>
-                            <strong>{{ critical_rate|default:"0" }}%</strong>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
             <section class="ops-panel">
                 <header class="panel-head">
@@ -282,37 +239,18 @@
                 </header>
 
                 <div class="chart-body">
-                    <div class="coverage-list">
+                    <div class="coverage-list coverage-list-plain">
                         <div class="coverage-row">
                             <strong>{% trans "Airlines" %}</strong>
-                            <span class="coverage-track">
-                                <i style="width: 72%;"></i>
-                            </span>
                             <small>{{ total_airlines|default:0 }}</small>
                         </div>
-
                         <div class="coverage-row">
                             <strong>{% trans "Airports" %}</strong>
-                            <span class="coverage-track">
-                                <i style="width: 88%;"></i>
-                            </span>
                             <small>{{ total_airports|default:0 }}</small>
                         </div>
-
                         <div class="coverage-row">
                             <strong>{% trans "Aircraft" %}</strong>
-                            <span class="coverage-track">
-                                <i style="width: 58%;"></i>
-                            </span>
                             <small>{{ total_aircraft|default:0 }}</small>
-                        </div>
-
-                        <div class="coverage-row">
-                            <strong>{% trans "Route" %}</strong>
-                            <span class="coverage-track">
-                                <i style="width: 66%;"></i>
-                            </span>
-                            <small>{{ most_used_route_label|default:"—" }}</small>
                         </div>
                     </div>
                 </div>
@@ -447,17 +385,16 @@
         if (disruptionCanvas && window.Chart) {
             const delayed = Number(disruptionCanvas.dataset.delayed || 0);
             const cancelled = Number(disruptionCanvas.dataset.cancelled || 0);
-            const stable = Number(disruptionCanvas.dataset.stable || 0);
-            const active = Number(disruptionCanvas.dataset.active || 0);
+            const ontime = Number(disruptionCanvas.dataset.ontime || disruptionCanvas.dataset.stable || 0);
 
             new Chart(disruptionCanvas, {
                 type: "doughnut",
                 data: {
-                    labels: ["Delayed", "Cancelled", "Stable", "Active"],
+                    labels: ["On time", "Delayed", "Cancelled"],
                     datasets: [
                         {
-                            data: [delayed, cancelled, stable, active],
-                            backgroundColor: ["#f59e0b", "#dc2626", "#059669", "#2563eb"],
+                            data: [ontime, delayed, cancelled],
+                            backgroundColor: ["#059669", "#f59e0b", "#dc2626"],
                             borderWidth: 0,
                             cutout: "62%"
                         }

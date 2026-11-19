@@ -128,6 +128,7 @@ def get_global_operational_snapshot():
     irregular_ops_count = critical_count + attention_count
 
     stable_count = landed_count + scheduled_count
+    on_time_count = max(total_flights - delayed_count - cancelled_count, 0)
 
     delay_rate = safe_rate(delayed_count, total_flights)
     cancellation_rate = safe_rate(cancelled_count, total_flights)
@@ -191,6 +192,7 @@ def get_global_operational_snapshot():
         "attention_count": attention_count,
         "irregular_ops_count": irregular_ops_count,
         "stable_count": stable_count,
+        "on_time_count": on_time_count,
         "delay_rate": delay_rate,
         "cancellation_rate": cancellation_rate,
         "active_rate": active_rate,

@@ -1,7 +1,7 @@
 ﻿{% extends "base_public.html" %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Aircraft | FlightLogos{% endblock %}
+{% block title %}{% trans "Aircraft" %} | FlightLogos{% endblock %}
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/public_aircraft.css' %}">
@@ -11,7 +11,7 @@
 <section class="aircraft-page">
     <header class="aircraft-header">
         <div class="aircraft-header-copy">
-            <h1>Aircraft</h1>
+            <h1>{% trans "Aircraft" %}</h1>
         </div>
     </header>
 
@@ -22,7 +22,7 @@
             </div>
 
             <div class="aircraft-kpi-content">
-                <span class="aircraft-kpi-label">Total Aircraft</span>
+                <span class="aircraft-kpi-label">{% trans "Total aircraft" %}</span>
                 <strong class="aircraft-kpi-value">{{ total_aircraft }}</strong>
             </div>
         </article>
@@ -33,7 +33,7 @@
             </div>
 
             <div class="aircraft-kpi-content">
-                <span class="aircraft-kpi-label">Active Aircraft</span>
+                <span class="aircraft-kpi-label">{% trans "Active aircraft" %}</span>
                 <strong class="aircraft-kpi-value">{{ active_aircraft }}</strong>
             </div>
         </article>
@@ -44,9 +44,9 @@
             </div>
 
             <div class="aircraft-kpi-content">
-                <span class="aircraft-kpi-label">Operators</span>
+                <span class="aircraft-kpi-label">{% trans "Operators" %}</span>
                 <strong class="aircraft-kpi-value">{{ operators_count }}</strong>
-                <span class="aircraft-kpi-note">Assigned airlines</span>
+                <span class="aircraft-kpi-note">{% trans "Assigned airlines" %}</span>
             </div>
         </article>
 
@@ -56,9 +56,9 @@
             </div>
 
             <div class="aircraft-kpi-content">
-                <span class="aircraft-kpi-label">Total Seats</span>
+                <span class="aircraft-kpi-label">{% trans "Total seats" %}</span>
                 <strong class="aircraft-kpi-value">{{ total_capacity }}</strong>
-                <span class="aircraft-kpi-note">Combined seat capacity</span>
+                <span class="aircraft-kpi-note">{% trans "Total seat capacity" %}</span>
             </div>
         </article>
     </section>
@@ -72,37 +72,37 @@
                         type="search"
                         name="q"
                         value="{{ query }}"
-                        placeholder="Search aircraft..."
-                        aria-label="Search aircraft"
+                        placeholder="{% trans 'Search aircraft...' %}"
+                        aria-label="{% trans 'Search aircraft' %}"
                     >
                 </div>
 
-                <select name="status" class="aircraft-filter-select" aria-label="Filter by status">
+                <select name="status" class="aircraft-filter-select" aria-label="{% trans 'Filter by status' %}">
                     <option value="" {% if not status %}selected{% endif %}>
-                        All statuses
+                        {% trans "All statuses" %}
                     </option>
                     <option value="active" {% if status == "active" %}selected{% endif %}>
-                        Active
+                        {% trans "Active" %}
                     </option>
                     <option value="maintenance" {% if status == "maintenance" %}selected{% endif %}>
-                        Maintenance
+                        {% trans "Maintenance" %}
                     </option>
                     <option value="inactive" {% if status == "inactive" %}selected{% endif %}>
-                        Inactive
+                        {% trans "Inactive" %}
                     </option>
                 </select>
 
                 <button type="submit" class="aircraft-apply-button">
-                    Apply
+                    {% trans "Apply" %}
                 </button>
 
                 {% if query or status %}
                     <a href="{% url 'aircraft:aircraft_list' %}" class="aircraft-reset-button">
-                        Reset
+                        {% trans "Reset" %}
                     </a>
                 {% else %}
                     <span class="aircraft-reset-button aircraft-reset-disabled">
-                        Reset
+                        {% trans "Reset" %}
                     </span>
                 {% endif %}
             </form>
@@ -112,13 +112,13 @@
             <table class="aircraft-table">
                 <thead>
                     <tr>
-                        <th>Aircraft</th>
-                        <th>Registration</th>
-                        <th>Model / Type</th>
-                        <th>Operator</th>
-                        <th>Capacity</th>
-                        <th>Status</th>
-                        <th class="aircraft-actions-column">Actions</th>
+                        <th>{% trans "Aircraft" %}</th>
+                        <th>{% trans "Registration" %}</th>
+                        <th>{% trans "Model / type" %}</th>
+                        <th>{% trans "Operator" %}</th>
+                        <th>{% trans "Capacity" %}</th>
+                        <th>{% trans "Status" %}</th>
+                        <th class="aircraft-actions-column">{% trans "Actions" %}</th>
                     </tr>
                 </thead>
 
@@ -136,7 +136,7 @@
                                             {{ aircraft.model }}
                                         </a>
                                         <span class="aircraft-meta">
-                                            Aircraft record
+                                            {% trans "Aircraft" %}
                                         </span>
                                     </div>
                                 </div>
@@ -159,11 +159,11 @@
                                 {% if aircraft.airline %}
                                     <div class="aircraft-operator-stack">
                                         <span>{{ aircraft.airline.name }}</span>
-                                        <small>Assigned operator</small>
+                                        <small>{% trans "Assigned operator" %}</small>
                                     </div>
                                 {% else %}
                                     <span class="aircraft-muted-badge">
-                                        Operator not assigned
+                                        {% trans "Operator not assigned" %}
                                     </span>
                                 {% endif %}
                             </td>
@@ -195,7 +195,7 @@
 
                             <td class="aircraft-actions-cell">
                                 <details class="aircraft-actions-menu">
-                                    <summary aria-label="Aircraft actions">
+                                    <summary aria-label="{% trans 'Aircraft actions' %}">
                                         <span></span>
                                         <span></span>
                                         <span></span>
@@ -203,16 +203,16 @@
 
                                     <div class="aircraft-actions-dropdown">
                                         <a href="{% url 'aircraft:aircraft_detail' aircraft.pk %}">
-                                            Details
+                                            {% trans "Details" %}
                                         </a>
 
                                         {% if aircraft.airline %}
                                             <a href="{% url 'airlines:airline_detail' aircraft.airline.pk %}">
-                                                Operator
+                                                {% trans "Operator" %}
                                             </a>
                                         {% else %}
                                             <span class="aircraft-action-disabled">
-                                                Operator unavailable
+                                                {% trans "Operator unavailable" %}
                                             </span>
                                         {% endif %}
                                     </div>
@@ -223,9 +223,9 @@
                         <tr>
                             <td colspan="7">
                                 <div class="aircraft-empty-state">
-                                    <h3>No aircraft found</h3>
+                                    <h3>{% trans "No aircraft found" %}</h3>
                                     <p>
-                                        No aircraft record matches the current search or filter.
+                                        {% trans "No aircraft matches the current search or filter." %}
                                     </p>
                                 </div>
                             </td>
@@ -238,14 +238,14 @@
         <div class="aircraft-table-footer">
             <p>
                 {% if page_obj.paginator.count > 0 %}
-                    Showing {{ page_obj.start_index }} to {{ page_obj.end_index }} of {{ page_obj.paginator.count }} aircraft
+                    {% blocktrans trimmed with start=page_obj.start_index end=page_obj.end_index total=page_obj.paginator.count %}Showing {{ start }} to {{ end }} of {{ total }} aircraft{% endblocktrans %}
                 {% else %}
-                    Showing 0 aircraft
+                    {% trans "Showing 0 aircraft" %}
                 {% endif %}
             </p>
 
             {% if page_obj.paginator.num_pages > 1 %}
-                <nav class="aircraft-pagination" aria-label="Aircraft pagination">
+                <nav class="aircraft-pagination" aria-label="{% trans 'Aircraft pagination' %}">
                     {% if page_obj.has_previous %}
                         <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
                             ←

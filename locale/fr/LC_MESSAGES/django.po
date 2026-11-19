@@ -1237,16 +1237,16 @@ msgstr ""
 "référence public propre."
 
 msgid "Total aircraft"
-msgstr "Appareil"
+msgstr "Appareils au total"
 
 msgid "Active fleet"
 msgstr "Vols actifs"
 
 msgid "Operators"
-msgstr "Opérations actives"
+msgstr "Exploitants"
 
 msgid "Total seats"
-msgstr "Total des vols"
+msgstr "Sièges au total"
 
 msgid "Search"
 msgstr "Recherche"
@@ -1286,7 +1286,7 @@ msgstr[0] "Résultat %(result_count)s"
 msgstr[1] "Résultats %(result_count)s"
 
 msgid "Registration"
-msgstr "Registre"
+msgstr "Immatriculation"
 
 msgid "Model"
 msgstr "Modèle"
@@ -1301,7 +1301,7 @@ msgid "Aircraft record"
 msgstr "Appareil"
 
 msgid "No aircraft found"
-msgstr "Total des vols"
+msgstr "Aucun appareil trouvé"
 
 msgid "No aircraft record matches the current search."
 msgstr "Aucun vol surveillé ne correspond aux filtres actuels."
@@ -1433,7 +1433,7 @@ msgid "Countries"
 msgstr "Pays"
 
 msgid "Linked flights"
-msgstr "Vols actifs"
+msgstr "Vols associés"
 
 msgid "Find an airline"
 msgstr "Compagnie inconnue"
@@ -1564,10 +1564,10 @@ msgstr ""
 "informations sur les aéroports publics à partir d'un annuaire structuré."
 
 msgid "Total airports"
-msgstr "Total des vols"
+msgstr "Aéroports au total"
 
 msgid "Active airports"
-msgstr "Vols actifs"
+msgstr "Aéroports actifs"
 
 msgid "Complete data"
 msgstr "Aucune donnée de route"
@@ -1605,7 +1605,7 @@ msgid "Open airport profile"
 msgstr "Ouvrir le contrôle"
 
 msgid "No airports found"
-msgstr "Total des vols"
+msgstr "Aucun aéroport trouvé"
 
 msgid "No airport matches the current search."
 msgstr "Aucun vol surveillé ne correspond aux filtres actuels."
@@ -3391,7 +3391,7 @@ msgid "Public site"
 msgstr "Site public"
 
 msgid "Operator"
-msgstr "Opérateur"
+msgstr "Exploitant"
 
 msgid "Signed in"
 msgstr "Connecté"
@@ -3576,6 +3576,115 @@ msgstr "Avis"
 
 msgid "Create an account to access the operations workspace."
 msgstr "Créez un compte pour accéder à l’espace opérations."
+
+msgid "On time"
+msgstr "À l’heure"
+
+msgid "flights"
+msgstr "vols"
+
+msgid "Click an aircraft to see its details."
+msgstr "Cliquez sur un appareil pour voir ses détails."
+
+msgid ""
+"This module is planned. It will collect comments about the site, not flight "
+"operations."
+msgstr ""
+"Ce module est prévu. Il recueillera des commentaires sur le site, pas sur "
+"les opérations aériennes."
+
+msgid "Showing %(start)s–%(end)s of %(total)s flights"
+msgstr "Affichage de %(start)s–%(end)s sur %(total)s vols"
+
+msgid "Active aircraft"
+msgstr "Appareils actifs"
+
+msgid "Assigned airlines"
+msgstr "Compagnies assignées"
+
+msgid "Total seat capacity"
+msgstr "Capacité totale en sièges"
+
+msgid "Search aircraft..."
+msgstr "Rechercher un appareil..."
+
+msgid "Search aircraft"
+msgstr "Rechercher un appareil"
+
+msgid "Filter by status"
+msgstr "Filtrer par statut"
+
+msgid "Maintenance"
+msgstr "Maintenance"
+
+msgid "Model / type"
+msgstr "Modèle / type"
+
+msgid "Assigned operator"
+msgstr "Exploitant assigné"
+
+msgid "Operator not assigned"
+msgstr "Aucun exploitant assigné"
+
+msgid "Aircraft actions"
+msgstr "Actions appareil"
+
+msgid "Operator unavailable"
+msgstr "Exploitant indisponible"
+
+msgid "No aircraft matches the current search or filter."
+msgstr "Aucun appareil ne correspond à la recherche ou au filtre."
+
+msgid "Showing %(start)s to %(end)s of %(total)s aircraft"
+msgstr "Affichage de %(start)s à %(end)s sur %(total)s appareils"
+
+msgid "Showing 0 aircraft"
+msgstr "Affichage de 0 appareil"
+
+msgid "Aircraft pagination"
+msgstr "Pagination des appareils"
+
+msgid "Countries served"
+msgstr "Pays desservis"
+
+msgid "Search airports..."
+msgstr "Rechercher un aéroport..."
+
+msgid "Search airports"
+msgstr "Rechercher un aéroport"
+
+msgid "IATA / ICAO"
+msgstr "IATA / OACI"
+
+msgid "City / country"
+msgstr "Ville / pays"
+
+msgid "Coordinates"
+msgstr "Coordonnées"
+
+msgid "Location not specified"
+msgstr "Lieu non renseigné"
+
+msgid "Missing"
+msgstr "Manquant"
+
+msgid "Airport actions"
+msgstr "Actions aéroport"
+
+msgid "Map unavailable"
+msgstr "Carte indisponible"
+
+msgid "No airport matches the current search or filter."
+msgstr "Aucun aéroport ne correspond à la recherche ou au filtre."
+
+msgid "Showing %(start)s to %(end)s of %(total)s airports"
+msgstr "Affichage de %(start)s à %(end)s sur %(total)s aéroports"
+
+msgid "Showing 0 airports"
+msgstr "Affichage de 0 aéroport"
+
+msgid "Airports pagination"
+msgstr "Pagination des aéroports"
 
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"

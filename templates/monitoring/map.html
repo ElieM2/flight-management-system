@@ -306,13 +306,7 @@
                                 </div>
                             </div>
 
-                            <div class="lf-map-stage-kpi">
-                                <i class="bi bi-activity lf-muted"></i>
-                                <div>
-                                    <strong id="visibleDisruptionScore">0</strong>
-                                    <span>{% trans "Impact" %}</span>
-                                </div>
-                            </div>
+
                         </div>
 
                         <div class="lf-map-tools" aria-label="{% trans 'Map tools' %}">
@@ -395,11 +389,8 @@
                         <div class="lf-map-card-body">
 
                             <div class="selected-flight-empty-compact" id="selectedFlightEmpty">
-                                <span class="selected-flight-empty-compact-badge">{% trans "Standby" %}</span>
                                 <h4>{% trans "No flight selected" %}</h4>
-                                <p>
-                                    
-                                </p>
+                                <p>{% trans "Click an aircraft to see its details." %}</p>
                             </div>
 
                             <div class="selected-flight-content" id="selectedFlightContent" hidden>
@@ -529,9 +520,7 @@
                                 </div>
                             </div>
 
-                            <div class="weather-preview weather-preview-pro" id="weatherPreview">
-                                <div class="weather-radar-unavailable">{% trans "Weather unavailable" %}</div>
-                            </div>
+                            <div class="weather-preview weather-preview-pro" id="weatherPreview" hidden></div>
 
                         </div>
                     </article>
@@ -575,9 +564,9 @@
 
                 </section>
 
-                <div class="lf-map-crisis-banner" id="mapCrisisBanner">
-                    <strong id="mapCrisisModeLabel">{% trans "Stable" %}</strong>
-                    <span id="mapCrisisModeReason">{% trans "No major disruption." %}</span>
+                <div class="lf-map-crisis-banner" id="mapCrisisBanner" hidden>
+                    <strong id="mapCrisisModeLabel"></strong>
+                    <span id="mapCrisisModeReason"></span>
                 </div>
 
             </main>

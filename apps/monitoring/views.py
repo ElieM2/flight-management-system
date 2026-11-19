@@ -130,10 +130,16 @@ def monitoring_home(request):
 
     pagination_query = query_params.urlencode()
 
+    page_start = page_obj.start_index() if flights else 0
+    page_end = page_obj.end_index() if flights else 0
+
     context = {
         "flights": flights,
         "page_obj": page_obj,
         "paginator": paginator,
+        "page_start": page_start,
+        "page_end": page_end,
+        "page_total": paginator.count,
         "pagination_query": pagination_query,
         "selected_flight": selected_flight,
         "selected_flight_reason": selected_flight_reason,
