@@ -974,11 +974,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const cleanKey = baseLayers[layerKey] ? layerKey : "dark";
         const layerConfig = baseLayers[cleanKey];
 
+        if (!state.map.getPane("basemap")) {
+            state.map.createPane("basemap");
+            state.map.getPane("basemap").style.zIndex = 200;
+        }
+
+        const basePane = state.map.getPane("basemap");
+        basePane.classList.toggle("map-pane-dark", cleanKey === "dark");
+
         if (state.baseLayer) {
             state.map.removeLayer(state.baseLayer);
         }
 
-        state.baseLayer = L.tileLayer(layerConfig.url, layerConfig.options);
+        const options = Object.assign({}, layerConfig.options, { pane: "basemap" });
+        state.baseLayer = L.tileLayer(layerConfig.url, options);
         state.baseLayer.addTo(state.map);
         state.baseLayerKey = cleanKey;
 

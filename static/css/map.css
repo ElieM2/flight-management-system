@@ -3085,3 +3085,8 @@ img.map-tiles-dark {
     background: rgba(148, 163, 184, 0.08);
     border-radius: 0.6rem;
 }
+
+
+.leaflet-basemap-pane.map-pane-dark {
+    filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
