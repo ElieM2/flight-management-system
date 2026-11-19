@@ -2067,7 +2067,7 @@ msgid "Open critical flight supervision records"
 msgstr "Fenêtre de supervision active du vol"
 
 msgid "Critical flights"
-msgstr "Vols locaux"
+msgstr "Vols critiques"
 
 msgid "Prioritize"
 msgstr "Priorité"
@@ -2112,7 +2112,7 @@ msgid ""
 msgstr ""
 
 msgid "Daily traffic"
-msgstr "Toute la circulation"
+msgstr "Trafic quotidien"
 
 msgid "Flight volume and active share"
 msgstr ""
@@ -2678,7 +2678,7 @@ msgid "Back to flights"
 msgstr "Vols suivis"
 
 msgid "Monitoring"
-msgstr "Monitoring"
+msgstr "Supervision"
 
 msgid "Current route attached to this flight record."
 msgstr "Enregistrements récents des vols"
@@ -3440,7 +3440,7 @@ msgid "All flights"
 msgstr "Tous les vols"
 
 msgid "En route"
-msgstr "En vol"
+msgstr "En route"
 
 msgid "STD"
 msgstr "STD"
@@ -3485,13 +3485,97 @@ msgid "My Account"
 msgstr "Mon compte"
 
 msgid "Control Desk"
-msgstr "Poste de contrôle"
+msgstr "Pupitre de contrôle"
 
 msgid "Profile"
 msgstr "Profil"
 
 msgid "Search by flight number, airline or airport"
 msgstr "Recherchez par numéro de vol, compagnie ou aéroport"
+
+msgid "Flights, delays and cancellations."
+msgstr "Vols, retards et annulations."
+
+msgid "Recent flights"
+msgstr "Vols récents"
+
+msgid "Reference data"
+msgstr "Données de référence"
+
+msgid "Traffic, delays and cancellations."
+msgstr "Trafic, retards et annulations."
+
+msgid "active"
+msgstr "actifs"
+
+msgid "delayed"
+msgstr "en retard"
+
+msgid "cancelled"
+msgstr "annulés"
+
+msgid "critical"
+msgstr "critiques"
+
+msgid "Status mix"
+msgstr "Répartition des statuts"
+
+msgid "Aircraft positions, routes and airports."
+msgstr "Positions des appareils, routes et aéroports."
+
+msgid "Weather unavailable"
+msgstr "Météo indisponible"
+
+msgid "No flight selected"
+msgstr "Aucun vol sélectionné"
+
+msgid "Dark map"
+msgstr "Carte sombre"
+
+msgid "Light map"
+msgstr "Carte claire"
+
+msgid "Live flights"
+msgstr "Vols en cours"
+
+msgid "Flight review"
+msgstr "Fiche vol"
+
+msgid "Sign in to continue."
+msgstr "Connectez-vous pour continuer."
+
+msgid "Import and update flight records."
+msgstr "Importer et mettre à jour les vols."
+
+msgid "Import flight records and update the local database."
+msgstr "Importer des vols et mettre à jour la base locale."
+
+msgid "Ask questions about flights and data already in the system."
+msgstr "Posez des questions sur les vols et les données déjà présentes."
+
+msgid "Flight charts."
+msgstr "Graphiques des vols."
+
+msgid "Flight records."
+msgstr "Liste des vols."
+
+msgid "Busiest routes and airports."
+msgstr "Routes et aéroports les plus fréquentés."
+
+msgid "API and local record sources."
+msgstr "Sources API et enregistrements locaux."
+
+msgid "Record sources"
+msgstr "Sources des enregistrements"
+
+msgid "Planned feedback module."
+msgstr "Module d’avis (prévu)."
+
+msgid "Feedback"
+msgstr "Avis"
+
+msgid "Create an account to access the operations workspace."
+msgstr "Créez un compte pour accéder à l’espace opérations."
 
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"

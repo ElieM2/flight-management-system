@@ -36,7 +36,7 @@ Elles sont toutes facultatives. Sans elles, le catalogue local et les données d
 
 - `AVIATIONSTACK_API_KEY` — import de vols (`sync_aviationstack`, `auto_sync_aviationstack`)
 - `AIRLABS_API_KEY` — enrichissement des aéroports (`enrich_airports`)
-- `OPENWEATHERMAP_API_KEY` — aléas météo sur la carte de surveillance
+- Météo carte : radar RainViewer et observations Open-Meteo (aucune clé requise)
 - `OPENSKY_CLIENT_ID` / `OPENSKY_CLIENT_SECRET` — trafic live OpenSky (`sync_opensky`)
 - `DEEPL_API_KEY` — scripts de traduction hors application (`scripts/i18n/`)
 - `OPENAI_API_KEY` — uniquement si l’assistant est configuré pour un prestataire externe

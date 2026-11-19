@@ -2052,7 +2052,7 @@ msgid "Open critical flight supervision records"
 msgstr "Окно активного наблюдения за полетом"
 
 msgid "Critical flights"
-msgstr "Локальные рейсы"
+msgstr "Критические рейсы"
 
 msgid "Prioritize"
 msgstr "Приоритет"
@@ -2097,7 +2097,7 @@ msgid ""
 msgstr ""
 
 msgid "Daily traffic"
-msgstr "Весь трафик"
+msgstr "Суточное движение"
 
 msgid "Flight volume and active share"
 msgstr ""
@@ -3456,13 +3456,97 @@ msgid "My Account"
 msgstr "Мой аккаунт"
 
 msgid "Control Desk"
-msgstr "Панель контроля"
+msgstr "Диспетчерская"
 
 msgid "Profile"
 msgstr "Профиль"
 
 msgid "Search by flight number, airline or airport"
 msgstr "Поиск по номеру рейса, авиакомпании или аэропорту"
+
+msgid "Flights, delays and cancellations."
+msgstr "Рейсы, задержки и отмены."
+
+msgid "Recent flights"
+msgstr "Последние рейсы"
+
+msgid "Reference data"
+msgstr "Справочные данные"
+
+msgid "Traffic, delays and cancellations."
+msgstr "Движение, задержки и отмены."
+
+msgid "active"
+msgstr "активны"
+
+msgid "delayed"
+msgstr "задержаны"
+
+msgid "cancelled"
+msgstr "отменены"
+
+msgid "critical"
+msgstr "критические"
+
+msgid "Status mix"
+msgstr "Статусы"
+
+msgid "Aircraft positions, routes and airports."
+msgstr "Позиции воздушных судов, маршруты и аэропорты."
+
+msgid "Weather unavailable"
+msgstr "Погода недоступна"
+
+msgid "No flight selected"
+msgstr "Рейс не выбран"
+
+msgid "Dark map"
+msgstr "Тёмная карта"
+
+msgid "Light map"
+msgstr "Светлая карта"
+
+msgid "Live flights"
+msgstr "Текущие рейсы"
+
+msgid "Flight review"
+msgstr "Карточка рейса"
+
+msgid "Sign in to continue."
+msgstr "Войдите, чтобы продолжить."
+
+msgid "Import and update flight records."
+msgstr "Импорт и обновление рейсов."
+
+msgid "Import flight records and update the local database."
+msgstr "Импортируйте рейсы и обновите локальную базу."
+
+msgid "Ask questions about flights and data already in the system."
+msgstr "Задавайте вопросы о рейсах и данных, уже имеющихся в системе."
+
+msgid "Flight charts."
+msgstr "Графики рейсов."
+
+msgid "Flight records."
+msgstr "Список рейсов."
+
+msgid "Busiest routes and airports."
+msgstr "Самые загруженные маршруты и аэропорты."
+
+msgid "API and local record sources."
+msgstr "Источники API и локальные записи."
+
+msgid "Record sources"
+msgstr "Источники записей"
+
+msgid "Planned feedback module."
+msgstr "Планируемый модуль отзывов."
+
+msgid "Feedback"
+msgstr "Отзывы"
+
+msgid "Create an account to access the operations workspace."
+msgstr "Создайте учётную запись для доступа к операционному разделу."
 
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"
