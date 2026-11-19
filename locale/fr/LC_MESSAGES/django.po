@@ -3904,6 +3904,12 @@ msgstr "Un compte existe déjà avec cette adresse e-mail."
 msgid "This email is already used by another account."
 msgstr "Cette adresse e-mail est déjà utilisée par un autre compte."
 
+msgid "Flight, airline, airport…"
+msgstr "Vol, compagnie, aéroport…"
+
+msgid "Flight Map"
+msgstr "Carte des vols"
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"
 

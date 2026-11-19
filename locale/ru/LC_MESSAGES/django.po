@@ -3873,6 +3873,12 @@ msgstr "Учётная запись с этим адресом эл. почты 
 msgid "This email is already used by another account."
 msgstr "Этот адрес эл. почты уже используется другой учётной записью."
 
+msgid "Flight, airline, airport…"
+msgstr "Рейс, авиакомпания, аэропорт…"
+
+msgid "Flight Map"
+msgstr "Карта рейсов"
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"
 
