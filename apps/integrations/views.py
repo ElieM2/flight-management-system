@@ -120,12 +120,27 @@ def _build_provider_health(latest_log, failure_rate):
 
 def _build_timeline_highlights(
     latest_log,
-    recent_total_runs,
-    recent_success_rate,
-    recent_total_received,
-    recent_total_created,
-    recent_total_updated,
+    recent_total_runs=None,
+    recent_success_rate=None,
+    recent_total_received=None,
+    recent_total_created=None,
+    recent_total_updated=None,
+    total_runs=None,
+    success_rate=None,
+    total_received=None,
+    total_created=None,
+    total_updated=None,
 ):
+    if recent_total_runs is None:
+        recent_total_runs = total_runs
+    if recent_success_rate is None:
+        recent_success_rate = success_rate
+    if recent_total_received is None:
+        recent_total_received = total_received
+    if recent_total_created is None:
+        recent_total_created = total_created
+    if recent_total_updated is None:
+        recent_total_updated = total_updated
     highlights = []
 
     if latest_log:

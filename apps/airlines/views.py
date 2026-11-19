@@ -79,7 +79,7 @@ def airline_list(request):
         .exclude(country__iexact="n/a")
         .exclude(country__iexact="null")
         .exclude(country__iexact="none")
-        .values("country_code")
+        .values("country")
         .distinct()
         .count()
     )

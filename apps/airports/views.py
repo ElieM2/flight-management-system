@@ -24,20 +24,34 @@ def is_meaningful_text(value):
     return cleaned.lower() not in NON_MEANINGFUL_TEXT_VALUES
 
 
-def has_valid_coordinates(latitude, longitude):
-    if latitude is None or longitude is None:
+def _is_valid_coordinate(value, minimum, maximum):
+    if value is None:
         return False
 
     try:
-        lat = float(latitude)
-        lon = float(longitude)
+        number = float(value)
     except (TypeError, ValueError):
         return False
 
-    if lat == 0 and lon == 0:
+    return minimum <= number <= maximum
+
+
+def has_valid_latitude(latitude):
+    return _is_valid_coordinate(latitude, -90, 90)
+
+
+def has_valid_longitude(longitude):
+    return _is_valid_coordinate(longitude, -180, 180)
+
+
+def has_valid_coordinates(latitude, longitude):
+    if not has_valid_latitude(latitude) or not has_valid_longitude(longitude):
         return False
 
-    return -90 <= lat <= 90 and -180 <= lon <= 180
+    if float(latitude) == 0 and float(longitude) == 0:
+        return False
+
+    return True
 
 
 def prepare_airport_display_data(airport):
@@ -158,17 +172,27 @@ def get_flight_route_display(flight):
     return "—"
 
 
-def get_data_quality_context(airport):
+COMPLETENESS_FIELD_LABELS = {
+    "city": "City",
+    "country": "Country",
+    "latitude": "Latitude",
+    "longitude": "Longitude",
+}
+
+
+def get_airport_data_completeness(airport):
+    prepare_airport_display_data(airport)
+
     fields = [
-        ("City", airport.has_city),
-        ("Country", airport.has_country),
-        ("Latitude", airport.has_coordinates),
-        ("Longitude", airport.has_coordinates),
+        ("city", airport.has_city),
+        ("country", airport.has_country),
+        ("latitude", has_valid_latitude(airport.latitude)),
+        ("longitude", has_valid_longitude(airport.longitude)),
     ]
 
-    completed = sum(1 for field_name, is_complete in fields if is_complete)
-    total = len(fields)
-    score = round((completed / total) * 100) if total else 0
+    filled_fields = sum(1 for field_name, is_complete in fields if is_complete)
+    total_fields = len(fields)
+    score = round((filled_fields / total_fields) * 100) if total_fields else 0
 
     missing_fields = [
         field_name for field_name, is_complete in fields if not is_complete
@@ -185,10 +209,56 @@ def get_data_quality_context(airport):
         label = "Minimal"
 
     return {
-        "data_quality_score": score,
-        "data_quality_level": level,
-        "data_quality_label": label,
-        "missing_data_fields": missing_fields,
+        "filled_fields": filled_fields,
+        "total_fields": total_fields,
+        "score": score,
+        "level": level,
+        "label": label,
+        "missing_fields": missing_fields,
+        "is_complete": score >= 100,
+        "has_coordinates": airport.has_coordinates,
+    }
+
+
+def get_airport_quality_distribution(airports):
+    complete_airports = 0
+    partial_airports = 0
+    minimal_airports = 0
+
+    for airport in airports:
+        level = get_airport_data_completeness(airport)["level"]
+        if level == "complete":
+            complete_airports += 1
+        elif level == "partial":
+            partial_airports += 1
+        else:
+            minimal_airports += 1
+
+    return {
+        "complete_airports": complete_airports,
+        "partial_airports": partial_airports,
+        "minimal_airports": minimal_airports,
+    }
+
+
+def _missing_data_field_labels(missing_fields):
+    return [
+        COMPLETENESS_FIELD_LABELS.get(field_name, field_name)
+        for field_name in missing_fields
+    ]
+
+
+def get_data_quality_context(airport):
+    completeness = get_airport_data_completeness(airport)
+
+    return {
+        "data_quality_score": completeness["score"],
+        "data_quality_level": completeness["level"],
+        "data_quality_label": completeness["label"],
+        "missing_data_fields": _missing_data_field_labels(
+            completeness["missing_fields"]
+        ),
+        "has_coordinates": completeness["has_coordinates"],
     }
 
 
@@ -196,7 +266,7 @@ def airport_list(request):
     query = request.GET.get("q", "").strip()
     status = request.GET.get("status", "").strip()
 
-    airports_qs = Airport.objects.all()
+    airports_qs = Airport.objects.all().order_by("name")
 
     if query:
         airports_qs = airports_qs.filter(
@@ -233,7 +303,15 @@ def airport_list(request):
             linked_flights_count += getattr(airport, f"{relation_name}_count", 0) or 0
 
         airport.linked_flights_count = linked_flights_count
-        prepare_airport_display_data(airport)
+        airport.flight_count = linked_flights_count
+        completeness = get_airport_data_completeness(airport)
+        airport.data_completeness = completeness
+        airport.data_quality_level = completeness["level"]
+        airport.data_quality_label = completeness["label"]
+        airport.data_quality_score = completeness["score"]
+        airport.missing_data_fields = _missing_data_field_labels(
+            completeness["missing_fields"]
+        )
 
     total_airports = Airport.objects.count()
     active_airports = Airport.objects.filter(is_active=True).count()
@@ -252,6 +330,10 @@ def airport_list(request):
 
     linked_flights = get_linked_flights_count()
 
+    quality_distribution = get_airport_quality_distribution(
+        Airport.objects.order_by("name")
+    )
+
     context = {
         "airports": page_obj.object_list,
         "page_obj": page_obj,
@@ -260,8 +342,13 @@ def airport_list(request):
         "status": status,
         "total_airports": total_airports,
         "active_airports": active_airports,
+        "total_active_airports": active_airports,
         "countries_count": countries_count,
+        "total_countries": countries_count,
         "linked_flights": linked_flights,
+        "complete_airports": quality_distribution["complete_airports"],
+        "partial_airports": quality_distribution["partial_airports"],
+        "minimal_airports": quality_distribution["minimal_airports"],
     }
 
     return render(request, "airports/list.html", context)

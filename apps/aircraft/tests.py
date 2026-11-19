@@ -130,7 +130,7 @@ class AircraftListViewTests(AircraftViewsTestDataMixin, TestCase):
                     expected_registration,
                 )
 
-    def test_aircraft_list_uses_total_aircraft_when_no_active_aircraft_exists(self):
+    def test_aircraft_list_counts_zero_active_when_all_are_in_maintenance(self):
         Aircraft.objects.update(status="maintenance")
 
         request = self.factory.get("/aircraft/")
@@ -145,7 +145,8 @@ class AircraftListViewTests(AircraftViewsTestDataMixin, TestCase):
         context = mocked_render.call_args.args[2]
 
         self.assertEqual(context["total_aircraft"], 3)
-        self.assertEqual(context["active_aircraft"], 3)
+        self.assertEqual(context["active_aircraft"], 0)
+        self.assertEqual(context["maintenance_aircraft"], 3)
 
     def test_aircraft_list_handles_empty_fleet(self):
         Aircraft.objects.all().delete()

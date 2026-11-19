@@ -6,7 +6,7 @@ class Airline(models.Model):
     name = models.CharField(max_length=150, unique=True)
     iata_code = models.CharField(max_length=2, unique=True)
     icao_code = models.CharField(max_length=3, unique=True)
-    country = models.CharField(max_length=100)
+    country = models.CharField(max_length=100, blank=True, default="")
 
     country_code = models.CharField(
         max_length=2,

@@ -1282,7 +1282,7 @@ class IntegrationViewsBusinessTests(TestCase):
             failure_rate=50,
         )
 
-        self.assertEqual(health["provider_health"], "Unstable history")
+        self.assertEqual(health["provider_health"], "Recent review needed")
         self.assertEqual(health["provider_health_class"], "warning")
 
     def test_build_provider_health_for_available_provider(self):

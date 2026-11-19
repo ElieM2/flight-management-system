@@ -280,7 +280,7 @@ class AirportDetailViewTests(AirportViewsTestDataMixin, TestCase):
         self.assertEqual(context["airport"].iata_code, "AMH")
         self.assertEqual(context["data_quality_level"], "minimal")
         self.assertFalse(context["has_coordinates"])
-        self.assertIn("city", context["missing_data_fields"])
+        self.assertIn("City", context["missing_data_fields"])
 
     def test_airport_detail_raises_404_for_unknown_airport(self):
         request = self.factory.get("/airports/999999/")
