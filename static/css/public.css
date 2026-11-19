@@ -2516,3 +2516,20 @@ html[data-theme="dark"] .public-app-nav ul {
     background: #0b1728 !important;
     border-color: rgba(148, 163, 184, 0.18) !important;
 }
+
+
+/* Phase 2: keep existing board pages within the shared typography and width. */
+.airports-page,
+.aircraft-page,
+.airlines-page,
+.airlines-shell,
+.airport-detail-page,
+.aircraft-detail-page,
+.flight-detail-page {
+    font-family: var(--font-sans);
+    color: var(--fl-text);
+}
+
+body.public-app-body {
+    font-family: var(--font-sans);
+}
