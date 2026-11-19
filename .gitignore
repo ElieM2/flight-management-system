@@ -22,6 +22,7 @@ staticfiles/
 *.env
 *.env.*
 .env.backup
+!.env.example
 
 # IDE / editors
 .vscode/
@@ -41,6 +42,8 @@ htmlcov/
 *.backup
 *.backup-*
 *.bak
+*.bak-*
+*.sqlite3.bak*
 *.tmp
 _tmp_*
 *.soft_typography_backup
