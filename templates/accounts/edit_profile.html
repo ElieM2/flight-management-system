@@ -1,4 +1,6 @@
 ﻿{% extends 'base_dashboard.html' %}
+{% load i18n %}
+
 
 {% block title %}Edit Account | LogosFlight{% endblock %}
 {% block dashboard_title %}Edit Account{% endblock %}
@@ -527,6 +529,9 @@
                     <p>Use accurate values for user identity and operational contact information.</p>
                 </div>
 
+                {% if is_demo_readonly %}
+                    <p>{% trans "This demo account is read-only." %}</p>
+                {% else %}
                 <form method="post" enctype="multipart/form-data" novalidate class="account-edit-form">
                     {% csrf_token %}
 
@@ -614,6 +619,7 @@
                         </a>
                     </div>
                 </form>
+                {% endif %}
             </article>
 
         </main>

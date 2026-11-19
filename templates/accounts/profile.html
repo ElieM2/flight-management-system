@@ -663,9 +663,11 @@
                 </div>
 
                 <div class="account-actions">
+                    {% if not is_demo_readonly %}
                     <a href="{% url 'accounts:edit_profile' %}" class="account-btn account-btn-primary">
                         Edit profile
                     </a>
+                    {% endif %}
 
                     <a href="{% url 'dashboard:dashboard' %}" class="account-btn account-btn-light">
                         Operations Center

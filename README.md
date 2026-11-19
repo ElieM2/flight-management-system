@@ -53,3 +53,18 @@ pytest
 ```
 
 `requirements-dev.txt` installe notamment pytest et pytest-django, en plus des dépendances de l’application.
+
+## Déploiement sur Render
+
+Le fichier `render.yaml` décrit un service web gratuit. Le dépôt ne doit pas contenir de fichier `.env` ni de secrets.
+
+Sur Render, renseignez au minimum :
+
+- `DEMO_USERNAME` et `DEMO_PASSWORD` — compte de démonstration en lecture seule (pas administrateur)
+- éventuellement les clés API déjà documentées plus haut, si vous voulez les imports live
+
+`SECRET_KEY` est généré par Render. `DEBUG` est fixé à `0`. L’hôte public (`RENDER_EXTERNAL_HOSTNAME`) est ajouté automatiquement à `ALLOWED_HOSTS` et `CSRF_TRUSTED_ORIGINS`.
+
+À chaque déploiement, `build.sh` installe les dépendances, lance `collectstatic`, applique les migrations, puis régénère les données de démonstration (`seed_demo_operations`) et le compte de démo (`ensure_demo_user`). Le disque du plan gratuit est éphémère : la base SQLite est donc réinitialisée à partir des données de démo à chaque build.
+
+Le compte de démo peut se connecter et consulter le tableau de bord, la surveillance, la carte et les analyses. Il ne peut pas modifier le profil ni lancer une synchronisation. Après une période d’inactivité, le service gratuit se met en veille ; le premier chargement peut prendre environ une minute.

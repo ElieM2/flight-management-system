@@ -28,6 +28,9 @@
         </div>
 
         <div class="sync-hero-actions">
+            {% if is_demo_readonly %}
+                <p class="sync-readonly-note">{% trans "This demo account is read-only." %}</p>
+            {% else %}
             <form method="post" action="{% url 'integrations:sync_page' %}" class="sync-inline-form">
                 {% csrf_token %}
                 <input type="hidden" name="limit" value="10">
@@ -36,6 +39,7 @@
                     {% trans "Run quick sync" %}
                 </button>
             </form>
+            {% endif %}
 
             <a href="{% url 'integrations:sync_page' %}" class="sync-btn sync-btn-soft">
                 {% trans "Refresh" %}
@@ -118,6 +122,17 @@
                 </span>
             </div>
 
+            {% if is_demo_readonly %}
+            <p class="sync-readonly-note">{% trans "This demo account is read-only." %}</p>
+            <div class="sync-form-actions">
+                <a href="/flights/" class="sync-btn sync-btn-soft">
+                    {% trans "Flight records" %}
+                </a>
+                <a href="/analytics/" class="sync-btn sync-btn-soft">
+                    {% trans "Open analytics" %}
+                </a>
+            </div>
+            {% else %}
             <form method="post" action="{% url 'integrations:sync_page' %}" class="sync-form">
                 {% csrf_token %}
 
@@ -174,9 +189,11 @@
                 </div>
 
                 <div class="sync-form-actions">
+                    {% if not is_demo_readonly %}
                     <button type="submit" class="sync-btn sync-btn-primary">
                         {% trans "Start import" %}
                     </button>
+                    {% endif %}
 
                     <a href="/flights/" class="sync-btn sync-btn-soft">
                         {% trans "Flight records" %}
@@ -187,6 +204,7 @@
                     </a>
                 </div>
             </form>
+            {% endif %}
         </article>
 
         <article class="sync-panel sync-providers-panel">

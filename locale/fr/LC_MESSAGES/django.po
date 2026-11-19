@@ -3850,6 +3850,9 @@ msgstr "Autre"
 msgid "Airports with the most departures."
 msgstr "Aéroports avec le plus de départs."
 
+msgid "This demo account is read-only."
+msgstr "Ce compte de démonstration est en lecture seule."
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"
 

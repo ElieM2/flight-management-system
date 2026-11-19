@@ -3819,6 +3819,9 @@ msgstr "Другие"
 msgid "Airports with the most departures."
 msgstr "Аэропорты с наибольшим числом вылетов."
 
+msgid "This demo account is read-only."
+msgstr "Эта демо-учётная запись доступна только для чтения."
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"
 

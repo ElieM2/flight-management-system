@@ -28,22 +28,46 @@ load_dotenv(BASE_DIR / ".env")
 # =========================================================
 # SECURITY
 # =========================================================
+def _env_bool(name, default="False"):
+    return os.getenv(name, default).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_list(name, default=""):
+    return [
+        item.strip()
+        for item in os.getenv(name, default).split(",")
+        if item.strip()
+    ]
+
+
 SECRET_KEY = os.getenv(
     "SECRET_KEY",
     "django-insecure-change-this-key-in-production",
 )
 
-DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+# Default to False on Render (and whenever DEBUG is unset in production).
+# Local development keeps working through the existing .env (DEBUG=True).
+_ON_RENDER = bool(
+    os.getenv("RENDER") or os.getenv("RENDER_EXTERNAL_HOSTNAME")
+)
+DEBUG = _env_bool("DEBUG", "False" if _ON_RENDER else "True")
 
-ALLOWED_HOSTS_RAW = os.getenv("ALLOWED_HOSTS", "")
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in ALLOWED_HOSTS_RAW.split(",")
-    if host.strip()
-]
+ALLOWED_HOSTS = _env_list("ALLOWED_HOSTS")
+CSRF_TRUSTED_ORIGINS = _env_list("CSRF_TRUSTED_ORIGINS")
+
+RENDER_EXTERNAL_HOSTNAME = os.getenv("RENDER_EXTERNAL_HOSTNAME", "").strip()
+if RENDER_EXTERNAL_HOSTNAME:
+    if RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+    render_origin = f"https://{RENDER_EXTERNAL_HOSTNAME}"
+    if render_origin not in CSRF_TRUSTED_ORIGINS:
+        CSRF_TRUSTED_ORIGINS.append(render_origin)
 
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+DEMO_READONLY_GROUP = os.getenv("DEMO_READONLY_GROUP", "demo_readonly").strip() or "demo_readonly"
+DEMO_USERNAME = os.getenv("DEMO_USERNAME", "").strip()
 
 
 # =========================================================
@@ -79,11 +103,13 @@ INSTALLED_APPS = [
 # =========================================================
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "apps.accounts.middleware.DemoReadOnlyMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -112,6 +138,7 @@ TEMPLATES = [
                 "django.template.context_processors.i18n",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "apps.accounts.context_processors.demo_readonly",
             ],
         },
     },
@@ -166,6 +193,27 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Use hashed, compressed static files in production. Keep the default
+# storage in DEBUG so local development does not require collectstatic.
+if not DEBUG:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
+
+# =========================================================
+# PRODUCTION SECURITY
+# =========================================================
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 
 # =========================================================
