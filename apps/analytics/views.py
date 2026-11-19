@@ -37,8 +37,8 @@ def _status_label(status_key):
 
 def _source_label(source_key):
     labels = {
-        'api': _('API synchronized'),
-        'local': _('Local records'),
+        'api': _('From API'),
+        'local': _('Entered manually'),
     }
 
     return labels.get(source_key, _('Unspecified source'))
@@ -373,77 +373,76 @@ def _build_intelligence_context(request, active_page='overview'):
     busiest_route = top_routes[0]['route'] if top_routes else _('No data')
 
     if critical_count >= 3 or critical_rate >= 8:
-        monitoring_mode = _('Critical Supervision')
+        monitoring_mode = _('Cancelled or critical')
         supervision_class = 'critical'
         report_narrative = _(
-            'Critical operational pressure is visible. Prioritize cancelled flights, high-risk records, '
-            'and the busiest corridor before expanding the analysis.'
+            'Some flights are cancelled or marked critical. Review them first.'
         )
     elif attention_count >= 2 or irregular_ops_rate >= 5:
-        monitoring_mode = _('Elevated Supervision')
+        monitoring_mode = _('Delays present')
         supervision_class = 'elevated'
         report_narrative = _(
-            'Operations remain readable, but delayed flights and attention-level records require targeted monitoring.'
+            'Some flights are delayed.'
         )
     else:
-        monitoring_mode = _('Stable Operations')
+        monitoring_mode = _('On time')
         supervision_class = 'stable'
         report_narrative = _(
-            'The visible operational picture is stable. Continue standard supervision and data validation.'
+            'Most flights are on time.'
         )
 
     recommendations = []
 
     if not total_flights:
         recommendations.append(
-            _('No flight records are visible in this report. Check filters or synchronize operational data.')
+            _('No flights match the current filters.')
         )
 
     if critical_count > 0:
         recommendations.append(
-            _('Review critical records first: cancelled flights and high-risk operations require priority handling.')
+            _('Review cancelled or critical flights first.')
         )
 
     if attention_count > 0:
         recommendations.append(
-            _('Keep attention flights under monitoring and compare them with route concentration and airport activity.')
+            _('Keep delayed flights under review.')
         )
 
     if cancelled_count > 0:
         recommendations.append(
-            _('Validate recovery actions for cancelled flights before presenting the operational report.')
+            _('Review cancelled flights.')
         )
 
     if delayed_count > 0:
         recommendations.append(
-            _('Track delayed flights and identify whether the pressure is concentrated on specific corridors.')
+            _('Check whether delays are concentrated on certain routes.')
         )
 
     if irregular_ops_rate >= 10:
         recommendations.append(
-            _('Irregular operations share is high. Treat the current report as an attention-required operating view.')
+            _('A high share of flights are delayed or cancelled.')
         )
 
     if api_count > local_count and api_count > 0:
         recommendations.append(
-            _('External synchronized data is dominant. Explain this as a hybrid data model supported by API ingestion.')
+            _('Most flights in this view come from the API.')
         )
 
     if local_count > api_count and local_count > 0:
         recommendations.append(
-            _('Local records are dominant. Explain this as manual control over the internal operational database.')
+            _('Most flights in this view were entered manually.')
         )
 
     if top_routes:
         recommendations.append(
-            _('Priority corridor to watch: %(route)s.') % {
+            _('Busiest route: %(route)s.') % {
                 'route': top_routes[0]['route'],
             }
         )
 
     if not recommendations:
         recommendations.append(
-            _('Operations are stable. Maintain standard supervision and data validation.')
+            _('Most flights are on time.')
         )
 
     source_labels = [
@@ -459,9 +458,9 @@ def _build_intelligence_context(request, active_page='overview'):
     ]
 
     disruption_mix_labels = [
-        _('Critical records'),
-        _('Attention records'),
-        _('Stable records'),
+        _('Cancelled or critical'),
+        _('Delayed'),
+        _('On time'),
     ]
 
     disruption_mix_values = [
@@ -473,7 +472,7 @@ def _build_intelligence_context(request, active_page='overview'):
     legacy_disruption_mix_labels = [
         _('Delayed'),
         _('Cancelled'),
-        _('Other records'),
+        _('On time'),
     ]
 
     legacy_disruption_mix_values = [

@@ -167,8 +167,8 @@ class AnalyticsHelperTests(TestCase):
         self.assertEqual(str(views._status_label("unknown")), "Unknown")
 
     def test_source_label_returns_known_and_unknown_labels(self):
-        self.assertEqual(str(views._source_label("api")), "API synchronized")
-        self.assertEqual(str(views._source_label("local")), "Local records")
+        self.assertEqual(str(views._source_label("api")), "From API")
+        self.assertEqual(str(views._source_label("local")), "Entered manually")
         self.assertEqual(str(views._source_label("external")), "Unspecified source")
 
     def test_safe_rate_handles_zero_and_normal_values(self):
@@ -226,7 +226,7 @@ class AnalyticsContextBusinessTests(AnalyticsTestDataMixin, TestCase):
         self.assertEqual(context["critical_rate"], 14.3)
         self.assertEqual(context["attention_rate"], 14.3)
 
-        self.assertIn(context["monitoring_mode"], ["Critical Supervision", "Elevated Supervision", "Stable Operations"])
+        self.assertIn(context["monitoring_mode"], ["Cancelled or critical", "Delays present", "On time"])
         self.assertIn(context["supervision_class"], ["critical", "elevated", "stable"])
         self.assertGreaterEqual(len(context["recommendations"]), 1)
 

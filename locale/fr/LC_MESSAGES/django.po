@@ -2986,10 +2986,10 @@ msgid "Open intelligence"
 msgstr "Ouvrir l’intelligence"
 
 msgid "Sources"
-msgstr "Source"
+msgstr "Sources"
 
 msgid "Data sources"
-msgstr "Image des données"
+msgstr "Sources des données"
 
 msgid "Providers currently used by the platform."
 msgstr ""
@@ -3685,6 +3685,170 @@ msgstr "Affichage de 0 aéroport"
 
 msgid "Airports pagination"
 msgstr "Pagination des aéroports"
+
+msgid "From API"
+msgstr "Depuis l’API"
+
+msgid "Entered manually"
+msgstr "Saisie manuelle"
+
+msgid "Cancelled or critical"
+msgstr "Annulé ou critique"
+
+msgid "Cancelled share"
+msgstr "Part des annulations"
+
+msgid "Delays present"
+msgstr "Retards constatés"
+
+msgid "Some flights are cancelled or marked critical. Review them first."
+msgstr ""
+"Certains vols sont annulés ou marqués comme critiques. Consultez-les en "
+"premier."
+
+msgid "Some flights are delayed."
+msgstr "Certains vols sont retardés."
+
+msgid "Most flights are on time."
+msgstr "La plupart des vols sont à l’heure."
+
+msgid "No flights match the current filters."
+msgstr "Aucun vol ne correspond aux filtres actuels."
+
+msgid "Review cancelled or critical flights first."
+msgstr "Consultez d’abord les vols annulés ou critiques."
+
+msgid "Keep delayed flights under review."
+msgstr "Gardez les vols retardés sous surveillance."
+
+msgid "Review cancelled flights."
+msgstr "Consultez les vols annulés."
+
+msgid "Check whether delays are concentrated on certain routes."
+msgstr "Vérifiez si les retards sont concentrés sur certaines routes."
+
+msgid "A high share of flights are delayed or cancelled."
+msgstr "Une part importante des vols est retardée ou annulée."
+
+msgid "Most flights in this view come from the API."
+msgstr "La plupart des vols de cette vue proviennent de l’API."
+
+msgid "Most flights in this view were entered manually."
+msgstr "La plupart des vols de cette vue ont été saisis manuellement."
+
+msgid "Busiest route: %(route)s."
+msgstr "Route la plus fréquentée : %(route)s."
+
+msgid "Total"
+msgstr "Total"
+
+msgid "In this view"
+msgstr "Dans cette vue"
+
+msgid "In this view."
+msgstr "Dans cette vue."
+
+msgid "In progress"
+msgstr "En cours"
+
+msgid "Open the flight report"
+msgstr "Ouvrir le rapport des vols"
+
+msgid "Open charts for active flights"
+msgstr "Ouvrir les graphiques des vols actifs"
+
+msgid "Open delayed flights"
+msgstr "Ouvrir les vols retardés"
+
+msgid "Open cancelled flights"
+msgstr "Ouvrir les vols annulés"
+
+msgid "Open cancelled or critical flights"
+msgstr "Ouvrir les vols annulés ou critiques"
+
+msgid "No airport data."
+msgstr "Aucune donnée aéroport."
+
+msgid "No recent flights."
+msgstr "Aucun vol récent."
+
+msgid "On time, delayed and cancelled"
+msgstr "À l’heure, retardés et annulés"
+
+msgid "From API and entered manually"
+msgstr "Depuis l’API et saisis manuellement"
+
+msgid "Airlines with the most flights."
+msgstr "Compagnies avec le plus de vols."
+
+msgid "Flight list."
+msgstr "Liste des vols."
+
+msgid "%(rate)s% of flights are delayed."
+msgstr "%(rate)s % des vols sont retardés."
+
+msgid "%(rate)s% of flights are cancelled."
+msgstr "%(rate)s % des vols sont annulés."
+
+msgid "Flights matching the current filters."
+msgstr "Vols correspondant aux filtres actuels."
+
+msgid "No flights match the selected filters."
+msgstr "Aucun vol ne correspond aux filtres sélectionnés."
+
+msgid "Totals from the current filters."
+msgstr "Totaux pour les filtres actuels."
+
+msgid "Flights shown"
+msgstr "Vols affichés"
+
+msgid "Airline with the most flights."
+msgstr "Compagnie avec le plus de vols."
+
+msgid "Busiest route"
+msgstr "Route la plus fréquentée"
+
+msgid "Route with the most flights."
+msgstr "Route avec le plus de vols."
+
+msgid "Share of flights from the API."
+msgstr "Part des vols provenant de l’API."
+
+msgid "Where flight data comes from."
+msgstr "D’où viennent les données de vol."
+
+msgid "View flights"
+msgstr "Voir les vols"
+
+msgid "Flights with no source given."
+msgstr "Vols sans source indiquée."
+
+msgid "From API, entered manually, or unknown"
+msgstr "Depuis l’API, saisis manuellement ou inconnus"
+
+msgid "Breakdown"
+msgstr "Répartition"
+
+msgid "How many flights come from each source."
+msgstr "Nombre de vols selon chaque source."
+
+msgid "Flights imported from the API."
+msgstr "Vols importés depuis l’API."
+
+msgid "Flights entered by hand."
+msgstr "Vols saisis manuellement."
+
+msgid "Note"
+msgstr "Note"
+
+msgid "Busiest"
+msgstr "La plus fréquentée"
+
+msgid "Other"
+msgstr "Autre"
+
+msgid "Airports with the most departures."
+msgstr "Aéroports avec le plus de départs."
 
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"

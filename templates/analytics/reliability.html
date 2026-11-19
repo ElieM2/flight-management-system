@@ -1,14 +1,14 @@
 ﻿{% extends 'base_dashboard.html' %}
 {% load static i18n %}
 
-{% block title %}{% trans "Data Confidence" %} | {% trans "Operational Intelligence" %}{% endblock %}
+{% block title %}{% trans "Data sources" %} | {% trans "Operational Intelligence" %}{% endblock %}
 
 {% block dashboard_title %}
     {% trans "Operational Intelligence" %}
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "API and local record sources." %}
+    {% trans "Where flight data comes from." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -21,8 +21,8 @@
 
     <section class="oi-control-strip">
         <div>
-            <span class="oi-page-eyebrow">{% trans "Data confidence" %}</span>
-            <h2>{% trans "Data Confidence" %}</h2>
+            <span class="oi-page-eyebrow">{% trans "Data sources" %}</span>
+            <h2>{% trans "Data sources" %}</h2>
         </div>
 
         <div class="oi-control-actions">
@@ -39,25 +39,25 @@
     <section class="oi-decision-row">
         <article class="oi-decision-card oi-decision-primary">
             <div>
-                <span class="oi-kicker">{% trans "Main reading" %}</span>
-                <h3>{% trans "Record sources" %}</h3>
+                <span class="oi-kicker">{% trans "Sources" %}</span>
+                <h3>{% trans "Data sources" %}</h3>
             </div>
 
             <a href="{% url 'analytics:reports' %}?focus=sources" class="oi-mini-action">
-                {% trans "View records" %}
+                {% trans "View flights" %}
             </a>
         </article>
 
         <article class="oi-decision-card">
             <span class="oi-decision-label">{% trans "API coverage" %}</span>
             <strong>{{ data_coverage_rate }}%</strong>
-            <p>{% trans "Share of synchronized records." %}</p>
+            <p>{% trans "Share of flights from the API." %}</p>
         </article>
 
         <article class="oi-decision-card">
             <span class="oi-decision-label">{% trans "Unknown source" %}</span>
             <strong>{{ unknown_source_count }}</strong>
-            <p>{% trans "Records that should be verified." %}</p>
+            <p>{% trans "Flights with no source given." %}</p>
         </article>
     </section>
 
@@ -65,7 +65,7 @@
         <article class="oi-card">
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Source balance" %}</span>
-                <h3>{% trans "API, local and unknown records" %}</h3>
+                <h3>{% trans "From API, entered manually, or unknown" %}</h3>
             </div>
 
             <div class="oi-chart-box oi-chart-box-tall">
@@ -76,29 +76,29 @@
         <article class="oi-card">
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Source summary" %}</span>
-                <h3>{% trans "Current data composition" %}</h3>
+                <h3>{% trans "Breakdown" %}</h3>
                 <p>
-                    {% trans "Short reading of record origin and data confidence." %}
+                    {% trans "How many flights come from each source." %}
                 </p>
             </div>
 
             <div class="oi-compact-signal-list">
                 <div>
-                    <span>{% trans "API synchronized" %}</span>
+                    <span>{% trans "From API" %}</span>
                     <strong>{{ api_count }}</strong>
-                    <small>{% trans "Records imported from external aviation data sources." %}</small>
+                    <small>{% trans "Flights imported from the API." %}</small>
                 </div>
 
                 <div>
-                    <span>{% trans "Local records" %}</span>
+                    <span>{% trans "Entered manually" %}</span>
                     <strong>{{ local_count }}</strong>
-                    <small>{% trans "Manual or controlled records used for supervision." %}</small>
+                    <small>{% trans "Flights entered by hand." %}</small>
                 </div>
 
                 <div>
                     <span>{% trans "Unknown source" %}</span>
                     <strong>{{ unknown_source_count }}</strong>
-                    <small>{% trans "Records requiring source verification." %}</small>
+                    <small>{% trans "Flights with no source given." %}</small>
                 </div>
             </div>
         </article>

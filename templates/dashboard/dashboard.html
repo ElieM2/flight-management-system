@@ -147,15 +147,15 @@
                         <span class="summary-icon red">
                             <i class="bi bi-exclamation-octagon"></i>
                         </span>
-                        <span>{% trans "Critical share" %}</span>
-                        <strong>{{ critical_rate|default:"0" }}%</strong>
+                        <span>{% trans "Cancelled share" %}</span>
+                        <strong>{{ cancellation_rate|default:"0" }}%</strong>
                     </div>
 
                     <div class="summary-row">
                         <span class="summary-icon blue">
                             <i class="bi bi-cloud-arrow-down"></i>
                         </span>
-                        <span>{% trans "API synchronized" %}</span>
+                        <span>{% trans "From API" %}</span>
                         <strong>{{ api_flights|default:0 }}</strong>
                     </div>
 
@@ -163,7 +163,7 @@
                         <span class="summary-icon green">
                             <i class="bi bi-database-check"></i>
                         </span>
-                        <span>{% trans "Local records" %}</span>
+                        <span>{% trans "Entered manually" %}</span>
                         <strong>{{ local_flights|default:0 }}</strong>
                     </div>
                 </div>

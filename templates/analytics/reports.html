@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "Flight records." %}
+    {% trans "Flight list." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -42,7 +42,7 @@
     <section class="oi-decision-row">
         <article class="oi-decision-card oi-decision-primary">
             <div>
-                <span class="oi-kicker">{% trans "Current reading" %}</span>
+                <span class="oi-kicker">{% trans "Summary" %}</span>
                 <h3>{{ monitoring_mode }}</h3>
                 <p>{{ report_narrative }}</p>
             </div>
@@ -56,9 +56,7 @@
             <span class="oi-decision-label">{% trans "Delayed flights" %}</span>
             <strong>{{ delayed_count }}</strong>
             <p>
-                {% blocktrans with rate=delay_rate %}
-                    {{ rate }}% of the current operating picture.
-                {% endblocktrans %}
+                {% blocktrans trimmed with rate=delay_rate %}{{ rate }}% of flights are delayed.{% endblocktrans %}
             </p>
         </article>
 
@@ -66,9 +64,7 @@
             <span class="oi-decision-label">{% trans "Cancelled flights" %}</span>
             <strong>{{ cancelled_count }}</strong>
             <p>
-                {% blocktrans with rate=cancellation_rate %}
-                    {{ rate }}% require recovery reading.
-                {% endblocktrans %}
+                {% blocktrans trimmed with rate=cancellation_rate %}{{ rate }}% of flights are cancelled.{% endblocktrans %}
             </p>
         </article>
     </section>
@@ -77,10 +73,10 @@
         <article class="oi-card oi-report-records">
             <div class="oi-section-head oi-section-head-row">
                 <div>
-                    <span class="oi-kicker">{% trans "Records" %}</span>
-                    <h3>{% trans "Flight records" %}</h3>
+                    <span class="oi-kicker">{% trans "Flights" %}</span>
+                    <h3>{% trans "Flights" %}</h3>
                     <p>
-                        {% trans "Filtered flight records with airline, route, operational state and data source." %}
+                        {% trans "Flights matching the current filters." %}
                     </p>
                 </div>
 
@@ -134,7 +130,7 @@
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="5">{% trans "No records match the selected filters." %}</td>
+                                <td colspan="5">{% trans "No flights match the selected filters." %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -145,35 +141,35 @@
         <article class="oi-card oi-report-summary">
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Summary" %}</span>
-                <h3>{% trans "Current operating picture" %}</h3>
+                <h3>{% trans "Summary" %}</h3>
                 <p>
-                    {% trans "Key reading extracted from the current flight records." %}
+                    {% trans "Totals from the current filters." %}
                 </p>
             </div>
 
             <div class="oi-compact-signal-list">
                 <div>
-                    <span>{% trans "Visible records" %}</span>
+                    <span>{% trans "Flights shown" %}</span>
                     <strong>{{ total_flights }}</strong>
-                    <small>{% trans "Flights currently available for review." %}</small>
+                    <small>{% trans "In this view." %}</small>
                 </div>
 
                 <div>
                     <span>{% trans "Most active airline" %}</span>
                     <strong>{{ most_active_airline }}</strong>
-                    <small>{% trans "Carrier with the strongest visible activity." %}</small>
+                    <small>{% trans "Airline with the most flights." %}</small>
                 </div>
 
                 <div>
-                    <span>{% trans "Priority route" %}</span>
+                    <span>{% trans "Busiest route" %}</span>
                     <strong>{{ busiest_route }}</strong>
-                    <small>{% trans "Route to check first if pressure increases." %}</small>
+                    <small>{% trans "Route with the most flights." %}</small>
                 </div>
 
                 <div>
                     <span>{% trans "API coverage" %}</span>
                     <strong>{{ data_coverage_rate }}%</strong>
-                    <small>{% trans "Share of synchronized records." %}</small>
+                    <small>{% trans "Share of flights from the API." %}</small>
                 </div>
             </div>
         </article>

@@ -1,4 +1,5 @@
-﻿<tr
+﻿{% load i18n %}
+<tr
     class="control-flight-row {% if selected_flight and selected_flight.pk == flight.pk %}is-selected{% endif %}"
     data-is-selected="{% if selected_flight and selected_flight.pk == flight.pk %}true{% else %}false{% endif %}"
     data-flight="{{ flight.flight_number|default:'—'|escape }}"
@@ -15,7 +16,7 @@
     data-status-key="{{ flight.status|default:'scheduled'|escape }}"
     data-risk="{{ risk_label|default:'Low'|escape }}"
     data-risk-key="{{ risk_class|default:'low'|escape }}"
-    data-source="{% if flight.source_type == 'api' %}API synchronized record{% else %}Local operational record{% endif %}"
+    data-source="{% if flight.source_type == 'api' %}{% trans 'From API' %}{% else %}{% trans 'Entered manually' %}{% endif %}"
     data-detail-url="{% url 'monitoring:monitoring_flight_detail' flight.pk %}"
     data-map-url="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}"
     data-recommendation="{{ recommendation|default:'Continue standard monitoring.'|escape }}"

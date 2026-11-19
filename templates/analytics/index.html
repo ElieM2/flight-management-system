@@ -38,23 +38,23 @@
     </section>
 
     <section class="oi-kpi-row oi-kpi-row-5">
-        <a href="{% url 'analytics:reports' %}" class="oi-kpi-card oi-kpi-blue" aria-label="{% trans 'Open total flight records' %}">
+        <a href="{% url 'analytics:reports' %}" class="oi-kpi-card oi-kpi-blue" aria-label="{% trans 'Open the flight report' %}">
             <div class="oi-kpi-head">
                 <span>{% trans "Total flights" %}</span>
-                <small>{% trans "Records" %}</small>
+                <small>{% trans "Total" %}</small>
             </div>
 
             <strong>{{ total_flights }}</strong>
 
             <p class="oi-kpi-delta oi-kpi-delta-neutral">
-                {% trans "Current operating dataset" %}
+                {% trans "In this view" %}
             </p>
         </a>
 
-        <a href="{% url 'analytics:charts' %}?focus=active" class="oi-kpi-card oi-kpi-green" aria-label="{% trans 'Open active movement analytics' %}">
+        <a href="{% url 'analytics:charts' %}?focus=active" class="oi-kpi-card oi-kpi-green" aria-label="{% trans 'Open charts for active flights' %}">
             <div class="oi-kpi-head">
                 <span>{% trans "Active flights" %}</span>
-                <small>{% trans "Flow" %}</small>
+                <small>{% trans "In progress" %}</small>
             </div>
 
             <strong>{{ active_count }}</strong>
@@ -64,7 +64,7 @@
             </p>
         </a>
 
-        <a href="{% url 'analytics:reports' %}?status=delayed" class="oi-kpi-card oi-kpi-yellow" aria-label="{% trans 'Open delay pressure records' %}">
+        <a href="{% url 'analytics:reports' %}?status=delayed" class="oi-kpi-card oi-kpi-yellow" aria-label="{% trans 'Open delayed flights' %}">
             <div class="oi-kpi-head">
                 <span>{% trans "Delayed" %}</span>
                 <small>{% trans "Delays" %}</small>
@@ -77,10 +77,10 @@
             </p>
         </a>
 
-        <a href="{% url 'analytics:reports' %}?status=cancelled" class="oi-kpi-card oi-kpi-red" aria-label="{% trans 'Open cancelled flight recovery records' %}">
+        <a href="{% url 'analytics:reports' %}?status=cancelled" class="oi-kpi-card oi-kpi-red" aria-label="{% trans 'Open cancelled flights' %}">
             <div class="oi-kpi-head">
                 <span>{% trans "Cancelled flights" %}</span>
-                <small>{% trans "Recovery" %}</small>
+                <small>{% trans "Cancelled" %}</small>
             </div>
 
             <strong>{{ cancelled_count }}</strong>
@@ -90,10 +90,10 @@
             </p>
         </a>
 
-        <a href="{% url 'analytics:reports' %}?priority=critical" class="oi-kpi-card oi-kpi-purple" aria-label="{% trans 'Open critical flight supervision records' %}">
+        <a href="{% url 'analytics:reports' %}?priority=critical" class="oi-kpi-card oi-kpi-purple" aria-label="{% trans 'Open cancelled or critical flights' %}">
             <div class="oi-kpi-head">
                 <span>{% trans "Critical flights" %}</span>
-                <small>{% trans "Priority" %}</small>
+                <small>{% trans "Critical" %}</small>
             </div>
 
             <strong>{{ critical_count }}</strong>
@@ -164,7 +164,7 @@
                             </tr>
                         {% empty %}
                             <tr>
-                                <td colspan="4">{% trans "No airport pressure available." %}</td>
+                                <td colspan="4">{% trans "No airport data." %}</td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -248,7 +248,7 @@
                         </tr>
                     {% empty %}
                         <tr>
-                            <td colspan="5">{% trans "No recent operational records available." %}</td>
+                            <td colspan="5">{% trans "No recent flights." %}</td>
                         </tr>
                     {% endfor %}
                 </tbody>
@@ -966,7 +966,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const disruptionLabels = hasValues(disruptionValuesRaw)
         ? disruptionLabelsRaw
-        : ['Cancelled', 'Delayed', 'Stable'];
+        : ['Cancelled or critical', 'Delayed', 'On time'];
 
     const disruptionValues = hasValues(disruptionValuesRaw)
         ? disruptionValuesRaw

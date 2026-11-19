@@ -49,12 +49,12 @@
         </article>
 
         <article class="oi-decision-card">
-            <span class="oi-decision-label">{% trans "Records" %}</span>
+            <span class="oi-decision-label">{% trans "Flights" %}</span>
             <strong>{{ total_flights }}</strong>
         </article>
 
         <article class="oi-decision-card">
-            <span class="oi-decision-label">{% trans "Critical" %}</span>
+            <span class="oi-decision-label">{% trans "Cancelled or critical" %}</span>
             <strong>{{ critical_count }}</strong>
         </article>
     </section>
@@ -62,7 +62,7 @@
     <section class="oi-main-cockpit">
         <article class="oi-card">
             <div class="oi-section-head">
-                <span class="oi-kicker">{% trans "Corridors" %}</span>
+                <span class="oi-kicker">{% trans "Routes" %}</span>
                 <h3>{% trans "Busiest routes" %}</h3>
             </div>
 
@@ -73,7 +73,7 @@
                             <th>{% trans "Route" %}</th>
                             <th>{% trans "Flights" %}</th>
                             <th>{% trans "Share" %}</th>
-                            <th>{% trans "Reading" %}</th>
+                            <th>{% trans "Note" %}</th>
                         </tr>
                     </thead>
 
@@ -86,11 +86,11 @@
                                 <td>
                                     {% if forloop.first %}
                                         <span class="oi-state-badge oi-state-delayed">
-                                            {% trans "Priority" %}
+                                            {% trans "Busiest" %}
                                         </span>
                                     {% else %}
                                         <span class="oi-state-badge oi-state-scheduled">
-                                            {% trans "Monitored" %}
+                                            {% trans "Other" %}
                                         </span>
                                     {% endif %}
                                 </td>
@@ -110,7 +110,7 @@
                 <span class="oi-kicker">{% trans "Departures" %}</span>
                 <h3>{% trans "Top origin airports" %}</h3>
                 <p>
-                    {% trans "Airports generating the strongest departure-side load." %}
+                    {% trans "Airports with the most departures." %}
                 </p>
             </div>
 

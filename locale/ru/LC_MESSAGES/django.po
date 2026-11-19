@@ -2963,10 +2963,10 @@ msgid "Open intelligence"
 msgstr "Открыть аналитику"
 
 msgid "Sources"
-msgstr "Источник"
+msgstr "Источники"
 
 msgid "Data sources"
-msgstr "Картина данных"
+msgstr "Источники данных"
 
 msgid "Providers currently used by the platform."
 msgstr "Все записи рейсов, которые сейчас хранятся в платформе."
@@ -3655,6 +3655,169 @@ msgstr "Показано 0 аэропортов"
 
 msgid "Airports pagination"
 msgstr "Постраничный просмотр аэропортов"
+
+msgid "From API"
+msgstr "Из API"
+
+msgid "Entered manually"
+msgstr "Введено вручную"
+
+msgid "Cancelled or critical"
+msgstr "Отменён или критический"
+
+msgid "Cancelled share"
+msgstr "Доля отменённых"
+
+msgid "Delays present"
+msgstr "Есть задержки"
+
+msgid "Some flights are cancelled or marked critical. Review them first."
+msgstr ""
+"Некоторые рейсы отменены или отмечены как критические. Сначала проверьте их."
+
+msgid "Some flights are delayed."
+msgstr "Некоторые рейсы задержаны."
+
+msgid "Most flights are on time."
+msgstr "Большинство рейсов идут по расписанию."
+
+msgid "No flights match the current filters."
+msgstr "Нет рейсов, соответствующих текущим фильтрам."
+
+msgid "Review cancelled or critical flights first."
+msgstr "Сначала проверьте отменённые или критические рейсы."
+
+msgid "Keep delayed flights under review."
+msgstr "Следите за задержанными рейсами."
+
+msgid "Review cancelled flights."
+msgstr "Проверьте отменённые рейсы."
+
+msgid "Check whether delays are concentrated on certain routes."
+msgstr "Проверьте, не сосредоточены ли задержки на отдельных маршрутах."
+
+msgid "A high share of flights are delayed or cancelled."
+msgstr "Большая доля рейсов задержана или отменена."
+
+msgid "Most flights in this view come from the API."
+msgstr "Большинство рейсов в этом представлении получены из API."
+
+msgid "Most flights in this view were entered manually."
+msgstr "Большинство рейсов в этом представлении введены вручную."
+
+msgid "Busiest route: %(route)s."
+msgstr "Самый загруженный маршрут: %(route)s."
+
+msgid "Total"
+msgstr "Всего"
+
+msgid "In this view"
+msgstr "В этом представлении"
+
+msgid "In this view."
+msgstr "В этом представлении."
+
+msgid "In progress"
+msgstr "В работе"
+
+msgid "Open the flight report"
+msgstr "Открыть отчёт о рейсах"
+
+msgid "Open charts for active flights"
+msgstr "Открыть графики активных рейсов"
+
+msgid "Open delayed flights"
+msgstr "Открыть задержанные рейсы"
+
+msgid "Open cancelled flights"
+msgstr "Открыть отменённые рейсы"
+
+msgid "Open cancelled or critical flights"
+msgstr "Открыть отменённые или критические рейсы"
+
+msgid "No airport data."
+msgstr "Нет данных по аэропортам."
+
+msgid "No recent flights."
+msgstr "Нет недавних рейсов."
+
+msgid "On time, delayed and cancelled"
+msgstr "По расписанию, задержанные и отменённые"
+
+msgid "From API and entered manually"
+msgstr "Из API и введённые вручную"
+
+msgid "Airlines with the most flights."
+msgstr "Авиакомпании с наибольшим числом рейсов."
+
+msgid "Flight list."
+msgstr "Список рейсов."
+
+msgid "%(rate)s% of flights are delayed."
+msgstr "%(rate)s % рейсов задержаны."
+
+msgid "%(rate)s% of flights are cancelled."
+msgstr "%(rate)s % рейсов отменены."
+
+msgid "Flights matching the current filters."
+msgstr "Рейсы, соответствующие текущим фильтрам."
+
+msgid "No flights match the selected filters."
+msgstr "Нет рейсов, соответствующих выбранным фильтрам."
+
+msgid "Totals from the current filters."
+msgstr "Итоги по текущим фильтрам."
+
+msgid "Flights shown"
+msgstr "Показанные рейсы"
+
+msgid "Airline with the most flights."
+msgstr "Авиакомпания с наибольшим числом рейсов."
+
+msgid "Busiest route"
+msgstr "Самый загруженный маршрут"
+
+msgid "Route with the most flights."
+msgstr "Маршрут с наибольшим числом рейсов."
+
+msgid "Share of flights from the API."
+msgstr "Доля рейсов из API."
+
+msgid "Where flight data comes from."
+msgstr "Откуда поступают данные о рейсах."
+
+msgid "View flights"
+msgstr "Смотреть рейсы"
+
+msgid "Flights with no source given."
+msgstr "Рейсы без указанного источника."
+
+msgid "From API, entered manually, or unknown"
+msgstr "Из API, введённые вручную или неизвестные"
+
+msgid "Breakdown"
+msgstr "Разбивка"
+
+msgid "How many flights come from each source."
+msgstr "Сколько рейсов приходится на каждый источник."
+
+msgid "Flights imported from the API."
+msgstr "Рейсы, импортированные из API."
+
+msgid "Flights entered by hand."
+msgstr "Рейсы, введённые вручную."
+
+msgid "Note"
+msgstr "Примечание"
+
+msgid "Busiest"
+msgstr "Самый загруженный"
+
+msgid "Other"
+msgstr "Другие"
+
+msgid "Airports with the most departures."
+msgstr "Аэропорты с наибольшим числом вылетов."
 
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"
