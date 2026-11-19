@@ -5,7 +5,7 @@
 {% block body_class %}public-flights-body{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/public_flights.css' %}?v=p4-1">
+<link rel="stylesheet" href="{% static 'css/public_flights.css' %}?v=p4-3">
 {% endblock %}
 
 {% block content %}
@@ -76,6 +76,38 @@
                 </div>
             </form>
 
+            <div class="flight-card-list">
+                {% for flight in flights %}
+                    <article class="flight-card">
+                        <a class="flight-card-link" href="{% url 'flights:flight_detail' flight.pk %}">
+                            <div class="flight-card-top">
+                                <span class="flight-code">{{ flight.flight_number }}</span>
+                                <span class="flight-status status-{{ flight.status }}">{{ flight.get_status_display }}</span>
+                            </div>
+                            <div class="flight-card-route">
+                                {% if flight.origin_airport %}{{ flight.origin_airport.iata_code|default:'--' }}{% else %}--{% endif %}
+                                →
+                                {% if flight.destination_airport %}{{ flight.destination_airport.iata_code|default:'--' }}{% else %}--{% endif %}
+                            </div>
+                            <div class="flight-card-meta">
+                                <span>
+                                    {% if flight.scheduled_departure %}{{ flight.scheduled_departure|date:'H:i' }}{% else %}—{% endif %}
+                                    ·
+                                    {% if flight.scheduled_arrival %}{{ flight.scheduled_arrival|date:'H:i' }}{% else %}—{% endif %}
+                                </span>
+                                <span>{{ flight.airline.name|default:unknown_airline }}</span>
+                            </div>
+                        </a>
+                        <a class="flight-card-map" href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">{% trans 'Map' %}</a>
+                    </article>
+                {% empty %}
+                    <div class="flights-empty fl-empty">
+                        <h3>{% trans "No flights found" %}</h3>
+                        <p>{% trans "Try another flight number, airport, airline, route, status or source." %}</p>
+                    </div>
+                {% endfor %}
+            </div>
+
             <div class="flights-table-wrap fl-table-wrap">
                 <table class="flights-table fl-table">
                     <thead>
@@ -93,28 +125,6 @@
                     <tbody>
                         {% for flight in flights %}
                             <tr class="flight-board-row">
-                                <td class="flight-card-mobile" colspan="8">
-                                    <a class="flight-card-link" href="{% url 'flights:flight_detail' flight.pk %}">
-                                        <div class="flight-card-top">
-                                            <span class="flight-code">{{ flight.flight_number }}</span>
-                                            <span class="flight-status status-{{ flight.status }}">{{ flight.get_status_display }}</span>
-                                        </div>
-                                        <div class="flight-card-route">
-                                            {% if flight.origin_airport %}{{ flight.origin_airport.iata_code|default:'--' }}{% else %}--{% endif %}
-                                            →
-                                            {% if flight.destination_airport %}{{ flight.destination_airport.iata_code|default:'--' }}{% else %}--{% endif %}
-                                        </div>
-                                        <div class="flight-card-meta">
-                                            <span>
-                                                {% if flight.scheduled_departure %}{{ flight.scheduled_departure|date:'H:i' }}{% else %}—{% endif %}
-                                                ·
-                                                {% if flight.scheduled_arrival %}{{ flight.scheduled_arrival|date:'H:i' }}{% else %}—{% endif %}
-                                            </span>
-                                            <span>{{ flight.airline.name|default:unknown_airline }}</span>
-                                        </div>
-                                    </a>
-                                    <a class="flight-card-map" href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">{% trans 'Map' %}</a>
-                                </td>
                                 <td data-label="{% trans 'Flight' %}">
                                     <a href="{% url 'flights:flight_detail' flight.pk %}" class="flight-code">{{ flight.flight_number }}</a>
                                 </td>

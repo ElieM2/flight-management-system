@@ -190,7 +190,6 @@
                                 data-delayed="{{ delayed_count|default:0 }}"
                                 data-cancelled="{{ cancelled_count|default:0 }}"
                                 data-stable="{{ on_time_count|default:0 }}"
-                                data-active="{{ active_flights|default:0 }}"
                             ></canvas>
 
                             <div class="chart-center-label">
@@ -220,11 +219,6 @@
                                 <strong>{{ on_time_count|default:0 }}</strong>
                             </div>
 
-                            <div class="legend-row">
-                                <i style="background:#2563eb;"></i>
-                                <span>{% trans "Active flights" %}</span>
-                                <strong>{{ active_flights|default:0 }}</strong>
-                            </div>
                         </div>
                     </div>
                 </div>
