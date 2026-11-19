@@ -26,6 +26,9 @@ def flight_list(request):
     query = request.GET.get("q", "").strip()
     source_type = request.GET.get("source_type", "").strip().lower()
     status = request.GET.get("status", "").strip().lower()
+    board = request.GET.get("board", "all").strip().lower()
+    if board not in {"all", "departures", "arrivals"}:
+        board = "all"
 
     base_flights = Flight.objects.select_related(
         "airline",
@@ -34,7 +37,12 @@ def flight_list(request):
         "destination_airport",
     )
 
-    flights = base_flights.order_by("-scheduled_departure", "-id")
+    if board == "departures":
+        flights = base_flights.order_by("scheduled_departure", "id")
+    elif board == "arrivals":
+        flights = base_flights.order_by("scheduled_arrival", "id")
+    else:
+        flights = base_flights.order_by("-scheduled_departure", "-id")
 
     if query:
         flights = flights.filter(
@@ -106,6 +114,7 @@ def flight_list(request):
         "query": query,
         "selected_source_type": source_type,
         "selected_status": status,
+        "selected_board": board,
 
         "total_flights": total_flights,
         "visible_flights_count": visible_flights_count,

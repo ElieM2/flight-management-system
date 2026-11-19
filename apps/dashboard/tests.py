@@ -188,7 +188,7 @@ class DashboardHelperTests(TestCase):
         self.assertEqual(str(views.get_status_label("scheduled")), "Scheduled")
         self.assertEqual(str(views.get_status_label("boarding")), "Boarding")
         self.assertEqual(str(views.get_status_label("departed")), "Departed")
-        self.assertEqual(str(views.get_status_label("in_air")), "In Air")
+        self.assertEqual(str(views.get_status_label("in_air")), "En route")
         self.assertEqual(str(views.get_status_label("landed")), "Landed")
         self.assertEqual(str(views.get_status_label("delayed")), "Delayed")
         self.assertEqual(str(views.get_status_label("cancelled")), "Cancelled")

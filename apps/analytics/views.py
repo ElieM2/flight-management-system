@@ -26,7 +26,7 @@ def _status_label(status_key):
         'scheduled': _('Scheduled'),
         'boarding': _('Boarding'),
         'departed': _('Departed'),
-        'in_air': _('In Air'),
+        'in_air': _('En route'),
         'landed': _('Landed'),
         'delayed': _('Delayed'),
         'cancelled': _('Cancelled'),

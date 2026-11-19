@@ -160,7 +160,7 @@ class AnalyticsHelperTests(TestCase):
         self.assertEqual(str(views._status_label("scheduled")), "Scheduled")
         self.assertEqual(str(views._status_label("boarding")), "Boarding")
         self.assertEqual(str(views._status_label("departed")), "Departed")
-        self.assertEqual(str(views._status_label("in_air")), "In Air")
+        self.assertEqual(str(views._status_label("in_air")), "En route")
         self.assertEqual(str(views._status_label("landed")), "Landed")
         self.assertEqual(str(views._status_label("delayed")), "Delayed")
         self.assertEqual(str(views._status_label("cancelled")), "Cancelled")
