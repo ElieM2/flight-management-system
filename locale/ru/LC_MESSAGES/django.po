@@ -3342,6 +3342,128 @@ msgstr "Открыть аналитику"
 msgid "Review reports, charts, routes and data quality."
 msgstr "Просмотреть отчёты, графики, маршруты и качество данных."
 
+msgid "Flight tracking & operations"
+msgstr "Мониторинг рейсов и операций"
+
+msgid "Open menu"
+msgstr "Открыть меню"
+
+msgid "Change language"
+msgstr "Сменить язык"
+
+msgid "Switch theme"
+msgstr "Сменить тему"
+
+msgid "Home"
+msgstr "Главная"
+
+msgid "Public site"
+msgstr "Публичный сайт"
+
+msgid "Operator"
+msgstr "Оператор"
+
+msgid "Signed in"
+msgstr "Выполнен вход"
+
+msgid "Logout"
+msgstr "Выйти"
+
+msgid "Explore"
+msgstr "Обзор"
+
+msgid "Workspace"
+msgstr "Рабочая область"
+
+msgid "Web system for flight management and monitoring."
+msgstr "Веб-система управления и мониторинга рейсов."
+
+msgid "Academic aviation monitoring platform."
+msgstr "Академическая платформа авиационного мониторинга."
+
+msgid "Authentication"
+msgstr "Аутентификация"
+
+msgid "FlightLogos Control Desk"
+msgstr "Панель контроля FlightLogos"
+
+msgid "Flight information"
+msgstr "Информация о рейсах"
+
+msgid "Departures and arrivals"
+msgstr "Вылеты и прилёты"
+
+msgid ""
+"Search by flight number, airline or destination, and filter by operational "
+"status."
+msgstr ""
+"Ищите по номеру рейса, авиакомпании или пункту назначения и фильтруйте по "
+"статусу."
+
+msgid "Flight indicators"
+msgstr "Показатели рейсов"
+
+msgid "On-time share"
+msgstr "Доля вовремя"
+
+msgid "All flights"
+msgstr "Все рейсы"
+
+msgid "En route"
+msgstr "В пути"
+
+msgid "STD"
+msgstr "STD"
+
+msgid "STA"
+msgstr "STA"
+
+msgid "From"
+msgstr "Откуда"
+
+msgid "To"
+msgstr "Куда"
+
+msgid "Private access"
+msgstr "Закрытый доступ"
+
+msgid "Access your private aviation monitoring workspace."
+msgstr "Войдите в закрытое рабочее пространство мониторинга."
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Create account"
+msgstr "Создать учётную запись"
+
+msgid "Register a new user to access the private operational system."
+msgstr ""
+"Зарегистрируйте пользователя для доступа к закрытой операционной системе."
+
+msgid "Email"
+msgstr "Эл. почта"
+
+msgid "Confirm password"
+msgstr "Подтвердите пароль"
+
+msgid "Operations navigation"
+msgstr "Навигация по операциям"
+
+msgid "My Account"
+msgstr "Мой аккаунт"
+
+msgid "Control Desk"
+msgstr "Панель контроля"
+
+msgid "Profile"
+msgstr "Профиль"
+
+msgid "Search by flight number, airline or airport"
+msgstr "Поиск по номеру рейса, авиакомпании или аэропорту"
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"
 

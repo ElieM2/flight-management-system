@@ -3372,6 +3372,127 @@ msgstr "Ouvrir l’intelligence"
 msgid "Review reports, charts, routes and data quality."
 msgstr "Examiner les rapports, graphiques, routes et la qualité des données."
 
+msgid "Flight tracking & operations"
+msgstr "Suivi des vols et opérations"
+
+msgid "Open menu"
+msgstr "Ouvrir le menu"
+
+msgid "Change language"
+msgstr "Changer la langue"
+
+msgid "Switch theme"
+msgstr "Changer le thème"
+
+msgid "Home"
+msgstr "Accueil"
+
+msgid "Public site"
+msgstr "Site public"
+
+msgid "Operator"
+msgstr "Opérateur"
+
+msgid "Signed in"
+msgstr "Connecté"
+
+msgid "Logout"
+msgstr "Déconnexion"
+
+msgid "Explore"
+msgstr "Explorer"
+
+msgid "Workspace"
+msgstr "Espace de travail"
+
+msgid "Web system for flight management and monitoring."
+msgstr "Système web de gestion et de suivi des vols."
+
+msgid "Academic aviation monitoring platform."
+msgstr "Plateforme académique de monitoring aérien."
+
+msgid "Authentication"
+msgstr "Authentification"
+
+msgid "FlightLogos Control Desk"
+msgstr "Poste de contrôle FlightLogos"
+
+msgid "Flight information"
+msgstr "Informations de vol"
+
+msgid "Departures and arrivals"
+msgstr "Départs et arrivées"
+
+msgid ""
+"Search by flight number, airline or destination, and filter by operational "
+"status."
+msgstr ""
+"Recherchez par numéro de vol, compagnie ou destination, et filtrez selon le "
+"statut opérationnel."
+
+msgid "Flight indicators"
+msgstr "Indicateurs de vols"
+
+msgid "On-time share"
+msgstr "Part à l'heure"
+
+msgid "All flights"
+msgstr "Tous les vols"
+
+msgid "En route"
+msgstr "En vol"
+
+msgid "STD"
+msgstr "STD"
+
+msgid "STA"
+msgstr "STA"
+
+msgid "From"
+msgstr "De"
+
+msgid "To"
+msgstr "Vers"
+
+msgid "Private access"
+msgstr "Accès privé"
+
+msgid "Access your private aviation monitoring workspace."
+msgstr "Accédez à votre espace privé de suivi aérien."
+
+msgid "Username"
+msgstr "Nom d'utilisateur"
+
+msgid "Password"
+msgstr "Mot de passe"
+
+msgid "Create account"
+msgstr "Créer un compte"
+
+msgid "Register a new user to access the private operational system."
+msgstr "Créez un compte pour accéder à l'espace opérationnel privé."
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Confirm password"
+msgstr "Confirmer le mot de passe"
+
+msgid "Operations navigation"
+msgstr "Navigation opérations"
+
+msgid "My Account"
+msgstr "Mon compte"
+
+msgid "Control Desk"
+msgstr "Poste de contrôle"
+
+msgid "Profile"
+msgstr "Profil"
+
+msgid "Search by flight number, airline or airport"
+msgstr "Recherchez par numéro de vol, compagnie ou aéroport"
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"
 
