@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "External aviation data synchronization and provider traceability." %}
+    {% trans "Import and update flight records." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -23,7 +23,7 @@
             <span class="sync-eyebrow">{% trans "Data synchronization" %}</span>
             <h2>{% trans "Data Sync" %}</h2>
             <p>
-                {% trans "Import external flight records, update the local database and verify whether synchronized data is ready for monitoring, analytics and operational supervision." %}
+                {% trans "Import flight records and update the local database." %}
             </p>
         </div>
 
@@ -51,7 +51,7 @@
                         {% if message.tags == 'error' %}
                             !
                         {% else %}
-                            âœ“
+                            ✓
                         {% endif %}
                     </span>
 
@@ -69,7 +69,7 @@
                 {% if latest_log %}
                     {{ latest_log.started_at|date:"H:i" }} UTC
                 {% else %}
-                    â€”
+                    —
                 {% endif %}
             </strong>
 
@@ -290,7 +290,7 @@
                                     {{ latest_log.status|title }}
                                 {% endif %}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </article>
@@ -314,7 +314,7 @@
                             {% if average_duration_seconds %}
                                 {{ average_duration_seconds }}s
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </article>
@@ -346,11 +346,11 @@
                             <strong>{{ log.provider_name }}</strong>
                             <p>
                                 {{ log.started_at|date:"Y-m-d H:i" }}
-                                Â·
+                                ·
                                 {% if log.duration_seconds %}
                                     {{ log.duration_seconds }}s
                                 {% else %}
-                                    â€”
+                                    —
                                 {% endif %}
                             </p>
                         </div>

@@ -674,7 +674,7 @@
 
     <header class="live-page-head">
         <div>
-            <h1>Live Operations â€” Active Flight Execution</h1>
+            <h1>{% trans "Live flights" %}</h1>
             <p>Real-time supervision of boarding, departed and airborne flights.</p>
         </div>
 
@@ -708,7 +708,7 @@
                 <i class="bi bi-broadcast"></i>
             </div>
             <div>
-                <span>In air</span>
+                <span>{% trans "En route" %}</span>
                 <strong>{{ in_air_count|default:"0" }}</strong>
                 <small>Airborne records</small>
             </div>
@@ -804,14 +804,14 @@
                                     <td>
                                         <span class="route-pill">
                                             {{ flight.origin_airport.iata_code|default:"--" }}
-                                            â†’
+                                            →
                                             {{ flight.destination_airport.iata_code|default:"--" }}
                                         </span>
                                     </td>
 
-                                    <td>{{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"â€”" }}</td>
+                                    <td>{{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"—" }}</td>
 
-                                    <td>{{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"â€”" }}</td>
+                                    <td>{{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"—" }}</td>
 
                                     <td>
                                         <span class="status-badge status-{{ flight.status }}">

@@ -48,8 +48,8 @@
                 <h2>{{ airport.name }}</h2>
 
                 <div class="airport-profile-codes">
-                    <span>{{ airport.iata_code|default:"â€”" }}</span>
-                    <span>{{ airport.icao_code|default:"â€”" }}</span>
+                    <span>{{ airport.iata_code|default:"—" }}</span>
+                    <span>{{ airport.icao_code|default:"—" }}</span>
                 </div>
             </div>
         </div>
@@ -146,12 +146,12 @@
 
                 <div>
                     <span>IATA Code</span>
-                    <strong>{{ airport.iata_code|default:"â€”" }}</strong>
+                    <strong>{{ airport.iata_code|default:"—" }}</strong>
                 </div>
 
                 <div>
                     <span>ICAO Code</span>
-                    <strong>{{ airport.icao_code|default:"â€”" }}</strong>
+                    <strong>{{ airport.icao_code|default:"—" }}</strong>
                 </div>
 
                 <div>
@@ -277,7 +277,7 @@
                                 {% if flight.airline %}
                                     {{ flight.airline.name }}
                                 {% else %}
-                                    â€”
+                                    —
                                 {% endif %}
                             </td>
 
@@ -287,7 +287,7 @@
                                 {% if flight.scheduled_departure %}
                                     {{ flight.scheduled_departure|date:"M d, H:i" }}
                                 {% else %}
-                                    â€”
+                                    —
                                 {% endif %}
                             </td>
 

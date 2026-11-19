@@ -708,7 +708,7 @@ html[data-theme="dark"] .airline-route-pill {
                     <div class="airline-brand-text">
                         <h2>{{ airline.name }}</h2>
                         <p>
-                            {{ airline.iata_code|default:"â€”" }} / {{ airline.icao_code|default:"â€”" }}
+                            {{ airline.iata_code|default:"—" }} / {{ airline.icao_code|default:"—" }}
                         </p>
                     </div>
                 </div>
@@ -737,7 +737,7 @@ html[data-theme="dark"] .airline-route-pill {
                                 {% endif %}
                                 {{ airline.country }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -751,7 +751,7 @@ html[data-theme="dark"] .airline-route-pill {
                                     ({{ recent_flights.0.origin_airport.iata_code }})
                                 {% endif %}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -843,12 +843,12 @@ html[data-theme="dark"] .airline-route-pill {
 
                     <div class="airline-profile-row">
                         <span>{% trans "IATA Code" %}</span>
-                        <strong>{{ airline.iata_code|default:"â€”" }}</strong>
+                        <strong>{{ airline.iata_code|default:"—" }}</strong>
                     </div>
 
                     <div class="airline-profile-row">
                         <span>{% trans "ICAO Code" %}</span>
-                        <strong>{{ airline.icao_code|default:"â€”" }}</strong>
+                        <strong>{{ airline.icao_code|default:"—" }}</strong>
                     </div>
 
                     <div class="airline-profile-row">
@@ -857,14 +857,14 @@ html[data-theme="dark"] .airline-route-pill {
                             {% if airline.country and airline.country != 'Unknown' %}
                                 {{ airline.country }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
 
                     <div class="airline-profile-row">
                         <span>{% trans "Country Code" %}</span>
-                        <strong>{{ airline.country_code|default:"â€”" }}</strong>
+                        <strong>{{ airline.country_code|default:"—" }}</strong>
                     </div>
 
                     <div class="airline-profile-row">
@@ -925,7 +925,7 @@ html[data-theme="dark"] .airline-route-pill {
                                             {% else %}
                                                 --
                                             {% endif %}
-                                            â†’
+                                            →
                                             {% if flight.destination_airport %}
                                                 {{ flight.destination_airport.iata_code|default:"--" }}
                                             {% else %}
@@ -934,8 +934,8 @@ html[data-theme="dark"] .airline-route-pill {
                                         </span>
                                     </td>
 
-                                    <td>{{ flight.scheduled_departure|date:"M d, H:i"|default:"â€”" }}</td>
-                                    <td>{{ flight.scheduled_arrival|date:"M d, H:i"|default:"â€”" }}</td>
+                                    <td>{{ flight.scheduled_departure|date:"M d, H:i"|default:"—" }}</td>
+                                    <td>{{ flight.scheduled_arrival|date:"M d, H:i"|default:"—" }}</td>
 
                                     <td>
                                         <span class="airline-flight-status airline-status-{{ flight.status }}">

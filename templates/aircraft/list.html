@@ -11,36 +11,30 @@
 <section class="aircraft-page">
     <header class="aircraft-header">
         <div class="aircraft-header-copy">
-            <p class="aircraft-kicker">Aircraft</p>
             <h1>Aircraft</h1>
-            <p class="aircraft-subtitle">
-                Manage and monitor aircraft records, operators, capacity and operational status.
-            </p>
         </div>
     </header>
 
     <section class="aircraft-kpi-grid" aria-label="Aircraft indicators">
         <article class="aircraft-kpi-card aircraft-kpi-total">
             <div class="aircraft-kpi-icon">
-                <span>âœˆ</span>
+                <span>✈</span>
             </div>
 
             <div class="aircraft-kpi-content">
                 <span class="aircraft-kpi-label">Total Aircraft</span>
                 <strong class="aircraft-kpi-value">{{ total_aircraft }}</strong>
-                <span class="aircraft-kpi-note">Registered fleet records</span>
             </div>
         </article>
 
         <article class="aircraft-kpi-card aircraft-kpi-active">
             <div class="aircraft-kpi-icon">
-                <span>âœ“</span>
+                <span>✓</span>
             </div>
 
             <div class="aircraft-kpi-content">
                 <span class="aircraft-kpi-label">Active Aircraft</span>
                 <strong class="aircraft-kpi-value">{{ active_aircraft }}</strong>
-                <span class="aircraft-kpi-note">Currently operational</span>
             </div>
         </article>
 
@@ -73,7 +67,7 @@
         <div class="aircraft-toolbar">
             <form method="get" class="aircraft-search-form">
                 <div class="aircraft-search-box">
-                    <span class="aircraft-search-icon">âŒ•</span>
+                    <span class="aircraft-search-icon">⌕</span>
                     <input
                         type="search"
                         name="q"
@@ -254,10 +248,10 @@
                 <nav class="aircraft-pagination" aria-label="Aircraft pagination">
                     {% if page_obj.has_previous %}
                         <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
-                            â†
+                            ←
                         </a>
                     {% else %}
-                        <span class="disabled">â†</span>
+                        <span class="disabled">←</span>
                     {% endif %}
 
                     <span class="current">
@@ -266,10 +260,10 @@
 
                     {% if page_obj.has_next %}
                         <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
-                            â†’
+                            →
                         </a>
                     {% else %}
-                        <span class="disabled">â†’</span>
+                        <span class="disabled">→</span>
                     {% endif %}
                 </nav>
             {% endif %}

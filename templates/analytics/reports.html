@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "Filtered flight records for operational review." %}
+    {% trans "Flight records." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -26,9 +26,6 @@
         <div>
             <span class="oi-page-eyebrow">{% trans "Reports" %}</span>
             <h2>{% trans "Flight Reports" %}</h2>
-            <p>
-                {% trans "Review operational records, verify their state and identify flights that require attention before opening the map." %}
-            </p>
         </div>
 
         <div class="oi-control-actions">
@@ -113,7 +110,7 @@
 
                                 <td>
                                     {{ flight.origin_airport.iata_code|default:"--" }}
-                                    â†’
+                                    →
                                     {{ flight.destination_airport.iata_code|default:"--" }}
                                 </td>
 

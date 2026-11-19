@@ -15,9 +15,9 @@
 
     <header class="control-desk-hero">
         <div>
-            <span class="control-kicker">Monitoring</span>
-            <h1>Control Desk</h1>
-            <p>Track flight status, delays and cancellations from one operational workspace.</p>
+            <span class="control-kicker">{% trans "Monitoring" %}</span>
+            <h1>{% trans "Control Desk" %}</h1>
+            <p>{% trans "Flights, delays and cancellations." %}</p>
         </div>
 
         <div class="control-hero-actions">
@@ -118,7 +118,7 @@
                             <option value="scheduled" {% if selected_status == "scheduled" %}selected{% endif %}>Scheduled</option>
                             <option value="boarding" {% if selected_status == "boarding" %}selected{% endif %}>Boarding</option>
                             <option value="departed" {% if selected_status == "departed" %}selected{% endif %}>Departed</option>
-                            <option value="in_air" {% if selected_status == "in_air" %}selected{% endif %}>In air</option>
+                            <option value="in_air" {% if selected_status == "in_air" %}selected{% endif %}>{% trans "En route" %}</option>
                             <option value="landed" {% if selected_status == "landed" %}selected{% endif %}>Landed</option>
                             <option value="delayed" {% if selected_status == "delayed" %}selected{% endif %}>Delayed</option>
                             <option value="cancelled" {% if selected_status == "cancelled" %}selected{% endif %}>Cancelled</option>
@@ -212,7 +212,7 @@
                                         {% elif flight.status == "delayed" %}
                                             <span class="control-status control-status-delayed">Delayed</span>
                                         {% elif flight.status == "in_air" %}
-                                            <span class="control-status control-status-active">In air</span>
+                                            <span class="control-status control-status-active">{% trans "En route" %}</span>
                                         {% elif flight.status == "boarding" %}
                                             <span class="control-status control-status-active">Boarding</span>
                                         {% elif flight.status == "departed" %}

@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "Visual analysis for flight operations." %}
+    {% trans "Flight charts." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -23,9 +23,6 @@
         <div>
             <span class="oi-page-eyebrow">{% trans "Charts" %}</span>
             <h2>{% trans "Operational Charts" %}</h2>
-            <p>
-                {% trans "Visualize flight status, disruption balance, data sources, airline activity and route concentration." %}
-            </p>
         </div>
 
         <div class="oi-control-actions">
@@ -44,9 +41,6 @@
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Disruption" %}</span>
                 <h3>{% trans "Stable, attention and critical records" %}</h3>
-                <p>
-                    {% trans "Distribution of records according to their operational supervision level." %}
-                </p>
             </div>
 
             <div class="oi-chart-box oi-chart-box-tall">
@@ -58,9 +52,6 @@
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Flight states" %}</span>
                 <h3>{% trans "Status distribution" %}</h3>
-                <p>
-                    {% trans "Current distribution of flights by operational status." %}
-                </p>
             </div>
 
             <div class="oi-chart-box oi-chart-box-tall">
@@ -72,9 +63,6 @@
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Data source" %}</span>
                 <h3>{% trans "API and local records" %}</h3>
-                <p>
-                    {% trans "Source composition of the current flight dataset." %}
-                </p>
             </div>
 
             <div class="oi-chart-box oi-chart-box-tall">

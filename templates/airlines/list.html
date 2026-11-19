@@ -18,10 +18,6 @@
         <header class="airlines-header">
             <div class="airlines-header-copy">
                 <h1>{% trans "Airlines" %}</h1>
-
-                <p>
-                    {% trans "Manage and monitor airline partners and their operational information." %}
-                </p>
             </div>
         </header>
 
@@ -34,13 +30,13 @@
                 <div class="airlines-kpi-content">
                     <span class="airlines-kpi-label">{% trans "Total Airlines" %}</span>
                     <strong class="airlines-kpi-value">{{ total_airlines }}</strong>
-                    <span class="airlines-kpi-note">{% trans "All registered airlines" %}</span>
+                    <span class="airlines-kpi-note"></span>
                 </div>
             </article>
 
             <article class="airlines-kpi-card airlines-kpi-active">
                 <div class="airlines-kpi-icon">
-                    <span>âœ“</span>
+                    <span>✓</span>
                 </div>
 
                 <div class="airlines-kpi-content">
@@ -79,7 +75,7 @@
             <div class="airlines-toolbar">
                 <form method="GET" class="airlines-search-form">
                     <div class="airlines-search-box">
-                        <span class="airlines-search-icon">âŒ•</span>
+                        <span class="airlines-search-icon">⌕</span>
 
                         <input
                             type="text"
@@ -141,7 +137,7 @@
 
                                             <span class="airline-subtitle">
                                                 {% if airline.iata_code or airline.icao_code %}
-                                                    {{ airline.iata_code|default:"â€”" }} Â· {{ airline.icao_code|default:"â€”" }}
+                                                    {{ airline.iata_code|default:"—" }} · {{ airline.icao_code|default:"—" }}
                                                 {% else %}
                                                     {% trans "Airline profile" %}
                                                 {% endif %}
@@ -152,9 +148,9 @@
 
                                 <td>
                                     <span class="airline-code-pair">
-                                        {{ airline.iata_code|default:"â€”" }}
+                                        {{ airline.iata_code|default:"—" }}
                                         /
-                                        {{ airline.icao_code|default:"â€”" }}
+                                        {{ airline.icao_code|default:"—" }}
                                     </span>
                                 </td>
 
@@ -244,20 +240,20 @@
                     <div class="airlines-pagination">
                         {% if page_obj.has_previous %}
                             <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.previous_page_number }}">
-                                â†
+                                ←
                             </a>
                         {% else %}
-                            <span class="is-disabled">â†</span>
+                            <span class="is-disabled">←</span>
                         {% endif %}
 
                         <span class="is-current">{{ page_obj.number }}</span>
 
                         {% if page_obj.has_next %}
                             <a href="?{% if query %}q={{ query|urlencode }}&{% endif %}page={{ page_obj.next_page_number }}">
-                                â†’
+                                →
                             </a>
                         {% else %}
-                            <span class="is-disabled">â†’</span>
+                            <span class="is-disabled">→</span>
                         {% endif %}
                     </div>
                 {% endif %}

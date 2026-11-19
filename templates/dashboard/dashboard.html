@@ -6,7 +6,7 @@
 {% block dashboard_title %}{% trans "Operations Center" %}{% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "Global operational overview of flights, disruptions, data readiness and monitoring priorities." %}
+    {% trans "Flights, delays and cancellations." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -21,14 +21,14 @@
             <div>
                 <h1>{% trans "Operations Center" %}</h1>
                 <p>
-                    {% trans "Command view for flight supervision, disruption pressure, route visibility and data readiness." %}
+                    {% trans "Flights, delays and cancellations." %}
                 </p>
             </div>
 
             <div class="ops-header-actions">
                 <span class="ops-clock">
                     <strong id="opsClock">--:--:--</strong>
-                    <span>UTC Â· {% trans "Live overview" %}</span>
+                    <span>UTC · {% trans "Live overview" %}</span>
                 </span>
 
                 <a href="{% url 'monitoring:monitoring_home' %}" class="ops-btn ops-btn-primary">
@@ -37,7 +37,7 @@
 
                 {% if critical_count %}
                     <a href="{% url 'monitoring:monitoring_critical' %}" class="ops-btn ops-btn-danger">
-                        {% trans "Recovery Handling" %}
+                        {% trans "Critical flights" %}
                     </a>
                 {% else %}
                     <a href="{% url 'monitoring:flight_map' %}" class="ops-btn">
@@ -56,7 +56,7 @@
                 <span class="kpi-copy">
                     <span>{% trans "Total flights" %}</span>
                     <strong>{{ total_flights|default:0 }}</strong>
-                    <small>{% trans "Records in platform" %}</small>
+                    <small></small>
                 </span>
             </a>
 
@@ -115,7 +115,6 @@
                 <header class="panel-head">
                     <div>
                         <h2>{% trans "Operational Summary" %}</h2>
-                        <p>{% trans "Current system snapshot generated from the flight dataset." %}</p>
                     </div>
                 </header>
 
@@ -124,7 +123,7 @@
                         <span class="summary-icon green">
                             <i class="bi bi-airplane-engines-fill"></i>
                         </span>
-                        <span>{% trans "In air" %}</span>
+                        <span>{% trans "En route" %}</span>
                         <strong>{{ in_air_count|default:0 }}</strong>
                     </div>
 
@@ -140,7 +139,7 @@
                         <span class="summary-icon amber">
                             <i class="bi bi-hourglass-split"></i>
                         </span>
-                        <span>{% trans "Delay pressure" %}</span>
+                        <span>{% trans "Delayed" %}</span>
                         <strong>{{ delay_rate|default:"0" }}%</strong>
                     </div>
 
@@ -170,176 +169,7 @@
                 </div>
             </section>
 
-            <section class="ops-panel">
-                <header class="panel-head">
-                    <div>
-                        <h2>{% trans "Operations Situation Board" %}</h2>
-                        <p>{% trans "Decision view of pressure, route exposure and next operational action." %}</p>
-                    </div>
 
-                    <a href="{% url 'monitoring:flight_map' %}" class="ops-btn">
-                        {% trans "Open flight map" %}
-                    </a>
-                </header>
-
-                <div class="situation-board">
-                    <div class="situation-content">
-
-                        <div class="situation-main">
-                            <article class="situation-command">
-                                <div>
-                                    <div class="situation-topline">
-                                        <span class="situation-label">
-                                            <i class="bi bi-activity"></i>
-                                            {% trans "Operational posture" %}
-                                        </span>
-
-                                        {% if critical_count %}
-                                            <b class="situation-priority-badge is-critical">{% trans "High" %}</b>
-                                        {% elif delayed_count %}
-                                            <b class="situation-priority-badge is-watch">{% trans "Watch" %}</b>
-                                        {% else %}
-                                            <b class="situation-priority-badge">{% trans "Stable" %}</b>
-                                        {% endif %}
-                                    </div>
-
-                                    {% if critical_count %}
-                                        <h3 class="situation-heading">{% trans "Recovery attention required" %}</h3>
-                                        <p class="situation-description">
-                                            {% trans "Irregular operations are visible. Recovery cases should be reviewed before routine monitoring." %}
-                                        </p>
-                                    {% elif delayed_count %}
-                                        <h3 class="situation-heading">{% trans "Attention monitoring active" %}</h3>
-                                        <p class="situation-description">
-                                            {% trans "Delayed flights are adding operational pressure. Keep attention cases visible until the picture stabilizes." %}
-                                        </p>
-                                    {% else %}
-                                        <h3 class="situation-heading">{% trans "Operations remain stable" %}</h3>
-                                        <p class="situation-description">
-                                            {% trans "No critical recovery case is currently visible. Continue routine operational supervision." %}
-                                        </p>
-                                    {% endif %}
-                                </div>
-
-                                <div class="situation-corridor">
-                                    <div>
-                                        <span>{% trans "Priority corridor" %}</span>
-                                        <strong>{{ most_used_route_label|default:_("No route data") }}</strong>
-                                    </div>
-
-                                    <a href="{% url 'monitoring:flight_map' %}">
-                                        {% trans "Check map" %}
-                                    </a>
-                                </div>
-                            </article>
-
-                            <div class="situation-kpi-grid">
-                                <article class="situation-kpi">
-                                    <span>{% trans "Live traffic" %}</span>
-                                    <strong>{{ active_flights|default:0 }}</strong>
-                                    <small>{% trans "Flights currently requiring visibility" %}</small>
-                                </article>
-
-                                <article class="situation-kpi">
-                                    <span>{% trans "Irregular ops" %}</span>
-                                    <strong>{{ irregular_ops_count|default:0 }}</strong>
-                                    <small>{% trans "Critical and attention records" %}</small>
-                                </article>
-
-                                <article class="situation-kpi">
-                                    <span>{% trans "Sync coverage" %}</span>
-                                    <strong>{{ api_rate|default:"0" }}%</strong>
-                                    <small>{% trans "Flights synchronized from API sources" %}</small>
-                                </article>
-
-                                <article class="situation-kpi">
-                                    <span>{% trans "Local records" %}</span>
-                                    <strong>{{ local_flights|default:0 }}</strong>
-                                    <small>{% trans "Manually maintained flight records" %}</small>
-                                </article>
-                            </div>
-                        </div>
-
-                        <article class="situation-recommendation">
-                            <span>
-                                <span>{% trans "Recommended next step" %}</span>
-
-                                {% if critical_count %}
-                                    <strong>{% trans "Review recovery cases first. Open the map only if route exposure or airport concentration must be confirmed." %}</strong>
-                                {% elif delayed_count %}
-                                    <strong>{% trans "Keep attention cases visible. Review delayed flights before switching to routine overview." %}</strong>
-                                {% else %}
-                                    <strong>{% trans "Maintain normal monitoring. Use the map for route visibility and the Control Desk for record review." %}</strong>
-                                {% endif %}
-                            </span>
-
-                            {% if critical_count %}
-                                <a href="{% url 'monitoring:monitoring_critical' %}">
-                                    {% trans "Open recovery" %}
-                                </a>
-                            {% elif delayed_count %}
-                                <a href="{% url 'monitoring:monitoring_home' %}?status=delayed">
-                                    {% trans "Open attention" %}
-                                </a>
-                            {% else %}
-                                <a href="{% url 'monitoring:monitoring_home' %}">
-                                    {% trans "Open desk" %}
-                                </a>
-                            {% endif %}
-                        </article>
-
-                    </div>
-                </div>
-            </section>
-
-            <section class="ops-panel">
-                <header class="panel-head">
-                    <div>
-                        <h2>{% trans "Warnings" %}</h2>
-                        <p>{% trans "Operational signals from current traffic and source coverage." %}</p>
-                    </div>
-
-                    <a href="{% url 'monitoring:monitoring_alerts' %}" class="ops-btn">
-                        {% trans "View all" %}
-                    </a>
-                </header>
-
-                <div class="alert-list">
-                    {% for insight in command_insights %}
-                        <article class="alert-item">
-                            {% if forloop.counter == 1 and critical_count %}
-                                <span class="alert-icon red">
-                                    <i class="bi bi-exclamation-triangle-fill"></i>
-                                </span>
-                            {% elif forloop.counter == 1 and delayed_count %}
-                                <span class="alert-icon amber">
-                                    <i class="bi bi-exclamation-circle-fill"></i>
-                                </span>
-                            {% else %}
-                                <span class="alert-icon blue">
-                                    <i class="bi bi-info-circle-fill"></i>
-                                </span>
-                            {% endif %}
-
-                            <span class="alert-copy">
-                                <strong>{% trans "Signal" %} {{ forloop.counter|stringformat:"02d" }}</strong>
-                                <span>{{ insight }}</span>
-                            </span>
-
-                            <span class="alert-meta">
-                                <small>{% trans "Live" %}</small>
-                                <a href="{% url 'monitoring:monitoring_alerts' %}">
-                                    {% trans "Review" %}
-                                </a>
-                            </span>
-                        </article>
-                    {% empty %}
-                        <div class="empty-state">
-                            {% trans "No warning signal is currently available." %}
-                        </div>
-                    {% endfor %}
-                </div>
-            </section>
 
         </section>
 
@@ -349,7 +179,6 @@
                 <header class="panel-head">
                     <div>
                         <h2>{% trans "Disruption Mix" %}</h2>
-                        <p>{% trans "Real distribution generated from current flight statuses." %}</p>
                     </div>
                 </header>
 
@@ -405,7 +234,6 @@
                 <header class="panel-head">
                     <div>
                         <h2>{% trans "Data Coverage" %}</h2>
-                        <p>{% trans "Dataset distribution between synchronized and local records." %}</p>
                     </div>
                 </header>
 
@@ -449,8 +277,7 @@
             <section class="ops-panel">
                 <header class="panel-head">
                     <div>
-                        <h2>{% trans "Reference Coverage" %}</h2>
-                        <p>{% trans "Core aviation objects connected to the platform." %}</p>
+                        <h2>{% trans "Reference data" %}</h2>
                     </div>
                 </header>
 
@@ -485,7 +312,7 @@
                             <span class="coverage-track">
                                 <i style="width: 66%;"></i>
                             </span>
-                            <small>{{ most_used_route_label|default:"â€”" }}</small>
+                            <small>{{ most_used_route_label|default:"—" }}</small>
                         </div>
                     </div>
                 </div>
@@ -498,8 +325,7 @@
             <section class="ops-panel">
                 <header class="panel-head">
                     <div>
-                        <h2>{% trans "Recent Operational Events" %}</h2>
-                        <p>{% trans "Most recent flight records available in the platform." %}</p>
+                        <h2>{% trans "Recent flights" %}</h2>
                     </div>
 
                     <a href="{% url 'monitoring:monitoring_home' %}" class="ops-btn">
@@ -534,7 +360,7 @@
                                     <td>
                                         <span class="route-pill">
                                             {{ flight.origin_airport.iata_code|default:"--" }}
-                                            â†’
+                                            →
                                             {{ flight.destination_airport.iata_code|default:"--" }}
                                         </span>
                                     </td>
@@ -547,7 +373,7 @@
                                         {% elif flight.status == "delayed" %}
                                             <span class="badge badge-amber">{% trans "Delayed" %}</span>
                                         {% elif flight.status == "in_air" %}
-                                            <span class="badge badge-green">{% trans "In air" %}</span>
+                                            <span class="badge badge-green">{% trans "En route" %}</span>
                                         {% elif flight.status == "landed" %}
                                             <span class="badge badge-blue">{% trans "Landed" %}</span>
                                         {% else %}
@@ -581,59 +407,6 @@
                 </div>
             </section>
 
-            <section class="ops-panel">
-                <header class="panel-head">
-                    <div>
-                        <h2>{% trans "Operational Readiness" %}</h2>
-                        <p>{% trans "System readiness based on available records and module coverage." %}</p>
-                    </div>
-                </header>
-
-                <div class="readiness-body">
-                    <div class="readiness-ring">
-                        <canvas id="readinessChart" data-ready="92"></canvas>
-
-                        <div class="readiness-center">
-                            <span>
-                                <strong>92%</strong>
-                                <span>{% trans "ready" %}</span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="readiness-list">
-                        <div class="readiness-row">
-                            <i></i>
-                            <span>{% trans "Monitoring workspace" %}</span>
-                            <strong>{% trans "Ready" %}</strong>
-                        </div>
-
-                        <div class="readiness-row">
-                            <i></i>
-                            <span>{% trans "Flight registry" %}</span>
-                            <strong>{% trans "Ready" %}</strong>
-                        </div>
-
-                        <div class="readiness-row">
-                            <i></i>
-                            <span>{% trans "Data synchronization" %}</span>
-                            <strong>{{ source_mode|default:_("Ready") }}</strong>
-                        </div>
-
-                        <div class="readiness-row">
-                            <i></i>
-                            <span>{% trans "Operational map" %}</span>
-                            <strong>{% trans "Ready" %}</strong>
-                        </div>
-
-                        <div class="readiness-row">
-                            <i></i>
-                            <span>{% trans "Operational Copilot" %}</span>
-                            <strong>{% trans "Support" %}</strong>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
         </section>
 
@@ -705,39 +478,6 @@
             });
         }
 
-        const readinessCanvas = document.getElementById("readinessChart");
-
-        if (readinessCanvas && window.Chart) {
-            const ready = Number(readinessCanvas.dataset.ready || 0);
-            const missing = Math.max(0, 100 - ready);
-
-            new Chart(readinessCanvas, {
-                type: "doughnut",
-                data: {
-                    labels: ["Ready", "Remaining"],
-                    datasets: [
-                        {
-                            data: [ready, missing],
-                            backgroundColor: ["#059669", "rgba(148, 163, 184, 0.22)"],
-                            borderWidth: 0,
-                            cutout: "68%"
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    }
-                }
-            });
-        }
     });
 </script>
 {% endblock %}

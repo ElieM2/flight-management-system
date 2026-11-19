@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "Data source confidence for operational supervision." %}
+    {% trans "API and local record sources." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -23,9 +23,6 @@
         <div>
             <span class="oi-page-eyebrow">{% trans "Data confidence" %}</span>
             <h2>{% trans "Data Confidence" %}</h2>
-            <p>
-                {% trans "Verify the origin of flight records before using them for reporting or operational supervision." %}
-            </p>
         </div>
 
         <div class="oi-control-actions">
@@ -43,10 +40,7 @@
         <article class="oi-decision-card oi-decision-primary">
             <div>
                 <span class="oi-kicker">{% trans "Main reading" %}</span>
-                <h3>{% trans "Source visibility matters" %}</h3>
-                <p>
-                    {% trans "The system separates synchronized records, local records and records with unknown origin." %}
-                </p>
+                <h3>{% trans "Record sources" %}</h3>
             </div>
 
             <a href="{% url 'analytics:reports' %}?focus=sources" class="oi-mini-action">
@@ -72,9 +66,6 @@
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Source balance" %}</span>
                 <h3>{% trans "API, local and unknown records" %}</h3>
-                <p>
-                    {% trans "Source composition of the current operational dataset." %}
-                </p>
             </div>
 
             <div class="oi-chart-box oi-chart-box-tall">

@@ -83,23 +83,48 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     };
 
+    const STATUS_LABELS = {
+        scheduled: "Scheduled",
+        boarding: "Boarding",
+        departed: "Departed",
+        in_air: "En route",
+        landed: "Landed",
+        delayed: "Delayed",
+        cancelled: "Cancelled"
+    };
+
+    function i18nText(key, fallback) {
+        const node = document.getElementById("mapI18n");
+        if (!node) {
+            return fallback;
+        }
+        const value = node.getAttribute("data-" + key);
+        return value || fallback;
+    }
+
+    function statusLabel(status) {
+        const key = normalizeStatus(status);
+        return i18nText(key.replace(/_/g, "-"), STATUS_LABELS[key] || key.replace(/_/g, " "));
+    }
+
     const baseLayers = {
         dark: {
-            name: "Dark operations",
-            url: "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+            name: "Dark map",
+            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             options: {
-                attribution: "&copy; OpenStreetMap &copy; CARTO",
-                subdomains: "abcd",
-                maxZoom: 20
+                attribution: "&copy; OpenStreetMap contributors",
+                subdomains: "abc",
+                maxZoom: 19,
+                className: "map-tiles-dark"
             }
         },
         light: {
-            name: "Light operations",
-            url: "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+            name: "Light map",
+            url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
             options: {
-                attribution: "&copy; OpenStreetMap &copy; CARTO",
-                subdomains: "abcd",
-                maxZoom: 20
+                attribution: "&copy; OpenStreetMap contributors",
+                subdomains: "abc",
+                maxZoom: 19
             }
         },
         satellite: {
@@ -1815,58 +1840,46 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function getWeatherText(payload) {
-        const summary = payload && payload.summary ? payload.summary : {};
-        const radar = payload && payload.radar ? payload.radar : {};
-        const hazards = payload && Array.isArray(payload.hazards) ? payload.hazards : [];
+        const unavailable = i18nText("weather-unavailable", "Weather unavailable");
+        if (!payload) {
+            return [unavailable];
+        }
 
-        const pressureActive = Boolean(
-            summary.operational_pressure_active ||
-            summary.pressure_active ||
-            hazards.some(function (hazard) {
-                return textOr(hazard.type || hazard.category, "").toLowerCase().includes("pressure");
-            })
-        );
+        const radar = payload.radar || {};
+        const hazards = Array.isArray(payload.hazards) ? payload.hazards : [];
+        const lines = [];
 
-        const stormRisk = Boolean(
-            summary.storm_risk ||
-            hazards.some(function (hazard) {
-                const type = textOr(hazard.type || hazard.category || hazard.title, "").toLowerCase();
-                const severity = textOr(hazard.severity || hazard.level, "").toLowerCase();
+        if (radar.available) {
+            if (radar.timestamp || radar.time) {
+                lines.push("Radar · " + formatUtcTimeFromUnix(radar.timestamp || radar.time) + " UTC");
+            } else {
+                lines.push("Radar");
+            }
+        }
 
-                return type.includes("storm") ||
-                    type.includes("convective") ||
-                    severity === "critical";
-            })
-        );
+        hazards.forEach(function (hazard) {
+            const airport = textOr(hazard.airport || hazard.code, "");
+            const city = textOr(hazard.city, "");
+            const place = airport || city;
+            const flags = [];
+            if (hazard.storm) flags.push("storm");
+            if (hazard.rain) flags.push("rain");
+            if (hazard.snow) flags.push("snow");
+            if (hazard.turbulence) flags.push("wind");
+            if (hazard.low_visibility) flags.push("low visibility");
+            const title = textOr(hazard.title || hazard.name, "");
+            if (place && flags.length) {
+                lines.push(place + " · " + flags.join(", "));
+            } else if (title) {
+                lines.push(title);
+            }
+        });
 
-        const windExposure = Boolean(
-            summary.wind_exposure ||
-            hazards.some(function (hazard) {
-                return textOr(hazard.type || hazard.category || hazard.title, "").toLowerCase().includes("wind");
-            })
-        );
+        if (!lines.length) {
+            return [unavailable];
+        }
 
-        const visibilityIssue = Boolean(
-            summary.visibility_issue ||
-            hazards.some(function (hazard) {
-                return textOr(hazard.type || hazard.category || hazard.title, "").toLowerCase().includes("visibility");
-            })
-        );
-
-        const radarText = radar && radar.available && radar.timestamp
-            ? "Live radar scan · " + formatUtcTimeFromUnix(radar.timestamp) + " UTC"
-            : radar && radar.available
-                ? "Live radar scan · UTC feed active"
-                : "No active precipitation";
-
-        return [
-            radarText,
-            pressureActive ? "Operational pressure active" : "No disruption pressure",
-            stormRisk ? "Storm risk monitored" : "No storm risk",
-            windExposure ? "Wind exposure monitored" : "No major wind exposure",
-            visibilityIssue ? "Visibility watch active" : "Visibility normal",
-            "Restricted zones monitored"
-        ];
+        return lines;
     }
 
     function updateWeatherPanel(payload) {
@@ -1907,21 +1920,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         els.weatherPreview.innerHTML = [
-            '<div class="weather-radar-image-only weather-radar-visual-standby">',
-            '<span class="weather-radar-visual-cell weather-radar-visual-cell-a"></span>',
-            '<span class="weather-radar-visual-cell weather-radar-visual-cell-b"></span>',
-            '<span class="weather-radar-visual-cell weather-radar-visual-cell-c"></span>',
-            '<span class="weather-radar-zone weather-radar-zone-a"></span>',
-            '<span class="weather-radar-zone weather-radar-zone-b"></span>',
-            '<span class="weather-radar-line weather-radar-line-a"></span>',
-            '<span class="weather-radar-line weather-radar-line-b"></span>',
-            '<span class="weather-radar-line weather-radar-line-c"></span>',
+            '<div class="weather-radar-unavailable">',
+            escapeHtml(i18nText("weather-unavailable", "Weather unavailable")),
             '</div>'
         ].join("");
     }
 
     function buildPopup(flight) {
-        const status = normalizeStatus(flight.status).replace(/_/g, " ");
+        const status = statusLabel(flight.status);
         const riskScore = formatRiskScore(flight.risk_score);
         const route = formatRoute(flight);
 

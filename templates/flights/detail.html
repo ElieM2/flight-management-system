@@ -87,7 +87,7 @@
                             {% if flight.origin_airport %}
                                 {{ flight.origin_airport.city|default:flight.origin_airport.name }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </span>
 
@@ -119,7 +119,7 @@
                             {% if flight.destination_airport %}
                                 {{ flight.destination_airport.city|default:flight.destination_airport.name }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </span>
 
@@ -161,7 +161,7 @@
                             {% if flight.aircraft and flight.aircraft.registration_number %}
                                 {{ flight.aircraft.registration_number }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -189,7 +189,7 @@
                         {% if flight.scheduled_departure %}
                             {{ flight.scheduled_departure|date:"M d, Y H:i" }}
                         {% else %}
-                            â€”
+                            —
                         {% endif %}
                     </strong>
                 </div>
@@ -203,7 +203,7 @@
                         {% if flight.scheduled_arrival %}
                             {{ flight.scheduled_arrival|date:"M d, Y H:i" }}
                         {% else %}
-                            â€”
+                            —
                         {% endif %}
                     </strong>
                 </div>
@@ -241,7 +241,7 @@
                         {% if flight.last_synced_at %}
                             {{ flight.last_synced_at|date:"M d, H:i" }}
                         {% else %}
-                            â€”
+                            —
                         {% endif %}
                     </strong>
                 </div>
@@ -263,7 +263,7 @@
                         {% else %}
                             --
                         {% endif %}
-                        â†’
+                        →
                         {% if flight.destination_airport %}
                             {{ flight.destination_airport.iata_code|default:"--" }}
                         {% else %}
@@ -287,7 +287,7 @@
                         {% if departure_delay_minutes is not None %}
                             {{ departure_delay_minutes }} min
                         {% else %}
-                            â€”
+                            —
                         {% endif %}
                     </strong>
 
@@ -373,7 +373,7 @@
                             {% if flight.aircraft and flight.aircraft.registration_number %}
                                 {{ flight.aircraft.registration_number }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -385,7 +385,7 @@
 
                     <div>
                         <span>{% trans "External ID" %}</span>
-                        <strong>{{ flight.external_id|default:"â€”" }}</strong>
+                        <strong>{{ flight.external_id|default:"—" }}</strong>
                     </div>
                 </div>
             </article>
@@ -407,9 +407,9 @@
                         <strong>
                             {% if flight.origin_airport %}
                                 {{ flight.origin_airport.iata_code|default:"--" }}
-                                Â· {{ flight.origin_airport.city|default:flight.origin_airport.name }}
+                                · {{ flight.origin_airport.city|default:flight.origin_airport.name }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -420,9 +420,9 @@
                         <strong>
                             {% if flight.destination_airport %}
                                 {{ flight.destination_airport.iata_code|default:"--" }}
-                                Â· {{ flight.destination_airport.city|default:flight.destination_airport.name }}
+                                · {{ flight.destination_airport.city|default:flight.destination_airport.name }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -434,7 +434,7 @@
                             {% if flight.scheduled_departure %}
                                 {{ flight.scheduled_departure|date:"M d, Y H:i" }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -446,7 +446,7 @@
                             {% if flight.scheduled_arrival %}
                                 {{ flight.scheduled_arrival|date:"M d, Y H:i" }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -458,7 +458,7 @@
                             {% if flight.actual_departure %}
                                 {{ flight.actual_departure|date:"M d, Y H:i" }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -470,7 +470,7 @@
                             {% if flight.actual_arrival %}
                                 {{ flight.actual_arrival|date:"M d, Y H:i" }}
                             {% else %}
-                                â€”
+                                —
                             {% endif %}
                         </strong>
                     </div>
@@ -549,22 +549,22 @@
                     <div class="flight-detail-metric-grid">
                         <div>
                             <span>{% trans "Latitude" %}</span>
-                            <strong>{{ flight.live_latitude|default:"â€”" }}</strong>
+                            <strong>{{ flight.live_latitude|default:"—" }}</strong>
                         </div>
 
                         <div>
                             <span>{% trans "Longitude" %}</span>
-                            <strong>{{ flight.live_longitude|default:"â€”" }}</strong>
+                            <strong>{{ flight.live_longitude|default:"—" }}</strong>
                         </div>
 
                         <div>
                             <span>{% trans "Altitude" %}</span>
-                            <strong>{{ flight.live_altitude|default:"â€”" }}</strong>
+                            <strong>{{ flight.live_altitude|default:"—" }}</strong>
                         </div>
 
                         <div>
                             <span>{% trans "Speed" %}</span>
-                            <strong>{{ flight.live_speed|default:"â€”" }}</strong>
+                            <strong>{{ flight.live_speed|default:"—" }}</strong>
                         </div>
                     </div>
                 </article>
@@ -609,7 +609,7 @@
                                             {% if item.change_summary %}
                                                 {{ item.change_summary }}
                                             {% else %}
-                                                â€”
+                                                —
                                             {% endif %}
                                         </span>
                                     </td>
@@ -618,7 +618,7 @@
                                         {% if item.previous_status %}
                                             {{ item.get_previous_status_display }}
                                         {% else %}
-                                            â€”
+                                            —
                                         {% endif %}
                                     </td>
 
@@ -626,7 +626,7 @@
                                         {% if item.new_status %}
                                             {{ item.get_new_status_display }}
                                         {% else %}
-                                            â€”
+                                            —
                                         {% endif %}
                                     </td>
 

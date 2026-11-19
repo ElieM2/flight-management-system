@@ -907,7 +907,7 @@
             <div class="alerts-actions">
                 <span class="alerts-clock">
                     <strong id="alertsClock">--:--</strong>
-                    <span>UTC Â· Live monitoring</span>
+                    <span>UTC · Live monitoring</span>
                 </span>
 
                 <a href="{% url 'monitoring:monitoring_home' %}" class="alerts-btn alerts-btn-danger">
@@ -996,7 +996,7 @@
                             {% endif %}
 
                             <span class="alert-info">
-                                <strong>ALR-{{ forloop.counter|stringformat:"04d" }} Â· {{ alert.title }}</strong>
+                                <strong>ALR-{{ forloop.counter|stringformat:"04d" }} · {{ alert.title }}</strong>
                                 <span>{{ alert.description }}</span>
                             </span>
 
@@ -1029,11 +1029,11 @@
                 <div class="selected-alert-body">
                     <div class="selected-alert-top">
                         <div class="selected-alert-title">
-                            <strong id="selectedAlertNumber">â€”</strong>
-                            <span id="selectedAlertTitle">â€”</span>
+                            <strong id="selectedAlertNumber">—</strong>
+                            <span id="selectedAlertTitle">—</span>
                         </div>
 
-                        <span id="selectedAlertLevel" class="badge badge-amber">â€”</span>
+                        <span id="selectedAlertLevel" class="badge badge-amber">—</span>
                     </div>
 
                     <div class="alert-message">
@@ -1044,7 +1044,7 @@
                     <div class="detail-grid">
                         <div class="detail-box">
                             <span>Alert level</span>
-                            <strong id="selectedAlertLevelText">â€”</strong>
+                            <strong id="selectedAlertLevelText">—</strong>
                         </div>
 
                         <div class="detail-box">

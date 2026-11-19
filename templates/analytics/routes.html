@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block dashboard_subtitle %}
-    {% trans "Route pressure and airport concentration." %}
+    {% trans "Busiest routes and airports." %}
 {% endblock %}
 
 {% block extra_head %}
@@ -22,10 +22,7 @@
     <section class="oi-control-strip">
         <div>
             <span class="oi-page-eyebrow">{% trans "Routes" %}</span>
-            <h2>{% trans "Route Pressure" %}</h2>
-            <p>
-                {% trans "Identify the busiest routes and the airports carrying the strongest operational load." %}
-            </p>
+            <h2>{% trans "Routes" %}</h2>
         </div>
 
         <div class="oi-control-actions">
@@ -44,9 +41,6 @@
             <div>
                 <span class="oi-kicker">{% trans "Main route" %}</span>
                 <h3>{{ busiest_route }}</h3>
-                <p>
-                    {% trans "Busiest visible route in the current operating picture." %}
-                </p>
             </div>
 
             <a href="/monitoring/map/" class="oi-mini-action">
@@ -57,13 +51,11 @@
         <article class="oi-decision-card">
             <span class="oi-decision-label">{% trans "Records" %}</span>
             <strong>{{ total_flights }}</strong>
-            <p>{% trans "Flights used for route reading." %}</p>
         </article>
 
         <article class="oi-decision-card">
             <span class="oi-decision-label">{% trans "Critical" %}</span>
             <strong>{{ critical_count }}</strong>
-            <p>{% trans "Flights requiring priority supervision." %}</p>
         </article>
     </section>
 
@@ -72,9 +64,6 @@
             <div class="oi-section-head">
                 <span class="oi-kicker">{% trans "Corridors" %}</span>
                 <h3>{% trans "Busiest routes" %}</h3>
-                <p>
-                    {% trans "Routes with the strongest traffic concentration." %}
-                </p>
             </div>
 
             <div class="oi-table-shell">

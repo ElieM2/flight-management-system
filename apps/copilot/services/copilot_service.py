@@ -833,7 +833,7 @@ class CopilotService:
 
         total_count = self.flight_queries.count_flights_by_status(status)
         records = self.flight_queries.get_flights_by_status(status=status, limit=15)
-        status_label = status.replace("_", " ").title()
+        status_label = "En route" if status == "in_air" else status.replace("_", " ").title()
 
         return self.response_builder.build(
             response_type=COPILOT_RESPONSE_TYPES["DATA_BASED"],

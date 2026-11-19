@@ -1,16 +1,16 @@
 ﻿<tr
     class="control-flight-row {% if selected_flight and selected_flight.pk == flight.pk %}is-selected{% endif %}"
     data-is-selected="{% if selected_flight and selected_flight.pk == flight.pk %}true{% else %}false{% endif %}"
-    data-flight="{{ flight.flight_number|default:'â€”'|escape }}"
+    data-flight="{{ flight.flight_number|default:'—'|escape }}"
     data-airline="{{ flight.airline.name|default:unknown_airline|escape }}"
     data-origin="{{ flight.origin_airport.iata_code|default:'--'|escape }}"
     data-origin-city="{{ flight.origin_airport.city|default:'Origin airport'|escape }}"
     data-destination="{{ flight.destination_airport.iata_code|default:'--'|escape }}"
     data-destination-city="{{ flight.destination_airport.city|default:'Destination airport'|escape }}"
-    data-departure="{{ flight.scheduled_departure|date:'H:i'|default:'â€”' }}"
-    data-arrival="{{ flight.scheduled_arrival|date:'H:i'|default:'â€”' }}"
-    data-departure-date="{{ flight.scheduled_departure|date:'Y-m-d'|default:'â€”' }}"
-    data-arrival-date="{{ flight.scheduled_arrival|date:'Y-m-d'|default:'â€”' }}"
+    data-departure="{{ flight.scheduled_departure|date:'H:i'|default:'—' }}"
+    data-arrival="{{ flight.scheduled_arrival|date:'H:i'|default:'—' }}"
+    data-departure-date="{{ flight.scheduled_departure|date:'Y-m-d'|default:'—' }}"
+    data-arrival-date="{{ flight.scheduled_arrival|date:'Y-m-d'|default:'—' }}"
     data-status="{{ status_label|default:'Scheduled'|escape }}"
     data-status-key="{{ flight.status|default:'scheduled'|escape }}"
     data-risk="{{ risk_label|default:'Low'|escape }}"
@@ -22,7 +22,7 @@
 >
     <td>
         <span class="flight-cell">
-            <strong>{{ flight.flight_number|default:"â€”" }}</strong>
+            <strong>{{ flight.flight_number|default:"—" }}</strong>
             <small>
                 {% if flight.source_type == "api" %}
                     API
@@ -36,7 +36,7 @@
     <td>
         <span class="route-pill">
             {{ flight.origin_airport.iata_code|default:"--" }}
-            â†’
+            →
             {{ flight.destination_airport.iata_code|default:"--" }}
         </span>
     </td>
@@ -46,11 +46,11 @@
     </td>
 
     <td>
-        {{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"â€”" }}
+        {{ flight.scheduled_departure|date:"Y-m-d H:i"|default:"—" }}
     </td>
 
     <td>
-        {{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"â€”" }}
+        {{ flight.scheduled_arrival|date:"Y-m-d H:i"|default:"—" }}
     </td>
 
     <td>

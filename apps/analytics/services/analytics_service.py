@@ -269,7 +269,12 @@ class AnalyticsService:
         route_labels = [item['route_key'] for item in top_disrupted_routes]
         route_values = [item['total'] for item in top_disrupted_routes]
 
-        status_labels = [item['status'].replace('_', ' ').title() for item in current_status_distribution]
+        status_labels = [
+        {
+            'in_air': 'En route',
+        }.get(item['status'], item['status'].replace('_', ' ').title())
+        for item in current_status_distribution
+    ]
         status_values = [item['total'] for item in current_status_distribution]
 
         performance_labels = [item['airline_name'] for item in best_airlines]

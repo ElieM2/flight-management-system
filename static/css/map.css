@@ -3067,3 +3067,21 @@ body.dark-mode .lf-map-page,
         grid-template-columns: 1fr;
     }
 }
+
+
+img.map-tiles-dark {
+    filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+}
+
+.weather-radar-unavailable {
+    min-height: 7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0.75rem;
+    color: var(--fl-text-muted, #94a3b8);
+    font-size: 0.85rem;
+    background: rgba(148, 163, 184, 0.08);
+    border-radius: 0.6rem;
+}

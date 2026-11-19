@@ -291,7 +291,7 @@
                     scheduled_count: "Scheduled",
                     boarding_count: "Boarding",
                     departed_count: "Departed",
-                    in_air_count: "In air",
+                    in_air_count: "En route",
                     landed_count: "Landed",
                     delayed_count: "Delayed",
                     cancelled_count: "Cancelled",

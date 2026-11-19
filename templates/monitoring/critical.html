@@ -903,7 +903,7 @@
             <div class="recovery-actions">
                 <span class="recovery-clock">
                     <strong id="recoveryClock">--:--</strong>
-                    <span>UTC Â· Live operation</span>
+                    <span>UTC · Live operation</span>
                 </span>
 
                 <a href="{% url 'monitoring:monitoring_alerts' %}" class="recovery-btn recovery-btn-danger">
@@ -990,8 +990,8 @@
                             data-origin-city="{{ flight.origin_airport.city|default:'Origin airport' }}"
                             data-destination="{{ flight.destination_airport.iata_code|default:'--' }}"
                             data-destination-city="{{ flight.destination_airport.city|default:'Destination airport' }}"
-                            data-departure-full="{{ flight.scheduled_departure|date:'Y-m-d H:i'|default:'â€”' }}"
-                            data-arrival-full="{{ flight.scheduled_arrival|date:'Y-m-d H:i'|default:'â€”' }}"
+                            data-departure-full="{{ flight.scheduled_departure|date:'Y-m-d H:i'|default:'—' }}"
+                            data-arrival-full="{{ flight.scheduled_arrival|date:'Y-m-d H:i'|default:'—' }}"
                             data-status="{{ flight.get_status_display }}"
                             data-status-key="{{ flight.status }}"
                             data-source="{{ flight.source_type|default:'local' }}"
@@ -1005,9 +1005,9 @@
                                 <strong>{{ flight.flight_number }}</strong>
                                 <span>
                                     {{ flight.origin_airport.iata_code|default:"--" }}
-                                    â†’
+                                    →
                                     {{ flight.destination_airport.iata_code|default:"--" }}
-                                    Â· {{ flight.airline.name|default:unknown_airline }}
+                                    · {{ flight.airline.name|default:unknown_airline }}
                                 </span>
                             </span>
 
@@ -1038,18 +1038,18 @@
                 <div class="selected-body">
                     <div class="selected-top">
                         <div class="selected-title">
-                            <strong id="selectedFlightNumber">â€”</strong>
-                            <span id="selectedRouteShort">â€”</span>
+                            <strong id="selectedFlightNumber">—</strong>
+                            <span id="selectedRouteShort">—</span>
                         </div>
 
-                        <span id="selectedStatusBadge" class="badge badge-red">â€”</span>
+                        <span id="selectedStatusBadge" class="badge badge-red">—</span>
                     </div>
 
                     <div class="route-card">
                         <div class="route-main">
                             <div class="route-point">
-                                <strong id="selectedOrigin">â€”</strong>
-                                <span id="selectedOriginCity">â€”</span>
+                                <strong id="selectedOrigin">—</strong>
+                                <span id="selectedOriginCity">—</span>
                             </div>
 
                             <div class="route-line">
@@ -1059,8 +1059,8 @@
                             </div>
 
                             <div class="route-point">
-                                <strong id="selectedDestination">â€”</strong>
-                                <span id="selectedDestinationCity">â€”</span>
+                                <strong id="selectedDestination">—</strong>
+                                <span id="selectedDestinationCity">—</span>
                             </div>
                         </div>
                     </div>
@@ -1068,22 +1068,22 @@
                     <div class="detail-grid">
                         <div class="detail-box">
                             <span>Scheduled departure</span>
-                            <strong id="selectedDepartureFull">â€”</strong>
+                            <strong id="selectedDepartureFull">—</strong>
                         </div>
 
                         <div class="detail-box">
                             <span>Scheduled arrival</span>
-                            <strong id="selectedArrivalFull">â€”</strong>
+                            <strong id="selectedArrivalFull">—</strong>
                         </div>
 
                         <div class="detail-box">
                             <span>Airline</span>
-                            <strong id="selectedAirline">â€”</strong>
+                            <strong id="selectedAirline">—</strong>
                         </div>
 
                         <div class="detail-box">
                             <span>Source</span>
-                            <strong id="selectedSource">â€”</strong>
+                            <strong id="selectedSource">—</strong>
                         </div>
                     </div>
 
@@ -1184,9 +1184,9 @@
                                     {% if flight.updated_at %}
                                         {{ flight.updated_at|date:"H:i" }}
                                     {% else %}
-                                        â€”
+                                        —
                                     {% endif %}
-                                    Â· {{ flight.flight_number }}
+                                    · {{ flight.flight_number }}
                                 </strong>
 
                                 <span>
@@ -1308,20 +1308,20 @@
 
             const statusKey = item.dataset.statusKey || "";
             const statusText = readableStatus(statusKey, item.dataset.status);
-            const route = `${item.dataset.origin || "--"} â†’ ${item.dataset.destination || "--"}`;
+            const route = `${item.dataset.origin || "--"} → ${item.dataset.destination || "--"}`;
 
             queueItems.forEach(row => row.classList.remove("is-selected"));
             item.classList.add("is-selected");
 
-            selectedFlightNumber.textContent = item.dataset.flight || "â€”";
+            selectedFlightNumber.textContent = item.dataset.flight || "—";
             selectedRouteShort.textContent = route;
-            selectedOrigin.textContent = item.dataset.origin || "â€”";
-            selectedOriginCity.textContent = item.dataset.originCity || "â€”";
-            selectedDestination.textContent = item.dataset.destination || "â€”";
-            selectedDestinationCity.textContent = item.dataset.destinationCity || "â€”";
-            selectedDepartureFull.textContent = item.dataset.departureFull || "â€”";
-            selectedArrivalFull.textContent = item.dataset.arrivalFull || "â€”";
-            selectedAirline.textContent = item.dataset.airline || "â€”";
+            selectedOrigin.textContent = item.dataset.origin || "—";
+            selectedOriginCity.textContent = item.dataset.originCity || "—";
+            selectedDestination.textContent = item.dataset.destination || "—";
+            selectedDestinationCity.textContent = item.dataset.destinationCity || "—";
+            selectedDepartureFull.textContent = item.dataset.departureFull || "—";
+            selectedArrivalFull.textContent = item.dataset.arrivalFull || "—";
+            selectedAirline.textContent = item.dataset.airline || "—";
             selectedSource.textContent = readableSource(item.dataset.source);
 
             selectedStatusBadge.className = "badge";

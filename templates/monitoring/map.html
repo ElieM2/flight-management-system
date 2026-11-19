@@ -28,7 +28,7 @@
                 <span class="lf-map-eyebrow">{% trans "Live operations" %}</span>
                 <h1>{% trans "Flight Map" %}</h1>
                 <p>
-                    {% trans "Monitor aircraft positions, active routes, airports, weather exposure and operational alerts from one map workspace." %}
+                    {% trans "Aircraft positions, routes and airports." %}
                 </p>
             </div>
 
@@ -156,7 +156,7 @@
                                 <option value="scheduled">{% trans "Scheduled" %}</option>
                                 <option value="boarding">{% trans "Boarding" %}</option>
                                 <option value="departed">{% trans "Departed" %}</option>
-                                <option value="in_air">{% trans "In air" %}</option>
+                                <option value="in_air">{% trans "En route" %}</option>
                                 <option value="landed">{% trans "Landed" %}</option>
                                 <option value="delayed">{% trans "Delayed" %}</option>
                                 <option value="cancelled">{% trans "Cancelled" %}</option>
@@ -286,7 +286,7 @@
                                 <i class="bi bi-airplane-fill lf-green"></i>
                                 <div>
                                     <strong id="visibleFlightsCount">0</strong>
-                                    <span>{% trans "In air" %}</span>
+                                    <span>{% trans "En route" %}</span>
                                 </div>
                             </div>
 
@@ -390,16 +390,15 @@
                     <article class="lf-map-card">
                         <div class="lf-map-card-header">
                             <h3>{% trans "Selected flight" %}</h3>
-                            <p>{% trans "Operational review of the selected aircraft." %}</p>
                         </div>
 
                         <div class="lf-map-card-body">
 
                             <div class="selected-flight-empty-compact" id="selectedFlightEmpty">
                                 <span class="selected-flight-empty-compact-badge">{% trans "Standby" %}</span>
-                                <h4>{% trans "Ready for inspection" %}</h4>
+                                <h4>{% trans "No flight selected" %}</h4>
                                 <p>
-                                    {% trans "Select a flight on the map to review tracking, route progress and operational status." %}
+                                    
                                 </p>
                             </div>
 
@@ -518,86 +517,20 @@
                     <article class="lf-map-card lf-weather-card">
                         <div class="lf-map-card-header lf-weather-card-header">
                             <h3>{% trans "Weather and hazards" %}</h3>
-                            <p>{% trans "Radar layer, weather checks and operational route exposure." %}</p>
                         </div>
 
                         <div class="weather-body weather-body-pro">
 
                             <div class="weather-list weather-list-pro" id="weatherHazardList">
                                 <div class="weather-row weather-row-pro">
-                                    <span class="weather-icon weather-icon-rain">
-                                        <i class="bi bi-cloud-rain-fill"></i>
-                                    </span>
                                     <div>
-                                        <strong>{% trans "Loading weather radar" %}</strong>
-                                        <span>{% trans "Preparing live precipitation layer" %}</span>
-                                    </div>
-                                </div>
-
-                                <div class="weather-row weather-row-pro">
-                                    <span class="weather-icon weather-icon-heavy">
-                                        <i class="bi bi-exclamation-triangle-fill"></i>
-                                    </span>
-                                    <div>
-                                        <strong>{% trans "Checking pressure" %}</strong>
-                                        <span>{% trans "Visible flights and disruptions" %}</span>
-                                    </div>
-                                </div>
-
-                                <div class="weather-row weather-row-pro">
-                                    <span class="weather-icon weather-icon-storm">
-                                        <i class="bi bi-lightning-charge-fill"></i>
-                                    </span>
-                                    <div>
-                                        <strong>{% trans "Scanning storm risk" %}</strong>
-                                        <span>{% trans "Convective weather signal" %}</span>
-                                    </div>
-                                </div>
-
-                                <div class="weather-row weather-row-pro">
-                                    <span class="weather-icon weather-icon-turbulence">
-                                        <i class="bi bi-wind"></i>
-                                    </span>
-                                    <div>
-                                        <strong>{% trans "Checking wind exposure" %}</strong>
-                                        <span>{% trans "Gust and turbulence indicators" %}</span>
-                                    </div>
-                                </div>
-
-                                <div class="weather-row weather-row-pro">
-                                    <span class="weather-icon weather-icon-snow">
-                                        <i class="bi bi-snow"></i>
-                                    </span>
-                                    <div>
-                                        <strong>{% trans "Checking visibility" %}</strong>
-                                        <span>{% trans "Snow and low visibility sectors" %}</span>
-                                    </div>
-                                </div>
-
-                                <div class="weather-row weather-row-pro">
-                                    <span class="weather-icon weather-icon-restricted">
-                                        <i class="bi bi-slash-circle"></i>
-                                    </span>
-                                    <div>
-                                        <strong>{% trans "Restricted zones" %}</strong>
-                                        <span>{% trans "Operational limitation layer" %}</span>
+                                        <strong>{% trans "Weather unavailable" %}</strong>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="weather-preview weather-preview-pro weather-mode-hazards weather-risk-normal" id="weatherPreview">
-                                <div class="weather-radar-image-only">
-                                    <span class="weather-radar-visual-cell weather-radar-visual-green"></span>
-                                    <span class="weather-radar-visual-cell weather-radar-visual-yellow"></span>
-                                    <span class="weather-radar-visual-cell weather-radar-visual-red"></span>
-                                    <span class="weather-radar-visual-cell weather-radar-visual-purple"></span>
-
-                                    <span class="weather-radar-visual-zone weather-radar-visual-zone-one"></span>
-                                    <span class="weather-radar-visual-zone weather-radar-visual-zone-two"></span>
-
-                                    <span class="weather-radar-visual-line weather-radar-visual-line-one"></span>
-                                    <span class="weather-radar-visual-line weather-radar-visual-line-two"></span>
-                                </div>
+                            <div class="weather-preview weather-preview-pro" id="weatherPreview">
+                                <div class="weather-radar-unavailable">{% trans "Weather unavailable" %}</div>
                             </div>
 
                         </div>
@@ -606,7 +539,6 @@
                     <article class="lf-map-card">
                         <div class="lf-map-card-header">
                             <h3>{% trans "Map statistics" %}</h3>
-                            <p>{% trans "Current visible operational picture." %}</p>
                         </div>
 
                         <div class="lf-map-card-body">
@@ -618,7 +550,7 @@
                                 </div>
 
                                 <div class="lf-map-stat-row">
-                                    <span>{% trans "In air" %}</span>
+                                    <span>{% trans "En route" %}</span>
                                     <strong id="filterCountInAir">0</strong>
                                 </div>
 
@@ -665,6 +597,16 @@
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
     crossorigin="">
 </script>
+<div id="mapI18n" hidden
+     data-en-route="{% trans 'En route' %}"
+     data-in-air="{% trans 'En route' %}"
+     data-scheduled="{% trans 'Scheduled' %}"
+     data-boarding="{% trans 'Boarding' %}"
+     data-departed="{% trans 'Departed' %}"
+     data-landed="{% trans 'Landed' %}"
+     data-delayed="{% trans 'Delayed' %}"
+     data-cancelled="{% trans 'Cancelled' %}"
+     data-weather-unavailable="{% trans 'Weather unavailable' %}"></div>
 <script src="{% static 'js/map.js' %}"></script>
 {% endblock %}
 

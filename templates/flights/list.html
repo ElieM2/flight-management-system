@@ -5,7 +5,7 @@
 {% block body_class %}public-flights-body{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/public_flights.css' %}?v=p2-1">
+<link rel="stylesheet" href="{% static 'css/public_flights.css' %}?v=p3-1">
 {% endblock %}
 
 {% block content %}
@@ -18,9 +18,7 @@
     <section class="flights-shell">
         <header class="flights-header">
             <div class="flights-header-copy">
-                <p class="flights-kicker">{% trans "Flight information" %}</p>
                 <h1>{% trans "Departures and arrivals" %}</h1>
-                <p>{% trans "Search by flight number, airline or destination, and filter by operational status." %}</p>
             </div>
             <a href="{% url 'monitoring:flight_map' %}" class="fl-btn fl-btn-primary flights-map-link">{% trans "Open map" %}</a>
         </header>
@@ -95,36 +93,36 @@
                     <tbody>
                         {% for flight in flights %}
                             <tr>
-                                <td>
+                                <td data-label="{% trans 'Flight' %}">
                                     <a href="{% url 'flights:flight_detail' flight.pk %}" class="flight-code">{{ flight.flight_number }}</a>
                                 </td>
-                                <td>
+                                <td data-label="{% trans 'Airline' %}">
                                     <span class="flight-airline-name">{{ flight.airline.name|default:unknown_airline }}</span>
                                 </td>
-                                <td>
+                                <td data-label="{% trans 'From' %}">
                                     {% if flight.origin_airport %}
                                         {{ flight.origin_airport.city|default:flight.origin_airport.iata_code }}
                                         <strong>{{ flight.origin_airport.iata_code|default:"--" }}</strong>
                                     {% else %}—{% endif %}
                                 </td>
-                                <td>
+                                <td data-label="{% trans 'To' %}">
                                     {% if flight.destination_airport %}
                                         {{ flight.destination_airport.city|default:flight.destination_airport.iata_code }}
                                         <strong>{{ flight.destination_airport.iata_code|default:"--" }}</strong>
                                     {% else %}—{% endif %}
                                 </td>
-                                <td class="fl-time flight-time {% if selected_board != 'arrivals' %}is-emphasis{% endif %}">
+                                <td class="fl-time flight-time {% if selected_board != 'arrivals' %}is-emphasis{% endif %}" data-label="{% trans 'STD' %}">
                                     {% if flight.scheduled_departure %}{{ flight.scheduled_departure|date:"H:i" }}{% else %}—{% endif %}
                                     {% if flight.actual_departure %}<small>{{ flight.actual_departure|date:"H:i" }}</small>{% endif %}
                                 </td>
-                                <td class="fl-time flight-time {% if selected_board == 'arrivals' %}is-emphasis{% endif %}">
+                                <td class="fl-time flight-time {% if selected_board == 'arrivals' %}is-emphasis{% endif %}" data-label="{% trans 'STA' %}">
                                     {% if flight.scheduled_arrival %}{{ flight.scheduled_arrival|date:"H:i" }}{% else %}—{% endif %}
                                     {% if flight.actual_arrival %}<small>{{ flight.actual_arrival|date:"H:i" }}</small>{% endif %}
                                 </td>
-                                <td>
+                                <td data-label="{% trans 'Status' %}">
                                     <span class="flight-status status-{{ flight.status }}">{{ flight.get_status_display }}</span>
                                 </td>
-                                <td class="flights-actions-cell">
+                                <td class="flights-actions-cell" data-label="{% trans 'Actions' %}">
                                     <a href="{% url 'flights:flight_detail' flight.pk %}">{% trans "Details" %}</a>
                                     ·
                                     <a href="{% url 'monitoring:flight_map' %}?flight={{ flight.pk }}">{% trans "Map" %}</a>
