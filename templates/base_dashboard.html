@@ -6,8 +6,8 @@
     {% include "partials/theme_boot.html" with default_theme="dark" %}
     {% include "partials/head_assets.html" %}
     <title>{% block title %}{% trans "FlightLogos Control Desk" %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=p2-1">
-    <link rel="stylesheet" href="{% static 'css/shell.css' %}?v=p2-1">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=p3-1">
+    <link rel="stylesheet" href="{% static 'css/shell.css' %}?v=p3-1">
     {% block extra_head %}{% endblock %}
 </head>
 <body class="ops-app-body">
@@ -24,7 +24,7 @@
             </section>
         </main>
     </div>
-    <script src="{% static 'js/main.js' %}?v=p2-1" defer></script>
+    <script src="{% static 'js/main.js' %}?v=p3-1" defer></script>
     {% block extra_js %}{% endblock %}
 </body>
 </html>

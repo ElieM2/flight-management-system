@@ -3,9 +3,7 @@
 <header class="site-header {% if shell == 'ops' %}ops-topbar{% else %}public-app-header public-app-header-v2{% endif %}">
     <div class="site-header-inner {% if shell != 'ops' %}public-container public-app-header-inner{% endif %}">
         <a href="{% if shell == 'ops' %}{% url 'dashboard:dashboard' %}{% else %}{% url 'dashboard:home' %}{% endif %}" class="site-brand {% if shell == 'ops' %}ops-brand{% else %}public-app-brand{% endif %}" aria-label="FlightLogos">
-            <span class="site-brand-mark {% if shell == 'ops' %}ops-brand__mark{% else %}public-app-brand-mark{% endif %}">
-                <i class="bi bi-airplane-fill"></i>
-            </span>
+            {% include "partials/brand_mark.html" with shell=shell mark_class="public-app-brand-mark" %}
             <span class="site-brand-copy {% if shell == 'ops' %}ops-brand__copy{% else %}public-app-brand-copy{% endif %}">
                 <span class="site-brand-name {% if shell != 'ops' %}public-app-brand-name{% endif %}">FlightLogos</span>
                 <small>
@@ -18,12 +16,13 @@
             </span>
         </a>
 
-        <button class="nav-toggle" id="navToggle" type="button" aria-label="{% trans 'Open menu' %}">
+        <button class="nav-toggle" id="navToggle" type="button" aria-label="{% trans 'Open menu' %}" aria-controls="publicNav" aria-expanded="false" data-open-label="{% trans 'Open menu' %}" data-close-label="{% trans 'Close menu' %}">
             <i class="bi bi-list"></i>
         </button>
 
+        <div class="site-menu" id="publicNav">
         {% if shell == 'ops' %}
-        <nav class="site-nav ops-main-nav" id="publicNav" aria-label="{% trans 'Operations navigation' %}">
+        <nav class="site-nav ops-main-nav" aria-label="{% trans 'Operations navigation' %}">
             <a href="{% url 'dashboard:dashboard' %}" class="{% if request.path == '/dashboard/' %}is-active active{% endif %}">{% trans "Operations Center" %}</a>
             <a href="{% url 'monitoring:monitoring_home' %}" class="{% if request.path == '/monitoring/' %}is-active active{% endif %}">{% trans "Control Desk" %}</a>
             <a href="{% url 'monitoring:flight_map' %}" class="{% if '/monitoring/map' in request.path %}is-active active{% endif %}">{% trans "Flight Map" %}</a>
@@ -31,7 +30,7 @@
             <a href="{% url 'integrations:sync_page' %}" class="{% if '/sync' in request.path %}is-active active{% endif %}">{% trans "Data Sync" %}</a>
         </nav>
         {% else %}
-        <nav class="site-nav public-app-nav" id="publicNav">
+        <nav class="site-nav public-app-nav">
             <ul>
                 <li><a href="{% url 'dashboard:home' %}" class="{% if request.path == '/' %}active{% endif %}">{% trans "Home" %}</a></li>
                 <li><a href="{% url 'flights:flight_list' %}" class="{% if '/flights/' in request.path %}active{% endif %}">{% trans "Flights" %}</a></li>
@@ -46,7 +45,7 @@
         <div class="site-actions {% if shell == 'ops' %}ops-header-actions{% else %}public-app-actions{% endif %}">
             {% include "partials/language_switcher.html" with shell=shell %}
 
-            <button class="public-theme-toggle {% if shell == 'ops' %}ops-theme-toggle{% endif %}" type="button" id="{% if shell == 'ops' %}opsThemeToggle{% else %}publicThemeToggle{% endif %}" data-theme-toggle aria-label="{% trans 'Switch theme' %}">
+            <button class="public-theme-toggle {% if shell == 'ops' %}ops-theme-toggle{% endif %}" type="button" id="{% if shell == 'ops' %}opsThemeToggle{% else %}publicThemeToggle{% endif %}" data-theme-toggle aria-label="{% trans 'Switch theme' %}" data-label-light="{% trans 'Switch to light mode' %}" data-label-dark="{% trans 'Switch to dark mode' %}">
                 <i class="bi bi-moon-stars" id="{% if shell == 'ops' %}opsThemeIcon{% else %}publicThemeIcon{% endif %}"></i>
             </button>
 
@@ -85,6 +84,7 @@
                     <a href="{% url 'accounts:register' %}" class="fl-btn public-header-btn public-header-btn-primary">{% trans "Register" %}</a>
                 {% endif %}
             {% endif %}
+        </div>
         </div>
     </div>
 </header>

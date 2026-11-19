@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 from dotenv import load_dotenv
 from django.utils.translation import gettext_lazy as _
@@ -196,7 +197,11 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Use hashed, compressed static files in production. Keep the default
 # storage in DEBUG so local development does not require collectstatic.
-if not DEBUG:
+# The test runner sets DEBUG=False, but tests should not depend on a
+# collected staticfiles manifest (STATIC_ROOT is gitignored).
+TESTING = "test" in sys.argv
+
+if not DEBUG and not TESTING:
     STORAGES = {
         "default": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",

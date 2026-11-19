@@ -4,7 +4,7 @@
         <div class="site-footer-grid public-footer-main">
             <div class="public-footer-brand">
                 <a href="{% url 'dashboard:home' %}" class="site-brand public-footer-logo">
-                    <span class="site-brand-mark"><i class="bi bi-airplane-fill"></i></span>
+                    {% include "partials/brand_mark.html" with mark_class="" %}
                     <strong>FlightLogos</strong>
                 </a>
                 <p>{% trans "Web system for flight management and monitoring." %}</p>

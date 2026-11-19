@@ -3822,6 +3822,57 @@ msgstr "Аэропорты с наибольшим числом вылетов."
 msgid "This demo account is read-only."
 msgstr "Эта демо-учётная запись доступна только для чтения."
 
+msgid "Login"
+msgstr "Вход"
+
+msgid "Register"
+msgstr "Регистрация"
+
+msgid "Flight operations monitoring"
+msgstr "Мониторинг полётов"
+
+msgid "Track live flight status, routes and airport activity."
+msgstr "Следите за статусом рейсов, маршрутами и работой аэропортов."
+
+msgid "Search by flight number, airline, airport or route."
+msgstr "Ищите по номеру рейса, авиакомпании, аэропорту или маршруту."
+
+msgid "Flight number, airline, airport or route"
+msgstr "Номер рейса, авиакомпания, аэропорт или маршрут"
+
+msgid "FlightLogos | Flight Tracking & Operations"
+msgstr "FlightLogos | Отслеживание рейсов и операции"
+
+msgid "Email address"
+msgstr "Адрес эл. почты"
+
+msgid "First name"
+msgstr "Имя"
+
+msgid "Last name"
+msgstr "Фамилия"
+
+msgid "Phone number"
+msgstr "Номер телефона"
+
+msgid "Company / Organization"
+msgstr "Компания / организация"
+
+msgid "Switch to light mode"
+msgstr "Включить светлую тему"
+
+msgid "Switch to dark mode"
+msgstr "Включить тёмную тему"
+
+msgid "Close menu"
+msgstr "Закрыть меню"
+
+msgid "An account with this email already exists."
+msgstr "Учётная запись с этим адресом эл. почты уже существует."
+
+msgid "This email is already used by another account."
+msgstr "Этот адрес эл. почты уже используется другой учётной записью."
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Высокое давление сбоев"
 
@@ -5694,12 +5745,6 @@ msgstr "Эта демо-учётная запись доступна тольк�
 
 #~ msgid "Open Operations Center"
 #~ msgstr "Центр операций"
-
-#~ msgid "Login"
-#~ msgstr "Логин"
-
-#~ msgid "Register"
-#~ msgstr "Реестр"
 
 #~ msgid "No alert description available."
 #~ msgstr "Описание оповещения недоступно."

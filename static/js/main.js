@@ -91,15 +91,12 @@
         );
 
         themeButtons.forEach(function (button) {
-            button.setAttribute(
-                "aria-label",
-                safeTheme === DARK_THEME ? "Switch to light mode" : "Switch to dark mode"
-            );
+            const lightLabel = button.getAttribute("data-label-light") || "Switch to light mode";
+            const darkLabel = button.getAttribute("data-label-dark") || "Switch to dark mode";
+            const nextLabel = safeTheme === DARK_THEME ? lightLabel : darkLabel;
 
-            button.setAttribute(
-                "title",
-                safeTheme === DARK_THEME ? "Switch to light mode" : "Switch to dark mode"
-            );
+            button.setAttribute("aria-label", nextLabel);
+            button.setAttribute("title", nextLabel);
 
             button.dataset.currentTheme = safeTheme;
 
@@ -226,6 +223,19 @@
         });
     }
 
+    function setMenuState(navToggle, publicNav, open) {
+        publicNav.classList.toggle("is-open", open);
+        navToggle.classList.toggle("is-active", open);
+        navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        const openLabel = navToggle.getAttribute("data-open-label") || "Open menu";
+        const closeLabel = navToggle.getAttribute("data-close-label") || "Close menu";
+        navToggle.setAttribute("aria-label", open ? closeLabel : openLabel);
+        const icon = navToggle.querySelector("i");
+        if (icon) {
+            icon.className = open ? "bi bi-x-lg" : "bi bi-list";
+        }
+    }
+
     function initPublicNavigation() {
         const navToggle = qs("#navToggle");
         const publicNav = qs("#publicNav");
@@ -233,9 +243,23 @@
         if (navToggle && publicNav) {
             navToggle.addEventListener("click", function (event) {
                 event.preventDefault();
+                setMenuState(navToggle, publicNav, !publicNav.classList.contains("is-open"));
+            });
 
-                publicNav.classList.toggle("is-open");
-                navToggle.classList.toggle("is-active", publicNav.classList.contains("is-open"));
+            document.addEventListener("keydown", function (event) {
+                if (event.key === "Escape" && publicNav.classList.contains("is-open")) {
+                    setMenuState(navToggle, publicNav, false);
+                }
+            });
+
+            document.addEventListener("click", function (event) {
+                if (!publicNav.classList.contains("is-open")) {
+                    return;
+                }
+                if (publicNav.contains(event.target) || navToggle.contains(event.target)) {
+                    return;
+                }
+                setMenuState(navToggle, publicNav, false);
             });
         }
 

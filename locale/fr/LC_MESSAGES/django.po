@@ -3853,6 +3853,57 @@ msgstr "Aéroports avec le plus de départs."
 msgid "This demo account is read-only."
 msgstr "Ce compte de démonstration est en lecture seule."
 
+msgid "Login"
+msgstr "Connexion"
+
+msgid "Register"
+msgstr "Inscription"
+
+msgid "Flight operations monitoring"
+msgstr "Suivi des opérations aériennes"
+
+msgid "Track live flight status, routes and airport activity."
+msgstr "Suivez le statut des vols, les routes et l'activité des aéroports."
+
+msgid "Search by flight number, airline, airport or route."
+msgstr "Recherchez par numéro de vol, compagnie, aéroport ou route."
+
+msgid "Flight number, airline, airport or route"
+msgstr "Numéro de vol, compagnie, aéroport ou route"
+
+msgid "FlightLogos | Flight Tracking & Operations"
+msgstr "FlightLogos | Suivi des vols et opérations"
+
+msgid "Email address"
+msgstr "Adresse e-mail"
+
+msgid "First name"
+msgstr "Prénom"
+
+msgid "Last name"
+msgstr "Nom"
+
+msgid "Phone number"
+msgstr "Numéro de téléphone"
+
+msgid "Company / Organization"
+msgstr "Entreprise / organisation"
+
+msgid "Switch to light mode"
+msgstr "Passer en mode clair"
+
+msgid "Switch to dark mode"
+msgstr "Passer en mode sombre"
+
+msgid "Close menu"
+msgstr "Fermer le menu"
+
+msgid "An account with this email already exists."
+msgstr "Un compte existe déjà avec cette adresse e-mail."
+
+msgid "This email is already used by another account."
+msgstr "Cette adresse e-mail est déjà utilisée par un autre compte."
+
 #~ msgid "High disruption pressure"
 #~ msgstr "Forte pression de perturbation"
 
@@ -5782,12 +5833,6 @@ msgstr "Ce compte de démonstration est en lecture seule."
 
 #~ msgid "Open Operations Center"
 #~ msgstr "Centre des opérations"
-
-#~ msgid "Login"
-#~ msgstr "Connexion"
-
-#~ msgid "Register"
-#~ msgstr "Registre"
 
 #~ msgid "No alert description available."
 #~ msgstr "Aucune description d’alerte disponible."

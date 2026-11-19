@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 
@@ -33,16 +34,16 @@ class RegisterForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        apply_widget_attrs(self.fields['username'], AUTH_INPUT_CLASS, 'Username')
-        apply_widget_attrs(self.fields['email'], AUTH_INPUT_CLASS, 'Email address')
-        apply_widget_attrs(self.fields['password1'], AUTH_INPUT_CLASS, 'Password')
-        apply_widget_attrs(self.fields['password2'], AUTH_INPUT_CLASS, 'Confirm password')
+        apply_widget_attrs(self.fields['username'], AUTH_INPUT_CLASS, _('Username'))
+        apply_widget_attrs(self.fields['email'], AUTH_INPUT_CLASS, _('Email address'))
+        apply_widget_attrs(self.fields['password1'], AUTH_INPUT_CLASS, _('Password'))
+        apply_widget_attrs(self.fields['password2'], AUTH_INPUT_CLASS, _('Confirm password'))
 
     def clean_email(self):
         email = self.cleaned_data.get('email', '').strip().lower()
 
         if User.objects.filter(email__iexact=email).exists():
-            raise forms.ValidationError('An account with this email already exists.')
+            raise forms.ValidationError(_('An account with this email already exists.'))
 
         return email
 
@@ -60,13 +61,13 @@ class LoginForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': AUTH_INPUT_CLASS,
-            'placeholder': 'Username'
+            'placeholder': _('Username')
         })
     )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
             'class': AUTH_INPUT_CLASS,
-            'placeholder': 'Password'
+            'placeholder': _('Password')
         })
     )
 
@@ -79,17 +80,17 @@ class UserUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        apply_widget_attrs(self.fields['username'], DASHBOARD_INPUT_CLASS, 'Username')
-        apply_widget_attrs(self.fields['email'], DASHBOARD_INPUT_CLASS, 'Email address')
-        apply_widget_attrs(self.fields['first_name'], DASHBOARD_INPUT_CLASS, 'First name')
-        apply_widget_attrs(self.fields['last_name'], DASHBOARD_INPUT_CLASS, 'Last name')
+        apply_widget_attrs(self.fields['username'], DASHBOARD_INPUT_CLASS, _('Username'))
+        apply_widget_attrs(self.fields['email'], DASHBOARD_INPUT_CLASS, _('Email address'))
+        apply_widget_attrs(self.fields['first_name'], DASHBOARD_INPUT_CLASS, _('First name'))
+        apply_widget_attrs(self.fields['last_name'], DASHBOARD_INPUT_CLASS, _('Last name'))
 
     def clean_email(self):
         email = self.cleaned_data.get('email', '').strip().lower()
         qs = User.objects.filter(email__iexact=email).exclude(pk=self.instance.pk)
 
         if qs.exists():
-            raise forms.ValidationError('This email is already used by another account.')
+            raise forms.ValidationError(_('This email is already used by another account.'))
 
         return email
 
@@ -107,6 +108,6 @@ class ProfileUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        apply_widget_attrs(self.fields['phone'], DASHBOARD_INPUT_CLASS, 'Phone number')
-        apply_widget_attrs(self.fields['company'], DASHBOARD_INPUT_CLASS, 'Company / Organization')
+        apply_widget_attrs(self.fields['phone'], DASHBOARD_INPUT_CLASS, _('Phone number'))
+        apply_widget_attrs(self.fields['company'], DASHBOARD_INPUT_CLASS, _('Company / Organization'))
         apply_widget_attrs(self.fields['avatar'], DASHBOARD_INPUT_CLASS)
