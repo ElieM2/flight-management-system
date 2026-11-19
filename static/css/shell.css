@@ -1,0 +1,531 @@
+/* FlightLogos shared shell: header, footer, flash, language switcher */
+
+body.public-app-body,
+body.auth-app-body,
+body.ops-app-body {
+    min-height: 100vh;
+    background: var(--fl-bg);
+    color: var(--fl-text);
+}
+
+body.public-app-body,
+body.auth-app-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: var(--header-h);
+    background: var(--fl-navy);
+    color: #f8fafc;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.site-header-inner {
+    width: min(80rem, calc(100% - 2rem));
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.site-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: #ffffff;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+
+.site-brand:hover {
+    color: #ffffff;
+}
+
+.site-brand-mark {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, #ffffff 12%, transparent);
+    color: #ffffff;
+}
+
+.site-brand-name {
+    display: block;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.site-brand-copy small {
+    display: block;
+    color: rgba(226, 232, 240, 0.78);
+    font-size: 0.7rem;
+}
+
+.nav-toggle {
+    display: none;
+    margin-left: auto;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.2);
+    background: transparent;
+    color: #ffffff;
+    border-radius: var(--radius-md);
+}
+
+.site-nav {
+    flex: 1;
+}
+
+.site-nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.site-nav a,
+.ops-main-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.25rem;
+    padding: 0 0.75rem;
+    border-radius: var(--radius-md);
+    color: rgba(226, 232, 240, 0.82);
+    text-decoration: none;
+    font-size: var(--text-sm);
+    font-weight: 600;
+}
+
+.site-nav a:hover,
+.site-nav a.active,
+.ops-main-nav a:hover,
+.ops-main-nav a.is-active {
+    color: #ffffff;
+    background: color-mix(in srgb, #ffffff 10%, transparent);
+}
+
+.site-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+
+.public-header-btn,
+.site-actions .fl-btn {
+    min-height: 2.25rem;
+    padding: 0 0.8rem;
+    font-size: 0.75rem;
+}
+
+.public-header-btn-secondary,
+.public-theme-toggle,
+.ops-theme-toggle,
+.ops-icon-button,
+.language-switcher__trigger,
+.ops-language-trigger {
+    background: color-mix(in srgb, #ffffff 8%, transparent);
+    border: 1px solid rgba(226, 232, 240, 0.18);
+    color: #ffffff;
+}
+
+.public-header-btn-primary {
+    background: #ffffff;
+    border-color: #ffffff;
+    color: var(--fl-navy);
+}
+
+.public-header-btn-primary:hover {
+    background: #eef3f9;
+    color: var(--fl-navy);
+}
+
+.public-theme-toggle,
+.ops-theme-toggle,
+.ops-icon-button {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+}
+
+.language-switcher {
+    position: relative;
+}
+
+.language-switcher__trigger,
+.ops-language-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 2.25rem;
+    padding: 0 0.6rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #ffffff;
+}
+
+.language-switcher__menu,
+.ops-language-menu,
+.ops-user-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.4rem);
+    min-width: 12rem;
+    background: var(--fl-surface);
+    color: var(--fl-text);
+    border: 1px solid var(--fl-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--fl-shadow);
+    padding: 0.4rem;
+    z-index: 20;
+}
+
+.language-switcher.is-open .language-switcher__menu,
+.ops-language.is-open .ops-language-menu,
+.ops-user.is-open .ops-user-menu {
+    display: block;
+}
+
+.language-switcher__menu form,
+.ops-language-menu form {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.language-switcher__menu button,
+.ops-language-option {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--fl-text);
+    text-align: left;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.language-switcher__menu button:hover,
+.language-switcher__menu button.is-active,
+.ops-language-option:hover,
+.ops-language-option.is-active {
+    background: var(--fl-accent-soft);
+}
+
+.site-main {
+    flex: 1 0 auto;
+}
+
+.site-footer {
+    margin-top: auto;
+    background: var(--fl-navy);
+    color: rgba(226, 232, 240, 0.84);
+    padding: 2.5rem 0 1.25rem;
+}
+
+.site-footer a {
+    color: rgba(226, 232, 240, 0.84);
+    text-decoration: none;
+}
+
+.site-footer a:hover {
+    color: #ffffff;
+}
+
+.site-footer-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 2rem;
+}
+
+.site-footer h3 {
+    color: #ffffff;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 0.8rem;
+}
+
+.site-footer-grid p,
+.site-footer-grid a,
+.site-footer-grid span {
+    display: block;
+    font-size: var(--text-sm);
+    margin: 0 0 0.4rem;
+}
+
+.site-footer-bottom {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(148, 163, 184, 0.18);
+    font-size: var(--text-xs);
+    color: rgba(203, 213, 225, 0.7);
+}
+
+.public-flash-wrap,
+.private-alert {
+    width: min(80rem, calc(100% - 2rem));
+    margin: 0.75rem auto 0;
+}
+
+/* Keep legacy class hooks used by existing pages */
+.public-app-header,
+.ops-topbar {
+    /* headers now share .site-header; these remain as aliases when needed */
+}
+
+.public-container {
+    width: min(80rem, calc(100% - 2rem));
+    margin-inline: auto;
+}
+
+.ops-user {
+    position: relative;
+}
+
+.ops-user-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    background: color-mix(in srgb, #ffffff 8%, transparent);
+    border: 1px solid rgba(226, 232, 240, 0.18);
+    color: #ffffff;
+    border-radius: var(--radius-md);
+    min-height: 2.25rem;
+    padding: 0 0.55rem 0 0.35rem;
+    cursor: pointer;
+}
+
+.ops-user-avatar {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    color: var(--fl-navy);
+    font-weight: 700;
+    font-size: 0.75rem;
+}
+
+.ops-user-text {
+    text-align: left;
+}
+
+.ops-user-text strong,
+.ops-user-text small {
+    display: block;
+    line-height: 1.15;
+}
+
+.ops-user-text small {
+    color: rgba(226, 232, 240, 0.72);
+    font-size: 0.65rem;
+}
+
+.ops-user-menu a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: 6px;
+    color: var(--fl-text);
+    text-decoration: none;
+    font-size: var(--text-sm);
+}
+
+.ops-user-menu a:hover {
+    background: var(--fl-accent-soft);
+}
+
+.ops-user-menu a.is-danger {
+    color: var(--fl-danger);
+}
+
+.ops-user-menu-head {
+    padding: 0.55rem 0.6rem 0.7rem;
+    border-bottom: 1px solid var(--fl-border);
+    margin-bottom: 0.3rem;
+}
+
+.ops-user-menu-head span,
+.ops-user-menu-head small {
+    display: block;
+    color: var(--fl-text-muted);
+    font-size: 0.7rem;
+}
+
+.ops-user-menu-head strong {
+    display: block;
+}
+
+.ops-main {
+    width: min(80rem, calc(100% - 2rem));
+    margin: 1.25rem auto 2.5rem;
+}
+
+body.ops-app-body .ops-main {
+    width: min(86rem, calc(100% - 2rem));
+}
+
+body.ops-app-body.lf-map-open .ops-main,
+body.ops-app-body:has(.lf-map-page) .ops-main {
+    width: min(100% - 0rem, 100%);
+    margin: 0;
+    max-width: none;
+}
+
+@media (max-width: 980px) {
+    .nav-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .site-nav {
+        display: none;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: var(--header-h);
+        background: var(--fl-navy-deep);
+        padding: 0.75rem;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.18);
+    }
+
+    .site-nav.is-open {
+        display: block;
+    }
+
+    .site-nav ul,
+    .ops-main-nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .site-footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .ops-user-text {
+        display: none;
+    }
+}
+
+@media (max-width: 640px) {
+    .site-brand-copy small {
+        display: none;
+    }
+
+    .site-footer-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .public-header-btn-secondary,
+    .public-header-btn-primary {
+        min-width: auto;
+        padding: 0 0.65rem;
+    }
+}
+
+
+/* Navy header wins over older public header theme patches. */
+html[data-theme="light"] header.site-header,
+html[data-theme="dark"] header.site-header,
+header.site-header.public-app-header,
+header.site-header.ops-topbar {
+    background: var(--fl-navy) !important;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.18) !important;
+    box-shadow: none !important;
+    color: #f8fafc !important;
+}
+
+html[data-theme="light"] .site-brand,
+html[data-theme="dark"] .site-brand,
+html[data-theme="light"] .public-app-brand-name,
+html[data-theme="dark"] .public-app-brand-name,
+html[data-theme="light"] .site-brand-name,
+html[data-theme="dark"] .site-brand-name {
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .site-nav a,
+html[data-theme="dark"] .site-nav a,
+html[data-theme="light"] .public-app-nav a,
+html[data-theme="dark"] .public-app-nav a,
+html[data-theme="light"] .ops-main-nav a,
+html[data-theme="dark"] .ops-main-nav a {
+    color: rgba(226, 232, 240, 0.82) !important;
+}
+
+html[data-theme="light"] .site-nav a:hover,
+html[data-theme="light"] .site-nav a.active,
+html[data-theme="dark"] .site-nav a:hover,
+html[data-theme="dark"] .site-nav a.active,
+html[data-theme="light"] .ops-main-nav a.is-active,
+html[data-theme="dark"] .ops-main-nav a.is-active {
+    color: #ffffff !important;
+}
+
+.ops-main-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    flex: 1;
+}
+
+
+/* Mobile header: keep the menu button and auth actions visible. */
+@media (max-width: 980px) {
+    .site-header-inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .site-brand {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .nav-toggle {
+        display: inline-flex !important;
+        margin-left: 0;
+        order: 2;
+        flex-shrink: 0;
+    }
+
+    .site-actions {
+        order: 3;
+        margin-left: 0;
+        flex-shrink: 0;
+    }
+
+    .site-nav {
+        order: 4;
+        flex-basis: 100%;
+        width: 100%;
+    }
+}

@@ -6,7 +6,7 @@
 (function () {
     "use strict";
 
-    const STORAGE_KEY = "logosflight-theme";
+    const STORAGE_KEY = "flightlogos-theme";
     const LIGHT_THEME = "light";
     const DARK_THEME = "dark";
 
@@ -77,6 +77,9 @@
             return storedTheme;
         }
 
+        if (document.body && document.body.classList.contains("ops-app-body")) {
+            return DARK_THEME;
+        }
         return LIGHT_THEME;
     }
 
@@ -84,7 +87,7 @@
         const safeTheme = normalizeTheme(theme);
 
         const themeButtons = qsa(
-            ".theme-toggle, .ops-theme-toggle, [data-theme-toggle], #themeToggle, #opsThemeToggle"
+            ".theme-toggle, .ops-theme-toggle, .public-theme-toggle, [data-theme-toggle], #themeToggle, #opsThemeToggle, #publicThemeToggle"
         );
 
         themeButtons.forEach(function (button) {
@@ -388,7 +391,7 @@
         applyTheme(initialTheme);
 
         const themeButtons = qsa(
-            ".theme-toggle, .ops-theme-toggle, [data-theme-toggle], #themeToggle, #opsThemeToggle"
+            ".theme-toggle, .ops-theme-toggle, .public-theme-toggle, [data-theme-toggle], #themeToggle, #opsThemeToggle, #publicThemeToggle"
         );
 
         themeButtons.forEach(function (button) {
@@ -524,17 +527,9 @@
     });
 })();
 
-// flightlogos-theme-cleanup
-(function () {
-    try {
-        if (!localStorage.getItem("flightlogos-theme")) {
-            localStorage.setItem("flightlogos-theme", "dark");
-        }
-
-        localStorage.removeItem("flightlogosPublicTheme");
-        localStorage.removeItem("logosflight-theme");
-
-        const theme = localStorage.getItem("flightlogos-theme") === "light" ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", theme);
-    } catch (error) {}
-})();
+try {
+    if (!localStorage.getItem("flightlogos-theme") && localStorage.getItem("logosflight-theme")) {
+        localStorage.setItem("flightlogos-theme", localStorage.getItem("logosflight-theme"));
+    }
+    localStorage.removeItem("flightlogosPublicTheme");
+} catch (e) {}

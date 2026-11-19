@@ -1,0 +1,29 @@
+{% load i18n %}
+{% get_current_language as CURRENT_LANGUAGE %}
+<div class="language-switcher {% if shell == 'ops' %}ops-language{% endif %}" data-language-switcher {% if shell == 'ops' %}id="opsLanguageMenu"{% endif %}>
+    <button type="button" class="language-switcher__trigger {% if shell == 'ops' %}ops-language-trigger{% endif %}" id="{% if shell == 'ops' %}opsLanguageTrigger{% endif %}" aria-label="{% trans 'Change language' %}" aria-expanded="false" data-language-trigger>
+        {% if shell == 'ops' %}<i class="bi bi-globe2"></i>{% endif %}
+        <span class="language-switcher__code">
+            {% if CURRENT_LANGUAGE == "fr" %}FR{% elif CURRENT_LANGUAGE == "ru" %}RU{% else %}EN{% endif %}
+        </span>
+        <i class="bi bi-chevron-down"></i>
+    </button>
+    <div class="language-switcher__menu {% if shell == 'ops' %}ops-language-menu{% endif %}" {% if shell == 'ops' %}id="opsLanguageDropdown"{% endif %}>
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+            <button type="submit" name="language" value="en" class="ops-language-option {% if CURRENT_LANGUAGE == 'en' %}is-active{% endif %}">
+                <span>EN</span>
+                <strong>English</strong>
+            </button>
+            <button type="submit" name="language" value="fr" class="ops-language-option {% if CURRENT_LANGUAGE == 'fr' %}is-active{% endif %}">
+                <span>FR</span>
+                <strong>Français</strong>
+            </button>
+            <button type="submit" name="language" value="ru" class="ops-language-option {% if CURRENT_LANGUAGE == 'ru' %}is-active{% endif %}">
+                <span>RU</span>
+                <strong>Русский</strong>
+            </button>
+        </form>
+    </div>
+</div>

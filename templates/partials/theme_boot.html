@@ -1,0 +1,14 @@
+{% load i18n %}
+<script>
+(function () {
+    var storageKey = "flightlogos-theme";
+    var defaultTheme = "{{ default_theme|default:'light' }}";
+    try {
+        var saved = localStorage.getItem(storageKey);
+        var theme = (saved === "light" || saved === "dark") ? saved : defaultTheme;
+        document.documentElement.setAttribute("data-theme", theme);
+    } catch (error) {
+        document.documentElement.setAttribute("data-theme", defaultTheme);
+    }
+})();
+</script>

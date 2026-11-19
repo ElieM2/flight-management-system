@@ -1,0 +1,39 @@
+{% load i18n %}
+<footer class="site-footer public-site-footer">
+    <div class="fl-container public-container">
+        <div class="site-footer-grid public-footer-main">
+            <div class="public-footer-brand">
+                <a href="{% url 'dashboard:home' %}" class="site-brand public-footer-logo">
+                    <span class="site-brand-mark"><i class="bi bi-airplane-fill"></i></span>
+                    <strong>FlightLogos</strong>
+                </a>
+                <p>{% trans "Web system for flight management and monitoring." %}</p>
+                <p>Django · SQLite · Leaflet</p>
+            </div>
+            <div class="public-footer-column">
+                <h3>{% trans "Explore" %}</h3>
+                <a href="{% url 'flights:flight_list' %}">{% trans "Flights" %}</a>
+                <a href="{% url 'airlines:airline_list' %}">{% trans "Airlines" %}</a>
+                <a href="{% url 'airports:airport_list' %}">{% trans "Airports" %}</a>
+                <a href="{% url 'aircraft:aircraft_list' %}">{% trans "Aircraft" %}</a>
+                <a href="{% url 'monitoring:flight_map' %}">{% trans "Map" %}</a>
+            </div>
+            <div class="public-footer-column">
+                <h3>{% trans "Workspace" %}</h3>
+                <a href="{% url 'dashboard:dashboard' %}">{% trans "Operations Center" %}</a>
+                <a href="{% url 'monitoring:monitoring_home' %}">{% trans "Control Desk" %}</a>
+                <a href="{% url 'analytics:home' %}">{% trans "Operational Intelligence" %}</a>
+                <a href="{% url 'integrations:sync_page' %}">{% trans "Data Sync" %}</a>
+            </div>
+            <div class="public-footer-column">
+                <h3>{% trans "Access" %}</h3>
+                <a href="{% url 'accounts:login' %}">{% trans "Login" %}</a>
+                <a href="{% url 'accounts:register' %}">{% trans "Register" %}</a>
+                <a href="{% url 'accounts:profile' %}">{% trans "Profile" %}</a>
+            </div>
+        </div>
+        <div class="site-footer-bottom public-footer-bottom">
+            <span>© {% now "Y" %} FlightLogos. {% trans "Academic aviation monitoring platform." %}</span>
+        </div>
+    </div>
+</footer>
